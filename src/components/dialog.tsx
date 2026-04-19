@@ -18,7 +18,7 @@ function DialogBackdrop({
   return (
     <DialogPrimitive.Backdrop
       className={cn(
-        "fixed inset-0 z-[1060] bg-black/40 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 transition-opacity duration-150",
+        "fixed inset-0 z-[1060] bg-black/40 transition-opacity duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
         className
       )}
       {...props}
@@ -26,7 +26,10 @@ function DialogBackdrop({
   )
 }
 
-type DialogContentProps = React.ComponentProps<typeof DialogPrimitive.Popup> & {
+type DialogContentProps = Omit<
+  React.ComponentProps<typeof DialogPrimitive.Popup>,
+  "title"
+> & {
   width?: number | string
   title?: React.ReactNode
   description?: React.ReactNode
@@ -47,8 +50,8 @@ function DialogContent({
       <DialogBackdrop />
       <DialogPrimitive.Popup
         className={cn(
-          "fixed left-1/2 top-1/2 z-[1060] -translate-x-1/2 -translate-y-1/2 border border-border bg-card shadow-lg outline-none",
-          "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 transition-opacity duration-150",
+          "fixed top-1/2 left-1/2 z-[1060] -translate-x-1/2 -translate-y-1/2 border border-border bg-card shadow-lg outline-none",
+          "transition-opacity duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
           className
         )}
         style={{ width }}
@@ -65,7 +68,7 @@ function DialogContent({
             )}
             {!hideClose && (
               <DialogPrimitive.Close
-                className="grid h-8 w-8 place-items-center text-muted-foreground hover:bg-muted hover:text-foreground cursor-pointer"
+                className="grid h-8 w-8 cursor-pointer place-items-center text-muted-foreground hover:bg-muted hover:text-foreground"
                 aria-label="关闭"
               >
                 <IconX size={14} />

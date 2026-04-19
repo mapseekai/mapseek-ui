@@ -1,30 +1,127 @@
 import * as React from "react"
+import { Select as SelectPrimitive } from "@base-ui-components/react/select"
+import { IconChevronDown, IconCheck } from "@tabler/icons-react"
 import { cn } from "@workspace/ui/lib/utils"
 
-const chevron =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")"
+type SelectRootProps = {
+  value?: string
+  defaultValue?: string
+  onValueChange?: (value: string) => void
+  placeholder?: React.ReactNode
+  disabled?: boolean
+  className?: string
+  children: React.ReactNode
+}
 
-function Select({ className, style, children, ...props }: React.ComponentProps<"select">) {
+type SelectItemProps = {
+  value: string
+  disabled?: boolean
+  className?: string
+  children: React.ReactNode
+}
+
+function SelectItem({ value, disabled, className, children }: SelectItemProps) {
   return (
-    <select
-      data-slot="select"
+    <SelectPrimitive.Item
+      value={value}
+      disabled={disabled}
       className={cn(
-        "h-8 cursor-pointer appearance-none border border-border bg-background py-0 pl-2 pr-6 text-xs font-medium text-foreground outline-none transition-colors",
-        "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20",
-        "disabled:pointer-events-none disabled:opacity-50",
+        "relative flex cursor-pointer items-center gap-1.5 px-2 py-1 pr-6 text-xs outline-none select-none",
+        "data-[highlighted]:bg-muted",
+        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
       )}
-      style={{
-        backgroundImage: chevron,
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "right 6px center",
-        ...style,
-      }}
-      {...props}
     >
-      {children}
-    </select>
+      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+      <SelectPrimitive.ItemIndicator className="absolute right-1.5 flex h-3 w-3 items-center justify-center text-primary">
+        <IconCheck size={10} stroke={2} />
+      </SelectPrimitive.ItemIndicator>
+    </SelectPrimitive.Item>
   )
 }
+
+// Walk children to build an items map { [value]: label } so Select.Value can
+// render the matching Item's label in the trigger (base-ui RC 1.0.0 resolves
+// the selected label from the Root `items` prop, not from rendered Items).
+function collectItems(
+  children: React.ReactNode,
+  acc: Record<string, React.ReactNode>
+): Record<string, React.ReactNode> {
+  React.Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) return
+    if (child.type === SelectItem) {
+      const { value, children: label } = child.props as SelectItemProps
+      acc[value] = label
+      return
+    }
+    const nested = (child.props as { children?: React.ReactNode }).children
+    if (nested != null) collectItems(nested, acc)
+  })
+  return acc
+}
+
+function SelectRoot({
+  value,
+  defaultValue,
+  onValueChange,
+  placeholder,
+  disabled,
+  className,
+  children,
+}: SelectRootProps) {
+  const items = React.useMemo(() => collectItems(children, {}), [children])
+
+  return (
+    <SelectPrimitive.Root
+      value={value}
+      defaultValue={defaultValue}
+      onValueChange={(next) => {
+        if (onValueChange && typeof next === "string") onValueChange(next)
+      }}
+      disabled={disabled}
+      items={items}
+    >
+      <SelectPrimitive.Trigger
+        className={cn(
+          "inline-flex h-8 cursor-pointer items-center justify-between gap-1.5 border border-border bg-background px-2 text-xs font-medium text-foreground transition-colors outline-none",
+          "hover:bg-muted",
+          "data-[popup-open]:bg-muted",
+          "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20",
+          "disabled:pointer-events-none disabled:opacity-50",
+          className
+        )}
+        data-slot="select-trigger"
+      >
+        <SelectPrimitive.Value>
+          {(current: unknown) => {
+            const key = current == null ? "" : String(current)
+            if (key in items) return items[key]
+            return placeholder ?? ""
+          }}
+        </SelectPrimitive.Value>
+        <SelectPrimitive.Icon className="ml-1 shrink-0 text-muted-foreground">
+          <IconChevronDown size={10} stroke={1.5} />
+        </SelectPrimitive.Icon>
+      </SelectPrimitive.Trigger>
+      <SelectPrimitive.Portal>
+        <SelectPrimitive.Positioner
+          sideOffset={4}
+          className="z-[1070] outline-none"
+        >
+          <SelectPrimitive.Popup
+            className={cn(
+              "min-w-[var(--anchor-width)] border border-border bg-popover py-1 text-popover-foreground shadow-md outline-none",
+              "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0"
+            )}
+          >
+            {children}
+          </SelectPrimitive.Popup>
+        </SelectPrimitive.Positioner>
+      </SelectPrimitive.Portal>
+    </SelectPrimitive.Root>
+  )
+}
+
+const Select = Object.assign(SelectRoot, { Item: SelectItem })
 
 export { Select }

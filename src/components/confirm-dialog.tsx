@@ -24,7 +24,14 @@ const ConfirmContext = React.createContext<ConfirmFn | null>(null)
 function ConfirmProvider({ children }: { children: React.ReactNode }) {
   const [pending, setPending] = React.useState<PendingConfirm | null>(null)
   const pendingRef = React.useRef<PendingConfirm | null>(null)
-  pendingRef.current = pending
+
+  // Mirror state into a ref in an effect (not during render) so the
+  // concurrency guard in `confirm` and the late-open handler in `close`
+  // can read the latest pending value without forcing the callbacks to
+  // depend on it.
+  React.useEffect(() => {
+    pendingRef.current = pending
+  }, [pending])
 
   const confirm = React.useCallback<ConfirmFn>((options) => {
     // Concurrency guard: if another confirm is still open, resolve it false

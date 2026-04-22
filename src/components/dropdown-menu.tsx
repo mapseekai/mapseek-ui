@@ -19,11 +19,15 @@ function DropdownMenuContent({
 }) {
   return (
     <Menu.Portal>
-      <Menu.Positioner align={align} sideOffset={sideOffset} className="z-[1000]">
+      <Menu.Positioner
+        align={align}
+        sideOffset={sideOffset}
+        className="z-[1000]"
+      >
         <Menu.Popup
           className={cn(
             "min-w-[160px] border border-border bg-popover text-popover-foreground shadow-md outline-none",
-            "data-[starting-style]:opacity-0 data-[ending-style]:opacity-0 transition-opacity duration-100",
+            "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
             className
           )}
           {...props}
@@ -37,13 +41,16 @@ function DropdownMenuItem({
   className,
   variant = "default",
   ...props
-}: React.ComponentProps<typeof Menu.Item> & { variant?: "default" | "destructive" }) {
+}: React.ComponentProps<typeof Menu.Item> & {
+  variant?: "default" | "destructive"
+}) {
   return (
     <Menu.Item
       className={cn(
         "flex cursor-pointer items-center gap-2 px-3 py-2 text-xs outline-none",
         "data-[highlighted]:bg-muted",
-        variant === "destructive" && "text-destructive data-[highlighted]:bg-destructive/10",
+        variant === "destructive" &&
+          "text-destructive data-[highlighted]:bg-destructive/10",
         className
       )}
       {...props}
@@ -51,23 +58,30 @@ function DropdownMenuItem({
   )
 }
 
-function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<"div">) {
+function DropdownMenuSeparator({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   // Use the shadcn Separator primitive so dropdown dividers stay visually
   // consistent with section dividers elsewhere (see @workspace/ui/components/separator).
   return (
     <Separator
       data-slot="dropdown-menu-separator"
-      className={cn("my-1", className)}
+      // className={cn("my-1", className)}
+      className={cn(className)}
       {...props}
     />
   )
 }
 
-function DropdownMenuLabel({ className, ...props }: React.ComponentProps<"div">) {
+function DropdownMenuLabel({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.06em] text-muted-foreground",
+        "px-3 py-1.5 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase",
         className
       )}
       {...props}

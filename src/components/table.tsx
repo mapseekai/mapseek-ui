@@ -1,9 +1,21 @@
 import * as React from "react"
 import { cn } from "@workspace/ui/lib/utils"
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+type TableProps = React.ComponentProps<"table"> & {
+  /**
+   * Wrapper styling. Set `containerClassName="border-0"` (or equivalent)
+   * when the table lives inside an already-bordered container like
+   * Card — otherwise the two borders stack and render as a heavier
+   * line. Default keeps the standalone-table appearance.
+   */
+  containerClassName?: string
+}
+
+function Table({ className, containerClassName, ...props }: TableProps) {
   return (
-    <div className="w-full border border-border bg-card">
+    <div
+      className={cn("w-full border border-border bg-card", containerClassName)}
+    >
       <table
         data-slot="table"
         className={cn(

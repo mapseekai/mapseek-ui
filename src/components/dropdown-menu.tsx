@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Menu } from "@base-ui-components/react/menu"
+import { Separator } from "@workspace/ui/components/separator"
 import { cn } from "@workspace/ui/lib/utils"
 
 const DropdownMenu = Menu.Root
@@ -51,7 +52,15 @@ function DropdownMenuItem({
 }
 
 function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("my-1 border-t border-border", className)} {...props} />
+  // Use the shadcn Separator primitive so dropdown dividers stay visually
+  // consistent with section dividers elsewhere (see @workspace/ui/components/separator).
+  return (
+    <Separator
+      data-slot="dropdown-menu-separator"
+      className={cn("my-1", className)}
+      {...props}
+    />
+  )
 }
 
 function DropdownMenuLabel({ className, ...props }: React.ComponentProps<"div">) {

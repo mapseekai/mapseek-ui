@@ -103,6 +103,60 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * Compound parts for callers that prefer the shadcn-style header
+ * pattern over DialogContent's `title=` / `description=` props.
+ *
+ * Use them inside `<DialogContent hideClose>` so the wrapper does NOT
+ * also render its built-in header strip — otherwise you'll get two
+ * stacked titles.
+ *
+ *   <DialogContent hideClose>
+ *     <DialogHeader>
+ *       <DialogTitle>X</DialogTitle>
+ *       <DialogDescription>Y</DialogDescription>
+ *     </DialogHeader>
+ *     <DialogBody>…</DialogBody>
+ *     <DialogFooter>…</DialogFooter>
+ *   </DialogContent>
+ */
+function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="dialog-header"
+      className={cn(
+        "flex flex-col gap-1 border-b border-border px-4 py-3",
+        className
+      )}
+      {...props}
+    />
+  )
+}
+
+function DialogTitle({
+  className,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+  return (
+    <DialogPrimitive.Title
+      className={cn("text-sm font-semibold tracking-[-0.01em]", className)}
+      {...props}
+    />
+  )
+}
+
+function DialogDescription({
+  className,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Description>) {
+  return (
+    <DialogPrimitive.Description
+      className={cn("text-xs text-muted-foreground", className)}
+      {...props}
+    />
+  )
+}
+
 export {
   Dialog,
   DialogTrigger,
@@ -112,4 +166,7 @@ export {
   DialogContent,
   DialogBody,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
 }

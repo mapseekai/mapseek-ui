@@ -70,6 +70,7 @@ type ComboboxInputProps = ComboboxPrimitive.Input.Props & {
   showTrigger?: boolean
   showClear?: boolean
   disabled?: boolean
+  ref?: React.Ref<HTMLInputElement>
 }
 
 function ComboboxInput({
@@ -78,11 +79,13 @@ function ComboboxInput({
   disabled = false,
   showTrigger = true,
   showClear = false,
+  ref,
   ...props
 }: ComboboxInputProps) {
   return (
     <InputGroup className={cn("w-auto", className)}>
       <ComboboxPrimitive.Input
+        ref={ref}
         render={<InputGroupInput disabled={disabled} />}
         {...props}
       />

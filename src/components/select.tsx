@@ -9,7 +9,12 @@ type SelectRootProps = {
   onValueChange?: (value: string) => void
   placeholder?: React.ReactNode
   disabled?: boolean
+  // className + HTML pass-through props forwarded to the <button> trigger.
   className?: string
+  style?: React.CSSProperties
+  title?: string
+  "aria-label"?: string
+  "data-wd-key"?: string
   children: React.ReactNode
 }
 
@@ -67,7 +72,10 @@ function SelectRoot({
   placeholder,
   disabled,
   className,
+  style,
+  title,
   children,
+  ...rest
 }: SelectRootProps) {
   const items = React.useMemo(() => collectItems(children, {}), [children])
 
@@ -90,6 +98,10 @@ function SelectRoot({
           "disabled:pointer-events-none disabled:opacity-50",
           className
         )}
+        style={style}
+        title={title}
+        aria-label={rest["aria-label"]}
+        data-wd-key={rest["data-wd-key"]}
         data-slot="select-trigger"
       >
         <SelectPrimitive.Value>

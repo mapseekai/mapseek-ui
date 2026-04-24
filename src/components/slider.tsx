@@ -54,7 +54,7 @@ function Slider({
     >
       <SliderPrimitive.Control
         className={cn(
-          "relative flex w-full touch-none select-none items-center",
+          "relative flex w-full touch-none items-center select-none",
           orientation === "vertical" ? "h-full w-2 flex-col" : "h-5",
           className
         )}
@@ -80,7 +80,7 @@ function Slider({
             className={cn(
               "block h-3 w-3 rounded-none border border-primary bg-background shadow-sm transition-colors",
               "hover:bg-primary/10",
-              "focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/30",
+              "focus-visible:ring-[3px] focus-visible:ring-ring/20 focus-visible:outline-none",
               "disabled:pointer-events-none disabled:opacity-50"
             )}
           />

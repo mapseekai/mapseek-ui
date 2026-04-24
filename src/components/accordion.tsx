@@ -26,10 +26,10 @@ function AccordionTrigger({
   hideChevron?: boolean
 }) {
   return (
-    <AccordionPrimitive.Header className="flex">
+    <AccordionPrimitive.Header className="m-0 flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          "flex flex-1 items-center justify-between py-2 px-3 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring [&[data-panel-open]>svg]:rotate-180",
+          "flex flex-1 items-center justify-between px-3 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none [&[data-panel-open]>svg]:rotate-180",
           className
         )}
         {...props}

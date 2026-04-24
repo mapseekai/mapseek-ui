@@ -12,6 +12,9 @@ type TooltipProps = {
   disabled?: boolean
   /** Wrapper className applied to the Tooltip.Trigger <span>. */
   className?: string
+  /** Override the tooltip popup className — e.g. to relax the default
+   * `whitespace-nowrap` and widen the tooltip for multi-line content. */
+  popupClassName?: string
   children: React.ReactNode
 }
 
@@ -27,6 +30,7 @@ function Tooltip({
   side = "top",
   disabled = false,
   className,
+  popupClassName,
   children,
 }: TooltipProps) {
   if (disabled) return <>{children}</>
@@ -42,7 +46,8 @@ function Tooltip({
         <TooltipPrimitive.Positioner side={side} sideOffset={6}>
           <TooltipPrimitive.Popup
             className={cn(
-              "z-50 whitespace-nowrap rounded-none border border-border bg-foreground px-2 py-1 text-[11px] font-medium leading-none text-background shadow-[var(--shadow-sm)]"
+              "z-50 rounded-none border border-border bg-foreground px-2 py-1 text-[11px] leading-none font-medium whitespace-nowrap text-background shadow-[var(--shadow-sm)]",
+              popupClassName
             )}
           >
             {content}

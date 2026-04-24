@@ -50,6 +50,10 @@ function Slider({
       step={step}
       disabled={disabled}
       orientation={orientation}
+      className={cn(
+        "relative flex touch-none select-none",
+        orientation === "vertical" ? "h-full w-fit" : "w-full"
+      )}
       {...props}
     >
       <SliderPrimitive.Control

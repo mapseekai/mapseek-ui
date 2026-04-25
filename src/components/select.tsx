@@ -77,7 +77,33 @@ function SelectRoot({
   children,
   ...rest
 }: SelectRootProps) {
-  const items = React.useMemo(() => collectItems(children, {}), [children])
+  // Base UI Select.Root reads `items` and stores it in its internal Zustand
+  // store. If the prop reference changes on every render — even when its
+  // contents are identical — the store keeps publishing updates, which
+  // triggers a "Maximum update depth exceeded" loop. Memoizing on the
+  // children reference alone isn't enough because callers like
+  // ColorPickerOutput re-create the children array via `[...].map(...)` on
+  // every render. Compare the *content* and reuse the previous reference
+  // whenever the resolved {value: label} map is unchanged.
+  const lastItemsRef = React.useRef<Record<string, React.ReactNode>>({})
+  const items = React.useMemo(() => {
+    const next = collectItems(children, {})
+    const prev = lastItemsRef.current
+    const prevKeys = Object.keys(prev)
+    const nextKeys = Object.keys(next)
+    if (prevKeys.length === nextKeys.length) {
+      let same = true
+      for (const k of nextKeys) {
+        if (prev[k] !== next[k]) {
+          same = false
+          break
+        }
+      }
+      if (same) return prev
+    }
+    lastItemsRef.current = next
+    return next
+  }, [children])
 
   return (
     <SelectPrimitive.Root

@@ -55,7 +55,7 @@
     --radius-lg: 0px;
     --radius-xl: 0px;
     --radius-2xl: 0px;
-    --font-sans: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
     --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
 
     /* Elevation — prefer borders over shadows; shadows only for floating-over-map chrome. */

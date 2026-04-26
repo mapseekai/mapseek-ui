@@ -117,7 +117,7 @@ function SelectRoot({
     >
       <SelectPrimitive.Trigger
         className={cn(
-          "inline-flex h-8 cursor-pointer items-center justify-between gap-1.5 border border-border bg-background px-2 text-xs font-medium text-foreground transition-colors outline-none",
+          "inline-flex h-7 w-full cursor-pointer items-center justify-between gap-1.5 border border-border bg-background px-2 text-xs font-medium text-foreground transition-colors outline-none",
           "hover:bg-muted",
           "data-[popup-open]:bg-muted",
           "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/20",

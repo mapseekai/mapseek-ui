@@ -33,7 +33,7 @@ function InputGroup({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="input-group"
       role="group"
       className={cn(
-        "group/input-group relative flex h-8 w-full min-w-0 items-center border border-border bg-background outline-none transition-colors",
+        "group/input-group relative flex h-7 w-full min-w-0 items-center border border-border bg-background transition-colors outline-none",
         "has-disabled:bg-muted/40 has-disabled:opacity-50",
         "has-[[data-slot=input-group-control]:focus-visible]:border-ring",
         "has-[[data-slot=input-group-control]:focus-visible]:ring-[3px]",
@@ -56,14 +56,10 @@ const inputGroupAddonVariants = cva(
   {
     variants: {
       align: {
-        "inline-start":
-          "order-first pl-2 has-[>button]:ml-[-0.25rem]",
-        "inline-end":
-          "order-last pr-2 has-[>button]:mr-[-0.25rem]",
-        "block-start":
-          "order-first w-full justify-start px-2 pt-1.5",
-        "block-end":
-          "order-last w-full justify-start px-2 pb-1.5",
+        "inline-start": "order-first pl-2 has-[>button]:ml-[-0.25rem]",
+        "inline-end": "order-last pr-2 has-[>button]:mr-[-0.25rem]",
+        "block-start": "order-first w-full justify-start px-2 pt-1.5",
+        "block-end": "order-last w-full justify-start px-2 pb-1.5",
       },
     },
     defaultVariants: { align: "inline-start" },
@@ -151,7 +147,7 @@ function InputGroupInput({
     <Input
       data-slot="input-group-control"
       className={cn(
-        "h-full flex-1 border-0 bg-transparent px-2 shadow-none focus-visible:ring-0 focus-visible:border-0",
+        "h-full flex-1 border-0 bg-transparent px-2 shadow-none focus-visible:border-0 focus-visible:ring-0",
         className
       )}
       {...props}
@@ -167,7 +163,7 @@ function InputGroupTextarea({
     <Textarea
       data-slot="input-group-control"
       className={cn(
-        "flex-1 resize-none border-0 bg-transparent px-2 py-1.5 shadow-none focus-visible:ring-0 focus-visible:border-0",
+        "flex-1 resize-none border-0 bg-transparent px-2 py-1.5 shadow-none focus-visible:border-0 focus-visible:ring-0",
         className
       )}
       {...props}

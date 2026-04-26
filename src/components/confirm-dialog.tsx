@@ -1,5 +1,5 @@
 import * as React from "react"
-import { IconAlertTriangle } from "@tabler/icons-react"
+import { IconAlertTriangle, IconTrash } from "@tabler/icons-react"
 import { cn } from "@workspace/ui/lib/utils"
 import { Button } from "./button"
 import { Dialog, DialogBody, DialogContent, DialogFooter } from "./dialog"
@@ -68,15 +68,15 @@ function ConfirmProvider({ children }: { children: React.ReactNode }) {
           <DialogContent
             width={420}
             title={
-              <span className="inline-flex items-center gap-2">
+              <span className="inline-flex items-center gap-2 leading-none">
                 {isDestructive && (
                   <IconAlertTriangle
-                    size={14}
+                    size={16}
                     stroke={1.8}
-                    className="text-destructive"
+                    className="shrink-0 text-destructive"
                   />
                 )}
-                {options.title}
+                <span className="leading-none">{options.title}</span>
               </span>
             }
           >
@@ -94,6 +94,13 @@ function ConfirmProvider({ children }: { children: React.ReactNode }) {
                 size="sm"
                 onClick={() => close(true)}
               >
+                {isDestructive && (
+                  <IconTrash
+                    size={14}
+                    stroke={1.8}
+                    className="-ml-0.5 shrink-0"
+                  />
+                )}
                 {options.confirmText ?? (isDestructive ? "删除" : "确认")}
               </Button>
             </DialogFooter>

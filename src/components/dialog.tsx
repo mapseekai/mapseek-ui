@@ -60,7 +60,7 @@ function DialogContent({
         {(title || !hideClose) && (
           <div className="flex min-h-9 items-center justify-between border-b border-border px-4 py-2">
             {title ? (
-              <DialogPrimitive.Title className="text-sm font-semibold tracking-[-0.01em]">
+              <DialogPrimitive.Title className="m-0 inline-flex items-center text-sm leading-none font-semibold tracking-[-0.01em]">
                 {title}
               </DialogPrimitive.Title>
             ) : (

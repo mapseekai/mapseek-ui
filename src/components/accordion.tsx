@@ -19,14 +19,21 @@ function AccordionItem({
 
 function AccordionTrigger({
   className,
+  headerClassName,
+  headerStyle,
   children,
   hideChevron,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
   hideChevron?: boolean
+  headerClassName?: string
+  headerStyle?: React.CSSProperties
 }) {
   return (
-    <AccordionPrimitive.Header className="m-0 flex">
+    <AccordionPrimitive.Header
+      className={cn("m-0 flex", headerClassName)}
+      style={headerStyle}
+    >
       <AccordionPrimitive.Trigger
         className={cn(
           "flex flex-1 items-center justify-between px-3 py-2 text-sm font-medium transition-colors hover:bg-muted focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none [&[data-panel-open]>svg]:rotate-180",

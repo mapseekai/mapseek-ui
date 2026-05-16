@@ -35,6 +35,10 @@
     --color-ring: var(--ring);
     --color-input: var(--input);
     --color-border: var(--border);
+    --color-border-strong: var(--border-strong);
+    --color-selection-bg: var(--selection-bg);
+    --color-selection-bg-mid: var(--selection-bg-mid);
+    --color-selection-bg-deep: var(--selection-bg-deep);
     --color-destructive: var(--destructive);
     --color-accent-foreground: var(--accent-foreground);
     --color-accent: var(--accent);
@@ -63,6 +67,9 @@
     --shadow-md: 0 2px 4px oklch(0 0 0 / 0.04), 0 1px 0 oklch(0 0 0 / 0.04);
     --shadow-lg: 0 8px 24px oklch(0 0 0 / 0.08), 0 1px 0 oklch(0 0 0 / 0.04);
     --shadow-inset: inset 0 1px 0 oklch(1 0 0 / 0.06);
+    /* Editor: subtle press affordance + chrome floating over the live map. */
+    --shadow-xs: 0 1px 0 oklch(0 0 0 / 0.03);
+    --shadow-map-float: 0 4px 12px oklch(0 0 0 / 0.08), 0 1px 0 oklch(0 0 0 / 0.05);
 
     /* Motion tokens per DESIGN.md §3.6. */
     --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -105,6 +112,12 @@
     --cat-5: oklch(0.55 0.22 300);
     --cat-6: oklch(0.65 0.15 200);
     --radius: 0rem;
+    /* Editor selection tints — brand green re-enters here per DESIGN.md §3.1.
+       The only chromatic surfaces in otherwise true-neutral chrome. */
+    --selection-bg: oklch(0.972 0.02 149);
+    --selection-bg-mid: oklch(0.958 0.032 149);
+    --selection-bg-deep: oklch(0.944 0.044 149);
+    --border-strong: oklch(0.878 0.004 48.717);
     --sidebar: oklch(0.985 0.001 106.423);
     --sidebar-foreground: oklch(0.147 0.004 49.25);
     --sidebar-primary: oklch(0.627 0.194 149.214);
@@ -141,6 +154,10 @@
     --chart-3: oklch(0.627 0.194 149.214);
     --chart-4: oklch(0.527 0.154 150.069);
     --chart-5: oklch(0.448 0.119 151.328);
+    --selection-bg: oklch(0.27 0.03 149);
+    --selection-bg-mid: oklch(0.31 0.045 149);
+    --selection-bg-deep: oklch(0.35 0.06 149);
+    --border-strong: oklch(1 0 0 / 18%);
     --sidebar: oklch(0.18 0.005 56);
     --sidebar-foreground: oklch(0.985 0.001 106.423);
     --sidebar-primary: oklch(0.723 0.219 149.579);

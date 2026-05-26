@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Combobox as ComboboxPrimitive } from "@base-ui-components/react/combobox"
+import { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox"
 import { IconChevronDown, IconCheck, IconX } from "@tabler/icons-react"
 
 import { cn } from "@workspace/ui/lib/utils"
@@ -11,7 +11,7 @@ import {
 } from "@workspace/ui/components/input-group"
 
 /**
- * Combobox compound built on @base-ui-components/react. Renders an
+ * Combobox compound built on @base-ui/react. Renders an
  * autocomplete-capable text input with a popover list. Compose:
  *
  *   <Combobox>

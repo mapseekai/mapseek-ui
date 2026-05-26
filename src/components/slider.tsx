@@ -1,9 +1,9 @@
 import * as React from "react"
-import { Slider as SliderPrimitive } from "@base-ui-components/react/slider"
+import { Slider as SliderPrimitive } from "@base-ui/react/slider"
 import { cn } from "@workspace/ui/lib/utils"
 
 /**
- * Slider built on @base-ui-components/react. Single export wrapping the
+ * Slider built on @base-ui/react. Single export wrapping the
  * full base-ui compound (Root / Control / Track / Indicator / Thumb) so
  * callers get a Radix-shadcn-compatible API:
  *
@@ -11,7 +11,7 @@ import { cn } from "@workspace/ui/lib/utils"
  *
  * Internal nesting follows base-ui's required compound structure. Callers
  * who need finer control (e.g. multi-handle ranges) can compose with the
- * raw `SliderPrimitive` re-exported from "@base-ui-components/react/slider".
+ * raw `SliderPrimitive` re-exported from "@base-ui/react/slider".
  */
 
 type SliderRootProps = React.ComponentProps<typeof SliderPrimitive.Root>

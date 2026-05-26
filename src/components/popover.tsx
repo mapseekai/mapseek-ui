@@ -1,9 +1,9 @@
 import * as React from "react"
-import { Popover as PopoverPrimitive } from "@base-ui-components/react/popover"
+import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
 import { cn } from "@workspace/ui/lib/utils"
 
 /**
- * Popover built on @base-ui-components/react. Mirrors the dropdown-menu /
+ * Popover built on @base-ui/react. Mirrors the dropdown-menu /
  * dialog stylistic choices in this package: square corners, border-first
  * elevation, fade-in/out for open/close (no slide animation to keep things
  * snappy in dense panels).

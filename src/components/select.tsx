@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Select as SelectPrimitive } from "@base-ui-components/react/select"
+import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { IconChevronDown, IconCheck } from "@tabler/icons-react"
 import { cn } from "@workspace/ui/lib/utils"
 

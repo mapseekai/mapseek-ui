@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Accordion as AccordionPrimitive } from "@base-ui-components/react/accordion"
+import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion"
 import { IconChevronDown } from "@tabler/icons-react"
 import { cn } from "@workspace/ui/lib/utils"
 

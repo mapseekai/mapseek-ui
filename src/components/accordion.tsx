@@ -68,7 +68,7 @@ function AccordionContent({
       style={{ height: "var(--accordion-panel-height)" }}
       {...props}
     >
-      <div className={cn("pb-2", className)}>{children}</div>
+      <div className={cn("px-3 pb-2", className)}>{children}</div>
     </AccordionPrimitive.Panel>
   )
 }

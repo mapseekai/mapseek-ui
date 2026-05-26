@@ -1,27 +1,16 @@
 import * as React from "react"
+
 import { cn } from "@workspace/ui/lib/utils"
 
-type TableProps = React.ComponentProps<"table"> & {
-  /**
-   * Wrapper styling. Set `containerClassName="border-0"` (or equivalent)
-   * when the table lives inside an already-bordered container like
-   * Card — otherwise the two borders stack and render as a heavier
-   * line. Default keeps the standalone-table appearance.
-   */
-  containerClassName?: string
-}
-
-function Table({ className, containerClassName, ...props }: TableProps) {
+function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div
-      className={cn("w-full border border-border bg-card", containerClassName)}
+      data-slot="table-container"
+      className="relative w-full overflow-x-auto"
     >
       <table
         data-slot="table"
-        className={cn(
-          "w-full caption-bottom border-collapse text-xs",
-          className
-        )}
+        className={cn("w-full caption-bottom text-xs", className)}
         {...props}
       />
     </div>
@@ -32,7 +21,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("bg-muted", className)}
+      className={cn("[&_tr]:border-b", className)}
       {...props}
     />
   )
@@ -40,7 +29,24 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
 
 function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
   return (
-    <tbody data-slot="table-body" className={cn("", className)} {...props} />
+    <tbody
+      data-slot="table-body"
+      className={cn("[&_tr:last-child]:border-0", className)}
+      {...props}
+    />
+  )
+}
+
+function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
+  return (
+    <tfoot
+      data-slot="table-footer"
+      className={cn(
+        "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
+        className
+      )}
+      {...props}
+    />
   )
 }
 
@@ -49,8 +55,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={cn(
-        "border-b border-border transition-colors last:border-b-0 hover:bg-muted/50",
-        "data-[state=selected]:bg-primary/8 data-[state=selected]:hover:bg-primary/12",
+        "border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted",
         className
       )}
       {...props}
@@ -63,8 +68,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "sticky top-0 z-[1] h-10 bg-muted px-2 text-left text-[11px] font-medium tracking-[0.04em] text-muted-foreground uppercase",
-        "first:pl-3 last:pr-3",
+        "h-10 px-2 text-start align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pe-0",
         className
       )}
       {...props}
@@ -76,20 +80,23 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
   return (
     <td
       data-slot="table-cell"
-      className={cn("h-10 px-2 align-middle first:pl-3 last:pr-3", className)}
+      className={cn(
+        "p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0",
+        className
+      )}
       {...props}
     />
   )
 }
 
-function TableFooter({ className, ...props }: React.ComponentProps<"div">) {
+function TableCaption({
+  className,
+  ...props
+}: React.ComponentProps<"caption">) {
   return (
-    <div
-      data-slot="table-footer"
-      className={cn(
-        "flex items-center justify-between bg-card px-3 py-2",
-        className
-      )}
+    <caption
+      data-slot="table-caption"
+      className={cn("mt-4 text-xs text-muted-foreground", className)}
       {...props}
     />
   )
@@ -99,8 +106,9 @@ export {
   Table,
   TableHeader,
   TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
   TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
 }

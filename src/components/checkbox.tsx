@@ -1,76 +1,28 @@
-import * as React from "react"
-import { IconCheck } from "@tabler/icons-react"
+"use client"
+
+import { Checkbox as CheckboxPrimitive } from "@base-ui/react/checkbox"
+
 import { cn } from "@workspace/ui/lib/utils"
+import { IconCheck } from "@tabler/icons-react"
 
-type CheckboxProps = {
-  checked?: boolean
-  defaultChecked?: boolean
-  onCheckedChange?: (checked: boolean) => void
-  disabled?: boolean
-  className?: string
-  id?: string
-  name?: string
-  style?: React.CSSProperties
-  "aria-label"?: string
-  "aria-labelledby"?: string
-  "data-wd-key"?: string
-}
-
-/**
- * Plain controlled/uncontrolled checkbox built on a real <button> with
- * role=checkbox. Avoids the Base UI Checkbox.Root + hidden <input>
- * indirection — that pattern dropped change events under React's
- * controlled-input value-tracker, leaving 抗锯齿 / 聚合 toggles
- * silently no-op'd.
- */
-function Checkbox({
-  className,
-  checked: controlledChecked,
-  defaultChecked,
-  onCheckedChange,
-  disabled,
-  ...props
-}: CheckboxProps) {
-  const isControlled = controlledChecked !== undefined
-  const [internal, setInternal] = React.useState<boolean>(
-    isControlled ? !!controlledChecked : !!defaultChecked
-  )
-  const checked = isControlled ? !!controlledChecked : internal
-
-  const handleClick = () => {
-    if (disabled) return
-    const next = !checked
-    if (!isControlled) setInternal(next)
-    onCheckedChange?.(next)
-  }
-
+function Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {
   return (
-    <button
-      type="button"
-      role="checkbox"
-      aria-checked={checked}
-      aria-disabled={disabled || undefined}
+    <CheckboxPrimitive.Root
       data-slot="checkbox"
-      data-state={checked ? "checked" : "unchecked"}
-      disabled={disabled}
-      onClick={handleClick}
       className={cn(
-        "peer relative inline-flex h-3.5 w-3.5 shrink-0 cursor-pointer items-center justify-center border border-border bg-background transition-colors",
-        "data-[state=checked]:border-primary data-[state=checked]:bg-primary",
-        "disabled:pointer-events-none disabled:opacity-50",
-        "focus-visible:ring-[3px] focus-visible:ring-ring/30 focus-visible:outline-none",
+        "peer relative flex size-4 shrink-0 items-center justify-center rounded-none border border-input transition-colors outline-none group-has-disabled/field:opacity-50 after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 aria-invalid:aria-checked:border-primary dark:bg-input/30 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:border-primary data-checked:bg-primary data-checked:text-primary-foreground dark:data-checked:bg-primary",
         className
       )}
       {...props}
     >
-      {checked && (
+      <CheckboxPrimitive.Indicator
+        data-slot="checkbox-indicator"
+        className="grid place-content-center text-current transition-none [&>svg]:size-3.5"
+      >
         <IconCheck
-          size={10}
-          stroke={3}
-          className="text-primary-foreground"
         />
-      )}
-    </button>
+      </CheckboxPrimitive.Indicator>
+    </CheckboxPrimitive.Root>
   )
 }
 

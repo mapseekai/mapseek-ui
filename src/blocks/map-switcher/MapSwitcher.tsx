@@ -132,9 +132,7 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
         <div
           className={cn(
             "w-[76px] h-[52px] overflow-hidden flex items-center justify-center",
-            isActive
-              ? "shadow-[inset_0_0_0_2px_var(--primary)]"
-              : "shadow-[inset_0_0_0_1px_var(--border)]",
+            isActive && "shadow-[inset_0_0_0_2px_var(--primary)]",
           )}
         >
           {image ? (
@@ -192,7 +190,7 @@ function MapSwitcherTrigger() {
       onClick={toggleOpen}
       aria-expanded={open}
       aria-haspopup="listbox"
-      className="w-16 flex flex-col border border-border bg-card shadow-[var(--shadow-map-float)] cursor-pointer p-0"
+      className="w-16 flex flex-col bg-card shadow-[var(--shadow-map-float)] cursor-pointer p-0"
       title={item?.label}
     >
       {/* Top area: thumbnail or color block */}
@@ -234,7 +232,7 @@ function MapSwitcherPanel({ className, children }: { className?: string; childre
       role="listbox"
       hidden={!open}
       className={cn(
-        "absolute bottom-[calc(100%+4px)] right-0 z-10 border border-border bg-card shadow-[var(--shadow-map-float)]",
+        "absolute bottom-[calc(100%+4px)] right-0 z-10 bg-card shadow-[var(--shadow-map-float)]",
         mode === "image" ? "grid w-[174px] grid-cols-2 gap-1.5 p-2" : "flex flex-col p-1 min-w-[130px]",
         !open && "hidden",
         className,

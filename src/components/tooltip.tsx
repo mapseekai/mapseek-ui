@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Tooltip as TooltipPrimitive } from "@base-ui-components/react/tooltip"
+import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
 import { cn } from "@workspace/ui/lib/utils"
 
 type TooltipSide = "top" | "bottom" | "left" | "right"
@@ -46,7 +46,12 @@ function Tooltip({
         <TooltipPrimitive.Positioner side={side} sideOffset={6}>
           <TooltipPrimitive.Popup
             className={cn(
-              "z-50 rounded-none border border-border bg-foreground px-2 py-1 text-[11px] leading-none font-medium whitespace-nowrap text-background shadow-[var(--shadow-sm)]",
+              // Match the rest of the floating chrome (popover / select / dropdown):
+              // 1px hairline on a popover surface, square corners, subtle float
+              // shadow. Drops the inverted bg-foreground / text-background pair
+              // that read as a harsh black block in light mode.
+              "z-50 rounded-none border border-border bg-popover px-2 py-1 text-[11px] font-medium leading-none whitespace-nowrap text-popover-foreground shadow-[var(--shadow-map-float)]",
+              "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
               popupClassName
             )}
           >

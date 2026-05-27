@@ -125,7 +125,7 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
         role="option"
         aria-selected={isActive}
         onClick={() => onSelect(id)}
-        className="flex flex-col items-center gap-0.5 cursor-pointer bg-transparent p-0 border-0"
+        className="flex w-[76px] flex-col items-center gap-0.5 cursor-pointer bg-transparent p-0 border-0"
         title={label}
       >
         {/* Thumbnail: 76×52px */}
@@ -235,7 +235,7 @@ function MapSwitcherPanel({ className, children }: { className?: string; childre
       hidden={!open}
       className={cn(
         "absolute bottom-[calc(100%+4px)] right-0 z-10 border border-border bg-card shadow-[var(--shadow-map-float)]",
-        mode === "image" ? "grid grid-cols-2 gap-1.5 p-2" : "flex flex-col p-1 min-w-[130px]",
+        mode === "image" ? "grid w-[174px] grid-cols-2 gap-1.5 p-2" : "flex flex-col p-1 min-w-[130px]",
         !open && "hidden",
         className,
       )}

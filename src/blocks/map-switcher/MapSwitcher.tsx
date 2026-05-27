@@ -71,11 +71,6 @@ function MapSwitcherRoot({
     onOpenChange?.(next)
   }, [open, isOpenControlled, onOpenChange])
 
-  const close = React.useCallback(() => {
-    if (!isOpenControlled) setOpenUncontrolled(false)
-    onOpenChange?.(false)
-  }, [isOpenControlled, onOpenChange])
-
   const onSelect = React.useCallback(
     (id: string) => {
       if (!isValueControlled) setSelectedUncontrolled(id)
@@ -97,8 +92,8 @@ function MapSwitcherRoot({
   const getItem = React.useCallback((id: string) => itemsRef.current.get(id), [])
 
   const ctx = React.useMemo<MapSwitcherContextValue>(
-    () => ({ selectedId, onSelect, open, toggleOpen, close, mode, registerItem, unregisterItem, getItem }),
-    [selectedId, onSelect, open, toggleOpen, close, mode, registerItem, unregisterItem, getItem],
+    () => ({ selectedId, onSelect, open, toggleOpen, mode, registerItem, unregisterItem, getItem }),
+    [selectedId, onSelect, open, toggleOpen, mode, registerItem, unregisterItem, getItem],
   )
 
   return (
@@ -127,15 +122,21 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
     return (
       <button
         type="button"
+        role="option"
+        aria-selected={isActive}
         onClick={() => onSelect(id)}
-        className={cn(
-          "flex flex-col items-center gap-0.5 cursor-pointer bg-transparent p-0 border-0",
-          isActive ? "outline outline-2 outline-primary" : "outline outline-1 outline-border",
-        )}
+        className="flex flex-col items-center gap-0.5 cursor-pointer bg-transparent p-0 border-0"
         title={label}
       >
         {/* Thumbnail: 76×52px */}
-        <div className="w-[76px] h-[52px] overflow-hidden flex items-center justify-center">
+        <div
+          className={cn(
+            "w-[76px] h-[52px] overflow-hidden flex items-center justify-center",
+            isActive
+              ? "shadow-[inset_0_0_0_2px_var(--primary)]"
+              : "shadow-[inset_0_0_0_1px_var(--border)]",
+          )}
+        >
           {image ? (
             <img src={image} alt={label} className="w-full h-full object-cover" />
           ) : (
@@ -157,6 +158,8 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
   return (
     <button
       type="button"
+      role="option"
+      aria-selected={isActive}
       onClick={() => onSelect(id)}
       className={cn(
         "flex items-center gap-2 w-full px-2 py-1.5 text-sm cursor-pointer bg-transparent border-0 border-l-2 text-left",
@@ -187,6 +190,8 @@ function MapSwitcherTrigger() {
     <button
       type="button"
       onClick={toggleOpen}
+      aria-expanded={open}
+      aria-haspopup="listbox"
       className="w-16 flex flex-col border border-border bg-card shadow-[var(--shadow-map-float)] cursor-pointer p-0"
       title={item?.label}
     >
@@ -220,16 +225,19 @@ function MapSwitcherTrigger() {
 // Panel
 // ---------------------------------------------------------------------------
 
-function MapSwitcherPanel({ children }: { children: React.ReactNode }) {
+function MapSwitcherPanel({ className, children }: { className?: string; children: React.ReactNode }) {
   const { open, mode } = useMapSwitcherContext()
-
-  if (!open) return null
 
   return (
     <div
+      data-slot="map-switcher-panel"
+      role="listbox"
+      hidden={!open}
       className={cn(
         "absolute bottom-[calc(100%+4px)] right-0 z-10 border border-border bg-card shadow-[var(--shadow-map-float)]",
         mode === "image" ? "grid grid-cols-2 gap-1.5 p-2" : "flex flex-col p-1 min-w-[130px]",
+        !open && "hidden",
+        className,
       )}
     >
       {children}

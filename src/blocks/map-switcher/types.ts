@@ -5,7 +5,7 @@ export interface MapSwitcherItemData {
   label: string
   /** 缩略图 URL — Trigger 和 image 模式面板共用 */
   image?: string
-  /** 无 image 时的 fallback 颜色（CSS 字符串，如 "var(--cat-1)" 或 "#5c8fa8"） */
+  /** 无 image 时的 fallback 颜色（CSS 变量字符串，如 "var(--cat-1)" 或 "var(--muted)"） */
   color?: string
 }
 
@@ -27,7 +27,6 @@ export interface MapSwitcherContextValue {
   onSelect: (id: string) => void
   open: boolean
   toggleOpen: () => void
-  close: () => void
   mode: "button" | "image"
   registerItem: (data: MapSwitcherItemData) => void
   unregisterItem: (id: string) => void

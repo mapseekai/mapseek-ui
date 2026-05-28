@@ -1,3 +1,5 @@
 export { attributeColumns, isGeometryColumn } from "./columns"
 export { useStaticRowSource } from "./use-static-row-source"
+export { SchemaTable } from "./schema-table"
 export type { ColumnDef, RowSource } from "./types"
+export type { SchemaTableProps } from "./schema-table"

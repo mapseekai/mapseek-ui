@@ -5,8 +5,9 @@ import { cn } from "../../lib/utils"
 import { useStaticRowSource } from "./use-static-row-source"
 import { VirtualTable } from "./virtual-table"
 import type { ColumnDef } from "./types"
+import { attributeColumns } from "./columns"
 
-type SchemaRow = { name: string; rawType: string }
+type SchemaRow = ColumnDef
 
 const COLUMNS: ColumnDef[] = [
   { name: "name", rawType: "string" },
@@ -35,10 +36,7 @@ export function SchemaTable({
   const [query, setQuery] = useState("")
 
   const items = useMemo<SchemaRow[]>(
-    () =>
-      Object.entries(attributes)
-        .filter(([_, type]) => !type.toLowerCase().includes("geometry"))
-        .map(([name, rawType]) => ({ name, rawType })),
+    () => attributeColumns(attributes),
     [attributes],
   )
 

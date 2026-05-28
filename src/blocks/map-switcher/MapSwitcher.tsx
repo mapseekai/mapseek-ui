@@ -115,6 +115,11 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
 
   React.useEffect(() => {
     registerItem({ id, label, image, color })
+    // 提前预加载缩略图，避免 Trigger 切换时图片还未就绪（button 模式无 <img> DOM）
+    if (image) {
+      const preload = new window.Image()
+      preload.src = image
+    }
     return () => unregisterItem(id)
   }, [id, label, image, color, registerItem, unregisterItem])
 

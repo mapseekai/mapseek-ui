@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
+    "@tanstack/react-virtual": "^3.13.24",
     "@fontsource-variable/geist": "^5.2.8",
     "@fontsource-variable/geist-mono": "^5.2.7",
     "@tabler/icons-react": "^3.41.1",
@@ -45,6 +46,7 @@
     "./lib/*": "./src/lib/*.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
-    "./blocks/*": "./src/blocks/*/index.ts"
+    "./blocks/*": "./src/blocks/*/index.ts",
+    "./blocks/attr-table/virtual-table": "./src/blocks/attr-table/virtual-table.tsx"
   }
 }

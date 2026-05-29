@@ -15,6 +15,11 @@ type TooltipProps = {
   /** Override the tooltip popup className — e.g. to relax the default
    * `whitespace-nowrap` and widen the tooltip for multi-line content. */
   popupClassName?: string
+  /** When true, children must be a single ReactElement and Tooltip will
+   *  compose into it via base-ui's `render` prop instead of wrapping it
+   *  in a <span>. Use this to chain triggers (e.g. wrap a PopoverTrigger
+   *  so both Tooltip and Popover anchor to the same underlying button). */
+  asChild?: boolean
   children: React.ReactNode
 }
 
@@ -31,17 +36,19 @@ function Tooltip({
   disabled = false,
   className,
   popupClassName,
+  asChild = false,
   children,
 }: TooltipProps) {
   if (disabled) return <>{children}</>
 
+  const triggerRender =
+    asChild && React.isValidElement(children)
+      ? (children as React.ReactElement)
+      : <span className={cn("inline-flex", className)}>{children}</span>
+
   return (
     <TooltipPrimitive.Root>
-      <TooltipPrimitive.Trigger
-        render={
-          <span className={cn("inline-flex", className)}>{children}</span>
-        }
-      />
+      <TooltipPrimitive.Trigger render={triggerRender} />
       <TooltipPrimitive.Portal>
         <TooltipPrimitive.Positioner side={side} sideOffset={6}>
           <TooltipPrimitive.Popup

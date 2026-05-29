@@ -100,4 +100,5 @@ export {
   CardAction,
   CardDescription,
   CardContent,
+  CardContent as CardBody,
 }

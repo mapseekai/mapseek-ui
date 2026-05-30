@@ -1,4 +1,5 @@
 import { cn } from "../../lib/utils"
+import { JsonViewer } from "../../components/json-viewer"
 
 export interface GeoJSONViewProps {
   /** Pre-formatted JSON (see `stringifyGeoJSON`); null/empty shows `emptyLabel`. */
@@ -8,12 +9,59 @@ export interface GeoJSONViewProps {
 }
 
 /**
- * Read-only, line-numbered JSON viewer. Pure display — copy/download and
- * size counters live in the consumer's chrome, built from the same
- * `stringifyGeoJSON` output to avoid stringifying twice.
+ * Read-only JSON viewer. Parses the pre-formatted `json` and renders it as an
+ * interactive collapsible tree (`JsonViewer`). Falls back to a line-numbered
+ * `<pre>` when `json` is empty, fails to parse, or decodes to a primitive.
+ * Pure display — copy/download and size counters live in the consumer's chrome,
+ * built from the same `stringifyGeoJSON` output to avoid stringifying twice.
  */
 export function GeoJSONView({ json, emptyLabel, className }: GeoJSONViewProps) {
-  const lines = json ? json.split("\n") : null
+  if (!json) {
+    return <PreView lines={null} emptyLabel={emptyLabel} className={className} />
+  }
+
+  let data: unknown
+  try {
+    data = JSON.parse(json)
+  } catch {
+    return (
+      <PreView
+        lines={json.split("\n")}
+        emptyLabel={emptyLabel}
+        className={className}
+      />
+    )
+  }
+
+  if (typeof data !== "object" || data === null) {
+    return (
+      <PreView
+        lines={json.split("\n")}
+        emptyLabel={emptyLabel}
+        className={className}
+      />
+    )
+  }
+
+  return (
+    <JsonViewer
+      data={data as Record<string, unknown>}
+      showLineNumbers
+      className={cn("overflow-auto", className)}
+    />
+  )
+}
+
+/** Line-numbered read-only fallback (empty / invalid-JSON / primitive). */
+function PreView({
+  lines,
+  emptyLabel,
+  className,
+}: {
+  lines: string[] | null
+  emptyLabel: string
+  className?: string
+}) {
   return (
     <pre
       className={cn(

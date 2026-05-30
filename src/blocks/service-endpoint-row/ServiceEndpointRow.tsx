@@ -26,17 +26,32 @@ export function ServiceEndpointRow({
         <div className="flex min-w-0 items-center gap-2">
           {icon}
           <div className="flex min-w-0 flex-col">
-            <span className="text-xs font-medium">{title}</span>
-            <span className="text-[11px] text-muted-foreground">{subtitle}</span>
+            <span className="text-sm font-medium">{title}</span>
+            <span className="mono text-[11px] uppercase text-muted-foreground">
+              {subtitle}
+            </span>
           </div>
         </div>
-        <span className="mono shrink-0 border border-primary/25 bg-primary/10 px-1.5 py-0.5 text-[11px] text-primary">
+        <span className="mono shrink-0 border border-info/25 bg-info/10 px-1.5 py-0.5 text-[11px] text-info">
           {method}
         </span>
       </div>
       <div className="flex items-center gap-1.5">
-        <code className="mono min-w-0 flex-1 overflow-x-auto whitespace-nowrap bg-muted/40 px-2 py-1.5 text-[11px] text-muted-foreground">
-          {url}
+        <code className="mono min-w-0 flex-1 overflow-x-auto whitespace-nowrap border border-border bg-muted/40 px-2 py-1.5 text-[11px]">
+          {url
+            .split(/(\{[^}]+\})/g)
+            .filter((part) => part.length > 0)
+            .map((part, i) =>
+              /^\{.+\}$/.test(part) ? (
+                <span key={i} className="font-medium text-warning">
+                  {part}
+                </span>
+              ) : (
+                <span key={i} className="text-muted-foreground">
+                  {part}
+                </span>
+              ),
+            )}
         </code>
         <IconButton
           size="sm"

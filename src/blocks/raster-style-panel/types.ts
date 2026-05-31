@@ -71,6 +71,10 @@ export interface RasterStat {
 
 export interface RasterStyleLabels {
   band: string
+  renderMode?: string
+  renderSingle?: string
+  renderRgb?: string
+  /** Kept for older callers; fixed band choices are now generated from `bandCount`. */
   bandAppend: string
   colormap: string
   customColormap: string
@@ -103,6 +107,8 @@ export interface RasterStyleLabels {
 export interface RasterStylePanelProps {
   value: RasterStyleValue
   onChange: (next: RasterStyleValue) => void
+  /** Total bands available in the raster. Enables single-band/RGB choices. */
+  bandCount?: number
   /** Band/size/min/max readout shown above the form. Omit to hide. */
   stats?: RasterStat[]
   labels: RasterStyleLabels

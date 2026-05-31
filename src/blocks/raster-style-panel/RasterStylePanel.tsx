@@ -5,12 +5,12 @@ import {
   IconHelpCircle,
   IconInfoCircle,
   IconMathAvg,
-  IconPlus,
   IconVectorSpline,
   IconWaveSine,
   type Icon as TablerIcon,
 } from "@tabler/icons-react"
 import { Input } from "../../components/input"
+import { Select } from "../../components/select"
 import { Tooltip } from "../../components/tooltip"
 import { cn } from "../../lib/utils"
 import { ColormapPicker } from "./ColormapPicker"
@@ -35,6 +35,8 @@ const RESAMPLINGS: { value: Resampling; icon: TablerIcon }[] = [
 
 const TILE_SIZES: TileSize[] = [64, 128, 256, 512, 1024]
 const CHANNELS = ["R", "G", "B"] as const
+type RenderMode = "single" | "rgb"
+type Channel = (typeof CHANNELS)[number]
 const CHANNEL_COLOR: Record<string, string> = {
   R: "text-destructive",
   G: "text-primary",
@@ -87,6 +89,15 @@ function RasterStatGrid({ stats }: { stats: RasterStat[] }) {
   )
 }
 
+function clampBandIndex(idx: number | undefined, max: number) {
+  if (!Number.isInteger(idx) || idx == null || idx < 1) return 1
+  return Math.min(idx, max)
+}
+
+function range(count: number) {
+  return Array.from({ length: count }, (_, i) => i + 1)
+}
+
 /**
  * Controlled raster styling form (TiTiler params): band/bidx, colormap,
  * stretch, NoData, resampling, tile size, and color_formula. Single-band
@@ -96,6 +107,7 @@ function RasterStatGrid({ stats }: { stats: RasterStat[] }) {
 export function RasterStylePanel({
   value,
   onChange,
+  bandCount,
   stats,
   labels,
   autoRange,
@@ -103,6 +115,18 @@ export function RasterStylePanel({
 }: RasterStylePanelProps) {
   const set = (patch: Partial<typeof value>) => onChange({ ...value, ...patch })
   const help = labels.help ?? {}
+  const maxBand = Math.max(
+    1,
+    Math.floor(
+      bandCount ??
+        Math.max(1, ...value.bands.map((band) => band.idx).filter(Number.isFinite))
+    )
+  )
+  const bandOptions = range(maxBand)
+  const bandOptionLabel = (idx: number) => `${labels.band} ${idx}`
+  const supportsRgb = maxBand > 1
+  const renderMode: RenderMode = value.multiband && supportsRgb ? "rgb" : "single"
+  const isRgb = renderMode === "rgb"
   const nodataDescriptions = {
     ...DEFAULT_NODATA_DESCRIPTIONS,
     ...labels.nodataDescriptions,
@@ -110,9 +134,62 @@ export function RasterStylePanel({
   const nodataRecommendations =
     labels.nodataRecommendations ?? DEFAULT_NODATA_RECOMMENDATIONS
 
-  const appendBand = () => {
-    const nextIdx = (value.bands[value.bands.length - 1]?.idx ?? 0) + 1
-    set({ bands: [...value.bands, { idx: nextIdx }] })
+  const setRenderMode = (mode: RenderMode) => {
+    if (mode === renderMode) return
+    if (mode === "rgb") {
+      const bands = CHANNELS.map((channel, i) => ({
+        idx: clampBandIndex(value.bands[i]?.idx ?? i + 1, maxBand),
+        channel,
+      }))
+      const firstRange =
+        value.stretch.mode === "custom"
+          ? value.stretch.rescale ?? value.stretch.rescaleBands?.[0]
+          : undefined
+      set({
+        multiband: true,
+        bands,
+        stretch:
+          value.stretch.mode === "custom" && firstRange
+            ? {
+                ...value.stretch,
+                rescaleBands: value.stretch.rescaleBands ?? bands.map(() => firstRange),
+              }
+            : value.stretch,
+      })
+      return
+    }
+
+    const first = value.bands[0]
+    const firstRange =
+      value.stretch.mode === "custom"
+        ? value.stretch.rescale ?? value.stretch.rescaleBands?.[0]
+        : undefined
+    set({
+      multiband: false,
+      bands: [{ idx: clampBandIndex(first?.idx, maxBand), label: first?.label }],
+      stretch:
+        value.stretch.mode === "custom" && firstRange
+          ? { ...value.stretch, rescale: firstRange }
+          : value.stretch,
+    })
+  }
+
+  const setSingleBand = (idx: number) => {
+    const first = value.bands[0]
+    set({
+      multiband: false,
+      bands: [{ idx, label: first?.label }],
+    })
+  }
+
+  const setRgbBand = (channel: Channel, idx: number) => {
+    const bands = CHANNELS.map((ch, i) => ({
+      idx: clampBandIndex(value.bands[i]?.idx ?? i + 1, maxBand),
+      channel: ch,
+    }))
+    const target = bands.find((band) => band.channel === channel)
+    if (target) target.idx = idx
+    set({ multiband: true, bands })
   }
 
   return (
@@ -120,36 +197,69 @@ export function RasterStylePanel({
       {stats && stats.length > 0 && <RasterStatGrid stats={stats} />}
 
       <div className="grid grid-cols-[56px_1fr] gap-x-3 gap-y-2.5">
+        {/* Render mode */}
+        {supportsRgb && (
+          <>
+            <ParamLabel text={labels.renderMode ?? "Render"} />
+            <Segmented<RenderMode>
+              options={[
+                { value: "single", label: labels.renderSingle ?? "Single" },
+                { value: "rgb", label: labels.renderRgb ?? "RGB" },
+              ]}
+              value={renderMode}
+              onChange={setRenderMode}
+              buttonClassName="font-sans text-[11px]"
+            />
+          </>
+        )}
+
         {/* Band / bidx */}
         <ParamLabel text={labels.band} help={help.band} />
-        <div className="flex flex-wrap items-center gap-1.5">
-          {value.bands.map((b, i) => {
-            const ch = value.multiband ? CHANNELS[i] : undefined
-            return (
-              <span
-                key={`${b.idx}-${i}`}
-                className="inline-flex h-[22px] items-center gap-1 border border-primary/25 bg-primary/10 px-2 font-mono text-[11px] text-primary"
-              >
-                {ch && (
-                  <span className={cn("font-semibold", CHANNEL_COLOR[ch])}>{ch}</span>
-                )}
-                <span className="font-semibold">{b.idx}</span>
-                {b.label && <span className="opacity-70">{b.label}</span>}
-              </span>
-            )
-          })}
-          <button
-            type="button"
-            onClick={appendBand}
-            className="inline-flex h-[22px] cursor-pointer items-center gap-1 border border-dashed border-border px-2 font-mono text-[10px] uppercase tracking-[0.04em] text-muted-foreground hover:border-primary hover:text-primary"
+        {renderMode === "rgb" ? (
+          <div className="flex flex-col gap-1.5">
+            {CHANNELS.map((channel, i) => (
+              <div key={channel} className="grid grid-cols-[18px_1fr] items-center gap-1.5">
+                <span
+                  className={cn(
+                    "font-mono text-[11px] font-semibold",
+                    CHANNEL_COLOR[channel]
+                  )}
+                >
+                  {channel}
+                </span>
+                <Select
+                  aria-label={`${channel} ${labels.band}`}
+                  className="h-[26px] rounded-none px-2 font-mono text-[11px]"
+                  value={String(clampBandIndex(value.bands[i]?.idx ?? i + 1, maxBand))}
+                  onValueChange={(idx) => setRgbBand(channel, Number(idx))}
+                >
+                  {bandOptions.map((idx) => (
+                    <Select.Item key={idx} value={String(idx)}>
+                      {bandOptionLabel(idx)}
+                    </Select.Item>
+                  ))}
+                </Select>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Select
+            aria-label={labels.band}
+            className="h-[26px] rounded-none px-2 font-mono text-[11px]"
+            value={String(clampBandIndex(value.bands[0]?.idx, maxBand))}
+            onValueChange={(idx) => setSingleBand(Number(idx))}
           >
-            <IconPlus size={11} stroke={1.75} /> {labels.bandAppend}
-          </button>
-        </div>
+            {bandOptions.map((idx) => (
+              <Select.Item key={idx} value={String(idx)}>
+                {bandOptionLabel(idx)}
+              </Select.Item>
+            ))}
+          </Select>
+        )}
 
         {/* Colormap */}
         <ParamLabel text={labels.colormap} help={help.colormap} />
-        {value.multiband ? (
+        {isRgb ? (
           <span className="inline-flex items-center gap-1.5 self-center text-[11px] leading-[1.4] text-muted-foreground">
             <IconInfoCircle size={13} stroke={1.75} />
             {labels.multibandNote}
@@ -167,8 +277,8 @@ export function RasterStylePanel({
         <StretchControl
           value={value.stretch}
           onChange={(stretch) => set({ stretch })}
-          bands={value.multiband ? value.bands : undefined}
-          autoRange={value.multiband ? undefined : autoRange}
+          bands={isRgb ? value.bands : undefined}
+          autoRange={isRgb ? undefined : autoRange}
           labels={{
             modes: labels.stretchModes,
             minmaxHint: labels.minmaxHint,
@@ -254,7 +364,7 @@ export function RasterStylePanel({
         />
 
         {/* Color formula (multi-band only) */}
-        {value.multiband && (
+        {isRgb && (
           <>
             <ParamLabel text={labels.colorFormula} help={help.colorFormula} />
             <Input

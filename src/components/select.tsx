@@ -150,7 +150,7 @@ function SelectRoot({
         >
           <SelectPrimitive.Popup
             className={cn(
-              "min-w-[var(--anchor-width)] border border-border bg-popover p-1 text-popover-foreground shadow-md outline-none",
+              "max-h-[220px] min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-md outline-none",
               "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0"
             )}
           >

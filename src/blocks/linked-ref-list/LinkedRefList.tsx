@@ -54,7 +54,7 @@ export function LinkedRefList({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-3 gap-px bg-border">
+      <div className="grid grid-cols-3 border border-border bg-background">
         {groups.map((group, i) => (
           <SummaryCard
             key={group.key}
@@ -119,10 +119,10 @@ function SummaryCard({
       type="button"
       onClick={onSelect}
       className={cn(
-        "-mb-px flex flex-col gap-2 border-b-2 bg-background px-4 py-3 text-left transition-colors",
+        "flex flex-col gap-2 border-r border-b-2 border-border px-4 py-3 text-left transition-colors last:border-r-0",
         selected
-          ? "border-primary bg-cat-1/8"
-          : "border-transparent hover:bg-muted/20"
+          ? "border-b-primary bg-[oklch(0.627_0.194_149_/_0.06)]"
+          : "border-b-transparent bg-background hover:bg-muted/20"
       )}
     >
       <span className="flex items-center gap-2 text-sm font-medium text-foreground">

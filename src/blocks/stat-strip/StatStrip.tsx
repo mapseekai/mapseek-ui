@@ -8,17 +8,30 @@ import type { StatItem, StatStripProps } from "./types"
  */
 export function StatStrip({ items }: StatStripProps) {
   return (
-    <div className="grid grid-cols-2 gap-px border-b border-border bg-border sm:grid-cols-4">
+    <div className="flex items-stretch border border-border bg-background">
       {items.map((item, i) => (
-        <Stat key={i} {...item} />
+        <Stat key={i} {...item} isLast={i === items.length - 1} />
       ))}
     </div>
   )
 }
 
-function Stat({ label, value, mono = false, unit, icon, badge }: StatItem) {
+function Stat({
+  label,
+  value,
+  mono = false,
+  unit,
+  icon,
+  badge,
+  isLast,
+}: StatItem & { isLast: boolean }) {
   return (
-    <div className="flex flex-col gap-1 bg-background px-4 py-3">
+    <div
+      className={cn(
+        "flex flex-1 flex-col gap-1 bg-background px-4 py-3",
+        !isLast && "border-r border-border",
+      )}
+    >
       <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
         {label}
         {badge}

@@ -16,6 +16,9 @@ export type BandStatLabels = {
   stddev: string
   histogram: string
   histogramMeta: string // "64 BINS · 全图采样"
+  histogramYAxis: string // "像元数量"
+  histogramXAxis: string // "像元值区间"
+  histogramCount: string // "数量"
 }
 
 export type BandStatProps = { data: BandStatData; labels: BandStatLabels }

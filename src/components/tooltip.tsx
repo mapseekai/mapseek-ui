@@ -1,35 +1,33 @@
 import * as React from "react"
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
+
 import { cn } from "@workspace/ui/lib/utils"
 
 type TooltipSide = "top" | "bottom" | "left" | "right"
 
-type TooltipProps = {
-  content: React.ReactNode
+type TooltipProps = Omit<TooltipPrimitive.Root.Props, "children"> & {
+  content?: React.ReactNode
   side?: TooltipSide
-  /** Skip rendering the tooltip entirely (useful to conditionally
-   * enable only when the caller's container is collapsed). */
   disabled?: boolean
-  /** Wrapper className applied to the Tooltip.Trigger <span>. */
   className?: string
-  /** Override the tooltip popup className — e.g. to relax the default
-   * `whitespace-nowrap` and widen the tooltip for multi-line content. */
   popupClassName?: string
-  /** When true, children must be a single ReactElement and Tooltip will
-   *  compose into it via base-ui's `render` prop instead of wrapping it
-   *  in a <span>. Use this to chain triggers (e.g. wrap a PopoverTrigger
-   *  so both Tooltip and Popover anchor to the same underlying button). */
   asChild?: boolean
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
-/**
- * Portaled tooltip built on base-ui. Replaces the old CSS-pseudo
- * implementation so the tooltip escapes its parent's stacking context
- * / overflow clipping — it now renders at the top of the DOM via a
- * portal and sits on a high z-index (z-50), which fixes the
- * "tooltip gets covered by table rows / dropdowns" issue.
- */
+function TooltipProvider({
+  delay = 0,
+  ...props
+}: TooltipPrimitive.Provider.Props) {
+  return (
+    <TooltipPrimitive.Provider
+      data-slot="tooltip-provider"
+      delay={delay}
+      {...props}
+    />
+  )
+}
+
 function Tooltip({
   content,
   side = "top",
@@ -38,8 +36,17 @@ function Tooltip({
   popupClassName,
   asChild = false,
   children,
+  ...props
 }: TooltipProps) {
   if (disabled) return <>{children}</>
+
+  if (content === undefined) {
+    return (
+      <TooltipPrimitive.Root data-slot="tooltip" {...props}>
+        {children}
+      </TooltipPrimitive.Root>
+    )
+  }
 
   const triggerRender =
     asChild && React.isValidElement(children)
@@ -47,34 +54,55 @@ function Tooltip({
       : <span className={cn("inline-flex", className)}>{children}</span>
 
   return (
-    <TooltipPrimitive.Root>
-      <TooltipPrimitive.Trigger render={triggerRender} />
-      <TooltipPrimitive.Portal>
-        <TooltipPrimitive.Positioner side={side} sideOffset={6}>
-          <TooltipPrimitive.Popup
-            className={cn(
-              // Match the rest of the floating chrome (popover / select / dropdown):
-              // 1px hairline on a popover surface, square corners, subtle float
-              // shadow. Drops the inverted bg-foreground / text-background pair
-              // that read as a harsh black block in light mode.
-              "z-50 rounded-none border border-border bg-popover px-2 py-1 text-[11px] font-medium leading-none whitespace-nowrap text-popover-foreground shadow-[var(--shadow-map-float)]",
-              "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
-              popupClassName
-            )}
-          >
-            {content}
-          </TooltipPrimitive.Popup>
-        </TooltipPrimitive.Positioner>
-      </TooltipPrimitive.Portal>
+    <TooltipPrimitive.Root data-slot="tooltip" {...props}>
+      <TooltipTrigger render={triggerRender} />
+      <TooltipContent side={side} className={popupClassName}>
+        {content}
+      </TooltipContent>
     </TooltipPrimitive.Root>
   )
 }
 
-/**
- * Mount once near the app root. Coordinates hover delay across every
- * Tooltip instance: once the first one opens, neighbours appear
- * instantly for a short window — feels more responsive.
- */
-const TooltipProvider = TooltipPrimitive.Provider
+function TooltipTrigger({ ...props }: TooltipPrimitive.Trigger.Props) {
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
+}
 
-export { Tooltip, TooltipProvider }
+function TooltipContent({
+  className,
+  side = "top",
+  sideOffset = 4,
+  align = "center",
+  alignOffset = 0,
+  children,
+  ...props
+}: TooltipPrimitive.Popup.Props &
+  Pick<
+    TooltipPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset"
+  >) {
+  return (
+    <TooltipPrimitive.Portal>
+      <TooltipPrimitive.Positioner
+        align={align}
+        alignOffset={alignOffset}
+        side={side}
+        sideOffset={sideOffset}
+        className="isolate z-50"
+      >
+        <TooltipPrimitive.Popup
+          data-slot="tooltip-content"
+          className={cn(
+            "z-50 inline-flex w-fit max-w-xs origin-(--transform-origin) items-center gap-1.5 rounded-none bg-foreground px-3 py-1.5 text-xs text-background has-data-[slot=kbd]:pe-1.5 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-start-2 data-[side=inline-start]:slide-in-from-end-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 **:data-[slot=kbd]:relative **:data-[slot=kbd]:isolate **:data-[slot=kbd]:z-50 **:data-[slot=kbd]:rounded-none data-[state=delayed-open]:animate-in data-[state=delayed-open]:fade-in-0 data-[state=delayed-open]:zoom-in-95 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            className
+          )}
+          {...props}
+        >
+          {children}
+          <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%-2px)] rotate-45 rounded-none bg-foreground fill-foreground data-[side=bottom]:top-1 data-[side=inline-end]:top-1/2! data-[side=inline-end]:-start-1 data-[side=inline-end]:-translate-y-1/2 data-[side=inline-start]:top-1/2! data-[side=inline-start]:-end-1 data-[side=inline-start]:-translate-y-1/2 data-[side=left]:top-1/2! data-[side=left]:-right-1 data-[side=left]:-translate-y-1/2 data-[side=right]:top-1/2! data-[side=right]:-left-1 data-[side=right]:-translate-y-1/2 data-[side=top]:-bottom-2.5" />
+        </TooltipPrimitive.Popup>
+      </TooltipPrimitive.Positioner>
+    </TooltipPrimitive.Portal>
+  )
+}
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }

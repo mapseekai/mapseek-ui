@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { cn } from "../../lib/utils"
 import { JsonViewer } from "../../components/json-viewer"
 
@@ -5,6 +6,10 @@ export interface GeoJSONViewProps {
   /** Pre-formatted JSON (see `stringifyGeoJSON`); null/empty shows `emptyLabel`. */
   json: string | null
   emptyLabel: string
+  title?: string
+  expandAllLabel?: string
+  collapseAllLabel?: string
+  copyFeedbackDurationMs?: number
   className?: string
 }
 
@@ -15,9 +20,21 @@ export interface GeoJSONViewProps {
  * Pure display — copy/download and size counters live in the consumer's chrome,
  * built from the same `stringifyGeoJSON` output to avoid stringifying twice.
  */
-export function GeoJSONView({ json, emptyLabel, className }: GeoJSONViewProps) {
+export function GeoJSONView({
+  json,
+  emptyLabel,
+  title = "GeoJSON",
+  expandAllLabel = "全部展开",
+  collapseAllLabel = "全部收起",
+  copyFeedbackDurationMs = 3000,
+  className,
+}: GeoJSONViewProps) {
   if (!json) {
-    return <PreView lines={null} emptyLabel={emptyLabel} className={className} />
+    return (
+      <ViewShell title={title} className={className}>
+        <PreView lines={null} emptyLabel={emptyLabel} />
+      </ViewShell>
+    )
   }
 
   let data: unknown
@@ -25,30 +42,63 @@ export function GeoJSONView({ json, emptyLabel, className }: GeoJSONViewProps) {
     data = JSON.parse(json)
   } catch {
     return (
-      <PreView
-        lines={json.split("\n")}
-        emptyLabel={emptyLabel}
-        className={className}
-      />
+      <ViewShell title={title} className={className}>
+        <PreView lines={json.split("\n")} emptyLabel={emptyLabel} />
+      </ViewShell>
     )
   }
 
   if (typeof data !== "object" || data === null) {
     return (
-      <PreView
-        lines={json.split("\n")}
-        emptyLabel={emptyLabel}
-        className={className}
-      />
+      <ViewShell title={title} className={className}>
+        <PreView lines={json.split("\n")} emptyLabel={emptyLabel} />
+      </ViewShell>
     )
   }
 
   return (
-    <JsonViewer
-      data={data as Record<string, unknown>}
-      showLineNumbers
-      className={cn("overflow-auto", className)}
-    />
+    <div
+      className={cn(
+        "flex h-[360px] max-h-full min-h-0 flex-col border border-border bg-card",
+        className
+      )}
+    >
+      <JsonViewer
+        data={data as Record<string, unknown>}
+        title={title}
+        expandAllLabel={expandAllLabel}
+        collapseAllLabel={collapseAllLabel}
+        copyFeedbackDurationMs={copyFeedbackDurationMs}
+        showLineNumbers
+        className="min-h-0 flex-1 overflow-hidden"
+      />
+    </div>
+  )
+}
+
+function ViewShell({
+  title,
+  className,
+  children,
+}: {
+  title: string
+  className?: string
+  children: ReactNode
+}) {
+  return (
+    <div
+      className={cn(
+        "flex h-[360px] max-h-full min-h-0 flex-col border border-border bg-card",
+        className
+      )}
+    >
+      <div className="flex h-8 shrink-0 items-center border-b border-border px-3">
+        <span className="font-mono text-[11px] leading-none font-semibold tracking-[0.06em] text-muted-foreground uppercase">
+          {title}
+        </span>
+      </div>
+      {children}
+    </div>
   )
 }
 
@@ -65,13 +115,13 @@ function PreView({
   return (
     <pre
       className={cn(
-        "m-0 flex-1 overflow-auto bg-muted px-3.5 py-3 font-mono text-[11px] font-medium leading-[1.6] text-foreground [tab-size:2]",
-        className,
+        "m-0 min-h-0 flex-1 overflow-auto bg-muted/50 px-3.5 py-3 font-mono text-[11px] leading-[1.6] font-medium text-foreground [tab-size:2]",
+        className
       )}
     >
       {lines === null ? (
         <div className="grid grid-cols-[32px_1fr] gap-x-3">
-          <span className="text-right tabular-nums text-muted-foreground select-none">
+          <span className="text-right text-muted-foreground tabular-nums select-none">
             1
           </span>
           <span className="text-muted-foreground">{emptyLabel}</span>
@@ -79,7 +129,7 @@ function PreView({
       ) : (
         lines.map((line, i) => (
           <div key={i} className="grid grid-cols-[32px_1fr] gap-x-3">
-            <span className="text-right tabular-nums text-muted-foreground select-none">
+            <span className="text-right text-muted-foreground tabular-nums select-none">
               {i + 1}
             </span>
             <span>{line}</span>

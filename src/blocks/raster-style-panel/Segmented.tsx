@@ -23,9 +23,9 @@ interface SegmentedProps<T extends string> {
 }
 
 /**
- * Border-collapsed segmented control. Adjacent borders overlap (−1px) and
- * the active segment lifts above with `z-[1]`, matching the mockup's
- * stretch/tile-size/resampling/nodata segments.
+ * Border-collapsed segmented control. Row controls overlap adjacent borders
+ * by 1px; grid controls use container border + gap lines so internal edges
+ * remain a single hairline.
  */
 export function Segmented<T extends string>({
   options,
@@ -41,7 +41,7 @@ export function Segmented<T extends string>({
   return (
     <div
       className={cn(
-        grid ? "grid" : "flex",
+        grid ? "grid gap-px border border-border bg-border" : "flex",
         disabled && "pointer-events-none opacity-50",
         className,
       )}
@@ -57,8 +57,8 @@ export function Segmented<T extends string>({
             onClick={() => onChange(opt.value)}
             data-active={active}
             className={cn(
-              "inline-flex h-[26px] cursor-pointer items-center justify-center gap-1 border border-border bg-background px-2 text-foreground",
-              grid ? "-mr-px -mb-px min-w-0" : "-ml-px first:ml-0",
+              "inline-flex h-[26px] cursor-pointer items-center justify-center gap-1 bg-background px-2 text-foreground",
+              grid ? "min-w-0 border-0" : "-ml-px border border-border first:ml-0",
               !grid && grow && "flex-1",
               active && "relative z-[1] bg-selection-bg text-primary",
               buttonClassName,
@@ -69,7 +69,7 @@ export function Segmented<T extends string>({
           </button>
         )
         return opt.tip ? (
-          <Tooltip key={opt.value} content={opt.tip}>
+          <Tooltip key={opt.value} content={opt.tip} asChild>
             {btn}
           </Tooltip>
         ) : (

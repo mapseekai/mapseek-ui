@@ -31,7 +31,7 @@ function SelectItem({ value, disabled, className, children }: SelectItemProps) {
       value={value}
       disabled={disabled}
       className={cn(
-        "relative flex cursor-pointer items-center gap-1.5 px-2 py-1 pr-6 text-xs outline-none select-none",
+        "relative flex h-7 cursor-pointer items-center gap-1.5 px-2 pr-6 text-xs outline-none select-none",
         "data-[highlighted]:bg-muted",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
@@ -150,7 +150,7 @@ function SelectRoot({
         >
           <SelectPrimitive.Popup
             className={cn(
-              "min-w-[var(--anchor-width)] border border-border bg-popover py-1 text-popover-foreground shadow-md outline-none",
+              "min-w-[var(--anchor-width)] border border-border bg-popover p-1 text-popover-foreground shadow-md outline-none",
               "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0"
             )}
           >

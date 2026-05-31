@@ -4,6 +4,7 @@ import {
   IconRefresh,
 } from "@tabler/icons-react"
 import { Button } from "../../components/button"
+import { Progress } from "../../components/progress"
 import {
   Popover,
   PopoverContent,
@@ -66,18 +67,13 @@ export function StorageMeter({
               <span className="text-muted-foreground">/</span>
               <span>{formatBytes(data.quota)}</span>
             </span>
-            <span
-              aria-hidden="true"
-              className="block h-1 w-14 overflow-hidden border border-border bg-muted"
-            >
-              <span
-                className={cn(
-                  "block h-full transition-[width] duration-200",
-                  barColor,
-                )}
-                style={{ width: `${pct}%` }}
-              />
-            </span>
+            <Progress
+              aria-hidden
+              value={pct}
+              className="w-14 gap-0"
+              trackClassName="h-1 border border-border"
+              indicatorClassName={cn("transition-[width] duration-200", barColor)}
+            />
             <IconChevronDown size={9} className="text-muted-foreground" />
           </Button>
         }
@@ -124,18 +120,12 @@ export function StorageMeter({
           ))}
         </div>
 
-        <div
-          role="progressbar"
-          aria-valuenow={pct}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          className="mb-2 h-[5px] w-full border border-border bg-muted"
-        >
-          <div
-            className={cn("h-full transition-[width] duration-200", barColor)}
-            style={{ width: `${pct}%` }}
-          />
-        </div>
+        <Progress
+          value={pct}
+          className="mb-2 gap-0"
+          trackClassName="h-[5px] border border-border"
+          indicatorClassName={cn("transition-[width] duration-200", barColor)}
+        />
 
         {(det.fileSystem != null ||
           det.indexedDB != null ||

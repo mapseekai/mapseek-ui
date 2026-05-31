@@ -2,11 +2,18 @@ import * as React from "react"
 
 import { cn } from "@workspace/ui/lib/utils"
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+function Table({
+  className,
+  containerClassName,
+  ...props
+}: React.ComponentProps<"table"> & { containerClassName?: string }) {
   return (
     <div
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      className={cn(
+        "relative w-full overflow-x-auto border border-border bg-background",
+        containerClassName
+      )}
     >
       <table
         data-slot="table"
@@ -21,7 +28,7 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={cn("[&_tr]:border-b", className)}
+      className={cn("[&_tr]:border-b [&_tr]:bg-muted/45", className)}
       {...props}
     />
   )
@@ -68,7 +75,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "h-10 px-2 text-start align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pe-0",
+        "h-10 px-2 text-start align-middle font-medium whitespace-nowrap text-muted-foreground [&:has([role=checkbox])]:pe-0",
         className
       )}
       {...props}

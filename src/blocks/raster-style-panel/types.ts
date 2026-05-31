@@ -82,6 +82,8 @@ export interface RasterStyleLabels {
   sigmaSuffix: string
   auto: string
   nodata: string
+  nodataDescriptions?: Partial<Record<NoDataKind, string>>
+  nodataRecommendations?: number[]
   resampling: string
   resamplingModes: Record<Resampling, string>
   tileSize: string

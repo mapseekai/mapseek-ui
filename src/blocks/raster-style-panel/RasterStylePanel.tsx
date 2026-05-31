@@ -17,6 +17,7 @@ import { ColormapPicker } from "./ColormapPicker"
 import { Segmented } from "./Segmented"
 import { StretchControl } from "./StretchControl"
 import type {
+  NoDataKind,
   RasterStat,
   RasterStylePanelProps,
   Resampling,
@@ -39,6 +40,13 @@ const CHANNEL_COLOR: Record<string, string> = {
   G: "text-primary",
   B: "text-[var(--cat-2)]",
 }
+const DEFAULT_NODATA_DESCRIPTIONS: Record<NoDataKind, string> = {
+  nan: "Use NaN as NoData.",
+  inf: "Use positive infinity as NoData.",
+  "-inf": "Use negative infinity as NoData.",
+  custom: "",
+}
+const DEFAULT_NODATA_RECOMMENDATIONS = [0, 255, 65535]
 
 const labelCls =
   "self-center font-sans text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground"
@@ -95,6 +103,12 @@ export function RasterStylePanel({
 }: RasterStylePanelProps) {
   const set = (patch: Partial<typeof value>) => onChange({ ...value, ...patch })
   const help = labels.help ?? {}
+  const nodataDescriptions = {
+    ...DEFAULT_NODATA_DESCRIPTIONS,
+    ...labels.nodataDescriptions,
+  }
+  const nodataRecommendations =
+    labels.nodataRecommendations ?? DEFAULT_NODATA_RECOMMENDATIONS
 
   const appendBand = () => {
     const nextIdx = (value.bands[value.bands.length - 1]?.idx ?? 0) + 1
@@ -167,30 +181,52 @@ export function RasterStylePanel({
 
         {/* NoData */}
         <ParamLabel text={labels.nodata} help={help.nodata} />
-        <div className="flex items-center gap-1">
+        <div className="flex flex-col gap-1">
           <Segmented
-            grow={false}
             options={[
-              { value: "nan", label: "nan" },
-              { value: "inf", label: "∞" },
-              { value: "-inf", label: "−∞" },
-              { value: "custom", label: labels.stretchModes.custom },
+              { value: "nan", label: "nan", tip: nodataDescriptions.nan },
+              { value: "inf", label: "∞", tip: nodataDescriptions.inf },
+              { value: "-inf", label: "−∞", tip: nodataDescriptions["-inf"] },
+              {
+                value: "custom",
+                label: labels.stretchModes.custom,
+              },
             ]}
             value={value.nodata.kind}
             onChange={(kind) =>
               set({ nodata: { ...value.nodata, kind: kind as typeof value.nodata.kind } })
             }
-            buttonClassName="text-[11px] font-mono text-muted-foreground data-[active=true]:text-primary"
+            className="w-full"
+            buttonClassName="whitespace-nowrap px-1 text-[11px] font-mono text-muted-foreground data-[active=true]:text-primary"
           />
+          {value.nodata.kind !== "custom" && (
+            <p className="min-h-[14px] text-[11px] leading-[14px] text-muted-foreground">
+              {nodataDescriptions[value.nodata.kind]}
+            </p>
+          )}
           {value.nodata.kind === "custom" && (
-            <Input
-              type="number"
-              className={cn(numInput, "flex-1 text-right")}
-              value={value.nodata.custom ?? ""}
-              onChange={(e) =>
-                set({ nodata: { kind: "custom", custom: Number(e.target.value) } })
-              }
-            />
+            <div className="grid grid-cols-5 gap-1">
+              <Input
+                type="number"
+                aria-label="Custom NoData"
+                placeholder="NoData"
+                className={cn(numInput, "col-span-2 text-right")}
+                value={value.nodata.custom ?? ""}
+                onChange={(e) =>
+                  set({ nodata: { kind: "custom", custom: Number(e.target.value) } })
+                }
+              />
+              {nodataRecommendations.map((preset) => (
+                <button
+                  key={preset}
+                  type="button"
+                  onClick={() => set({ nodata: { kind: "custom", custom: preset } })}
+                  className="inline-flex h-[26px] cursor-pointer items-center justify-center border border-border bg-background px-1.5 font-mono text-[11px] tabular-nums text-muted-foreground hover:bg-muted hover:text-foreground"
+                >
+                  {preset}
+                </button>
+              ))}
+            </div>
           )}
         </div>
 

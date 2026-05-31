@@ -9,14 +9,14 @@ import type {
 } from "./types"
 
 const StylePanelContext = React.createContext<StylePanelContextValue | null>(
-  null,
+  null
 )
 
 function useStylePanelContext(): StylePanelContextValue {
   const ctx = React.useContext(StylePanelContext)
   if (!ctx) {
     throw new Error(
-      "StylePanel sub-components must be used inside <StylePanel>.",
+      "StylePanel sub-components must be used inside <StylePanel>."
     )
   }
   return ctx
@@ -25,7 +25,7 @@ function useStylePanelContext(): StylePanelContextValue {
 function patch(
   value: StyleValue,
   onChange: (v: StyleValue) => void,
-  delta: Partial<StyleValue>,
+  delta: Partial<StyleValue>
 ) {
   onChange({ ...value, ...delta })
 }
@@ -43,16 +43,13 @@ function StylePanelRoot({
 }: StylePanelProps) {
   const ctx = React.useMemo(
     () => ({ geometryType, value, onChange }),
-    [geometryType, value, onChange],
+    [geometryType, value, onChange]
   )
   return (
     <StylePanelContext.Provider value={ctx}>
       <div
         data-slot="style-panel"
-        className={cn(
-          "grid grid-cols-[56px_1fr] gap-x-3 gap-y-2.5",
-          className,
-        )}
+        className={cn("grid grid-cols-[56px_1fr] gap-x-3 gap-y-2.5", className)}
       >
         {children}
       </div>
@@ -65,23 +62,25 @@ function StylePanelRoot({
 // ---------------------------------------------------------------------------
 
 const FieldLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <label className="self-center text-[11px] font-medium uppercase leading-[14px] tracking-[0.06em] text-muted-foreground">
+  <label className="self-center text-[11px] leading-[14px] font-medium tracking-[0.06em] text-muted-foreground uppercase">
     {children}
   </label>
 )
 
 function StylePanelFill({
   swatches,
+  label = "填充",
   className,
 }: {
   swatches: string[]
+  label?: string
   className?: string
 }) {
   const { value, onChange } = useStylePanelContext()
   const current = value.fill
   return (
     <>
-      <FieldLabel>填充</FieldLabel>
+      <FieldLabel>{label}</FieldLabel>
       <div
         data-slot="style-panel-fill"
         className={cn("flex items-center gap-1.5", className)}
@@ -132,7 +131,7 @@ function StylePanelOpacity({
             })
           }
         />
-        <span className="min-w-8 text-right font-mono text-[11px] tabular-nums text-foreground">
+        <span className="min-w-8 text-right font-mono text-[11px] text-foreground tabular-nums">
           {v}%
         </span>
       </div>
@@ -144,16 +143,18 @@ function StylePanelStroke({
   min = 0,
   max = 8,
   step = 0.5,
+  label = "描边",
 }: {
   min?: number
   max?: number
   step?: number
+  label?: string
 }) {
   const { value, onChange } = useStylePanelContext()
   const v = value.stroke?.width ?? 1
   return (
     <>
-      <FieldLabel>描边</FieldLabel>
+      <FieldLabel>{label}</FieldLabel>
       <div className="flex items-center gap-2.5">
         <Slider
           min={min}
@@ -169,7 +170,7 @@ function StylePanelStroke({
             })
           }
         />
-        <span className="min-w-8 text-right font-mono text-[11px] tabular-nums text-foreground">
+        <span className="min-w-8 text-right font-mono text-[11px] text-foreground tabular-nums">
           {v.toFixed(1)} px
         </span>
       </div>
@@ -198,10 +199,10 @@ function StylePanelMarker({ shapes }: { shapes: MarkerShape[] }) {
                 })
               }
               className={cn(
-                "inline-flex size-6 items-center justify-center border text-[10px] font-mono",
+                "inline-flex size-6 items-center justify-center border font-mono text-[10px]",
                 isCur
                   ? "border-primary bg-selection-bg text-primary"
-                  : "border-border bg-background text-muted-foreground hover:bg-muted",
+                  : "border-border bg-background text-muted-foreground hover:bg-muted"
               )}
               aria-label={s}
               title={s}

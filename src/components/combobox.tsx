@@ -153,7 +153,7 @@ function ComboboxList({ className, ...props }: ComboboxPrimitive.List.Props) {
     <ComboboxPrimitive.List
       data-slot="combobox-list"
       className={cn(
-        "scroll-py-1 overflow-y-auto overscroll-contain p-1 data-empty:p-0",
+        "scroll-py-1 overflow-y-auto overscroll-contain p-1",
         "max-h-[min(calc(--spacing(72)---spacing(9)),calc(var(--available-height)---spacing(9)))]",
         className
       )}
@@ -171,7 +171,7 @@ function ComboboxItem({
     <ComboboxPrimitive.Item
       data-slot="combobox-item"
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center justify-between gap-2 px-2 py-1 text-xs outline-hidden",
+        "relative flex w-full cursor-pointer select-none items-center justify-between gap-2 px-2 py-2 text-xs outline-hidden",
         "data-highlighted:bg-muted",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",

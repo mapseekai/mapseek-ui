@@ -48,6 +48,8 @@ export function JsonEditor({
   const [code, setCode] = useState(() => formatJsonValue(value))
   const [isFocused, setIsFocused] = useState(false)
   const isFocusedRef = useRef(false)
+  const formattedValueRef = useRef(code)
+  const pendingFormattedValueRef = useRef<string | null>(null)
 
   const formattedValue = useMemo(() => formatJsonValue(value), [value])
   const extensions = useMemo(
@@ -72,18 +74,50 @@ export function JsonEditor({
   }, [isFocused])
 
   useEffect(() => {
-    if (isFocused || code === formattedValue) {
+    if (formattedValueRef.current === formattedValue) {
       return
     }
 
+    formattedValueRef.current = formattedValue
+
+    if (isFocused) {
+      pendingFormattedValueRef.current = formattedValue
+      return
+    }
+
+    pendingFormattedValueRef.current = null
     queueMicrotask(() => {
-      if (!isFocusedRef.current) {
+      if (
+        !isFocusedRef.current &&
+        formattedValueRef.current === formattedValue
+      ) {
         setCode((currentCode) =>
           currentCode === formattedValue ? currentCode : formattedValue
         )
       }
     })
-  }, [code, formattedValue, isFocused])
+  }, [formattedValue, isFocused])
+
+  useEffect(() => {
+    if (isFocused || pendingFormattedValueRef.current === null) {
+      return
+    }
+
+    const pendingFormattedValue = pendingFormattedValueRef.current
+    pendingFormattedValueRef.current = null
+    queueMicrotask(() => {
+      if (
+        !isFocusedRef.current &&
+        formattedValueRef.current === pendingFormattedValue
+      ) {
+        setCode((currentCode) =>
+          currentCode === pendingFormattedValue
+            ? currentCode
+            : pendingFormattedValue
+        )
+      }
+    })
+  }, [isFocused])
 
   const handleChange = useCallback(
     (nextCode: string) => {
@@ -99,10 +133,9 @@ export function JsonEditor({
   )
 
   const handleFocus = useCallback(() => {
-    setCode(formattedValue)
     setIsFocused(true)
     onFocus?.()
-  }, [formattedValue, onFocus])
+  }, [onFocus])
 
   const handleBlur = useCallback(() => {
     setIsFocused(false)

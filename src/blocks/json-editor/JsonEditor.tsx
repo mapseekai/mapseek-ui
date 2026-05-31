@@ -5,15 +5,19 @@ import { json, jsonParseLinter } from "@codemirror/lang-json"
 import {
   bracketMatching,
   foldGutter,
+  HighlightStyle,
   indentOnInput,
+  syntaxHighlighting,
 } from "@codemirror/language"
 import { lintGutter, linter } from "@codemirror/lint"
 import { highlightSelectionMatches } from "@codemirror/search"
-import { EditorState } from "@codemirror/state"
-import { oneDark } from "@codemirror/theme-one-dark"
+import { EditorState, type Extension } from "@codemirror/state"
 import { EditorView, lineNumbers } from "@codemirror/view"
+import { tags } from "@lezer/highlight"
 import stringifyPretty from "json-stringify-pretty-compact"
 import { cn } from "../../lib/utils"
+
+export type JsonEditorTheme = "app" | "light" | "dark" | "none" | Extension
 
 export interface JsonEditorProps {
   value: unknown
@@ -22,10 +26,95 @@ export interface JsonEditorProps {
   ariaLabel?: string
   className?: string
   editorClassName?: string
+  headerClassName?: string
+  titleClassName?: string
+  theme?: JsonEditorTheme
   onFocus?(): void
   onBlur?(): void
   withScroll?: boolean
 }
+
+const appJsonEditorTheme = EditorView.theme({
+  "&": {
+    height: "100%",
+    backgroundColor: "var(--background)",
+    color: "var(--foreground)",
+    fontFamily: "var(--font-mono)",
+    fontSize: "12px",
+  },
+  ".cm-scroller": {
+    fontFamily: "var(--font-mono)",
+    lineHeight: "1.5",
+  },
+  ".cm-content": {
+    minHeight: "100%",
+    padding: "8px 0",
+    caretColor: "var(--foreground)",
+  },
+  ".cm-line": {
+    padding: "0 12px 0 8px",
+  },
+  ".cm-gutters": {
+    backgroundColor: "var(--muted)",
+    color: "var(--muted-foreground)",
+    borderRight: "1px solid var(--border)",
+  },
+  ".cm-lineNumbers .cm-gutterElement": {
+    minWidth: "32px",
+    padding: "0 8px 0 6px",
+  },
+  ".cm-foldGutter .cm-gutterElement": {
+    padding: "0 5px",
+  },
+  ".cm-activeLine": {
+    backgroundColor: "var(--selection-bg)",
+  },
+  ".cm-activeLineGutter": {
+    backgroundColor: "var(--selection-bg)",
+    color: "var(--foreground)",
+  },
+  ".cm-selectionBackground, &.cm-focused .cm-selectionBackground": {
+    backgroundColor: "var(--selection-bg-mid)",
+  },
+  "&.cm-focused": {
+    outline: "none",
+  },
+  "&.cm-focused .cm-cursor": {
+    borderLeftColor: "var(--foreground)",
+  },
+  "&.cm-focused .cm-matchingBracket": {
+    backgroundColor: "var(--selection-bg-deep)",
+    outline: "1px solid var(--primary)",
+  },
+  ".cm-tooltip": {
+    border: "1px solid var(--border)",
+    backgroundColor: "var(--popover)",
+    color: "var(--popover-foreground)",
+    boxShadow: "var(--shadow-lg)",
+  },
+  ".cm-tooltip-autocomplete ul li[aria-selected]": {
+    backgroundColor: "var(--selection-bg)",
+    color: "var(--foreground)",
+  },
+  ".cm-diagnostic-error": {
+    borderLeftColor: "var(--destructive)",
+  },
+  ".cm-lintRange-error": {
+    backgroundImage:
+      "linear-gradient(45deg, transparent 65%, var(--destructive) 80%, transparent 90%)",
+  },
+})
+
+const appJsonHighlightStyle = syntaxHighlighting(
+  HighlightStyle.define([
+    { tag: tags.propertyName, color: "var(--primary)" },
+    { tag: tags.string, color: "var(--cat-2)" },
+    { tag: tags.number, color: "var(--cat-3)" },
+    { tag: tags.bool, color: "var(--cat-4)" },
+    { tag: tags.null, color: "var(--muted-foreground)" },
+    { tag: tags.punctuation, color: "var(--muted-foreground)" },
+  ])
+)
 
 function formatJsonValue(value: unknown) {
   return stringifyPretty(value === undefined ? {} : value, {
@@ -37,10 +126,13 @@ function formatJsonValue(value: unknown) {
 export function JsonEditor({
   value,
   onChange,
-  title = "JSON",
+  title = null,
   ariaLabel = "JSON editor",
   className,
   editorClassName,
+  headerClassName,
+  titleClassName,
+  theme = "app",
   onFocus,
   onBlur,
   withScroll = false,
@@ -61,13 +153,15 @@ export function JsonEditor({
       autocompletion(),
       highlightSelectionMatches(),
       json(),
+      theme === "app" ? [appJsonEditorTheme, appJsonHighlightStyle] : [],
       lintGutter(),
       linter(jsonParseLinter()),
       EditorState.tabSize.of(2),
       EditorView.lineWrapping,
     ],
-    []
+    [theme]
   )
+  const codeMirrorTheme = theme === "app" ? "none" : theme
 
   useEffect(() => {
     isFocusedRef.current = isFocused
@@ -149,7 +243,7 @@ export function JsonEditor({
   return (
     <div
       className={cn(
-        "flex h-[360px] max-h-full min-h-0 flex-col border border-border bg-card",
+        "relative flex h-[360px] max-h-full min-h-0 w-full flex-col overflow-hidden border border-input bg-background",
         withScroll && "h-full",
         className
       )}
@@ -158,8 +252,18 @@ export function JsonEditor({
       aria-label={ariaLabel}
     >
       {title !== null ? (
-        <div className="flex h-8 shrink-0 items-center border-b border-border px-3">
-          <span className="font-mono text-[11px] leading-none font-semibold tracking-[0.06em] text-muted-foreground uppercase">
+        <div
+          className={cn(
+            "flex h-8 shrink-0 items-center border-b border-border bg-muted/40 px-3",
+            headerClassName
+          )}
+        >
+          <span
+            className={cn(
+              "font-mono text-[11px] leading-none font-semibold tracking-[0.06em] text-muted-foreground uppercase",
+              titleClassName
+            )}
+          >
             {title}
           </span>
         </div>
@@ -175,7 +279,7 @@ export function JsonEditor({
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          theme={oneDark}
+          theme={codeMirrorTheme}
           extensions={extensions}
           basicSetup={false}
           height="100%"

@@ -1,2 +1,2 @@
 export { JsonEditor } from "./JsonEditor"
-export type { JsonEditorProps } from "./JsonEditor"
+export type { JsonEditorProps, JsonEditorTheme } from "./JsonEditor"

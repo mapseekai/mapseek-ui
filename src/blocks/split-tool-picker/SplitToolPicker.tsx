@@ -103,7 +103,7 @@ function SplitToolPicker({
               disabled={disabled}
               aria-label={`${label}菜单`}
               className={cn(
-                "h-8 w-[18px] text-muted-foreground",
+                "h-8 w-4.5 text-muted-foreground",
                 open && "bg-selection-bg text-primary"
               )}
             >
@@ -116,7 +116,7 @@ function SplitToolPicker({
           align="start"
           sideOffset={4}
           className={cn(
-            "w-[190px] gap-0 p-0 shadow-[var(--shadow-lg)]",
+            "w-47.5 gap-0 p-0 shadow-(--shadow-lg)",
             contentClassName
           )}
         >

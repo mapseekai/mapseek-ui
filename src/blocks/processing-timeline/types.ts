@@ -19,6 +19,9 @@ export type TimelineStep = {
   retry?: string // amber pill text e.g. "重试 1 次"
   time?: string // right-aligned timestamp
   duration?: string // right-aligned duration
+  progressKind?: "percent" | "indeterminate" | "none" | string
+  percent?: number | null
+  message?: ReactNode
   events: TimelineEvent[]
 }
 

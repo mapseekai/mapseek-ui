@@ -1,9 +1,4 @@
-import {
-  IconCheck,
-  IconCopy,
-  IconRefresh,
-  IconX,
-} from "@tabler/icons-react"
+import { IconCheck, IconCopy, IconRefresh, IconX } from "@tabler/icons-react"
 import { Button } from "../../components/button"
 import { cn } from "../../lib/utils"
 import type {
@@ -39,7 +34,7 @@ export function ProcessingTimeline({
               <span
                 className={cn(
                   "z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
-                  MARKER_STATE[state],
+                  MARKER_STATE[state]
                 )}
               >
                 {state === "failed" ? (
@@ -86,11 +81,50 @@ export function ProcessingTimeline({
                   ))}
                 </div>
               )}
+              {(step.message ||
+                (step.progressKind === "percent" &&
+                  typeof step.percent === "number")) && (
+                <ProgressDetail step={step} />
+              )}
             </div>
           </li>
         )
       })}
     </ol>
+  )
+}
+
+function ProgressDetail({ step }: { step: TimelineStep }) {
+  const percent =
+    typeof step.percent === "number"
+      ? Math.max(0, Math.min(100, step.percent))
+      : null
+
+  return (
+    <div className="mt-2 space-y-1.5">
+      {step.message && (
+        <div className="text-xs text-muted-foreground">{step.message}</div>
+      )}
+      {step.progressKind === "percent" && percent != null && (
+        <div className="flex items-center gap-2">
+          <div
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={percent}
+            className="h-1.5 min-w-0 flex-1 overflow-hidden bg-muted"
+          >
+            <div
+              className="h-full bg-primary transition-[width]"
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+          <span className="mono w-10 shrink-0 text-right text-xs text-muted-foreground">
+            {Math.round(percent)}%
+          </span>
+        </div>
+      )}
+    </div>
   )
 }
 

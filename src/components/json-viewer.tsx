@@ -165,7 +165,9 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
   copyFeedbackDurationMs = 3000,
 }) => {
   const [copied, setCopied] = React.useState(false)
-  const copyFeedbackTimerRef = React.useRef<ReturnType<typeof setTimeout>>()
+  const copyFeedbackTimerRef = React.useRef<
+    ReturnType<typeof setTimeout> | undefined
+  >(undefined)
   const [expandedPaths, setExpandedPaths] = React.useState<Set<string>>(() => {
     if (typeof defaultExpanded === "number") {
       return generateAllPaths(data, defaultExpanded)

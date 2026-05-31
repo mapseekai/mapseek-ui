@@ -79,22 +79,24 @@ export function JsonEditor({
     }
 
     formattedValueRef.current = formattedValue
+    pendingFormattedValueRef.current = formattedValue
 
     if (isFocused) {
-      pendingFormattedValueRef.current = formattedValue
       return
     }
 
-    pendingFormattedValueRef.current = null
     queueMicrotask(() => {
       if (
-        !isFocusedRef.current &&
-        formattedValueRef.current === formattedValue
+        isFocusedRef.current ||
+        formattedValueRef.current !== formattedValue
       ) {
-        setCode((currentCode) =>
-          currentCode === formattedValue ? currentCode : formattedValue
-        )
+        return
       }
+
+      pendingFormattedValueRef.current = null
+      setCode((currentCode) =>
+        currentCode === formattedValue ? currentCode : formattedValue
+      )
     })
   }, [formattedValue, isFocused])
 
@@ -104,18 +106,20 @@ export function JsonEditor({
     }
 
     const pendingFormattedValue = pendingFormattedValueRef.current
-    pendingFormattedValueRef.current = null
     queueMicrotask(() => {
       if (
-        !isFocusedRef.current &&
-        formattedValueRef.current === pendingFormattedValue
+        isFocusedRef.current ||
+        formattedValueRef.current !== pendingFormattedValue
       ) {
-        setCode((currentCode) =>
-          currentCode === pendingFormattedValue
-            ? currentCode
-            : pendingFormattedValue
-        )
+        return
       }
+
+      pendingFormattedValueRef.current = null
+      setCode((currentCode) =>
+        currentCode === pendingFormattedValue
+          ? currentCode
+          : pendingFormattedValue
+      )
     })
   }, [isFocused])
 

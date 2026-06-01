@@ -1,9 +1,25 @@
 import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { IconChevronDown, IconCheck } from "@tabler/icons-react"
+import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@workspace/ui/lib/utils"
 
-type SelectRootProps = {
+const selectTriggerVariants = cva(
+  "inline-flex w-full cursor-pointer items-center justify-between border border-border bg-background text-xs font-medium text-foreground transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[popup-open]:bg-muted dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
+  {
+    variants: {
+      size: {
+        sm: "h-7 gap-1.5 px-2",
+        default: "h-8 gap-1.5 px-2.5",
+      },
+    },
+    defaultVariants: {
+      size: "default",
+    },
+  }
+)
+
+type SelectRootProps = VariantProps<typeof selectTriggerVariants> & {
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
@@ -24,6 +40,8 @@ type SelectItemProps = {
   className?: string
   children: React.ReactNode
 }
+
+const itemsCache = new Map<string, Record<string, React.ReactNode>>()
 
 function SelectItem({ value, disabled, className, children }: SelectItemProps) {
   return (
@@ -65,6 +83,32 @@ function collectItems(
   return acc
 }
 
+function signaturePart(node: React.ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") return String(node)
+  if (node == null || typeof node === "boolean") return ""
+  if (Array.isArray(node)) return node.map(signaturePart).join(",")
+  if (React.isValidElement(node)) {
+    const props = node.props as { children?: React.ReactNode }
+    return `${String(node.type)}(${signaturePart(props.children)})`
+  }
+  return String(node)
+}
+
+function collectItemsSignature(children: React.ReactNode): string {
+  const parts: string[] = []
+  React.Children.forEach(children, (child) => {
+    if (!React.isValidElement(child)) return
+    if (child.type === SelectItem) {
+      const { value, children: label } = child.props as SelectItemProps
+      parts.push(`${value}:${signaturePart(label)}`)
+      return
+    }
+    const nested = (child.props as { children?: React.ReactNode }).children
+    if (nested != null) parts.push(collectItemsSignature(nested))
+  })
+  return parts.join("|")
+}
+
 function SelectRoot({
   value,
   defaultValue,
@@ -72,38 +116,21 @@ function SelectRoot({
   placeholder,
   disabled,
   className,
+  size,
   style,
   title,
   children,
   ...rest
 }: SelectRootProps) {
-  // Base UI Select.Root reads `items` and stores it in its internal Zustand
-  // store. If the prop reference changes on every render — even when its
-  // contents are identical — the store keeps publishing updates, which
-  // triggers a "Maximum update depth exceeded" loop. Memoizing on the
-  // children reference alone isn't enough because callers like
-  // ColorPickerOutput re-create the children array via `[...].map(...)` on
-  // every render. Compare the *content* and reuse the previous reference
-  // whenever the resolved {value: label} map is unchanged.
-  const lastItemsRef = React.useRef<Record<string, React.ReactNode>>({})
+  const itemsSignature = collectItemsSignature(children)
   const items = React.useMemo(() => {
+    const cached = itemsCache.get(itemsSignature)
+    if (cached) return cached
+
     const next = collectItems(children, {})
-    const prev = lastItemsRef.current
-    const prevKeys = Object.keys(prev)
-    const nextKeys = Object.keys(next)
-    if (prevKeys.length === nextKeys.length) {
-      let same = true
-      for (const k of nextKeys) {
-        if (prev[k] !== next[k]) {
-          same = false
-          break
-        }
-      }
-      if (same) return prev
-    }
-    lastItemsRef.current = next
+    itemsCache.set(itemsSignature, next)
     return next
-  }, [children])
+  }, [children, itemsSignature])
 
   return (
     <SelectPrimitive.Root
@@ -116,16 +143,7 @@ function SelectRoot({
       items={items}
     >
       <SelectPrimitive.Trigger
-        className={cn(
-          "inline-flex h-7 w-full cursor-pointer items-center justify-between gap-1.5 border border-border bg-background px-2 text-xs font-medium text-foreground transition-colors outline-none",
-          "hover:bg-muted",
-          "data-[popup-open]:bg-muted",
-          "focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20",
-          "aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
-          "dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
-          "disabled:pointer-events-none disabled:opacity-50",
-          className
-        )}
+        className={cn(selectTriggerVariants({ size, className }))}
         style={style}
         title={title}
         aria-label={rest["aria-label"]}

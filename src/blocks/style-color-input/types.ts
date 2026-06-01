@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react"
 
 export type StyleColorInputMode = "button" | "button-input" | "input"
+export type StyleColorInputLayout = "swatch-input" | "input-swatch"
 
 export type StyleColorPopoverOpenChangeDetails = {
   reason?: string
@@ -19,6 +20,7 @@ export type StyleColorInputProps = {
   name?: string
   style?: CSSProperties
   mode?: StyleColorInputMode
+  layout?: StyleColorInputLayout
   open?: boolean
   inputPlaceholder?: string
   swatchLabel?: string

@@ -10,6 +10,7 @@ export {
 export { StyleColorInput } from "./StyleColorInput"
 export type {
   StyleColorInputMode,
+  StyleColorInputLayout,
   StyleColorInputProps,
   StyleColorInputRenderPickerContext,
   StyleColorPopoverOpenChangeDetails,

@@ -1,6 +1,5 @@
 import React from "react"
 import { Select } from "../../components/select"
-import { cn } from "../../lib/utils"
 
 export type InputSelectProps = {
   value: string
@@ -11,6 +10,7 @@ export type InputSelectProps = {
   title?: string
   "aria-label"?: string
   className?: string
+  size?: React.ComponentProps<typeof Select>["size"]
 }
 
 export const InputSelect: React.FC<InputSelectProps> = ({
@@ -22,6 +22,7 @@ export const InputSelect: React.FC<InputSelectProps> = ({
   title,
   "aria-label": ariaLabel,
   className,
+  size,
 }) => {
   let options = propsOptions
   if (options.length > 0 && !Array.isArray(options[0])) {
@@ -43,7 +44,8 @@ export const InputSelect: React.FC<InputSelectProps> = ({
       value={mappedValue}
       onValueChange={handleValueChange}
       placeholder="Select option..."
-      className={cn("h-7 w-full px-2 text-xs", className)}
+      className={className}
+      size={size}
       data-wd-key={dataWdKey}
       style={style}
       title={title}

@@ -47,6 +47,7 @@ export function StyleColorInput({
   name,
   style,
   mode = "button-input",
+  layout = "swatch-input",
   open,
   inputPlaceholder,
   swatchLabel,
@@ -180,18 +181,30 @@ export function StyleColorInput({
   }
 
   const input = hasInput ? renderInput(mode === "button-input") : null
+  const controls =
+    layout === "input-swatch" ? (
+      <>
+        {input}
+        <Popover open={isOpen} onOpenChange={setOpen}>
+          {swatch}
+          <PopoverContent className="w-auto p-4" align="start">
+            {picker}
+          </PopoverContent>
+        </Popover>
+      </>
+    ) : (
+      <>
+        <Popover open={isOpen} onOpenChange={setOpen}>
+          {swatch}
+          <PopoverContent className="w-auto p-4" align="start">
+            {picker}
+          </PopoverContent>
+        </Popover>
+        {input}
+      </>
+    )
 
-  return (
-    <div className="flex w-full items-center gap-2">
-      <Popover open={isOpen} onOpenChange={setOpen}>
-        {swatch}
-        <PopoverContent className="w-auto p-4" align="start">
-          {picker}
-        </PopoverContent>
-      </Popover>
-      {input}
-    </div>
-  )
+  return <div className="flex w-full items-center gap-2">{controls}</div>
 }
 
 function formatPickerValue(value: unknown, formatted?: string): string {

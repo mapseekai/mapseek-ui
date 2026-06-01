@@ -6,7 +6,7 @@ import type { RasterBand, RasterStretch, StretchMode } from "./types"
 
 const numInput =
   "h-[26px] flex-1 rounded-none px-1.5 text-right font-mono text-[11px] tabular-nums"
-const segBtn = "font-mono text-[10px] uppercase tracking-[0.04em]"
+const segBtn = "font-mono text-[10px] uppercase tracking-[0.04em] whitespace-nowrap"
 const hint =
   "shrink-0 font-mono text-[10px] uppercase tracking-[0.04em] text-muted-foreground"
 

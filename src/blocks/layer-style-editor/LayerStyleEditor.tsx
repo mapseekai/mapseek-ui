@@ -44,11 +44,11 @@ export function LayerStyleEditor({
         data-slot="layer-style-editor-header"
         data-wd-key={dataWdKey ? `${dataWdKey}.header` : undefined}
         className={cn(
-          "z-20 flex h-12 shrink-0 items-center bg-card px-3",
+          "z-20 flex h-10 shrink-0 items-center border-b border-border bg-card px-3",
           headerClassName
         )}
       >
-        <h2 className="m-0 grow truncate pr-2 text-sm leading-none font-semibold">
+        <h2 className="m-0 grow truncate pr-2 text-[13px] leading-none font-semibold">
           {title}
         </h2>
         <div className="flex items-center gap-1.5">
@@ -100,7 +100,6 @@ export function LayerStyleEditor({
           ) : null}
         </div>
       </header>
-      <Separator className="w-full" />
 
       <Tabs
         defaultValue={defaultTabId}
@@ -127,10 +126,10 @@ export function LayerStyleEditor({
         <Separator className="w-full" />
         <div
           data-slot="layer-style-editor-footer"
-          className={cn("shrink-0 bg-card p-3 pb-5", footerClassName)}
+          className={cn("shrink-0 bg-card px-2 py-1", footerClassName)}
         >
           <TabsList
-            className="grid h-10 w-full bg-muted"
+            className="grid h-8 w-full bg-muted p-0.5"
             style={{
               gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))`,
             }}
@@ -139,7 +138,12 @@ export function LayerStyleEditor({
               <TabsTrigger
                 key={tab.id}
                 value={tab.id}
-                className="text-sm data-[state=active]:font-bold data-[state=active]:text-primary"
+                className={cn(
+                  "h-7 text-xs font-medium text-muted-foreground",
+                  "hover:text-foreground active:border-primary active:bg-primary active:text-primary-foreground",
+                  "data-active:border-primary data-active:bg-primary data-active:font-semibold data-active:text-primary-foreground data-active:hover:text-primary-foreground",
+                  "dark:data-active:border-primary dark:data-active:bg-primary dark:data-active:text-primary-foreground"
+                )}
               >
                 {tab.label}
               </TabsTrigger>

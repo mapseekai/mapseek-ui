@@ -66,6 +66,14 @@ const appJsonEditorTheme = EditorView.theme({
   ".cm-foldGutter .cm-gutterElement": {
     padding: "0 5px",
   },
+  ".cm-gutter-lint": {
+    width: "2px",
+  },
+  ".cm-gutter-lint .cm-gutterElement": {
+    minWidth: "2px",
+    padding: "0",
+    overflow: "hidden",
+  },
   ".cm-activeLine": {
     backgroundColor: "var(--selection-bg)",
   },
@@ -153,9 +161,9 @@ export function JsonEditor({
       autocompletion(),
       highlightSelectionMatches(),
       json(),
-      theme === "app" ? [appJsonEditorTheme, appJsonHighlightStyle] : [],
       lintGutter(),
       linter(jsonParseLinter()),
+      theme === "app" ? [appJsonEditorTheme, appJsonHighlightStyle] : [],
       EditorState.tabSize.of(2),
       EditorView.lineWrapping,
     ],

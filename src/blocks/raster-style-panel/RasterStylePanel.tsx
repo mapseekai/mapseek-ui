@@ -18,6 +18,7 @@ import { Segmented } from "./Segmented"
 import { StretchControl } from "./StretchControl"
 import type {
   NoDataKind,
+  RasterFormatValue,
   RasterStat,
   RasterStylePanelProps,
   Resampling,
@@ -34,6 +35,7 @@ const RESAMPLINGS: { value: Resampling; icon: TablerIcon }[] = [
 ]
 
 const TILE_SIZES: TileSize[] = [64, 128, 256, 512, 1024]
+const FORMATS: RasterFormatValue[] = ["png", "webp", "jpeg"]
 const CHANNELS = ["R", "G", "B"] as const
 type RenderMode = "single" | "rgb"
 type Channel = (typeof CHANNELS)[number]
@@ -353,6 +355,25 @@ export function RasterStylePanel({
           onChange={(resampling) => set({ resampling })}
           buttonClassName="font-sans text-[11px]"
         />
+
+        {/* Format */}
+        <ParamLabel text={labels.format} />
+        <div className="flex flex-col gap-1">
+          <Segmented<RasterFormatValue>
+            options={FORMATS.map((f) => ({
+              value: f,
+              label: labels.formatModes[f],
+            }))}
+            value={value.format}
+            onChange={(format) => set({ format })}
+            buttonClassName="font-sans text-[11px]"
+          />
+          {value.format === "jpeg" && labels.formatJpegNote && (
+            <p className="min-h-[14px] text-[11px] leading-[14px] text-muted-foreground">
+              {labels.formatJpegNote}
+            </p>
+          )}
+        </div>
 
         {/* Tile size */}
         <ParamLabel text={labels.tileSize} />

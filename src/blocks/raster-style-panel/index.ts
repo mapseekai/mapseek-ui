@@ -17,6 +17,7 @@ export type {
   CustomColormapLabels,
   ColormapName,
   Resampling,
+  RasterFormatValue,
   StretchMode,
   TileSize,
   NoDataKind,

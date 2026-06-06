@@ -20,6 +20,8 @@ export type Resampling =
 
 export type TileSize = 64 | 128 | 256 | 512 | 1024
 
+export type RasterFormatValue = "png" | "webp" | "jpeg"
+
 export type NoDataKind = "nan" | "inf" | "-inf" | "custom"
 
 export interface RasterBand {
@@ -58,6 +60,8 @@ export interface RasterStyleValue {
   nodata: RasterNoData
   resampling: Resampling
   tileSize: TileSize
+  /** Output tile encoding. JPEG is lossy with no alpha (nodata renders black). */
+  format: RasterFormatValue
   /** Rio-Color post-processing formula (multi-band only). */
   colorFormula?: string
 }
@@ -91,6 +95,10 @@ export interface RasterStyleLabels {
   resampling: string
   resamplingModes: Record<Resampling, string>
   tileSize: string
+  format: string
+  formatModes: Record<RasterFormatValue, string>
+  /** Help text shown for the JPEG option (no alpha). */
+  formatJpegNote?: string
   colorFormula: string
   colorFormulaPlaceholder: string
   /** Note shown where colormap would be, in multi-band mode. */
@@ -175,4 +183,5 @@ export const DEFAULT_RASTER_STYLE: RasterStyleValue = {
   nodata: { kind: "nan" },
   resampling: "nearest",
   tileSize: 256,
+  format: "webp",
 }

@@ -119,8 +119,8 @@ function ProgressDetail({ step }: { step: TimelineStep }) {
               style={{ width: `${percent}%` }}
             />
           </div>
-          <span className="mono w-10 shrink-0 text-right text-xs text-muted-foreground">
-            {Math.round(percent)}%
+          <span className="mono w-16 shrink-0 text-right text-xs text-muted-foreground">
+            {percent.toFixed(2)}%
           </span>
         </div>
       )}

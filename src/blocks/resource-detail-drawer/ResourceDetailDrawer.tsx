@@ -4,10 +4,17 @@ import {
   IconDownload,
   IconPencil,
   IconScissors,
-  IconX,
 } from "@tabler/icons-react"
 import { Button } from "../../components/button"
 import { Checkbox } from "../../components/checkbox"
+import {
+  Sheet,
+  SheetBody,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "../../components/sheet"
 import { Textarea } from "../../components/textarea"
 import { PlaceholderGlyph } from "../placeholder-glyph"
 import { cn } from "../../lib/utils"
@@ -22,6 +29,12 @@ const CHECKER: CSSProperties = {
   background:
     "repeating-conic-gradient(var(--background) 0% 25%, color-mix(in oklch, var(--muted-foreground) 8%, transparent) 0% 50%) 50% / 10px 10px",
 }
+
+const DRAWER_FOOTER_CLASS =
+  "sticky bottom-0 z-10 mt-auto flex gap-1.5 border-t border-border bg-background px-4 py-3"
+
+const DRAWER_PANEL_FOOTER_CLASS =
+  "sticky bottom-0 z-10 -mx-2.5 -mb-2.5 mt-3 flex gap-1.5 border-t border-border bg-muted p-2.5"
 
 function fontClass(family: FontDetail["family"]): string {
   return family === "mono" ? "font-mono" : "font-sans"
@@ -63,33 +76,19 @@ export function ResourceDetailDrawer({
 }: ResourceDetailDrawerProps) {
   const wide = detail.kind !== "icon"
   return (
-    <div
-      className="fixed inset-0 z-[1000] flex justify-end bg-black/30"
-      onClick={onClose}
-    >
-      <div
-        className={cn(
-          "flex h-full flex-col border-l border-border bg-background",
-          wide ? "w-[460px]" : "w-[380px]",
-          className
-        )}
-        onClick={(e) => e.stopPropagation()}
+    <Sheet open onOpenChange={(open) => !open && onClose()}>
+      <SheetContent
+        side="right"
+        className={cn(wide ? "w-[460px]" : "w-[380px]", className)}
       >
-        <div className="flex items-start gap-2 border-b border-border px-4 pt-4 pb-3.5">
-          <div className="min-w-0 flex-1">
-            <div className="text-[15px] font-semibold tracking-[-0.01em]">
-              {detail.title}
-            </div>
-            <div className="mt-0.5 truncate font-mono text-[11.5px] text-muted-foreground">
-              {detail.subtitle}
-            </div>
-          </div>
-          <Button variant="ghost" size="icon-sm" onClick={onClose}>
-            <IconX size={14} stroke={1.75} />
-          </Button>
-        </div>
+        <SheetHeader className="pr-12">
+          <SheetTitle className="truncate text-[15px]">{detail.title}</SheetTitle>
+          <SheetDescription className="truncate font-mono text-[11.5px]">
+            {detail.subtitle}
+          </SheetDescription>
+        </SheetHeader>
 
-        <div className="flex-1 overflow-auto">
+        <SheetBody>
           {detail.kind === "icon" && (
             <IconBody detail={detail} onCopy={onCopy} onDownload={onDownload} />
           )}
@@ -107,9 +106,9 @@ export function ResourceDetailDrawer({
               onRunSlice={onRunSlice}
             />
           )}
-        </div>
-      </div>
-    </div>
+        </SheetBody>
+      </SheetContent>
+    </Sheet>
   )
 }
 
@@ -123,7 +122,7 @@ function IconBody({
   onDownload?: () => void
 }) {
   return (
-    <>
+    <div className="flex min-h-full flex-col">
       <div className="flex min-h-[140px] items-center justify-center border-b border-border bg-muted p-6">
         <PlaceholderGlyph size={72} seed={detail.seed} />
       </div>
@@ -161,7 +160,7 @@ function IconBody({
           ))}
         </div>
       </div>
-      <div className="flex gap-1.5 px-4 pt-3.5 pb-4">
+      <div className={DRAWER_FOOTER_CLASS}>
         <Button variant="outline" size="sm" className="flex-1" onClick={onCopy}>
           <IconCopy size={12} stroke={1.75} />
           {detail.copyLabel}
@@ -176,7 +175,7 @@ function IconBody({
           {detail.downloadLabel}
         </Button>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -190,7 +189,7 @@ function SpriteBody({
   onDownload?: () => void
 }) {
   return (
-    <>
+    <div className="flex min-h-full flex-col">
       <div className="flex min-h-[200px] items-center justify-center border-b border-border bg-muted p-6">
         <div
           className="grid border border-border"
@@ -246,7 +245,7 @@ function SpriteBody({
           ))}
         </div>
       </div>
-      <div className="flex gap-1.5 px-4 pt-3.5 pb-4">
+      <div className={DRAWER_FOOTER_CLASS}>
         <Button size="sm" className="flex-1" onClick={onEditSprite}>
           <IconPencil size={12} stroke={1.75} />
           {detail.editLabel}
@@ -261,7 +260,7 @@ function SpriteBody({
           {detail.downloadLabel}
         </Button>
       </div>
-    </>
+    </div>
   )
 }
 
@@ -286,7 +285,7 @@ function FontBody({
   const estMb = Math.round((totalSelected / 3000) * 100) / 100
 
   return (
-    <>
+    <div className="flex min-h-full flex-col">
       <div
         className={cn(
           "flex min-h-[140px] flex-col items-center justify-center gap-2 border-b border-border bg-muted p-6 text-5xl leading-none font-semibold",
@@ -316,7 +315,7 @@ function FontBody({
       </div>
 
       {!open ? (
-        <div className="flex gap-1.5 px-4 pt-3.5 pb-4">
+        <div className={DRAWER_FOOTER_CLASS}>
           <Button size="sm" className="flex-1" onClick={() => setOpen(true)}>
             <IconScissors size={12} stroke={1.75} />
             {slicing.configureLabel}
@@ -400,7 +399,7 @@ function FontBody({
               v={`${totalSelected.toLocaleString()} + ${customChars.length}`}
             />
           </div>
-          <div className="mt-3 flex gap-1.5">
+          <div className={DRAWER_PANEL_FOOTER_CLASS}>
             <Button
               variant="outline"
               size="sm"
@@ -420,6 +419,6 @@ function FontBody({
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }

@@ -172,7 +172,7 @@ function ResourceCard({
 }) {
   return (
     <div
-      className="flex cursor-pointer flex-col border border-border bg-background transition-all hover:border-primary hover:shadow-[0_0_0_1px_var(--primary)]"
+      className="flex cursor-pointer flex-col border border-border bg-background transition-all hover:border-primary"
       onClick={onOpen}
       onContextMenu={onContextMenu}
     >

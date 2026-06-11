@@ -53,7 +53,7 @@ export function AddFieldForm({
                 className={cn(
                   "flex h-14 flex-col items-center justify-center gap-1 rounded-none border px-1 py-1.5 transition-colors",
                   isCur
-                    ? "border-border border-l-2 border-l-primary bg-selection-bg pl-[3px] text-primary"
+                  ? "border-border border-b-2 border-b-primary bg-selection-bg text-primary"
                     : "border-border bg-background text-foreground hover:bg-muted",
                 )}
               >

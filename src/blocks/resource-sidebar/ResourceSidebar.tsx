@@ -37,9 +37,9 @@ export function ResourceSidebar({
   className,
 }: ResourceSidebarProps) {
   const leafBase =
-    "relative flex cursor-pointer items-center gap-2 text-[12.5px] text-foreground hover:bg-muted"
+    "relative flex cursor-pointer items-center gap-2 text-[12.5px] text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-muted"
   const activeLeaf =
-    "bg-primary/10 text-primary before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary"
+    "bg-primary/10 text-primary before:opacity-100"
 
   function leafClass(active: boolean, extra: string) {
     return cn(leafBase, extra, active && activeLeaf)
@@ -120,10 +120,13 @@ export function ResourceSidebar({
             onClick={() => onSelectCat(c.id)}
             actions={
               <>
-                <Tooltip content={labels.rename}>
+                <Tooltip content={labels.rename} side="right" delay={0}>
                   <Button
                     variant="ghost"
                     size="icon-xs"
+                    className="transition-none active:not-aria-[haspopup]:translate-y-0"
+                    aria-label={labels.rename}
+                    title={labels.rename}
                     onClick={(e) => {
                       e.stopPropagation()
                       onRenameCategory(c.id)
@@ -132,10 +135,13 @@ export function ResourceSidebar({
                     <IconPencil size={11} stroke={ICON_STROKE} />
                   </Button>
                 </Tooltip>
-                <Tooltip content={labels.remove}>
+                <Tooltip content={labels.remove} side="right" delay={0}>
                   <Button
                     variant="ghost"
                     size="icon-xs"
+                    className="transition-none active:not-aria-[haspopup]:translate-y-0"
+                    aria-label={labels.remove}
+                    title={labels.remove}
                     onClick={(e) => {
                       e.stopPropagation()
                       onRemoveCategory(c.id)
@@ -214,30 +220,32 @@ function CategoryRow({
   return (
     <div
       className={cn(
-        "group/cat relative flex cursor-pointer items-center gap-2 px-2.5 py-[7px] text-[12.5px] text-foreground hover:bg-muted",
+        "group/cat relative flex h-[34px] cursor-pointer items-center gap-2 px-2.5 text-[12.5px] text-foreground hover:bg-muted",
         active && "bg-primary/10 font-medium text-primary"
       )}
       onClick={onClick}
     >
       {icon}
       <span className="min-w-0 flex-1 truncate">{label}</span>
-      <span
-        className={cn(
-          "ml-auto font-mono text-[10.5px] text-muted-foreground",
-          active && "text-primary",
-          actions && "group-hover/cat:hidden"
-        )}
-      >
-        {count}
-      </span>
-      {actions && (
-        <div
-          className="ml-auto hidden items-center gap-0.5 group-hover/cat:flex"
-          onClick={(e) => e.stopPropagation()}
+      <div className="relative ml-auto h-6 w-[50px] shrink-0">
+        <span
+          className={cn(
+            "absolute inset-y-0 right-0 flex items-center font-mono text-[10.5px] text-muted-foreground",
+            active && "text-primary",
+            actions && "group-hover/cat:hidden"
+          )}
         >
-          {actions}
-        </div>
-      )}
+          {count}
+        </span>
+        {actions && (
+          <div
+            className="absolute inset-y-0 right-0 hidden items-center gap-0.5 group-hover/cat:flex"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {actions}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

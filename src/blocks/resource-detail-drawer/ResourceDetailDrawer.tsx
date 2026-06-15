@@ -1,10 +1,5 @@
 import { type CSSProperties, useState } from "react"
-import {
-  IconCopy,
-  IconDownload,
-  IconPencil,
-  IconScissors,
-} from "@tabler/icons-react"
+import { IconCopy, IconDownload, IconPencil, IconScissors } from "@tabler/icons-react"
 import { Button } from "../../components/button"
 import { Checkbox } from "../../components/checkbox"
 import {
@@ -18,12 +13,7 @@ import {
 import { Textarea } from "../../components/textarea"
 import { PlaceholderGlyph } from "../placeholder-glyph"
 import { cn } from "../../lib/utils"
-import type {
-  FontDetail,
-  IconDetail,
-  ResourceDetailDrawerProps,
-  SpriteDetail,
-} from "./types"
+import type { FontDetail, IconDetail, ResourceDetailDrawerProps, SpriteDetail } from "./types"
 
 const CHECKER: CSSProperties = {
   background:
@@ -77,10 +67,7 @@ export function ResourceDetailDrawer({
   const wide = detail.kind !== "icon"
   return (
     <Sheet open onOpenChange={(open) => !open && onClose()}>
-      <SheetContent
-        side="right"
-        className={cn(wide ? "w-[460px]" : "w-[380px]", className)}
-      >
+      <SheetContent side="right" className={cn(wide ? "w-[460px]" : "w-[380px]", className)}>
         <SheetHeader className="pr-12">
           <SheetTitle className="truncate text-[15px]">{detail.title}</SheetTitle>
           <SheetDescription className="truncate font-mono text-[11.5px]">
@@ -93,18 +80,10 @@ export function ResourceDetailDrawer({
             <IconBody detail={detail} onCopy={onCopy} onDownload={onDownload} />
           )}
           {detail.kind === "sprite" && (
-            <SpriteBody
-              detail={detail}
-              onEditSprite={onEditSprite}
-              onDownload={onDownload}
-            />
+            <SpriteBody detail={detail} onEditSprite={onEditSprite} onDownload={onDownload} />
           )}
           {detail.kind === "font" && (
-            <FontBody
-              detail={detail}
-              onDownload={onDownload}
-              onRunSlice={onRunSlice}
-            />
+            <FontBody detail={detail} onDownload={onDownload} onRunSlice={onRunSlice} />
           )}
         </SheetBody>
       </SheetContent>
@@ -165,12 +144,7 @@ function IconBody({
           <IconCopy size={12} stroke={1.75} />
           {detail.copyLabel}
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="flex-1"
-          onClick={onDownload}
-        >
+        <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
           <IconDownload size={12} stroke={1.75} />
           {detail.downloadLabel}
         </Button>
@@ -214,9 +188,7 @@ function SpriteBody({
               className="flex items-center gap-2 border border-border px-2.5 py-1.5 text-xs"
             >
               <span>{s.label}</span>
-              <span className="ml-auto font-mono text-[10.5px] text-muted-foreground">
-                {s.tag}
-              </span>
+              <span className="ml-auto font-mono text-[10.5px] text-muted-foreground">{s.tag}</span>
             </div>
           ))}
         </div>
@@ -231,15 +203,10 @@ function SpriteBody({
         <SectionTitle>{detail.filesTitle}</SectionTitle>
         <div className="flex flex-col gap-1.5">
           {detail.files.map((f, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 border border-border px-2.5 py-1.5"
-            >
+            <div key={i} className="flex items-center gap-2 border border-border px-2.5 py-1.5">
               <div className="min-w-0 flex-1">
                 <div className="font-mono text-[11.5px]">{f.name}</div>
-                <div className="text-[10px] text-muted-foreground">
-                  {f.desc}
-                </div>
+                <div className="text-[10px] text-muted-foreground">{f.desc}</div>
               </div>
             </div>
           ))}
@@ -250,12 +217,7 @@ function SpriteBody({
           <IconPencil size={12} stroke={1.75} />
           {detail.editLabel}
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="flex-1"
-          onClick={onDownload}
-        >
+        <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
           <IconDownload size={12} stroke={1.75} />
           {detail.downloadLabel}
         </Button>
@@ -289,7 +251,7 @@ function FontBody({
       <div
         className={cn(
           "flex min-h-[140px] flex-col items-center justify-center gap-2 border-b border-border bg-muted p-6 text-5xl leading-none font-semibold",
-          fontClass(detail.family)
+          fontClass(detail.family),
         )}
       >
         <div>{detail.specimen}</div>
@@ -307,7 +269,7 @@ function FontBody({
         <div
           className={cn(
             "border border-border bg-muted px-3 py-2.5 text-lg leading-relaxed",
-            fontClass(detail.family)
+            fontClass(detail.family),
           )}
         >
           {detail.sample}
@@ -320,12 +282,7 @@ function FontBody({
             <IconScissors size={12} stroke={1.75} />
             {slicing.configureLabel}
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="flex-1"
-            onClick={onDownload}
-          >
+          <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
             <IconDownload size={12} stroke={1.75} />
             {slicing.downloadLabel}
           </Button>
@@ -350,15 +307,13 @@ function FontBody({
                   key={c.id}
                   className={cn(
                     "flex cursor-pointer items-center gap-2 border border-border px-2 py-1.5",
-                    isSel ? "bg-primary/5" : "bg-background"
+                    isSel ? "bg-primary/5" : "bg-background",
                   )}
                 >
                   <Checkbox
                     checked={isSel}
                     onCheckedChange={() =>
-                      setSelected((s) =>
-                        isSel ? s.filter((x) => x !== c.id) : [...s, c.id]
-                      )
+                      setSelected((s) => (isSel ? s.filter((x) => x !== c.id) : [...s, c.id]))
                     }
                   />
                   <div className="min-w-0 flex-1">
@@ -367,9 +322,7 @@ function FontBody({
                       {c.range} · {c.glyphs.toLocaleString()}
                     </div>
                   </div>
-                  <span className="font-mono text-[10px] text-muted-foreground">
-                    {c.size}
-                  </span>
+                  <span className="font-mono text-[10px] text-muted-foreground">{c.size}</span>
                 </label>
               )
             })}
@@ -387,12 +340,8 @@ function FontBody({
           <div className="mt-3 border border-border bg-muted p-2.5">
             <KVRow k={slicing.rawSizeLabel} v={slicing.rawSizeValue} />
             <div className="flex justify-between gap-2 py-[5px] text-[11.5px]">
-              <span className="text-muted-foreground">
-                {slicing.estimateLabel}
-              </span>
-              <span className="font-mono text-[11px] text-primary">
-                ~{estMb} MB
-              </span>
+              <span className="text-muted-foreground">{slicing.estimateLabel}</span>
+              <span className="font-mono text-[11px] text-primary">~{estMb} MB</span>
             </div>
             <KVRow
               k={slicing.selectedLabel}
@@ -400,12 +349,7 @@ function FontBody({
             />
           </div>
           <div className={DRAWER_PANEL_FOOTER_CLASS}>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1"
-              onClick={() => setOpen(false)}
-            >
+            <Button variant="outline" size="sm" className="flex-1" onClick={() => setOpen(false)}>
               {slicing.cancelLabel}
             </Button>
             <Button

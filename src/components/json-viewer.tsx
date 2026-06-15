@@ -18,25 +18,13 @@ interface JsonViewerProps {
   copyFeedbackDurationMs?: number
 }
 
-type DataType =
-  | "string"
-  | "number"
-  | "boolean"
-  | "null"
-  | "object"
-  | "array"
-  | "unknown"
+type DataType = "string" | "number" | "boolean" | "null" | "object" | "array" | "unknown"
 
 const getDataType = (value: unknown): DataType => {
   if (value === null) return "null"
   if (Array.isArray(value)) return "array"
   const type = typeof value
-  if (
-    type === "string" ||
-    type === "number" ||
-    type === "boolean" ||
-    type === "object"
-  ) {
+  if (type === "string" || type === "number" || type === "boolean" || type === "object") {
     return type
   }
   return "unknown"
@@ -58,10 +46,7 @@ const getTypeStyle = (type: DataType): string => {
 }
 
 /** Renders a leaf (non-object/array) JSON value as a single colored span. */
-const LeafValue: React.FC<{ value: unknown; type: DataType }> = ({
-  value,
-  type,
-}) => {
+const LeafValue: React.FC<{ value: unknown; type: DataType }> = ({ value, type }) => {
   const typeStyle = getTypeStyle(type)
   if (type === "string") {
     return (
@@ -73,19 +58,13 @@ const LeafValue: React.FC<{ value: unknown; type: DataType }> = ({
   if (type === "null") {
     return <span className={cn(typeStyle, "whitespace-nowrap")}>null</span>
   }
-  return (
-    <span className={cn(typeStyle, "whitespace-nowrap")}>{String(value)}</span>
-  )
+  return <span className={cn(typeStyle, "whitespace-nowrap")}>{String(value)}</span>
 }
 
 const isPlainObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value)
 
-const calculateLineCount = (
-  data: unknown,
-  expandedPaths: Set<string>,
-  path = "root"
-): number => {
+const calculateLineCount = (data: unknown, expandedPaths: Set<string>, path = "root"): number => {
   const dataType = getDataType(data)
 
   if (dataType === "object") {
@@ -95,9 +74,8 @@ const calculateLineCount = (
     return (
       2 +
       entries.reduce<number>(
-        (acc, [key, value]) =>
-          acc + calculateLineCount(value, expandedPaths, `${path}.${key}`),
-        0
+        (acc, [key, value]) => acc + calculateLineCount(value, expandedPaths, `${path}.${key}`),
+        0,
       )
     )
   }
@@ -109,9 +87,8 @@ const calculateLineCount = (
     return (
       2 +
       items.reduce<number>(
-        (acc, item, index) =>
-          acc + calculateLineCount(item, expandedPaths, `${path}[${index}]`),
-        0
+        (acc, item, index) => acc + calculateLineCount(item, expandedPaths, `${path}[${index}]`),
+        0,
       )
     )
   }
@@ -123,7 +100,7 @@ const generateAllPaths = (
   data: unknown,
   maxLevel: number = Infinity,
   currentLevel: number = 0,
-  currentPath: string = "root"
+  currentPath: string = "root",
 ): Set<string> => {
   const paths = new Set<string>()
   if (currentLevel > maxLevel) return paths
@@ -131,22 +108,16 @@ const generateAllPaths = (
   if (Array.isArray(data)) {
     paths.add(currentPath)
     data.forEach((item, index) => {
-      generateAllPaths(
-        item,
-        maxLevel,
-        currentLevel + 1,
-        `${currentPath}[${index}]`
-      ).forEach((p) => paths.add(p))
+      generateAllPaths(item, maxLevel, currentLevel + 1, `${currentPath}[${index}]`).forEach((p) =>
+        paths.add(p),
+      )
     })
   } else if (isPlainObject(data)) {
     paths.add(currentPath)
     Object.entries(data).forEach(([key, value]) => {
-      generateAllPaths(
-        value,
-        maxLevel,
-        currentLevel + 1,
-        `${currentPath}.${key}`
-      ).forEach((p) => paths.add(p))
+      generateAllPaths(value, maxLevel, currentLevel + 1, `${currentPath}.${key}`).forEach((p) =>
+        paths.add(p),
+      )
     })
   }
   return paths
@@ -165,9 +136,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
   copyFeedbackDurationMs = 3000,
 }) => {
   const [copied, setCopied] = React.useState(false)
-  const copyFeedbackTimerRef = React.useRef<
-    ReturnType<typeof setTimeout> | undefined
-  >(undefined)
+  const copyFeedbackTimerRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [expandedPaths, setExpandedPaths] = React.useState<Set<string>>(() => {
     if (typeof defaultExpanded === "number") {
       return generateAllPaths(data, defaultExpanded)
@@ -219,14 +188,14 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
 
   const lineCount = useMemo(
     () => calculateLineCount(data, expandedPaths, "root"),
-    [data, expandedPaths]
+    [data, expandedPaths],
   )
 
   return (
     <div
       className={cn(
         "relative flex w-full flex-col bg-card font-mono text-[13px] leading-6 text-foreground",
-        className
+        className,
       )}
     >
       <div className="z-10 flex h-8 shrink-0 items-center gap-2 border-b border-border px-3">
@@ -259,7 +228,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
           }}
           className={cn(
             "h-7 rounded-none bg-transparent text-foreground hover:bg-muted",
-            copied ? "gap-1.5 px-2" : "w-7 px-0"
+            copied ? "gap-1.5 px-2" : "w-7 px-0",
           )}
           title={copied ? "已复制" : "复制"}
           aria-live="polite"
@@ -394,20 +363,11 @@ const CollapseTrigger: React.FC<{
   showComma?: boolean
   collapseOn?: "click" | "doubleClick"
   onToggle: () => void
-}> = ({
-  objectKey,
-  isOpen,
-  bracket,
-  closeBracket,
-  count,
-  showComma,
-  collapseOn,
-  onToggle,
-}) => (
+}> = ({ objectKey, isOpen, bracket, closeBracket, count, showComma, collapseOn, onToggle }) => (
   <div
     className={cn(
       "group -ml-1 inline-flex h-6 w-full cursor-pointer items-center rounded-sm px-1 text-left leading-6 select-none",
-      isOpen && "hover:bg-muted-foreground/20"
+      isOpen && "hover:bg-muted-foreground/20",
     )}
     onDoubleClick={collapseOn === "doubleClick" ? onToggle : undefined}
     onClick={collapseOn === "doubleClick" ? undefined : onToggle}
@@ -416,7 +376,7 @@ const CollapseTrigger: React.FC<{
       <span
         className={cn(
           "group inline-flex items-center text-purple-600 dark:text-purple-400",
-          bracket === "{" && "font-medium"
+          bracket === "{" && "font-medium",
         )}
       >
         {`'${objectKey}'`}
@@ -456,7 +416,7 @@ const indentClass = (level: number, showColorIndent?: boolean): string =>
     "border-l pl-5",
     showColorIndent
       ? indentColors[level % indentColors.length]
-      : "border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.1)]"
+      : "border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.1)]",
   )
 
 const JsonObject: React.FC<{
@@ -501,10 +461,8 @@ const JsonObject: React.FC<{
             {entries.map(([key, value], index) => {
               const childPath = `${path}.${key}`
               const childType = getDataType(value)
-              const isChildCollapsible =
-                childType === "object" || childType === "array"
-              const isChildOpen =
-                isChildCollapsible && expandedPaths.has(childPath)
+              const isChildCollapsible = childType === "object" || childType === "array"
+              const isChildOpen = isChildCollapsible && expandedPaths.has(childPath)
 
               return (
                 <div
@@ -512,7 +470,7 @@ const JsonObject: React.FC<{
                   className={cn(
                     "group rounded-md",
                     !isChildCollapsible && "flex min-h-6 items-start",
-                    isChildOpen ? "" : "hover:bg-muted-foreground/20"
+                    isChildOpen ? "" : "hover:bg-muted-foreground/20",
                   )}
                 >
                   {isChildCollapsible ? (
@@ -600,10 +558,8 @@ const JsonArray: React.FC<{
             {data.map((item, index) => {
               const childPath = `${path}[${index}]`
               const childType = getDataType(item)
-              const isChildCollapsible =
-                childType === "object" || childType === "array"
-              const isChildOpen =
-                isChildCollapsible && expandedPaths.has(childPath)
+              const isChildCollapsible = childType === "object" || childType === "array"
+              const isChildOpen = isChildCollapsible && expandedPaths.has(childPath)
 
               return (
                 <div
@@ -611,7 +567,7 @@ const JsonArray: React.FC<{
                   className={cn(
                     "group rounded-md",
                     !isChildCollapsible && "flex min-h-6 items-start",
-                    isChildOpen ? "" : "hover:bg-muted-foreground/20"
+                    isChildOpen ? "" : "hover:bg-muted-foreground/20",
                   )}
                 >
                   <JsonNode

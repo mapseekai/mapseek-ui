@@ -1,15 +1,7 @@
-import {
-  IconChevronDown,
-  IconDatabase,
-  IconRefresh,
-} from "@tabler/icons-react"
+import { IconChevronDown, IconDatabase, IconRefresh } from "@tabler/icons-react"
 import { Button } from "../../components/button"
 import { Progress } from "../../components/progress"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../components/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "../../components/popover"
 import { Tooltip } from "../../components/tooltip"
 import { cn } from "../../lib/utils"
 import { formatBytes } from "./format-bytes"
@@ -44,8 +36,7 @@ export function StorageMeter({
 
   const pct = Math.round(data.ratio * 100)
   const det = data.details
-  const barColor =
-    pct >= 95 ? "bg-destructive" : pct >= 80 ? "bg-warning" : "bg-primary"
+  const barColor = pct >= 95 ? "bg-destructive" : pct >= 80 ? "bg-warning" : "bg-primary"
 
   return (
     <Popover>
@@ -61,9 +52,7 @@ export function StorageMeter({
           >
             <IconDatabase size={11} className="text-muted-foreground" />
             <span className="inline-flex items-baseline gap-[3px] whitespace-nowrap font-mono text-[11px] tabular-nums">
-              <strong className="font-semibold text-foreground">
-                {formatBytes(data.usage)}
-              </strong>
+              <strong className="font-semibold text-foreground">{formatBytes(data.usage)}</strong>
               <span className="text-muted-foreground">/</span>
               <span>{formatBytes(data.quota)}</span>
             </span>
@@ -127,31 +116,23 @@ export function StorageMeter({
           indicatorClassName={cn("transition-[width] duration-200", barColor)}
         />
 
-        {(det.fileSystem != null ||
-          det.indexedDB != null ||
-          det.caches != null) && (
+        {(det.fileSystem != null || det.indexedDB != null || det.caches != null) && (
           <div className="mb-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] text-muted-foreground">
             {det.fileSystem != null && (
               <span>
-                <em className="not-italic mr-1 font-medium text-foreground">
-                  OPFS
-                </em>
+                <em className="not-italic mr-1 font-medium text-foreground">OPFS</em>
                 {formatBytes(det.fileSystem)}
               </span>
             )}
             {det.indexedDB != null && (
               <span>
-                <em className="not-italic mr-1 font-medium text-foreground">
-                  IndexedDB
-                </em>
+                <em className="not-italic mr-1 font-medium text-foreground">IndexedDB</em>
                 {formatBytes(det.indexedDB)}
               </span>
             )}
             {det.caches != null && det.caches > 0 && (
               <span>
-                <em className="not-italic mr-1 font-medium text-foreground">
-                  Caches
-                </em>
+                <em className="not-italic mr-1 font-medium text-foreground">Caches</em>
                 {formatBytes(det.caches)}
               </span>
             )}

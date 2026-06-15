@@ -1,10 +1,6 @@
 export type NotificationCenterSourceType = "DATASET" | "TILESET" | string
 
-export type NotificationCenterStatusTone =
-  | "processing"
-  | "success"
-  | "failed"
-  | "idle"
+export type NotificationCenterStatusTone = "processing" | "success" | "failed" | "idle"
 
 export type NotificationCenterItem = {
   key: string

@@ -22,9 +22,7 @@ function FieldRow({ field }: { field: PixelField }) {
         <span className="border border-border bg-muted px-1 py-px font-mono text-[9px] uppercase tracking-[0.04em] text-muted-foreground">
           {field.type}
         </span>
-        {field.locked && (
-          <IconLock size={11} className="ml-auto text-muted-foreground" />
-        )}
+        {field.locked && <IconLock size={11} className="ml-auto text-muted-foreground" />}
       </div>
       <div
         className={cn(
@@ -40,9 +38,7 @@ function FieldRow({ field }: { field: PixelField }) {
           field.value
         )}
         {field.unit && (
-          <span className="ml-auto font-mono text-[10px] text-muted-foreground">
-            {field.unit}
-          </span>
+          <span className="ml-auto font-mono text-[10px] text-muted-foreground">{field.unit}</span>
         )}
       </div>
     </div>
@@ -68,10 +64,7 @@ export function PixelProbe({
   return (
     <div
       data-testid="pixel-probe"
-      className={cn(
-        "flex flex-col overflow-hidden border border-border bg-card",
-        className,
-      )}
+      className={cn("flex flex-col overflow-hidden border border-border bg-card", className)}
     >
       {/* Header */}
       <div className="flex h-9 shrink-0 items-center gap-2 border-b border-border px-3">

@@ -1,9 +1,4 @@
-import {
-  IconCircleCheck,
-  IconCircleDashed,
-  IconCircleX,
-  IconLoader2,
-} from "@tabler/icons-react"
+import { IconCircleCheck, IconCircleDashed, IconCircleX, IconLoader2 } from "@tabler/icons-react"
 
 import { cn } from "../../lib/utils"
 
@@ -22,11 +17,7 @@ const TONE_CLASS: Record<ResourceStatusTone, string> = {
   neutral: "border-border bg-muted/45 text-muted-foreground",
 }
 
-export function ResourceStatusBadge({
-  tone,
-  label,
-  className,
-}: ResourceStatusBadgeProps) {
+export function ResourceStatusBadge({ tone, label, className }: ResourceStatusBadgeProps) {
   const Icon =
     tone === "ready"
       ? IconCircleCheck
@@ -41,7 +32,7 @@ export function ResourceStatusBadge({
       className={cn(
         "inline-flex h-5 w-fit shrink-0 items-center gap-1 border px-1.5 font-mono text-[11px] leading-none font-medium whitespace-nowrap",
         TONE_CLASS[tone],
-        className
+        className,
       )}
     >
       <Icon

@@ -1,18 +1,9 @@
 import { type ReactNode, useMemo, useState } from "react"
-import {
-  IconCheck,
-  IconDatabase,
-  IconLayersIntersect,
-  IconSearch,
-} from "@tabler/icons-react"
+import { IconCheck, IconDatabase, IconLayersIntersect, IconSearch } from "@tabler/icons-react"
 
 import { Badge } from "../../components/badge"
 import { Button } from "../../components/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-} from "../../components/dialog"
+import { Dialog, DialogContent, DialogDescription } from "../../components/dialog"
 import { Input } from "../../components/input"
 import { cn } from "../../lib/utils"
 import type {
@@ -31,8 +22,7 @@ import {
 
 const DEFAULT_LABELS: StyleSourcePickerLabels = {
   title: "Add New Source",
-  description:
-    "Select one or more datasets/tilesets to add into active sources.",
+  description: "Select one or more datasets/tilesets to add into active sources.",
   searchPlaceholder: "Search by name/path...",
   sourceFilterLabel: "Source",
   typeFilterLabel: "Type",
@@ -53,7 +43,7 @@ const DEFAULT_LABELS: StyleSourcePickerLabels = {
 }
 
 function resolveLabels(
-  labels: Partial<StyleSourcePickerLabels> | undefined
+  labels: Partial<StyleSourcePickerLabels> | undefined,
 ): StyleSourcePickerLabels {
   return { ...DEFAULT_LABELS, ...labels }
 }
@@ -71,9 +61,7 @@ export function StyleSourcePickerDialog({
   onOpenChange,
   onConfirm,
 }: StyleSourcePickerDialogProps) {
-  const [draft, setDraft] = useState<StyleSourcePickerDraft>(
-    getDefaultStyleSourcePickerDraft
-  )
+  const [draft, setDraft] = useState<StyleSourcePickerDraft>(getDefaultStyleSourcePickerDraft)
   const labels = useMemo(() => resolveLabels(labelsProp), [labelsProp])
 
   const resetLocalState = () => {
@@ -85,7 +73,7 @@ export function StyleSourcePickerDialog({
       options,
       draft.keyword,
       draft.sourceFilter,
-      draft.typeFilter
+      draft.typeFilter,
     )
   }, [draft.keyword, draft.sourceFilter, draft.typeFilter, options])
 
@@ -100,10 +88,7 @@ export function StyleSourcePickerDialog({
       .filter((item): item is StyleSourcePickerOption => !!item)
   }, [draft.selectedKeys, options])
 
-  const selectedKeySet = useMemo(
-    () => new Set(draft.selectedKeys),
-    [draft.selectedKeys]
-  )
+  const selectedKeySet = useMemo(() => new Set(draft.selectedKeys), [draft.selectedKeys])
 
   return (
     <Dialog
@@ -191,12 +176,7 @@ export function StyleSourcePickerDialog({
             <div className="flex flex-col items-start gap-3 border border-destructive/25 bg-background p-4">
               <p className="text-sm text-destructive">{loadErrorMessage}</p>
               {onRetryLoad ? (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={onRetryLoad}
-                >
+                <Button type="button" variant="outline" size="sm" onClick={onRetryLoad}>
                   {labels.retry}
                 </Button>
               ) : null}
@@ -214,7 +194,7 @@ export function StyleSourcePickerDialog({
                   selectedKeys: toggleStyleSourcePickerSelection(
                     prev.selectedKeys,
                     key,
-                    alreadyAddedKeys
+                    alreadyAddedKeys,
                   ),
                 }))
               }
@@ -228,11 +208,7 @@ export function StyleSourcePickerDialog({
           </p>
 
           <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onOpenChange(false)}
-            >
+            <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>
               {labels.cancel}
             </Button>
             <Button
@@ -260,12 +236,7 @@ type SegmentedFilterProps = {
   onChange: (value: string) => void
 }
 
-function SegmentedFilter({
-  ariaLabel,
-  value,
-  options,
-  onChange,
-}: SegmentedFilterProps) {
+function SegmentedFilter({ ariaLabel, value, options, onChange }: SegmentedFilterProps) {
   return (
     <div
       className="inline-flex h-8 shrink-0 items-center border border-border bg-muted/50 p-0.5"
@@ -283,7 +254,7 @@ function SegmentedFilter({
               "h-7 px-3 text-xs font-medium transition-colors",
               active
                 ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             {label}
@@ -324,10 +295,8 @@ function SourceOptionCardGrid({
       {options.map((item) => {
         const selected = selectedKeys.has(item.key)
         const alreadyAdded = alreadyAddedKeys.has(item.key)
-        const kindLabel =
-          item.sourceKind === "DATASET" ? labels.dataset : labels.tileset
-        const typeLabel =
-          item.sourceType === "raster" ? labels.raster : labels.vector
+        const kindLabel = item.sourceKind === "DATASET" ? labels.dataset : labels.tileset
+        const typeLabel = item.sourceType === "raster" ? labels.raster : labels.vector
 
         return (
           <button
@@ -341,7 +310,7 @@ function SourceOptionCardGrid({
               selected
                 ? "border-primary bg-primary/5 shadow-[inset_0_0_0_1px_var(--color-primary)]"
                 : "border-border hover:border-primary/50 hover:bg-muted/40",
-              alreadyAdded && "cursor-not-allowed opacity-55"
+              alreadyAdded && "cursor-not-allowed opacity-55",
             )}
           >
             <div className="flex items-start gap-3">
@@ -350,7 +319,7 @@ function SourceOptionCardGrid({
                   "flex size-8 shrink-0 items-center justify-center border",
                   item.sourceKind === "DATASET"
                     ? "border-cat-2/30 bg-cat-2/10 text-cat-2"
-                    : "border-cat-5/30 bg-cat-5/10 text-cat-5"
+                    : "border-cat-5/30 bg-cat-5/10 text-cat-5",
                 )}
                 aria-hidden
               >
@@ -361,9 +330,7 @@ function SourceOptionCardGrid({
                 )}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm leading-tight font-semibold">
-                  {item.sourceName}
-                </p>
+                <p className="truncate text-sm leading-tight font-semibold">{item.sourceName}</p>
                 <p
                   className="mt-1 truncate font-mono text-[11px] leading-tight text-muted-foreground"
                   title={item.subtitle || item.sourceUID}
@@ -376,7 +343,7 @@ function SourceOptionCardGrid({
                   "flex size-5 shrink-0 items-center justify-center border transition-colors",
                   selected
                     ? "border-primary bg-primary text-primary-foreground"
-                    : "border-input bg-background group-hover:border-foreground/30"
+                    : "border-input bg-background group-hover:border-foreground/30",
                 )}
                 aria-hidden
               >
@@ -395,12 +362,8 @@ function SourceOptionCardGrid({
               >
                 {kindLabel}
               </Badge>
-              {item.sourceType ? (
-                <Badge variant="outline">{typeLabel}</Badge>
-              ) : null}
-              {item.status ? (
-                <Badge variant="secondary">{item.status}</Badge>
-              ) : null}
+              {item.sourceType ? <Badge variant="outline">{typeLabel}</Badge> : null}
+              {item.status ? <Badge variant="secondary">{item.status}</Badge> : null}
               {alreadyAdded ? (
                 <Badge
                   variant="outline"

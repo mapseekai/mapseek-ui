@@ -1,11 +1,6 @@
 import type * as React from "react"
 
-export type LayerGeometry =
-  | "point"
-  | "polyline"
-  | "polygon"
-  | "mixed"
-  | "raster"
+export type LayerGeometry = "point" | "polyline" | "polygon" | "mixed" | "raster"
 
 export interface LayerData {
   id: string
@@ -56,11 +51,7 @@ export interface LayerPanelContextValue {
   onOpenTable?: (id: string) => void
   isSectionOpen: (layerId: string, sectionId: string) => boolean
   toggleSection: (layerId: string, sectionId: string) => void
-  registerSectionDefault: (
-    layerId: string,
-    sectionId: string,
-    open: boolean,
-  ) => void
+  registerSectionDefault: (layerId: string, sectionId: string, open: boolean) => void
   collapsed: boolean
   toggleCollapsed: () => void
 }

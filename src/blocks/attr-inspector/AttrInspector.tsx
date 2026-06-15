@@ -120,11 +120,7 @@ export function AttrInspector({
               </Button>
             )}
             {showGeoJSON && (
-              <Button
-                variant="ghost"
-                onClick={onViewGeoJSON}
-                className={actionBtn}
-              >
+              <Button variant="ghost" onClick={onViewGeoJSON} className={actionBtn}>
                 <IconBraces size={16} /> {labels.viewGeoJSON}
               </Button>
             )}
@@ -138,10 +134,7 @@ export function AttrInspector({
                 >
                   {labels.cancel}
                 </Button>
-                <Button
-                  onClick={onConfirm}
-                  className="h-[26px] rounded-none px-2.5 text-[11px]"
-                >
+                <Button onClick={onConfirm} className="h-[26px] rounded-none px-2.5 text-[11px]">
                   {labels.confirm}
                 </Button>
               </>

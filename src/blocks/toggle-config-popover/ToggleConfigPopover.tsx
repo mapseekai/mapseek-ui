@@ -2,11 +2,7 @@ import * as React from "react"
 import { IconChevronDown, type Icon as TablerIcon } from "@tabler/icons-react"
 
 import { Button } from "../../components/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../components/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "../../components/popover"
 import { Tooltip } from "../../components/tooltip"
 import { cn } from "../../lib/utils"
 
@@ -82,10 +78,8 @@ function ToggleConfigPopover({
           onClick={() => onCheckedChange(!checked)}
           className={cn(
             "relative size-8 rounded-none",
-            checked
-              ? "bg-selection-bg text-primary"
-              : "bg-transparent text-muted-foreground",
-            toggleClassName
+            checked ? "bg-selection-bg text-primary" : "bg-transparent text-muted-foreground",
+            toggleClassName,
           )}
         >
           <Icon size={15} />
@@ -93,9 +87,7 @@ function ToggleConfigPopover({
             aria-hidden="true"
             className={cn(
               "absolute bottom-1 right-1 size-[5px] rounded-full",
-              checked
-                ? "bg-primary opacity-100"
-                : "bg-muted-foreground opacity-40"
+              checked ? "bg-primary opacity-100" : "bg-muted-foreground opacity-40",
             )}
           />
         </Button>
@@ -114,14 +106,10 @@ function ToggleConfigPopover({
                 className={cn(
                   "h-8 w-[18px] rounded-none text-muted-foreground",
                   actualOpen && "bg-selection-bg text-primary",
-                  triggerClassName
+                  triggerClassName,
                 )}
               >
-                <IconChevronDown
-                  size={12}
-                  stroke={2.25}
-                  className="text-muted-foreground"
-                />
+                <IconChevronDown size={12} stroke={2.25} className="text-muted-foreground" />
               </Button>
             }
           />
@@ -130,19 +118,11 @@ function ToggleConfigPopover({
           side="bottom"
           align="center"
           sideOffset={4}
-          className={cn(
-            "w-[280px] gap-0 p-0 shadow-[var(--shadow-lg)]",
-            contentClassName
-          )}
+          className={cn("w-[280px] gap-0 p-0 shadow-[var(--shadow-lg)]", contentClassName)}
         >
           <header className="flex h-9 items-center gap-2 border-b border-border px-3">
-            <Icon
-              size={14}
-              className={checked ? "text-primary" : "text-muted-foreground"}
-            />
-            <span className="text-xs font-semibold leading-none">
-              {label}
-            </span>
+            <Icon size={14} className={checked ? "text-primary" : "text-muted-foreground"} />
+            <span className="text-xs font-semibold leading-none">{label}</span>
             <span className="flex-1" />
             <Button
               type="button"
@@ -156,7 +136,7 @@ function ToggleConfigPopover({
                 "relative h-4 w-7 rounded-none border p-0",
                 checked
                   ? "border-transparent bg-primary hover:bg-primary"
-                  : "border-border bg-muted"
+                  : "border-border bg-muted",
               )}
             >
               <span
@@ -165,12 +145,7 @@ function ToggleConfigPopover({
               />
             </Button>
           </header>
-          <div
-            className={cn(
-              "transition-opacity duration-150",
-              !checked && "opacity-50"
-            )}
-          >
+          <div className={cn("transition-opacity duration-150", !checked && "opacity-50")}>
             {children}
           </div>
         </PopoverContent>

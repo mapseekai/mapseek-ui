@@ -98,7 +98,11 @@ function MapSwitcherRoot({
 
   return (
     <MapSwitcherContext.Provider value={ctx}>
-      <div ref={rootRef} data-slot="map-switcher" className={cn("relative inline-block", className)}>
+      <div
+        ref={rootRef}
+        data-slot="map-switcher"
+        className={cn("relative inline-block", className)}
+      >
         {children}
       </div>
     </MapSwitcherContext.Provider>
@@ -217,7 +221,11 @@ function MapSwitcherTrigger() {
         {open ? (
           <IconChevronUp size={11} strokeWidth={1.75} className="text-muted-foreground shrink-0" />
         ) : (
-          <IconChevronDown size={11} strokeWidth={1.75} className="text-muted-foreground shrink-0" />
+          <IconChevronDown
+            size={11}
+            strokeWidth={1.75}
+            className="text-muted-foreground shrink-0"
+          />
         )}
       </div>
     </button>
@@ -228,7 +236,13 @@ function MapSwitcherTrigger() {
 // Panel
 // ---------------------------------------------------------------------------
 
-function MapSwitcherPanel({ className, children }: { className?: string; children: React.ReactNode }) {
+function MapSwitcherPanel({
+  className,
+  children,
+}: {
+  className?: string
+  children: React.ReactNode
+}) {
   const { open, mode } = useMapSwitcherContext()
 
   return (
@@ -238,7 +252,9 @@ function MapSwitcherPanel({ className, children }: { className?: string; childre
       hidden={!open}
       className={cn(
         "absolute bottom-[calc(100%+4px)] right-0 z-10 bg-card shadow-[var(--shadow-map-float)]",
-        mode === "image" ? "grid w-[174px] grid-cols-2 gap-1.5 p-2" : "flex flex-col p-1 min-w-[130px]",
+        mode === "image"
+          ? "grid w-[174px] grid-cols-2 gap-1.5 p-2"
+          : "flex flex-col p-1 min-w-[130px]",
         !open && "hidden",
         className,
       )}

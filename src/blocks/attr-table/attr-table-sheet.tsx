@@ -1,9 +1,5 @@
 import { useCallback, useState } from "react"
-import {
-  IconArrowsMaximize,
-  IconArrowsMinimize,
-  IconX,
-} from "@tabler/icons-react"
+import { IconArrowsMaximize, IconArrowsMinimize, IconX } from "@tabler/icons-react"
 import { IconButton } from "../../components/icon-button"
 import { cn } from "../../lib/utils"
 import { useTableSheetState, type TableSheetState } from "./use-table-sheet-state"
@@ -117,8 +113,7 @@ export function AttrTableSheet({
         // Only animate height for programmatic transitions (open/close,
         // fullscreen toggle) — never during a drag, otherwise the
         // cursor races ahead of the easing curve.
-        !isDragging &&
-          "transition-[height] duration-[180ms] ease-[var(--ease-out)]",
+        !isDragging && "transition-[height] duration-[180ms] ease-[var(--ease-out)]",
         className,
       )}
     >
@@ -145,11 +140,7 @@ export function AttrTableSheet({
         <div className="flex shrink-0 items-center justify-end gap-0.5">
           {actions}
           {showFullscreen && (
-            <IconButton
-              size="sm"
-              onClick={s.toggleFullscreen}
-              title={fullscreenLabel}
-            >
+            <IconButton size="sm" onClick={s.toggleFullscreen} title={fullscreenLabel}>
               {s.fullscreen ? (
                 <IconArrowsMinimize size={12} stroke={1.5} />
               ) : (

@@ -43,9 +43,7 @@ export function AppTopBar({
       {brand}
       {brand && <span className="mx-0.5 h-3.5 w-px bg-border" />}
 
-      <span className="text-[13px] leading-none font-semibold text-foreground">
-        {projectName}
-      </span>
+      <span className="text-[13px] leading-none font-semibold text-foreground">{projectName}</span>
 
       {status}
 

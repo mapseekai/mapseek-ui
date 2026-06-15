@@ -36,11 +36,7 @@ export function PlaceholderGlyph({
     strokeWidth: sw,
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
-    className: cn(
-      "block",
-      mono ? "text-muted-foreground" : "text-foreground",
-      className
-    ),
+    className: cn("block", mono ? "text-muted-foreground" : "text-foreground", className),
   }
 
   switch (v) {

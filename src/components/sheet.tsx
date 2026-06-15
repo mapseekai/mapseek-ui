@@ -45,10 +45,7 @@ const sheetVariants = cva(
   },
 )
 
-type SheetContentProps = Omit<
-  React.ComponentProps<typeof DialogPrimitive.Popup>,
-  "title"
-> &
+type SheetContentProps = Omit<React.ComponentProps<typeof DialogPrimitive.Popup>, "title"> &
   VariantProps<typeof sheetVariants> & {
     hideClose?: boolean
   }
@@ -92,10 +89,7 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function SheetTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+function SheetTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
       data-slot="sheet-title"

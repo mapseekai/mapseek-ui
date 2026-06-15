@@ -1,9 +1,4 @@
-import React, {
-  useRef,
-  type CSSProperties,
-  type PropsWithChildren,
-  type ReactNode,
-} from "react"
+import React, { useRef, type CSSProperties, type PropsWithChildren, type ReactNode } from "react"
 import { cn } from "../../lib/utils"
 import { Label } from "../../components/label"
 
@@ -73,19 +68,14 @@ export const Block: React.FC<BlockProps> = (props) => {
         <>
           {/* wideMode: label + action share a header row, content below */}
           <div className="flex items-center justify-between gap-2 overflow-visible">
-            <div className="maputnik-input-block-label min-w-0 flex-1">
-              {labelNode}
-            </div>
+            <div className="maputnik-input-block-label min-w-0 flex-1">{labelNode}</div>
             {props.action && (
               <div className="maputnik-input-block-action !w-auto !flex-none !basis-auto overflow-visible">
                 {props.action}
               </div>
             )}
           </div>
-          <div
-            className="maputnik-input-block-content w-full min-w-0"
-            ref={blockElRef}
-          >
+          <div className="maputnik-input-block-content w-full min-w-0" ref={blockElRef}>
             {props.children}
           </div>
         </>

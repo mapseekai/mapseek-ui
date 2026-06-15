@@ -18,11 +18,7 @@ import {
 } from "@tabler/icons-react"
 
 import { cn } from "@workspace/ui/lib/utils"
-import type {
-  LayerData,
-  LayerGeometry,
-  LayerPanelProps,
-} from "./types"
+import type { LayerData, LayerGeometry, LayerPanelProps } from "./types"
 import {
   LayerItemContext,
   LayerPanelContext,
@@ -81,8 +77,7 @@ function LayerPanelRoot({
 }: LayerPanelProps) {
   const { isSectionOpen, toggleSection, registerSectionDefault } = useSectionState()
 
-  const [collapsedUncontrolled, setCollapsedUncontrolled] =
-    React.useState(defaultCollapsed)
+  const [collapsedUncontrolled, setCollapsedUncontrolled] = React.useState(defaultCollapsed)
   const isControlled = collapsedProp !== undefined
   const collapsed = isControlled ? collapsedProp : collapsedUncontrolled
 
@@ -370,11 +365,7 @@ function LayerPanelItem({
           </button>
         )}
 
-        <GeomIcon
-          type={layer.geometryType}
-          size={13}
-          className="shrink-0 text-primary"
-        />
+        <GeomIcon type={layer.geometryType} size={13} className="shrink-0 text-primary" />
 
         <div className="min-w-0 flex-1">
           <div className="truncate text-[13px] font-medium leading-tight text-foreground">
@@ -383,9 +374,7 @@ function LayerPanelItem({
           <div className="mt-0.5 flex items-center gap-1.5 text-[11px] leading-tight text-muted-foreground">
             {layer.featureCount != null && (
               <>
-                <span className="font-mono tabular-nums">
-                  {layer.featureCount}
-                </span>
+                <span className="font-mono tabular-nums">{layer.featureCount}</span>
                 <span>要素</span>
                 <span className="text-muted-foreground/50">·</span>
               </>
@@ -510,10 +499,7 @@ function LayerPanelSection({
           transition: "max-height 180ms",
         }}
       >
-        <div
-          className="py-1 pb-3 pl-8 pr-3 pt-1"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <div className="py-1 pb-3 pl-8 pr-3 pt-1" onClick={(e) => e.stopPropagation()}>
           {children}
         </div>
       </div>
@@ -537,10 +523,7 @@ function LayerPanelEmpty({
   return (
     <div
       data-slot="layer-panel-empty"
-      className={cn(
-        "flex flex-col items-center gap-2.5 px-3 py-8 text-center",
-        className,
-      )}
+      className={cn("flex flex-col items-center gap-2.5 px-3 py-8 text-center", className)}
     >
       {children}
     </div>
@@ -549,11 +532,7 @@ function LayerPanelEmpty({
 
 function LayerPanelEmptyIcon({ className }: { className?: string }) {
   return (
-    <IconMapOff
-      size={28}
-      className={cn("text-muted-foreground", className)}
-      strokeWidth={1.5}
-    />
+    <IconMapOff size={28} className={cn("text-muted-foreground", className)} strokeWidth={1.5} />
   )
 }
 

@@ -27,7 +27,7 @@ function Empty({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="empty"
       className={cn(
         "flex min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-none border border-dashed border-border bg-background p-6 text-center text-balance",
-        className
+        className,
       )}
       {...props}
     />
@@ -55,9 +55,8 @@ function EmptyMedia({ className, variant = "default", ...props }: EmptyMediaProp
       data-variant={variant}
       className={cn(
         "mb-1 grid place-items-center text-muted-foreground",
-        variant === "icon" &&
-          "size-10 rounded-none border border-border bg-muted",
-        className
+        variant === "icon" && "size-10 rounded-none border border-border bg-muted",
+        className,
       )}
       {...props}
     />
@@ -74,10 +73,7 @@ function EmptyTitle({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function EmptyDescription({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+function EmptyDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="empty-description"
@@ -97,11 +93,4 @@ function EmptyContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-export {
-  Empty,
-  EmptyContent,
-  EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
-  EmptyTitle,
-}
+export { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle }

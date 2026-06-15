@@ -53,14 +53,12 @@ export function AddFieldForm({
                 className={cn(
                   "flex h-14 flex-col items-center justify-center gap-1 rounded-none border px-1 py-1.5 transition-colors",
                   isCur
-                  ? "border-border border-b-2 border-b-primary bg-selection-bg text-primary"
+                    ? "border-border border-b-2 border-b-primary bg-selection-bg text-primary"
                     : "border-border bg-background text-foreground hover:bg-muted",
                 )}
               >
                 <TypeIcon size={16} />
-                <span className="text-[11px] font-medium leading-none">
-                  {t.label}
-                </span>
+                <span className="text-[11px] font-medium leading-none">{t.label}</span>
               </button>
             )
           })}
@@ -96,13 +94,8 @@ export function AddFieldForm({
       </div>
 
       <label className="flex cursor-pointer items-center gap-2">
-        <Checkbox
-          checked={value.nullable}
-          onCheckedChange={(c) => set({ nullable: c === true })}
-        />
-        <span className="text-xs font-medium leading-none">
-          {labels.nullableLabel}
-        </span>
+        <Checkbox checked={value.nullable} onCheckedChange={(c) => set({ nullable: c === true })} />
+        <span className="text-xs font-medium leading-none">{labels.nullableLabel}</span>
         <span className="text-[11px] leading-none text-muted-foreground">
           {labels.nullableHint}
         </span>

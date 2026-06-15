@@ -1,10 +1,5 @@
 import type { ReactNode } from "react"
-import {
-  IconCurrentLocation,
-  IconHome,
-  IconMinus,
-  IconPlus,
-} from "@tabler/icons-react"
+import { IconCurrentLocation, IconHome, IconMinus, IconPlus } from "@tabler/icons-react"
 import { Button } from "@workspace/ui/components/button"
 import { cn } from "@workspace/ui/lib/utils"
 import type { MapControlsProps } from "./types"
@@ -23,10 +18,7 @@ function MapControlButton({
   return (
     <span
       data-slot="map-control-item"
-      className={cn(
-        "group relative inline-flex",
-        divider && "border-t border-border"
-      )}
+      className={cn("group relative inline-flex", divider && "border-t border-border")}
     >
       <Button
         type="button"

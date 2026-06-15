@@ -1,8 +1,8 @@
 export type CrsKind = "geographic" | "projected"
 
 export interface CrsItem {
-  epsg: string        // e.g. "EPSG:4326"
-  name: string        // e.g. "WGS 84"
+  epsg: string // e.g. "EPSG:4326"
+  name: string // e.g. "WGS 84"
   description: string // e.g. "全球通用 · 经纬度"
   kind: CrsKind
 }

@@ -1,10 +1,5 @@
 import * as React from "react"
-import {
-  IconMap2,
-  IconSearch,
-  IconWorld,
-  type Icon as TablerIcon,
-} from "@tabler/icons-react"
+import { IconMap2, IconSearch, IconWorld, type Icon as TablerIcon } from "@tabler/icons-react"
 import { cn } from "@workspace/ui/lib/utils"
 import { buildCrsList } from "./built-in-crs"
 import type { CrsItem, CrsPickerProps } from "./types"
@@ -14,11 +9,7 @@ import type { CrsItem, CrsPickerProps } from "./types"
 function filterItems(items: CrsItem[], query: string): CrsItem[] {
   const q = query.trim().toLowerCase()
   if (!q) return items
-  return items.filter(
-    i =>
-      i.epsg.toLowerCase().includes(q) ||
-      i.name.toLowerCase().includes(q),
-  )
+  return items.filter((i) => i.epsg.toLowerCase().includes(q) || i.name.toLowerCase().includes(q))
 }
 
 // ── CrsPicker ─────────────────────────────────────────────────────────────────
@@ -41,14 +32,10 @@ export function CrsPicker({
 
   const allItems = React.useMemo(
     () => buildCrsList(allowedEpsgs, extraItems),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [JSON.stringify(allowedEpsgs), JSON.stringify(extraItems)],
   )
 
-  const visibleItems = React.useMemo(
-    () => filterItems(allItems, query),
-    [allItems, query],
-  )
+  const visibleItems = React.useMemo(() => filterItems(allItems, query), [allItems, query])
 
   const hasQuery = query.trim().length > 0
 
@@ -57,8 +44,8 @@ export function CrsPicker({
     onChange?.(epsg)
   }
 
-  const geographic = visibleItems.filter(i => i.kind === "geographic")
-  const projected = visibleItems.filter(i => i.kind === "projected")
+  const geographic = visibleItems.filter((i) => i.kind === "geographic")
+  const projected = visibleItems.filter((i) => i.kind === "projected")
 
   return (
     <div
@@ -86,7 +73,7 @@ export function CrsPicker({
         <input
           type="text"
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="搜索 EPSG 或名称…"
           className="h-8 w-full border-0 bg-transparent text-xs text-foreground placeholder:text-muted-foreground outline-none"
         />
@@ -99,7 +86,7 @@ export function CrsPicker({
             未找到匹配的坐标系
           </div>
         ) : hasQuery ? (
-          visibleItems.map(item => (
+          visibleItems.map((item) => (
             <CrsRow
               key={item.epsg}
               item={item}
@@ -112,7 +99,7 @@ export function CrsPicker({
             {geographic.length > 0 && (
               <>
                 <GroupLabel icon={IconWorld}>球面坐标系</GroupLabel>
-                {geographic.map(item => (
+                {geographic.map((item) => (
                   <CrsRow
                     key={item.epsg}
                     item={item}
@@ -127,7 +114,7 @@ export function CrsPicker({
                 <GroupLabel icon={IconMap2} className={geographic.length > 0 ? "mt-1" : undefined}>
                   平面坐标系
                 </GroupLabel>
-                {projected.map(item => (
+                {projected.map((item) => (
                   <CrsRow
                     key={item.epsg}
                     item={item}

@@ -7,16 +7,6 @@ export type InputCheckboxProps = {
   onChange(...args: unknown[]): unknown
 }
 
-export const InputCheckbox: React.FC<InputCheckboxProps> = ({
-  value = false,
-  onChange,
-  style,
-}) => {
-  return (
-    <Checkbox
-      checked={value}
-      onCheckedChange={(next) => onChange(next)}
-      style={style}
-    />
-  )
+export const InputCheckbox: React.FC<InputCheckboxProps> = ({ value = false, onChange, style }) => {
+  return <Checkbox checked={value} onCheckedChange={(next) => onChange(next)} style={style} />
 }

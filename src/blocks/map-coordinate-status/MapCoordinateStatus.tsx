@@ -1,16 +1,7 @@
 import * as React from "react"
-import {
-  IconChevronDown,
-  IconMap2,
-  IconWorld,
-  type Icon as TablerIcon,
-} from "@tabler/icons-react"
+import { IconChevronDown, IconMap2, IconWorld, type Icon as TablerIcon } from "@tabler/icons-react"
 import { Button } from "@workspace/ui/components/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@workspace/ui/components/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover"
 import { cn } from "@workspace/ui/lib/utils"
 import { CrsPicker } from "../crs-picker"
 import type {

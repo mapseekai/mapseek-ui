@@ -25,10 +25,7 @@ export type StyleColorInputProps = {
   inputPlaceholder?: string
   swatchLabel?: string
   "aria-label"?: string
-  onOpenChange?: (
-    open: boolean,
-    details?: StyleColorPopoverOpenChangeDetails
-  ) => void
+  onOpenChange?: (open: boolean, details?: StyleColorPopoverOpenChangeDetails) => void
   onTextChange?: (value: string) => void
   onPickerChange?: (value: unknown, formatted?: string) => void
   onTextFocus?: () => void

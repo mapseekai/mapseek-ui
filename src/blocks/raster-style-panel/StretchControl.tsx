@@ -4,11 +4,9 @@ import { cn } from "../../lib/utils"
 import { Segmented } from "./Segmented"
 import type { RasterBand, RasterStretch, StretchMode } from "./types"
 
-const numInput =
-  "h-[26px] flex-1 rounded-none px-1.5 text-right font-mono text-[11px] tabular-nums"
+const numInput = "h-[26px] flex-1 rounded-none px-1.5 text-right font-mono text-[11px] tabular-nums"
 const segBtn = "font-mono text-[10px] uppercase tracking-[0.04em] whitespace-nowrap"
-const hint =
-  "shrink-0 font-mono text-[10px] uppercase tracking-[0.04em] text-muted-foreground"
+const hint = "shrink-0 font-mono text-[10px] uppercase tracking-[0.04em] text-muted-foreground"
 
 const MODES: StretchMode[] = ["custom", "minmax", "percent", "stddev"]
 
@@ -113,9 +111,7 @@ export function StretchControl({
           </div>
         ))}
 
-      {value.mode === "minmax" && (
-        <span className={hint}>{labels.minmaxHint}</span>
-      )}
+      {value.mode === "minmax" && <span className={hint}>{labels.minmaxHint}</span>}
 
       {value.mode === "percent" && (
         <div className="flex items-center gap-1">

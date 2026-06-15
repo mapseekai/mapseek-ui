@@ -51,9 +51,7 @@ export const InputString: React.FC<InputStringProps> = ({
     if (!editing) setValue(propsValue || "")
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const newVal = e.target.value
     setEditing(true)
     setValue(newVal)
@@ -69,9 +67,7 @@ export const InputString: React.FC<InputStringProps> = ({
     }
   }
 
-  const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !multi && onChange) {
       onChange(value)
     }
@@ -90,10 +86,7 @@ export const InputString: React.FC<InputStringProps> = ({
     onBlur: handleBlur,
     onKeyDown: handleKeyDown,
     required,
-    className: cn(
-      "w-full bg-transparent px-3 py-1",
-      disabled && "cursor-not-allowed opacity-50",
-    ),
+    className: cn("w-full bg-transparent px-3 py-1", disabled && "cursor-not-allowed opacity-50"),
   }
 
   if (multi) {

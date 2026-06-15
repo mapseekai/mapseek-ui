@@ -1,13 +1,6 @@
 import type * as React from "react"
 
-export type PixelFieldType =
-  | "INT"
-  | "FLOAT"
-  | "TEXT"
-  | "INDEX"
-  | "COORD"
-  | "ENUM"
-  | "DATE"
+export type PixelFieldType = "INT" | "FLOAT" | "TEXT" | "INDEX" | "COORD" | "ENUM" | "DATE"
 
 export interface PixelField {
   key: string

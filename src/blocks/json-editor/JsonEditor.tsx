@@ -121,7 +121,7 @@ const appJsonHighlightStyle = syntaxHighlighting(
     { tag: tags.bool, color: "var(--cat-4)" },
     { tag: tags.null, color: "var(--muted-foreground)" },
     { tag: tags.punctuation, color: "var(--muted-foreground)" },
-  ])
+  ]),
 )
 
 function formatJsonValue(value: unknown) {
@@ -167,7 +167,7 @@ export function JsonEditor({
       EditorState.tabSize.of(2),
       EditorView.lineWrapping,
     ],
-    [theme]
+    [theme],
   )
   const codeMirrorTheme = theme === "app" ? "none" : theme
 
@@ -188,17 +188,12 @@ export function JsonEditor({
     }
 
     queueMicrotask(() => {
-      if (
-        isFocusedRef.current ||
-        formattedValueRef.current !== formattedValue
-      ) {
+      if (isFocusedRef.current || formattedValueRef.current !== formattedValue) {
         return
       }
 
       pendingFormattedValueRef.current = null
-      setCode((currentCode) =>
-        currentCode === formattedValue ? currentCode : formattedValue
-      )
+      setCode((currentCode) => (currentCode === formattedValue ? currentCode : formattedValue))
     })
   }, [formattedValue, isFocused])
 
@@ -209,18 +204,13 @@ export function JsonEditor({
 
     const pendingFormattedValue = pendingFormattedValueRef.current
     queueMicrotask(() => {
-      if (
-        isFocusedRef.current ||
-        formattedValueRef.current !== pendingFormattedValue
-      ) {
+      if (isFocusedRef.current || formattedValueRef.current !== pendingFormattedValue) {
         return
       }
 
       pendingFormattedValueRef.current = null
       setCode((currentCode) =>
-        currentCode === pendingFormattedValue
-          ? currentCode
-          : pendingFormattedValue
+        currentCode === pendingFormattedValue ? currentCode : pendingFormattedValue,
       )
     })
   }, [isFocused])
@@ -235,7 +225,7 @@ export function JsonEditor({
         // Keep invalid in-progress JSON visible until the user fixes it.
       }
     },
-    [onChange]
+    [onChange],
   )
 
   const handleFocus = useCallback(() => {
@@ -253,7 +243,7 @@ export function JsonEditor({
       className={cn(
         "relative flex h-[360px] max-h-full min-h-0 w-full flex-col overflow-hidden border border-input bg-background",
         withScroll && "h-full",
-        className
+        className,
       )}
       data-wd-key="json-editor"
       role="group"
@@ -263,13 +253,13 @@ export function JsonEditor({
         <div
           className={cn(
             "flex h-8 shrink-0 items-center border-b border-border bg-muted/40 px-3",
-            headerClassName
+            headerClassName,
           )}
         >
           <span
             className={cn(
               "font-mono text-[11px] leading-none font-semibold tracking-[0.06em] text-muted-foreground uppercase",
-              titleClassName
+              titleClassName,
             )}
           >
             {title}
@@ -279,7 +269,7 @@ export function JsonEditor({
       <div
         className={cn(
           "relative min-h-0 flex-1 overflow-hidden bg-background text-xs",
-          editorClassName
+          editorClassName,
         )}
       >
         <CodeMirror

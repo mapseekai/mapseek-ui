@@ -62,11 +62,7 @@ function ParamLabel({ text, help }: { text: string; help?: string }) {
       {text}
       {help && (
         <Tooltip content={help}>
-          <IconHelpCircle
-            size={12}
-            stroke={1.75}
-            className="text-muted-foreground"
-          />
+          <IconHelpCircle size={12} stroke={1.75} className="text-muted-foreground" />
         </Tooltip>
       )}
     </label>
@@ -120,9 +116,8 @@ export function RasterStylePanel({
   const maxBand = Math.max(
     1,
     Math.floor(
-      bandCount ??
-        Math.max(1, ...value.bands.map((band) => band.idx).filter(Number.isFinite))
-    )
+      bandCount ?? Math.max(1, ...value.bands.map((band) => band.idx).filter(Number.isFinite)),
+    ),
   )
   const bandOptions = range(maxBand)
   const bandOptionLabel = (idx: number) => `${labels.band} ${idx}`
@@ -133,8 +128,7 @@ export function RasterStylePanel({
     ...DEFAULT_NODATA_DESCRIPTIONS,
     ...labels.nodataDescriptions,
   }
-  const nodataRecommendations =
-    labels.nodataRecommendations ?? DEFAULT_NODATA_RECOMMENDATIONS
+  const nodataRecommendations = labels.nodataRecommendations ?? DEFAULT_NODATA_RECOMMENDATIONS
 
   const setRenderMode = (mode: RenderMode) => {
     if (mode === renderMode) return
@@ -145,7 +139,7 @@ export function RasterStylePanel({
       }))
       const firstRange =
         value.stretch.mode === "custom"
-          ? value.stretch.rescale ?? value.stretch.rescaleBands?.[0]
+          ? (value.stretch.rescale ?? value.stretch.rescaleBands?.[0])
           : undefined
       set({
         multiband: true,
@@ -164,7 +158,7 @@ export function RasterStylePanel({
     const first = value.bands[0]
     const firstRange =
       value.stretch.mode === "custom"
-        ? value.stretch.rescale ?? value.stretch.rescaleBands?.[0]
+        ? (value.stretch.rescale ?? value.stretch.rescaleBands?.[0])
         : undefined
     set({
       multiband: false,
@@ -221,12 +215,7 @@ export function RasterStylePanel({
           <div className="flex flex-col gap-1.5">
             {CHANNELS.map((channel, i) => (
               <div key={channel} className="grid grid-cols-[18px_1fr] items-center gap-1.5">
-                <span
-                  className={cn(
-                    "font-mono text-[11px] font-semibold",
-                    CHANNEL_COLOR[channel]
-                  )}
-                >
+                <span className={cn("font-mono text-[11px] font-semibold", CHANNEL_COLOR[channel])}>
                   {channel}
                 </span>
                 <Select

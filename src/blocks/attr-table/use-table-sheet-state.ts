@@ -46,9 +46,7 @@ export function useTableSheetState(): TableSheetState {
     typeof window === "undefined" ? 800 : window.innerHeight,
   )
   const [height, setHeightState] = useState(() => defaultHeight(viewportHeight))
-  const [prevHeight, setPrevHeight] = useState(() =>
-    defaultHeight(viewportHeight),
-  )
+  const [prevHeight, setPrevHeight] = useState(() => defaultHeight(viewportHeight))
   const [fullscreen, setFullscreen] = useState(false)
   const draggingRef = useRef(false)
 

@@ -10,13 +10,7 @@ export type ColormapName =
 
 export type StretchMode = "custom" | "minmax" | "percent" | "stddev"
 
-export type Resampling =
-  | "nearest"
-  | "bilinear"
-  | "cubic"
-  | "cubic-spline"
-  | "lanczos"
-  | "average"
+export type Resampling = "nearest" | "bilinear" | "cubic" | "cubic-spline" | "lanczos" | "average"
 
 export type TileSize = 64 | 128 | 256 | 512 | 1024
 
@@ -105,10 +99,7 @@ export interface RasterStyleLabels {
   multibandNote: string
   /** Optional per-control help text (rendered as a help tooltip). */
   help?: Partial<
-    Record<
-      "band" | "colormap" | "stretch" | "nodata" | "resampling" | "colorFormula",
-      string
-    >
+    Record<"band" | "colormap" | "stretch" | "nodata" | "resampling" | "colorFormula", string>
   >
 }
 

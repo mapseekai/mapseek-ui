@@ -1,11 +1,5 @@
 import * as React from "react"
-import {
-  IconAdjustmentsAlt,
-  IconCode,
-  IconEye,
-  IconPlus,
-  IconX,
-} from "@tabler/icons-react"
+import { IconAdjustmentsAlt, IconCode, IconEye, IconPlus, IconX } from "@tabler/icons-react"
 
 import { cn } from "@workspace/ui/lib/utils"
 import { Button } from "@workspace/ui/components/button"
@@ -20,16 +14,12 @@ import type {
 } from "./types"
 import { EMPTY_FILTER } from "./types"
 
-const FilterPanelContext = React.createContext<FilterPanelContextValue | null>(
-  null,
-)
+const FilterPanelContext = React.createContext<FilterPanelContextValue | null>(null)
 
 function useFilterPanelContext(): FilterPanelContextValue {
   const ctx = React.useContext(FilterPanelContext)
   if (!ctx) {
-    throw new Error(
-      "FilterPanel sub-components must be used inside <FilterPanel>.",
-    )
+    throw new Error("FilterPanel sub-components must be used inside <FilterPanel>.")
   }
   return ctx
 }
@@ -42,24 +32,14 @@ function patch(
   onChange({ ...value, ...delta })
 }
 
-const miniSelect =
-  "h-[26px] rounded-none border-border bg-background px-2 font-mono text-[11px]"
+const miniSelect = "h-[26px] rounded-none border-border bg-background px-2 font-mono text-[11px]"
 
 // ---------------------------------------------------------------------------
 // Root
 // ---------------------------------------------------------------------------
 
-function FilterPanelRoot({
-  fields,
-  value,
-  onChange,
-  className,
-  children,
-}: FilterPanelProps) {
-  const ctx = React.useMemo(
-    () => ({ fields, value, onChange }),
-    [fields, value, onChange],
-  )
+function FilterPanelRoot({ fields, value, onChange, className, children }: FilterPanelProps) {
+  const ctx = React.useMemo(() => ({ fields, value, onChange }), [fields, value, onChange])
   return (
     <FilterPanelContext.Provider value={ctx}>
       <div data-slot="filter-panel" className={cn("flex flex-col", className)}>
@@ -105,13 +85,7 @@ function FilterPanelModeToggle({ className }: { className?: string }) {
   )
 }
 
-function FilterPanelBuilder({
-  ops,
-  className,
-}: {
-  ops: string[]
-  className?: string
-}) {
+function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: string }) {
   const { fields, value, onChange } = useFilterPanelContext()
   if (value.mode !== "builder") return null
 
@@ -221,13 +195,7 @@ function FilterPanelBuilder({
   )
 }
 
-function FilterPanelSql({
-  keywords,
-  className,
-}: {
-  keywords: string[]
-  className?: string
-}) {
+function FilterPanelSql({ keywords, className }: { keywords: string[]; className?: string }) {
   const { value, onChange } = useFilterPanelContext()
   if (value.mode !== "sql") return null
   return (
@@ -267,10 +235,7 @@ function FilterPanelFooter({
   children: React.ReactNode
 }) {
   return (
-    <div
-      data-slot="filter-panel-footer"
-      className={cn("mt-2 flex items-center gap-2", className)}
-    >
+    <div data-slot="filter-panel-footer" className={cn("mt-2 flex items-center gap-2", className)}>
       {children}
     </div>
   )
@@ -327,10 +292,7 @@ function FilterPanelApplyButton({
   children?: React.ReactNode
 }) {
   return (
-    <Button
-      onClick={onClick}
-      className={cn("-ml-px h-6 rounded-none px-2 text-[11px]", className)}
-    >
+    <Button onClick={onClick} className={cn("-ml-px h-6 rounded-none px-2 text-[11px]", className)}>
       {children}
     </Button>
   )

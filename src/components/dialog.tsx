@@ -19,17 +19,14 @@ function DialogBackdrop({
     <DialogPrimitive.Backdrop
       className={cn(
         "fixed inset-0 z-[1060] bg-black/40 transition-opacity duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
-        className
+        className,
       )}
       {...props}
     />
   )
 }
 
-type DialogContentProps = Omit<
-  React.ComponentProps<typeof DialogPrimitive.Popup>,
-  "title"
-> & {
+type DialogContentProps = Omit<React.ComponentProps<typeof DialogPrimitive.Popup>, "title"> & {
   width?: number | string
   title?: React.ReactNode
   description?: React.ReactNode
@@ -52,7 +49,7 @@ function DialogContent({
         className={cn(
           "fixed top-1/2 left-1/2 z-[1060] -translate-x-1/2 -translate-y-1/2 border border-border bg-card shadow-lg outline-none",
           "transition-opacity duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
-          className
+          className,
         )}
         style={{ width }}
         {...props}
@@ -96,7 +93,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       className={cn(
         "flex min-h-9 items-center justify-end gap-2 border-t border-border bg-muted/40 px-4 py-2",
-        className
+        className,
       )}
       {...props}
     />
@@ -124,19 +121,13 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn(
-        "flex flex-col gap-1 border-b border-border px-4 py-3",
-        className
-      )}
+      className={cn("flex flex-col gap-1 border-b border-border px-4 py-3", className)}
       {...props}
     />
   )
 }
 
-function DialogTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
       className={cn("text-sm font-semibold tracking-[-0.01em]", className)}

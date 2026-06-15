@@ -35,22 +35,17 @@ export function LayerStyleEditor({
       data-wd-key={dataWdKey}
       role={ariaLabel ? "main" : undefined}
       aria-label={ariaLabel}
-      className={cn(
-        "flex h-full w-full flex-col bg-card text-card-foreground",
-        className
-      )}
+      className={cn("flex h-full w-full flex-col bg-card text-card-foreground", className)}
     >
       <header
         data-slot="layer-style-editor-header"
         data-wd-key={dataWdKey ? `${dataWdKey}.header` : undefined}
         className={cn(
           "z-20 flex h-10 shrink-0 items-center border-b border-border bg-card px-3",
-          headerClassName
+          headerClassName,
         )}
       >
-        <h2 className="m-0 grow truncate pr-2 text-[13px] leading-none font-semibold">
-          {title}
-        </h2>
+        <h2 className="m-0 grow truncate pr-2 text-[13px] leading-none font-semibold">{title}</h2>
         <div className="flex items-center gap-1.5">
           {actions.length > 0 ? (
             <DropdownMenu>
@@ -101,10 +96,7 @@ export function LayerStyleEditor({
         </div>
       </header>
 
-      <Tabs
-        defaultValue={defaultTabId}
-        className="flex grow flex-col overflow-hidden"
-      >
+      <Tabs defaultValue={defaultTabId} className="flex grow flex-col overflow-hidden">
         <div
           className={cn("grow overflow-y-auto pb-16", scrollClassName)}
           style={{ scrollbarGutter: "stable" }}
@@ -115,10 +107,7 @@ export function LayerStyleEditor({
               value={tab.id}
               className={cn("mt-0 h-full", tab.contentClassName)}
             >
-              <LayerEditorGroup
-                key={tab.groupKey ?? tab.id}
-                sections={tab.sections}
-              />
+              <LayerEditorGroup key={tab.groupKey ?? tab.id} sections={tab.sections} />
             </TabsContent>
           ))}
         </div>
@@ -142,7 +131,7 @@ export function LayerStyleEditor({
                   "h-7 text-xs font-medium text-muted-foreground",
                   "hover:text-foreground active:border-primary active:bg-primary active:text-primary-foreground",
                   "data-active:border-primary data-active:bg-primary data-active:font-semibold data-active:text-primary-foreground data-active:hover:text-primary-foreground",
-                  "dark:data-active:border-primary dark:data-active:bg-primary dark:data-active:text-primary-foreground"
+                  "dark:data-active:border-primary dark:data-active:bg-primary dark:data-active:text-primary-foreground",
                 )}
               >
                 {tab.label}

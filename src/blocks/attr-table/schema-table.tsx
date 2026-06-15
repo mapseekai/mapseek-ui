@@ -35,17 +35,13 @@ export function SchemaTable({
 }: SchemaTableProps) {
   const [query, setQuery] = useState("")
 
-  const items = useMemo<SchemaRow[]>(
-    () => attributeColumns(attributes),
-    [attributes],
-  )
+  const items = useMemo<SchemaRow[]>(() => attributeColumns(attributes), [attributes])
 
   const itemsKey = useMemo(() => Object.keys(attributes).join("|"), [attributes])
 
   const source = useStaticRowSource(items, {
     query,
-    match: (it, q) =>
-      it.name.toLowerCase().includes(q) || it.rawType.toLowerCase().includes(q),
+    match: (it, q) => it.name.toLowerCase().includes(q) || it.rawType.toLowerCase().includes(q),
     itemsKey,
   })
 

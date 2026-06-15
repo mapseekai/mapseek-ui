@@ -41,10 +41,7 @@ export interface ResourceFontItem {
   family: FontFamilyKind
 }
 
-export type ResourceGridItem =
-  | ResourceIconItem
-  | ResourceSpriteItem
-  | ResourceFontItem
+export type ResourceGridItem = ResourceIconItem | ResourceSpriteItem | ResourceFontItem
 
 export interface ResourceGridProps {
   tab: ResourceTab

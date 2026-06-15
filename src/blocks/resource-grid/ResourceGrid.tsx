@@ -64,7 +64,7 @@ export function ResourceGrid({
       <div
         className={cn(
           "grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-px border border-border bg-border",
-          className
+          className,
         )}
       >
         {(items as ResourceIconItem[]).map((it) => (
@@ -91,22 +91,14 @@ export function ResourceGrid({
 
   if (tab === "sprite") {
     return (
-      <div
-        className={cn(
-          "grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3",
-          className
-        )}
-      >
+      <div className={cn("grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3", className)}>
         {(items as ResourceSpriteItem[]).map((s) => (
           <ResourceCard
             key={s.id}
             onOpen={() => onOpen("sprite", s.id)}
             onContextMenu={(e) => onContextMenu(e, "sprite", s.id)}
             thumb={
-              <div
-                className="grid grid-cols-4 border border-border"
-                style={CHECKER}
-              >
+              <div className="grid grid-cols-4 border border-border" style={CHECKER}>
                 {s.previewSeeds.slice(0, 8).map((seed, i) => (
                   <div key={i} className="grid size-7 place-items-center">
                     <PlaceholderGlyph size={16} seed={seed} />
@@ -114,11 +106,7 @@ export function ResourceGrid({
                 ))}
               </div>
             }
-            title={
-              <span className="font-mono text-[12.5px] font-medium">
-                {s.name}
-              </span>
-            }
+            title={<span className="font-mono text-[12.5px] font-medium">{s.name}</span>}
             status={s.status}
             meta={s.metaParts}
           />
@@ -128,12 +116,7 @@ export function ResourceGrid({
   }
 
   return (
-    <div
-      className={cn(
-        "grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3",
-        className
-      )}
-    >
+    <div className={cn("grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3", className)}>
       {(items as ResourceFontItem[]).map((f) => (
         <ResourceCard
           key={f.id}
@@ -141,7 +124,7 @@ export function ResourceGrid({
           onContextMenu={(e) => onContextMenu(e, "font", f.id)}
           thumbClassName={cn(
             "text-[42px] leading-none font-semibold tracking-[-0.02em] text-foreground",
-            fontClass(f.family)
+            fontClass(f.family),
           )}
           thumb={<span>Aa 永</span>}
           title={<span className="font-semibold">{f.name}</span>}
@@ -179,7 +162,7 @@ function ResourceCard({
       <div
         className={cn(
           "flex min-h-[120px] items-center justify-center border-b border-border bg-muted p-[18px]",
-          thumbClassName
+          thumbClassName,
         )}
       >
         {thumb}

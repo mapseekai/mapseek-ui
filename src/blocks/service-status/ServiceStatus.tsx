@@ -26,16 +26,11 @@ export function ServiceStatus({
         "inline-flex items-center font-sans text-xs transition-colors",
         variant === "framed" && [
           "h-[26px] gap-1.5 border px-2",
-          running
-            ? "border-primary bg-primary/5"
-            : "border-border bg-background",
+          running ? "border-primary bg-primary/5" : "border-border bg-background",
         ],
-        variant === "inline" && [
-          "h-7 gap-2",
-          running ? "text-primary" : "text-muted-foreground",
-        ],
+        variant === "inline" && ["h-7 gap-2", running ? "text-primary" : "text-muted-foreground"],
         disabled && "cursor-not-allowed opacity-50",
-        className
+        className,
       )}
     >
       <Switch
@@ -58,8 +53,7 @@ export function ServiceStatus({
       <span
         className={cn(
           "leading-none font-medium whitespace-nowrap",
-          variant === "framed" &&
-            (running ? "text-primary" : "text-muted-foreground")
+          variant === "framed" && (running ? "text-primary" : "text-muted-foreground"),
         )}
       >
         {running ? runningLabel : stoppedLabel}

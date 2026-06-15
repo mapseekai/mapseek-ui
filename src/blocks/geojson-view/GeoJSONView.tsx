@@ -60,7 +60,7 @@ export function GeoJSONView({
     <div
       className={cn(
         "flex h-[360px] max-h-full min-h-0 flex-col border border-border bg-card",
-        className
+        className,
       )}
     >
       <JsonViewer
@@ -89,7 +89,7 @@ function ViewShell({
     <div
       className={cn(
         "flex h-[360px] max-h-full min-h-0 flex-col border border-border bg-card",
-        className
+        className,
       )}
     >
       <div className="flex h-8 shrink-0 items-center border-b border-border px-3">
@@ -116,14 +116,12 @@ function PreView({
     <pre
       className={cn(
         "m-0 min-h-0 flex-1 overflow-auto bg-muted/50 px-3.5 py-3 font-mono text-[11px] leading-[1.6] font-medium text-foreground [tab-size:2]",
-        className
+        className,
       )}
     >
       {lines === null ? (
         <div className="grid grid-cols-[32px_1fr] gap-x-3">
-          <span className="text-right text-muted-foreground tabular-nums select-none">
-            1
-          </span>
+          <span className="text-right text-muted-foreground tabular-nums select-none">1</span>
           <span className="text-muted-foreground">{emptyLabel}</span>
         </div>
       ) : (

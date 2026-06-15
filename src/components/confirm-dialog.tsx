@@ -70,11 +70,7 @@ function ConfirmProvider({ children }: { children: React.ReactNode }) {
             title={
               <span className="inline-flex items-center gap-2 leading-none">
                 {isDestructive && (
-                  <IconAlertTriangle
-                    size={16}
-                    stroke={1.8}
-                    className="shrink-0 text-destructive"
-                  />
+                  <IconAlertTriangle size={16} stroke={1.8} className="shrink-0 text-destructive" />
                 )}
                 <span className="leading-none">{options.title}</span>
               </span>
@@ -94,13 +90,7 @@ function ConfirmProvider({ children }: { children: React.ReactNode }) {
                 size="sm"
                 onClick={() => close(true)}
               >
-                {isDestructive && (
-                  <IconTrash
-                    size={14}
-                    stroke={1.8}
-                    className="-ml-0.5 shrink-0"
-                  />
-                )}
+                {isDestructive && <IconTrash size={14} stroke={1.8} className="-ml-0.5 shrink-0" />}
                 {options.confirmText ?? (isDestructive ? "删除" : "确认")}
               </Button>
             </DialogFooter>

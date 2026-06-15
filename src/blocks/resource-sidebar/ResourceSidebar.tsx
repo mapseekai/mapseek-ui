@@ -38,8 +38,7 @@ export function ResourceSidebar({
 }: ResourceSidebarProps) {
   const leafBase =
     "relative flex cursor-pointer items-center gap-2 text-[12.5px] text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-muted"
-  const activeLeaf =
-    "bg-primary/10 text-primary before:opacity-100"
+  const activeLeaf = "bg-primary/10 text-primary before:opacity-100"
 
   function leafClass(active: boolean, extra: string) {
     return cn(leafBase, extra, active && activeLeaf)
@@ -49,7 +48,7 @@ export function ResourceSidebar({
     <aside
       className={cn(
         "flex w-[220px] shrink-0 flex-col border-r border-border bg-background",
-        className
+        className,
       )}
     >
       <div className="px-3.5 pt-3 pb-2 font-mono text-[10.5px] tracking-[0.06em] text-muted-foreground uppercase">
@@ -62,7 +61,7 @@ export function ResourceSidebar({
             "flex items-center gap-2 px-2.5 py-[7px] text-[12.5px] font-semibold",
             tab === "icon" || tab === "sprite"
               ? "text-primary [&_svg]:text-primary"
-              : "text-foreground [&_svg]:text-muted-foreground"
+              : "text-foreground [&_svg]:text-muted-foreground",
           )}
         >
           <IconLayoutGrid size={12} stroke={ICON_STROKE} />
@@ -157,12 +156,7 @@ export function ResourceSidebar({
       </div>
 
       <div className="border-t border-border p-2.5">
-        <Button
-          variant="outline"
-          size="sm"
-          className="w-full"
-          onClick={onCreateCategory}
-        >
+        <Button variant="outline" size="sm" className="w-full" onClick={onCreateCategory}>
           <IconPlus size={12} stroke={ICON_STROKE} />
           {labels.newCategory}
         </Button>
@@ -193,7 +187,7 @@ function TypeRow({
       <span
         className={cn(
           "ml-auto font-mono text-[10.5px]",
-          active ? "text-primary" : "text-muted-foreground"
+          active ? "text-primary" : "text-muted-foreground",
         )}
       >
         {count}
@@ -221,7 +215,7 @@ function CategoryRow({
     <div
       className={cn(
         "group/cat relative flex h-[34px] cursor-pointer items-center gap-2 px-2.5 text-[12.5px] text-foreground hover:bg-muted",
-        active && "bg-primary/10 font-medium text-primary"
+        active && "bg-primary/10 font-medium text-primary",
       )}
       onClick={onClick}
     >
@@ -232,7 +226,7 @@ function CategoryRow({
           className={cn(
             "absolute inset-y-0 right-0 flex items-center font-mono text-[10.5px] text-muted-foreground",
             active && "text-primary",
-            actions && "group-hover/cat:hidden"
+            actions && "group-hover/cat:hidden",
           )}
         >
           {count}

@@ -34,10 +34,7 @@ import type {
   NotificationCenterStatusTone,
 } from "./types"
 
-const TONE_STYLE: Record<
-  NotificationCenterStatusTone,
-  { icon: string; pill: string }
-> = {
+const TONE_STYLE: Record<NotificationCenterStatusTone, { icon: string; pill: string }> = {
   processing: {
     icon: "text-warning",
     pill: "border-warning/30 bg-warning/10 text-warning",
@@ -71,9 +68,7 @@ export function NotificationCenter({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        render={<IconButton className="relative" aria-label={labels.trigger} />}
-      >
+      <DropdownMenuTrigger render={<IconButton className="relative" aria-label={labels.trigger} />}>
         <IconBell size={15} stroke={1.75} />
         {total > 0 ? (
           <span className="mono pointer-events-none absolute top-0.5 right-0.5 h-3 min-w-3 border border-primary bg-background px-px text-center text-[8px] leading-[11px] font-bold text-primary">
@@ -91,7 +86,7 @@ export function NotificationCenter({
                   "mono border px-1.5 py-0.5 text-[10px] leading-none",
                   streamActive
                     ? "border-primary/25 bg-primary/10 text-primary"
-                    : "border-border bg-background text-muted-foreground"
+                    : "border-border bg-background text-muted-foreground",
                 )}
               >
                 {streamActive ? labels.streamActive : labels.streamIdle}
@@ -102,12 +97,7 @@ export function NotificationCenter({
             </div>
           </div>
           {total > 0 ? (
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={onClearAll}
-              disabled={!onClearAll}
-            >
+            <Button variant="ghost" size="xs" onClick={onClearAll} disabled={!onClearAll}>
               <IconTrash size={12} stroke={1.75} />
               {labels.clearAll}
             </Button>
@@ -148,9 +138,7 @@ export function NotificationCenter({
 function SummaryCell({ label, value }: { label: string; value: number }) {
   return (
     <div className="border-r border-border px-3 py-1.5 last:border-r-0">
-      <div className="mono tnum text-xs font-semibold text-foreground">
-        {value}
-      </div>
+      <div className="mono tnum text-xs font-semibold text-foreground">{value}</div>
       <div className="mt-0.5 text-[11px] text-muted-foreground">{label}</div>
     </div>
   )
@@ -188,10 +176,7 @@ function EmptyState({ labels }: Pick<NotificationCenterProps, "labels">) {
   )
 }
 
-function ErrorState({
-  labels,
-  onRetry,
-}: Pick<NotificationCenterProps, "labels" | "onRetry">) {
+function ErrorState({ labels, onRetry }: Pick<NotificationCenterProps, "labels" | "onRetry">) {
   return (
     <Empty className="border-0 p-5">
       <EmptyHeader>
@@ -204,12 +189,7 @@ function ErrorState({
         <EmptyDescription>{labels.errorDescription}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onRetry}
-          disabled={!onRetry}
-        >
+        <Button variant="outline" size="sm" onClick={onRetry} disabled={!onRetry}>
           <IconRefresh size={13} stroke={1.75} />
           {labels.retry}
         </Button>
@@ -238,14 +218,10 @@ function NotificationRow({
       </span>
       <div className="min-w-0">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="truncate text-xs font-medium text-foreground">
-            {item.title}
-          </span>
+          <span className="truncate text-xs font-medium text-foreground">{item.title}</span>
           <StatusPill item={item} />
         </div>
-        <div className="mt-0.5 truncate text-xs text-muted-foreground">
-          {item.description}
-        </div>
+        <div className="mt-0.5 truncate text-xs text-muted-foreground">{item.description}</div>
         <div className="mono mt-0.5 flex min-w-0 items-center gap-2 text-[11px] text-muted-foreground">
           <span className="shrink-0">{item.sourceLabel}</span>
           <span className="min-w-0 truncate">{item.sourceUid}</span>
@@ -270,7 +246,7 @@ function StatusPill({ item }: { item: NotificationCenterItem }) {
     <span
       className={cn(
         "inline-flex shrink-0 items-center gap-1 border px-1.5 py-0.5 text-[11px] leading-none",
-        tone.pill
+        tone.pill,
       )}
     >
       <StatusIcon tone={item.statusTone} className={tone.icon} />
@@ -293,13 +269,7 @@ function StatusIcon({
     return <IconCheck size={11} stroke={1.75} className={className} />
   }
   if (tone === "processing") {
-    return (
-      <IconLoader2
-        size={11}
-        stroke={1.75}
-        className={cn("animate-spin", className)}
-      />
-    )
+    return <IconLoader2 size={11} stroke={1.75} className={cn("animate-spin", className)} />
   }
   return <IconBell size={11} stroke={1.75} className={className} />
 }
@@ -312,6 +282,6 @@ function getCounts(items: NotificationCenterItem[]) {
       if (item.statusTone === "failed") acc.failed += 1
       return acc
     },
-    { processing: 0, success: 0, failed: 0 }
+    { processing: 0, success: 0, failed: 0 },
   )
 }

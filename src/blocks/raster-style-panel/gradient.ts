@@ -29,8 +29,6 @@ export function buildColormapGradient(value: CustomColormap): string {
     return `linear-gradient(to right, ${parts.join(", ")})`
   }
 
-  const parts = stops.map(
-    (c, i) => `${c} ${((i / (stops.length - 1)) * 100).toFixed(2)}%`,
-  )
+  const parts = stops.map((c, i) => `${c} ${((i / (stops.length - 1)) * 100).toFixed(2)}%`)
   return `linear-gradient(${SPACE_KEYWORD[colorSpace]} to right, ${parts.join(", ")})`
 }

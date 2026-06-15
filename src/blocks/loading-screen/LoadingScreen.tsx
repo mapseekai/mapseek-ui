@@ -29,16 +29,10 @@ export function LoadingScreen({
       )}
     >
       <div className="flex flex-col items-center gap-3">
-        <IconLoader2
-          size={28}
-          stroke={1.75}
-          className="animate-spin text-primary"
-        />
+        <IconLoader2 size={28} stroke={1.75} className="animate-spin text-primary" />
         <div className="text-sm text-foreground">{text}</div>
         {description ? (
-          <div className="text-[12px] text-muted-foreground">
-            {description}
-          </div>
+          <div className="text-[12px] text-muted-foreground">{description}</div>
         ) : null}
       </div>
     </div>

@@ -8,11 +8,7 @@ import type {
   StyleFilterEditorUnsupportedProps,
 } from "./types"
 
-export function StyleFilterEditorRow({
-  children,
-  action,
-  className,
-}: StyleFilterEditorRowProps) {
+export function StyleFilterEditorRow({ children, action, className }: StyleFilterEditorRowProps) {
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <div className="min-w-0 flex-1">{children}</div>
@@ -36,15 +32,8 @@ export function StyleFilterEditorSingle({
   )
 }
 
-export function StyleFilterEditorActions({
-  children,
-  className,
-}: StyleFilterEditorActionsProps) {
-  return (
-    <div className={cn("mt-2 flex justify-end gap-2", className)}>
-      {children}
-    </div>
-  )
+export function StyleFilterEditorActions({ children, className }: StyleFilterEditorActionsProps) {
+  return <div className={cn("mt-2 flex justify-end gap-2", className)}>{children}</div>
 }
 
 export function StyleFilterEditorInlineError({
@@ -52,9 +41,7 @@ export function StyleFilterEditorInlineError({
   className,
 }: StyleFilterEditorInlineErrorProps) {
   return (
-    <div className={cn("mt-1 text-xs font-medium text-destructive", className)}>
-      {children}
-    </div>
+    <div className={cn("mt-1 text-xs font-medium text-destructive", className)}>{children}</div>
   )
 }
 
@@ -67,7 +54,7 @@ export function StyleFilterEditorUnsupported({
     <div
       className={cn(
         "space-y-3 border border-destructive/25 bg-destructive/5 p-3 text-sm",
-        className
+        className,
       )}
     >
       <div className="text-destructive">{children}</div>
@@ -76,13 +63,6 @@ export function StyleFilterEditorUnsupported({
   )
 }
 
-export function StyleFilterEditorInfo({
-  children,
-  className,
-}: StyleFilterEditorInfoProps) {
-  return (
-    <div className={cn("mt-2 bg-muted/60 p-3 text-xs", className)}>
-      {children}
-    </div>
-  )
+export function StyleFilterEditorInfo({ children, className }: StyleFilterEditorInfoProps) {
+  return <div className={cn("mt-2 bg-muted/60 p-3 text-xs", className)}>{children}</div>
 }

@@ -33,10 +33,7 @@ export function ProductLogo({
   const displayLabel = label ?? alt
 
   return (
-    <span
-      className={cn("inline-flex items-center gap-2.5", className)}
-      style={style}
-    >
+    <span className={cn("inline-flex items-center gap-2.5", className)} style={style}>
       <img
         src={src}
         alt={alt ?? ""}
@@ -50,10 +47,7 @@ export function ProductLogo({
       />
       {showText && displayLabel && (
         <span
-          className={cn(
-            "text-sm font-bold tracking-[-0.02em] whitespace-nowrap",
-            textClassName
-          )}
+          className={cn("text-sm font-bold tracking-[-0.02em] whitespace-nowrap", textClassName)}
         >
           {displayLabel}
         </span>

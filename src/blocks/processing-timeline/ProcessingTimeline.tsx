@@ -1,11 +1,7 @@
 import { IconCheck, IconCopy, IconRefresh, IconX } from "@tabler/icons-react"
 import { Button } from "../../components/button"
 import { cn } from "../../lib/utils"
-import type {
-  ProcessingTimelineProps,
-  TimelineEvent,
-  TimelineStep,
-} from "./types"
+import type { ProcessingTimelineProps, TimelineEvent, TimelineStep } from "./types"
 
 const MARKER_STATE: Record<NonNullable<TimelineStep["state"]>, string> = {
   done: "bg-primary text-primary-foreground",
@@ -19,11 +15,7 @@ const MARKER_STATE: Record<NonNullable<TimelineStep["state"]>, string> = {
  * Pure view: text/icons via props, copy side-effect via onCopyLog. Renders
  * only the <ol> — caller wraps.
  */
-export function ProcessingTimeline({
-  steps,
-  labels,
-  onCopyLog,
-}: ProcessingTimelineProps) {
+export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimelineProps) {
   return (
     <ol className="space-y-4">
       {steps.map((step, i) => {
@@ -34,7 +26,7 @@ export function ProcessingTimeline({
               <span
                 className={cn(
                   "z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
-                  MARKER_STATE[state]
+                  MARKER_STATE[state],
                 )}
               >
                 {state === "failed" ? (
@@ -72,18 +64,12 @@ export function ProcessingTimeline({
               {step.events.length > 0 && (
                 <div className="mt-2 space-y-2">
                   {step.events.map((ev, j) => (
-                    <EventCard
-                      key={j}
-                      event={ev}
-                      labels={labels}
-                      onCopyLog={onCopyLog}
-                    />
+                    <EventCard key={j} event={ev} labels={labels} onCopyLog={onCopyLog} />
                   ))}
                 </div>
               )}
               {(step.message ||
-                (step.progressKind === "percent" &&
-                  typeof step.percent === "number")) && (
+                (step.progressKind === "percent" && typeof step.percent === "number")) && (
                 <ProgressDetail step={step} />
               )}
             </div>
@@ -95,16 +81,11 @@ export function ProcessingTimeline({
 }
 
 function ProgressDetail({ step }: { step: TimelineStep }) {
-  const percent =
-    typeof step.percent === "number"
-      ? Math.max(0, Math.min(100, step.percent))
-      : null
+  const percent = typeof step.percent === "number" ? Math.max(0, Math.min(100, step.percent)) : null
 
   return (
     <div className="mt-2 space-y-1.5">
-      {step.message && (
-        <div className="text-xs text-muted-foreground">{step.message}</div>
-      )}
+      {step.message && <div className="text-xs text-muted-foreground">{step.message}</div>}
       {step.progressKind === "percent" && percent != null && (
         <div className="flex items-center gap-2">
           <div
@@ -140,42 +121,24 @@ function EventCard({
   if (event.tone === "error") {
     return (
       <div className="flex gap-3 border border-destructive/30 bg-destructive/5 p-3">
-        {event.icon && (
-          <span className="mt-0.5 shrink-0 text-destructive">{event.icon}</span>
-        )}
+        {event.icon && <span className="mt-0.5 shrink-0 text-destructive">{event.icon}</span>}
         <div className="min-w-0 flex-1">
-          {event.title && (
-            <div className="text-xs font-medium text-destructive">
-              {event.title}
-            </div>
-          )}
+          {event.title && <div className="text-xs font-medium text-destructive">{event.title}</div>}
           {event.errorText && (
-            <div className="mono mt-1 text-[11px] text-destructive">
-              {event.errorText}
-            </div>
+            <div className="mono mt-1 text-[11px] text-destructive">{event.errorText}</div>
           )}
-          {event.hint && (
-            <div className="mt-1 text-[11px] text-muted-foreground">
-              {event.hint}
-            </div>
-          )}
+          {event.hint && <div className="mt-1 text-[11px] text-muted-foreground">{event.hint}</div>}
         </div>
         <div className="flex shrink-0 flex-col items-end gap-1">
           {event.time && (
-            <span className="mono text-[11px] text-muted-foreground">
-              {event.time}
-            </span>
+            <span className="mono text-[11px] text-muted-foreground">{event.time}</span>
           )}
           {event.log != null && (
             <div className="flex gap-1">
               <Button variant="ghost" size="xs">
                 {labels.log}
               </Button>
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={() => onCopyLog?.(event.log!)}
-              >
+              <Button variant="ghost" size="xs" onClick={() => onCopyLog?.(event.log!)}>
                 <IconCopy />
                 {labels.copy}
               </Button>
@@ -188,23 +151,13 @@ function EventCard({
 
   return (
     <div className="flex gap-3 border border-border p-3">
-      {event.icon && (
-        <span className="mt-0.5 shrink-0 text-muted-foreground">
-          {event.icon}
-        </span>
-      )}
+      {event.icon && <span className="mt-0.5 shrink-0 text-muted-foreground">{event.icon}</span>}
       <div className="min-w-0 flex-1">
         {event.title && <div className="text-xs">{event.title}</div>}
-        {event.text && (
-          <div className="mt-0.5 text-xs text-muted-foreground">
-            {event.text}
-          </div>
-        )}
+        {event.text && <div className="mt-0.5 text-xs text-muted-foreground">{event.text}</div>}
       </div>
       {event.time && (
-        <span className="mono shrink-0 text-[11px] text-muted-foreground">
-          {event.time}
-        </span>
+        <span className="mono shrink-0 text-[11px] text-muted-foreground">{event.time}</span>
       )}
     </div>
   )

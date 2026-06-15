@@ -16,10 +16,7 @@ export function StyleEditorPanelRoot({
 }: StyleEditorPanelRootProps) {
   return (
     <div
-      className={cn(
-        "flex h-full min-h-0 flex-col bg-card text-card-foreground",
-        className
-      )}
+      className={cn("flex h-full min-h-0 flex-col bg-card text-card-foreground", className)}
       data-wd-key={dataWdKey}
     >
       {children}
@@ -27,24 +24,18 @@ export function StyleEditorPanelRoot({
   )
 }
 
-export function StyleEditorPanelHeader({
-  title,
-  actions,
-  className,
-}: StyleEditorPanelHeaderProps) {
+export function StyleEditorPanelHeader({ title, actions, className }: StyleEditorPanelHeaderProps) {
   return (
     <header
       className={cn(
         "bg-panel-surface flex h-12 shrink-0 items-center justify-between gap-3 border-b border-border px-3",
-        className
+        className,
       )}
     >
       <h2 className="text-panel-text m-0 min-w-0 flex-1 truncate pr-2 text-sm leading-none font-semibold">
         {title}
       </h2>
-      {actions ? (
-        <div className="flex shrink-0 items-center gap-2">{actions}</div>
-      ) : null}
+      {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
     </header>
   )
 }
@@ -89,14 +80,10 @@ export function StyleEditorPanelCard({
   className,
 }: StyleEditorPanelCardProps) {
   return (
-    <section
-      className={cn("overflow-hidden border border-border bg-card", className)}
-    >
+    <section className={cn("overflow-hidden border border-border bg-card", className)}>
       <header className="flex items-center justify-between gap-2 border-b border-border bg-muted/45 px-3 py-2">
         <div className="min-w-0 flex-1">
-          <p className="m-0 truncate text-sm leading-tight font-semibold">
-            {title}
-          </p>
+          <p className="m-0 truncate text-sm leading-tight font-semibold">{title}</p>
           {subtitle ? (
             <p className="m-0 mt-0.5 truncate font-mono text-[11px] leading-tight text-muted-foreground">
               {subtitle}
@@ -111,13 +98,6 @@ export function StyleEditorPanelCard({
   )
 }
 
-export function StyleEditorPanelEmpty({
-  children,
-  className,
-}: StyleEditorPanelEmptyProps) {
-  return (
-    <p className={cn("m-0 text-sm text-muted-foreground italic", className)}>
-      {children}
-    </p>
-  )
+export function StyleEditorPanelEmpty({ children, className }: StyleEditorPanelEmptyProps) {
+  return <p className={cn("m-0 text-sm text-muted-foreground italic", className)}>{children}</p>
 }

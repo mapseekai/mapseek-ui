@@ -41,27 +41,25 @@ export function LayerEditorGroup({
             className={cn(
               "contents border-0 bg-card text-card-foreground",
               itemClassName,
-              section.className
+              section.className,
             )}
           >
             <div
               className={cn(
                 "sticky flex items-stretch border-b border-border bg-muted [&>h3]:flex [&>h3]:h-full [&>h3]:w-full",
                 headerClassName,
-                section.headerClassName
+                section.headerClassName,
               )}
               style={headerStyle}
             >
               <AccordionTrigger
                 data-wd-key={
-                  section.dataWdKey
-                    ? `layer-editor-group:${section.dataWdKey}`
-                    : undefined
+                  section.dataWdKey ? `layer-editor-group:${section.dataWdKey}` : undefined
                 }
                 className={cn(
                   "flex h-full w-full items-center border-0 px-3 py-0 text-sm leading-5 font-medium hover:bg-muted [&_[data-slot=accordion-trigger-icon]]:ms-auto [&_[data-slot=accordion-trigger-icon]]:self-center",
                   triggerClassName,
-                  section.triggerClassName
+                  section.triggerClassName,
                 )}
               >
                 <span className="flex h-full min-w-0 flex-1 items-center gap-2 leading-5">
@@ -70,9 +68,7 @@ export function LayerEditorGroup({
                 </span>
               </AccordionTrigger>
             </div>
-            <AccordionContent
-              className={cn("p-0", contentClassName, section.contentClassName)}
-            >
+            <AccordionContent className={cn("p-0", contentClassName, section.contentClassName)}>
               {section.children}
             </AccordionContent>
           </AccordionItem>

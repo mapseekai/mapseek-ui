@@ -1,10 +1,6 @@
 import { useId, useRef, useState } from "react"
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@workspace/ui/components/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@workspace/ui/components/popover"
 import { cn } from "@workspace/ui/lib/utils"
 
 import {
@@ -16,21 +12,15 @@ import {
   ColorPickerOutput,
   ColorPickerSelection,
 } from "./ColorPicker"
-import type {
-  StyleColorInputProps,
-  StyleColorPopoverOpenChangeDetails,
-} from "./types"
+import type { StyleColorInputProps, StyleColorPopoverOpenChangeDetails } from "./types"
 
 function shouldKeepPopoverOpenForColorInput(
   isOpen: boolean,
   eventDetails: StyleColorPopoverOpenChangeDetails | undefined,
-  input: HTMLInputElement | null
+  input: HTMLInputElement | null,
 ) {
   if (isOpen || !input) return false
-  if (
-    eventDetails?.reason !== "outside-press" &&
-    eventDetails?.reason !== "focus-out"
-  ) {
+  if (eventDetails?.reason !== "outside-press" && eventDetails?.reason !== "focus-out") {
     return false
   }
 
@@ -68,13 +58,8 @@ export function StyleColorInput({
   const hasButton = mode === "button" || mode === "button-input"
   const hasInput = mode === "input" || mode === "button-input"
 
-  const setOpen = (
-    nextOpen: boolean,
-    details?: StyleColorPopoverOpenChangeDetails
-  ) => {
-    if (
-      shouldKeepPopoverOpenForColorInput(nextOpen, details, inputRef.current)
-    ) {
+  const setOpen = (nextOpen: boolean, details?: StyleColorPopoverOpenChangeDetails) => {
+    if (shouldKeepPopoverOpenForColorInput(nextOpen, details, inputRef.current)) {
       details?.cancel?.()
       return
     }
@@ -97,11 +82,7 @@ export function StyleColorInput({
     value: displayValue,
     close: () => setOpen(false),
   }) ?? (
-    <ColorPicker
-      value={displayValue}
-      onChange={handlePickerChange}
-      className="w-64"
-    >
+    <ColorPicker value={displayValue} onChange={handlePickerChange} className="w-64">
       <ColorPickerSelection className="h-48 w-full" />
       <div className="flex flex-col gap-2">
         <ColorPickerHue />
@@ -137,7 +118,7 @@ export function StyleColorInput({
       autoComplete="off"
       className={cn(
         "h-7 w-full bg-transparent px-2 text-xs focus-visible:outline-none",
-        "border border-input focus-visible:ring-1 focus-visible:ring-ring"
+        "border border-input focus-visible:ring-1 focus-visible:ring-ring",
       )}
       style={style}
       name={name}

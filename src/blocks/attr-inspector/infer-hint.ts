@@ -16,9 +16,7 @@ export function inferAttrFieldKind(name: string, value: unknown): AttrFieldKind 
   if (isDate) return "date"
   const isNum =
     typeof value === "number" ||
-    /^(area|length|width|height|count|num|qty|price|score|.*_m2|.*_km|.*_mm)$/i.test(
-      lc,
-    )
+    /^(area|length|width|height|count|num|qty|price|score|.*_m2|.*_km|.*_mm)$/i.test(lc)
   if (isNum) return "number"
   if (lc === "code") return "code"
   return "text"

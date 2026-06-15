@@ -2,31 +2,19 @@ import * as React from "react"
 
 import { cn } from "@workspace/ui/lib/utils"
 import { Slider } from "@workspace/ui/components/slider"
-import type {
-  StylePanelContextValue,
-  StylePanelProps,
-  StyleValue,
-} from "./types"
+import type { StylePanelContextValue, StylePanelProps, StyleValue } from "./types"
 
-const StylePanelContext = React.createContext<StylePanelContextValue | null>(
-  null
-)
+const StylePanelContext = React.createContext<StylePanelContextValue | null>(null)
 
 function useStylePanelContext(): StylePanelContextValue {
   const ctx = React.useContext(StylePanelContext)
   if (!ctx) {
-    throw new Error(
-      "StylePanel sub-components must be used inside <StylePanel>."
-    )
+    throw new Error("StylePanel sub-components must be used inside <StylePanel>.")
   }
   return ctx
 }
 
-function patch(
-  value: StyleValue,
-  onChange: (v: StyleValue) => void,
-  delta: Partial<StyleValue>
-) {
+function patch(value: StyleValue, onChange: (v: StyleValue) => void, delta: Partial<StyleValue>) {
   onChange({ ...value, ...delta })
 }
 
@@ -34,16 +22,10 @@ function patch(
 // Root
 // ---------------------------------------------------------------------------
 
-function StylePanelRoot({
-  geometryType,
-  value,
-  onChange,
-  className,
-  children,
-}: StylePanelProps) {
+function StylePanelRoot({ geometryType, value, onChange, className, children }: StylePanelProps) {
   const ctx = React.useMemo(
     () => ({ geometryType, value, onChange }),
-    [geometryType, value, onChange]
+    [geometryType, value, onChange],
   )
   return (
     <StylePanelContext.Provider value={ctx}>
@@ -81,10 +63,7 @@ function StylePanelFill({
   return (
     <>
       <FieldLabel>{label}</FieldLabel>
-      <div
-        data-slot="style-panel-fill"
-        className={cn("flex items-center gap-1.5", className)}
-      >
+      <div data-slot="style-panel-fill" className={cn("flex items-center gap-1.5", className)}>
         {swatches.map((c) => (
           <button
             type="button"
@@ -94,12 +73,8 @@ function StylePanelFill({
             className="size-[18px] cursor-pointer border"
             style={{
               background: c,
-              borderColor:
-                "color-mix(in oklch, currentColor 30%, var(--border))",
-              boxShadow:
-                c === current
-                  ? "0 0 0 1px var(--card), 0 0 0 2px var(--primary)"
-                  : "none",
+              borderColor: "color-mix(in oklch, currentColor 30%, var(--border))",
+              boxShadow: c === current ? "0 0 0 1px var(--card), 0 0 0 2px var(--primary)" : "none",
             }}
           />
         ))}
@@ -108,13 +83,7 @@ function StylePanelFill({
   )
 }
 
-function StylePanelOpacity({
-  min = 0,
-  max = 100,
-}: {
-  min?: number
-  max?: number
-}) {
+function StylePanelOpacity({ min = 0, max = 100 }: { min?: number; max?: number }) {
   const { value, onChange } = useStylePanelContext()
   const v = value.opacity ?? max
   return (
@@ -202,7 +171,7 @@ function StylePanelMarker({ shapes }: { shapes: MarkerShape[] }) {
                 "inline-flex size-6 items-center justify-center border font-mono text-[10px]",
                 isCur
                   ? "border-primary bg-selection-bg text-primary"
-                  : "border-border bg-background text-muted-foreground hover:bg-muted"
+                  : "border-border bg-background text-muted-foreground hover:bg-muted",
               )}
               aria-label={s}
               title={s}

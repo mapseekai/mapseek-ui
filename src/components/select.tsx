@@ -16,7 +16,7 @@ const selectTriggerVariants = cva(
     defaultVariants: {
       size: "default",
     },
-  }
+  },
 )
 
 type SelectRootProps = VariantProps<typeof selectTriggerVariants> & {
@@ -52,7 +52,7 @@ function SelectItem({ value, disabled, className, children }: SelectItemProps) {
         "relative flex h-7 cursor-pointer items-center gap-1.5 px-2 pr-6 text-xs outline-none select-none",
         "data-[highlighted]:bg-muted",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-        className
+        className,
       )}
     >
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -68,7 +68,7 @@ function SelectItem({ value, disabled, className, children }: SelectItemProps) {
 // the selected label from the Root `items` prop, not from rendered Items).
 function collectItems(
   children: React.ReactNode,
-  acc: Record<string, React.ReactNode>
+  acc: Record<string, React.ReactNode>,
 ): Record<string, React.ReactNode> {
   React.Children.forEach(children, (child) => {
     if (!React.isValidElement(child)) return
@@ -162,14 +162,11 @@ function SelectRoot({
         </SelectPrimitive.Icon>
       </SelectPrimitive.Trigger>
       <SelectPrimitive.Portal>
-        <SelectPrimitive.Positioner
-          sideOffset={4}
-          className="z-[1070] outline-none"
-        >
+        <SelectPrimitive.Positioner sideOffset={4} className="z-[1070] outline-none">
           <SelectPrimitive.Popup
             className={cn(
               "max-h-[220px] min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-md outline-none",
-              "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0"
+              "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
             )}
           >
             {children}

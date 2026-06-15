@@ -37,9 +37,7 @@ export const InputNumber: React.FC<InputNumberProps> = ({
 }) => {
   const [editing, setEditing] = useState(false)
   const [value, setValue] = useState(propsValue)
-  const [dirtyValue, setDirtyValue] = useState<number | string | undefined>(
-    propsValue
-  )
+  const [dirtyValue, setDirtyValue] = useState<number | string | undefined>(propsValue)
 
   const [prevProps, setPrevProps] = useState(propsValue)
   const [prevEditing, setPrevEditing] = useState(editing)
@@ -63,13 +61,12 @@ export const InputNumber: React.FC<InputNumberProps> = ({
       if (max !== undefined && num > max) return false
       return true
     },
-    [min, max]
+    [min, max],
   )
 
   const changeValue = useCallback(
     (newValue: number | string | undefined) => {
-      const numValue =
-        newValue === "" || newValue === undefined ? undefined : +newValue
+      const numValue = newValue === "" || newValue === undefined ? undefined : +newValue
       const hasChanged = propsValue !== numValue
 
       if (isValid(numValue) && hasChanged) {
@@ -80,7 +77,7 @@ export const InputNumber: React.FC<InputNumberProps> = ({
       }
       setDirtyValue(newValue === "" ? undefined : newValue)
     },
-    [propsValue, onChange, isValid]
+    [propsValue, onChange, isValid],
   )
 
   const resetValue = useCallback(() => {

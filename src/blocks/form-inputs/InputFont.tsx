@@ -28,11 +28,7 @@ export const InputFont: React.FC<InputFontProps> = ({
     // Guard against a non-array value: during a function-conversion the
     // parent briefly feeds us a `{ stops: ... }` object before its dataType
     // state catches up. Spreading a non-array crashes.
-    const out = Array.isArray(value)
-      ? value
-      : Array.isArray(defaultValue)
-        ? defaultValue
-        : []
+    const out = Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : []
     // Always put a "" in the last field to allow adding entries
     if (out[out.length - 1] !== "") {
       return [...out, ""]
@@ -46,9 +42,7 @@ export const InputFont: React.FC<InputFontProps> = ({
     (idx: number, newValue: string | undefined) => {
       const nextValues = [...currentValues]
       nextValues[idx] = newValue || ""
-      const filteredValues = nextValues.filter(
-        (v) => v !== undefined && v !== "",
-      )
+      const filteredValues = nextValues.filter((v) => v !== undefined && v !== "")
       onChange(filteredValues)
     },
     [currentValues, onChange],

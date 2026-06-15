@@ -23,14 +23,10 @@ export const InputMultiInput: React.FC<InputMultiInputProps> = ({
       ? (propsOptions as string[]).map((v) => [v, v])
       : (propsOptions as [string, string][])
 
-  const selectedValue =
-    value || (options.length > 0 ? options[0][0] : undefined)
+  const selectedValue = value || (options.length > 0 ? options[0][0] : undefined)
 
   return (
-    <fieldset
-      className="m-0 flex min-w-0 items-center border-none p-0"
-      aria-label={ariaLabel}
-    >
+    <fieldset className="m-0 flex min-w-0 items-center border-none p-0" aria-label={ariaLabel}>
       {options.map(([val, label]) => {
         const isSelected = val === selectedValue
         return (

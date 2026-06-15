@@ -25,7 +25,7 @@ function getRangeValue(
   val: number | string | undefined,
   fallback: number,
   min: number,
-  max: number
+  max: number,
 ): number {
   if (val === undefined || val === "") return fallback
   const parsed = +val
@@ -51,12 +51,7 @@ function roundToStepPrecision(value: number, step: number): number {
   return Number(value.toFixed(precision))
 }
 
-function snapToStep(
-  value: number,
-  min: number,
-  max: number,
-  step: number
-): number {
+function snapToStep(value: number, min: number, max: number, step: number): number {
   if (!step) return clamp(value, min, max)
   const snapped = Math.round((value - min) / step) * step + min
   return clamp(roundToStepPrecision(snapped, step), min, max)
@@ -72,25 +67,20 @@ function inputWidthStyle(
   value: number | string | undefined,
   min: number,
   max: number,
-  step: number
+  step: number,
 ): CSSProperties {
   const precision = decimalPlaces(step)
   const signed = min < 0 || max < 0
   const integerLength = Math.max(
     1,
-    ...[min, max].map((candidate) =>
-      Math.trunc(Math.abs(candidate)).toString().length
-    )
+    ...[min, max].map((candidate) => Math.trunc(Math.abs(candidate)).toString().length),
   )
-  const steppedLength =
-    integerLength + (signed ? 1 : 0) + (precision > 0 ? precision + 1 : 0)
-  const candidates = [value, min, max].map((candidate) =>
-    formatNumberValue(candidate, step)
-  )
+  const steppedLength = integerLength + (signed ? 1 : 0) + (precision > 0 ? precision + 1 : 0)
+  const candidates = [value, min, max].map((candidate) => formatNumberValue(candidate, step))
   const numericLength = Math.max(
     1,
     ...candidates.map((candidate) => candidate.length),
-    steppedLength
+    steppedLength,
   )
 
   // Native number inputs reserve space for browser stepper controls, so the
@@ -125,9 +115,7 @@ export function NumberRangeInput({
   const [editingRange, setEditingRange] = useState(false)
   const [keyboardEvent, setKeyboardEvent] = useState(false)
   const [value, setValue] = useState(propsValue)
-  const [dirtyValue, setDirtyValue] = useState<number | string | undefined>(
-    propsValue
-  )
+  const [dirtyValue, setDirtyValue] = useState<number | string | undefined>(propsValue)
   const [prevProps, setPrevProps] = useState(propsValue)
   const [prevEditing, setPrevEditing] = useState(editing)
 
@@ -151,17 +139,14 @@ export function NumberRangeInput({
       if (num > max) return false
       return true
     },
-    [min, max]
+    [min, max],
   )
 
   const changeValue = useCallback(
     (newValue: number | string | undefined) => {
-      const parsedValue =
-        newValue === "" || newValue === undefined ? undefined : +newValue
+      const parsedValue = newValue === "" || newValue === undefined ? undefined : +newValue
       const numValue =
-        typeof parsedValue === "number"
-          ? roundToStepPrecision(parsedValue, step)
-          : parsedValue
+        typeof parsedValue === "number" ? roundToStepPrecision(parsedValue, step) : parsedValue
       const hasChanged = propsValue !== numValue
 
       if (isValid(numValue) && hasChanged) {
@@ -172,7 +157,7 @@ export function NumberRangeInput({
       }
       setDirtyValue(isValid(numValue) ? numValue : newValue)
     },
-    [propsValue, onChange, isValid, step]
+    [propsValue, onChange, isValid, step],
   )
 
   const commitValue = useCallback(
@@ -183,7 +168,7 @@ export function NumberRangeInput({
       setDirtyValue(normalized)
       onChange?.(normalized)
     },
-    [min, max, step, onChange]
+    [min, max, step, onChange],
   )
 
   const resetValue = useCallback(() => {
@@ -208,8 +193,7 @@ export function NumberRangeInput({
 
     if (step) {
       if (keyboardEvent) {
-        val =
-          val < +(dirtyValue || 0) ? (value || 0) - step : (value || 0) + step
+        val = val < +(dirtyValue || 0) ? (value || 0) - step : (value || 0) + step
       }
     }
 
@@ -221,15 +205,10 @@ export function NumberRangeInput({
     const inputValue = editingRange ? value : displayValue
     const fallbackValue = defaultValue ?? min
     const sliderValue = snapToStep(
-      getRangeValue(
-        editingRange ? value : displayValue,
-        fallbackValue,
-        min,
-        max
-      ),
+      getRangeValue(editingRange ? value : displayValue, fallbackValue, min, max),
       min,
       max,
-      step
+      step,
     )
     return {
       inputValue,
@@ -267,10 +246,7 @@ export function NumberRangeInput({
       />
       <Input
         aria-label={ariaLabel}
-        className={cn(
-          "h-7 shrink-0 text-xs tabular-nums",
-          inputClassName
-        )}
+        className={cn("h-7 shrink-0 text-xs tabular-nums", inputClassName)}
         data-wd-key={dataWdKey ? `${dataWdKey}-text` : undefined}
         disabled={disabled}
         inputMode="decimal"

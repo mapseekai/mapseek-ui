@@ -6,7 +6,13 @@ type IconButtonProps = React.ComponentProps<"button"> & {
   danger?: boolean
 }
 
-function IconButton({ className, size = "md", danger, type = "button", ...props }: IconButtonProps) {
+function IconButton({
+  className,
+  size = "md",
+  danger,
+  type = "button",
+  ...props
+}: IconButtonProps) {
   return (
     <button
       type={type}
@@ -19,7 +25,7 @@ function IconButton({ className, size = "md", danger, type = "button", ...props 
           ? "text-destructive hover:bg-destructive/10"
           : "text-muted-foreground hover:bg-muted hover:text-foreground",
         "disabled:pointer-events-none disabled:opacity-50",
-        className
+        className,
       )}
       {...props}
     />

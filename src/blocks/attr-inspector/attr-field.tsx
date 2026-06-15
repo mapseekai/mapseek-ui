@@ -6,8 +6,7 @@ import { cn } from "../../lib/utils"
 import { inferAttrFieldKind } from "./infer-hint"
 import type { AttrFieldKind, AttrFieldMeta } from "./types"
 
-const inputBase =
-  "h-7 w-full rounded-none border-border bg-background px-2 text-xs"
+const inputBase = "h-7 w-full rounded-none border-border bg-background px-2 text-xs"
 
 type Resolved = {
   kind: AttrFieldKind
@@ -123,9 +122,7 @@ export function EditField({
   const { kind, isEnum, readOnly, unit, badge } = resolve(name, value, meta)
   const strVal = String(value ?? "")
   const dateValue =
-    kind === "date" && typeof value === "string"
-      ? value.replace(/\//g, "-").slice(0, 10)
-      : ""
+    kind === "date" && typeof value === "string" ? value.replace(/\//g, "-").slice(0, 10) : ""
 
   return (
     <div>

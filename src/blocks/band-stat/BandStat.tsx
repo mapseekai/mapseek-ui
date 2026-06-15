@@ -28,17 +28,14 @@ export function BandStat({ data, labels }: BandStatProps) {
     range: binRangeLabel(index, data.histogram.length, data.min, data.max),
   }))
   const xTickIndexes = [0, 0.25, 0.5, 0.75, 1].map((ratio) =>
-    Math.round((data.histogram.length - 1) * ratio)
+    Math.round((data.histogram.length - 1) * ratio),
   )
   const yTicks =
     maxBin === 0
       ? [0]
-      : [maxBin, maxBin * 0.75, maxBin * 0.5, maxBin * 0.25, 0].map((value) =>
-          Math.round(value)
-        )
+      : [maxBin, maxBin * 0.75, maxBin * 0.5, maxBin * 0.25, 0].map((value) => Math.round(value))
   const valueAtTick = (index: number) =>
-    data.min +
-    ((data.max - data.min) * index) / Math.max(data.histogram.length - 1, 1)
+    data.min + ((data.max - data.min) * index) / Math.max(data.histogram.length - 1, 1)
 
   const formatTooltipLabel = (_value: unknown, payload: unknown) => {
     const first = Array.isArray(payload) ? payload[0] : undefined
@@ -72,9 +69,7 @@ export function BandStat({ data, labels }: BandStatProps) {
         <span className="mono inline-flex size-7 items-center justify-center bg-primary/10 text-xs font-medium text-primary">
           {data.band}
         </span>
-        <span className="flex-1 text-sm font-medium text-foreground">
-          {data.name}
-        </span>
+        <span className="flex-1 text-sm font-medium text-foreground">{data.name}</span>
         <span className="mono border border-warning/25 bg-warning/10 px-1.5 py-0.5 text-[11px] text-warning uppercase">
           {data.type}
         </span>
@@ -92,12 +87,8 @@ export function BandStat({ data, labels }: BandStatProps) {
       <div className="px-4 py-3">
         <div className="flex items-end justify-between">
           <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-muted-foreground">
-              {labels.histogram}
-            </span>
-            <span className="mono text-[11px] text-muted-foreground">
-              {labels.histogramMeta}
-            </span>
+            <span className="text-[11px] text-muted-foreground">{labels.histogram}</span>
+            <span className="mono text-[11px] text-muted-foreground">{labels.histogramMeta}</span>
           </div>
           <span className="mono tnum text-[11px] text-muted-foreground">
             {data.min.toLocaleString()} – {data.max.toLocaleString()}
@@ -123,9 +114,7 @@ export function BandStat({ data, labels }: BandStatProps) {
               <XAxis
                 dataKey="bin"
                 ticks={xTickIndexes}
-                tickFormatter={(value) =>
-                  compactNumber(valueAtTick(Number(value)))
-                }
+                tickFormatter={(value) => compactNumber(valueAtTick(Number(value)))}
                 tickLine={false}
                 axisLine={false}
                 tickMargin={8}
@@ -169,12 +158,7 @@ function compactNumber(v: number): string {
   return rounded >= 1000 ? `${Math.round(rounded / 1000)}k` : `${rounded}`
 }
 
-function binRangeLabel(
-  index: number,
-  count: number,
-  min: number,
-  max: number
-): string {
+function binRangeLabel(index: number, count: number, min: number, max: number): string {
   const safeCount = Math.max(count, 1)
   const start = min + ((max - min) * index) / safeCount
   const end = min + ((max - min) * (index + 1)) / safeCount
@@ -182,13 +166,7 @@ function binRangeLabel(
   return `${compactNumber(start)} - ${compactNumber(end)}`
 }
 
-function Metric({
-  label,
-  value,
-}: {
-  label: BandStatLabels[keyof BandStatLabels]
-  value: number
-}) {
+function Metric({ label, value }: { label: BandStatLabels[keyof BandStatLabels]; value: number }) {
   return (
     <div className="flex flex-col gap-0.5 px-4 py-3">
       <span className="text-[11px] text-muted-foreground">{label}</span>

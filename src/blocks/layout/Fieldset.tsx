@@ -1,8 +1,4 @@
-import React, {
-  type PropsWithChildren,
-  type ReactElement,
-  type ReactNode,
-} from "react"
+import React, { type PropsWithChildren, type ReactElement, type ReactNode } from "react"
 import { cn } from "../../lib/utils"
 
 export type FieldsetProps = PropsWithChildren & {

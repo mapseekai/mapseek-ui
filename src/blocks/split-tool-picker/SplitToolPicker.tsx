@@ -2,11 +2,7 @@ import * as React from "react"
 import { IconChevronDown, type Icon as TablerIcon } from "@tabler/icons-react"
 
 import { Button } from "../../components/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../../components/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "../../components/popover"
 import { Tooltip } from "../../components/tooltip"
 import { cn } from "../../lib/utils"
 
@@ -47,11 +43,10 @@ function SplitToolPicker({
 }: SplitToolPickerProps) {
   const [open, setOpen] = React.useState(false)
   const [uncontrolledValue, setUncontrolledValue] = React.useState(
-    defaultValue ?? items[0]?.id ?? ""
+    defaultValue ?? items[0]?.id ?? "",
   )
   const selectedValue = value ?? uncontrolledValue
-  const selectedItem =
-    items.find((item) => item.id === selectedValue) ?? items[0]
+  const selectedItem = items.find((item) => item.id === selectedValue) ?? items[0]
 
   const commitValue = (next: string, source: SplitToolActionSource) => {
     if (value === undefined) setUncontrolledValue(next)
@@ -64,10 +59,7 @@ function SplitToolPicker({
   const SelectedIcon = selectedItem.icon
 
   return (
-    <div
-      data-slot="split-tool-picker"
-      className={cn("inline-flex items-center", className)}
-    >
+    <div data-slot="split-tool-picker" className={cn("inline-flex items-center", className)}>
       <Tooltip
         content={`${selectedItem.label}${selectedItem.hint ? ` · ${selectedItem.hint}` : ""}`}
         side="bottom"
@@ -83,9 +75,7 @@ function SplitToolPicker({
           onClick={() => commitValue(selectedItem.id, "primary")}
           className={cn(
             "size-8",
-            active
-              ? "bg-selection-bg text-primary"
-              : "bg-transparent text-foreground"
+            active ? "bg-selection-bg text-primary" : "bg-transparent text-foreground",
           )}
           data-active={active ? "true" : undefined}
         >
@@ -104,7 +94,7 @@ function SplitToolPicker({
               aria-label={`${label}菜单`}
               className={cn(
                 "h-8 w-4.5 text-muted-foreground",
-                open && "bg-selection-bg text-primary"
+                open && "bg-selection-bg text-primary",
               )}
             >
               <IconChevronDown size={12} stroke={2.25} />
@@ -115,19 +105,12 @@ function SplitToolPicker({
           side="bottom"
           align="start"
           sideOffset={4}
-          className={cn(
-            "w-47.5 gap-0 p-0 shadow-(--shadow-lg)",
-            contentClassName
-          )}
+          className={cn("w-47.5 gap-0 p-0 shadow-(--shadow-lg)", contentClassName)}
         >
           <div className="px-3 pt-2 pb-1 text-[11px] leading-none font-medium tracking-[0.06em] text-muted-foreground uppercase">
             {label}
           </div>
-          <div
-            role="listbox"
-            aria-label={label}
-            className="flex flex-col gap-1 p-1.5"
-          >
+          <div role="listbox" aria-label={label} className="flex flex-col gap-1 p-1.5">
             {items.map((item) => {
               const Icon = item.icon
               const selected = item.id === selectedItem.id
@@ -145,20 +128,16 @@ function SplitToolPicker({
                     "flex w-full cursor-pointer items-center gap-2.5 border-l-2 px-2 py-2 text-left outline-none",
                     selected
                       ? "border-l-primary bg-selection-bg text-primary"
-                      : "border-l-transparent text-foreground hover:bg-muted"
+                      : "border-l-transparent text-foreground hover:bg-muted",
                   )}
                 >
                   <Icon
                     size={14}
                     stroke={1.75}
-                    className={
-                      selected ? "text-primary" : "text-muted-foreground"
-                    }
+                    className={selected ? "text-primary" : "text-muted-foreground"}
                   />
                   <span className="min-w-0 flex-1">
-                    <span className="block text-xs leading-none font-medium">
-                      {item.label}
-                    </span>
+                    <span className="block text-xs leading-none font-medium">{item.label}</span>
                     {item.description ? (
                       <span className="mt-1 block truncate text-[10.5px] leading-none text-muted-foreground">
                         {item.description}

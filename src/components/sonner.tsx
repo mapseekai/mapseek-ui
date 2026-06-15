@@ -29,7 +29,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
         info: <IconInfoCircle className="size-3.5 text-[var(--cat-2)]" stroke={1.75} />,
         warning: <IconAlertTriangle className="size-3.5 text-warning" stroke={1.75} />,
         error: <IconAlertOctagon className="size-3.5 text-destructive" stroke={1.75} />,
-        loading: <IconLoader className="size-3.5 animate-spin text-muted-foreground" stroke={1.75} />,
+        loading: (
+          <IconLoader className="size-3.5 animate-spin text-muted-foreground" stroke={1.75} />
+        ),
       }}
       style={
         {
@@ -67,8 +69,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
             "!rounded-none !bg-primary !px-2 !py-1 !text-[11px] !font-medium !text-primary-foreground hover:!bg-primary/90",
           cancelButton:
             "!rounded-none !border !border-border !bg-background !px-2 !py-1 !text-[11px] !font-medium !text-foreground hover:!bg-muted",
-          closeButton:
-            "!rounded-none !border !border-border !bg-background hover:!bg-muted",
+          closeButton: "!rounded-none !border !border-border !bg-background hover:!bg-muted",
           icon: "!mt-px",
         },
       }}

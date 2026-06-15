@@ -11,11 +11,7 @@ import { cn } from "../../lib/utils"
 import { buildColormapGradient } from "./gradient"
 import { DEFAULT_COLORMAP_PRESETS } from "./presets"
 import { Segmented } from "./Segmented"
-import type {
-  ColormapColorSpace,
-  ColormapInterpolation,
-  CustomColormapEditorProps,
-} from "./types"
+import type { ColormapColorSpace, ColormapInterpolation, CustomColormapEditorProps } from "./types"
 
 const INTERPOLATIONS: ColormapInterpolation[] = ["linear", "step", "smooth"]
 const COLOR_SPACES: ColormapColorSpace[] = ["oklch", "srgb", "hsl"]
@@ -34,9 +30,7 @@ function SectionHead({
       <Icon size={11} stroke={1.75} />
       <span>{title}</span>
       {trailing != null && (
-        <span className="ml-auto text-[10px] tracking-normal normal-case">
-          {trailing}
-        </span>
+        <span className="ml-auto text-[10px] tracking-normal normal-case">{trailing}</span>
       )}
     </div>
   )
@@ -65,8 +59,7 @@ export function CustomColormapEditor({
     if (!canRemove) return
     set({ stops: stops.filter((_, j) => j !== i) })
   }
-  const addStop = () =>
-    set({ stops: [...stops, stops[stops.length - 1] ?? "#888888"] })
+  const addStop = () => set({ stops: [...stops, stops[stops.length - 1] ?? "#888888"] })
 
   return (
     <div className={cn("flex flex-col gap-3.5", className)}>
@@ -141,9 +134,7 @@ export function CustomColormapEditor({
         <SectionHead
           icon={IconColorSwatch}
           title={labels.colorSpace}
-          trailing={
-            <span className="font-sans normal-case">{labels.colorSpaceHint}</span>
-          }
+          trailing={<span className="font-sans normal-case">{labels.colorSpaceHint}</span>}
         />
         <Segmented<ColormapColorSpace>
           options={COLOR_SPACES.map((s) => ({
@@ -161,9 +152,7 @@ export function CustomColormapEditor({
         <SectionHead
           icon={IconBookmark}
           title={labels.importPreset}
-          trailing={
-            <span className="font-sans normal-case">{labels.importHint}</span>
-          }
+          trailing={<span className="font-sans normal-case">{labels.importHint}</span>}
         />
         <div className="grid grid-cols-4 gap-1.5">
           {presets.map((p) => (

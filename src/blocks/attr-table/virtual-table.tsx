@@ -73,11 +73,7 @@ export function VirtualTable<TRow>({
           className,
         )}
       >
-        <IconAlertTriangle
-          size={20}
-          stroke={1.5}
-          className="text-destructive"
-        />
+        <IconAlertTriangle size={20} stroke={1.5} className="text-destructive" />
         <span>{source.error.message}</span>
         <button
           type="button"
@@ -107,16 +103,10 @@ export function VirtualTable<TRow>({
 
   return (
     <div ref={scrollRef} className={cn("h-full overflow-auto", className)}>
-      <div
-        style={{ minWidth: tableMinWidth }}
-        className="relative w-full font-mono text-[12px]"
-      >
+      <div style={{ minWidth: tableMinWidth }} className="relative w-full font-mono text-[12px]">
         {/* Sticky header */}
         <div className="sticky top-0 z-[1] flex border-b border-border bg-muted">
-          <HeaderCell
-            width={INDEX_COL_WIDTH}
-            className="justify-end text-muted-foreground"
-          >
+          <HeaderCell width={INDEX_COL_WIDTH} className="justify-end text-muted-foreground">
             {indexColLabel}
           </HeaderCell>
           {columns.map((c) => (
@@ -129,9 +119,7 @@ export function VirtualTable<TRow>({
         {/* Body */}
         <div
           style={{
-            height: showStubSkeleton
-              ? STUB_ROWS * ROW_HEIGHT
-              : virtualizer.getTotalSize(),
+            height: showStubSkeleton ? STUB_ROWS * ROW_HEIGHT : virtualizer.getTotalSize(),
             position: "relative",
           }}
         >
@@ -157,9 +145,7 @@ export function VirtualTable<TRow>({
                 const row = source.getRow(vi.index)
                 const rowKey = getRowKey(row, vi.index)
                 const isSelected =
-                  row != null &&
-                  selectedRowKey != null &&
-                  rowKey === selectedRowKey
+                  row != null && selectedRowKey != null && rowKey === selectedRowKey
                 return (
                   <div
                     key={vi.key}
@@ -175,9 +161,7 @@ export function VirtualTable<TRow>({
                     }}
                     className={cn(
                       "flex border-b border-border/60 transition-colors",
-                      row
-                        ? "cursor-pointer hover:bg-muted/40"
-                        : "pointer-events-none",
+                      row ? "cursor-pointer hover:bg-muted/40" : "pointer-events-none",
                       isSelected &&
                         "bg-primary/15 ring-1 ring-primary/40 ring-inset hover:bg-primary/20",
                     )}

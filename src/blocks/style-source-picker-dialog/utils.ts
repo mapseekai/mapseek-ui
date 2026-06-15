@@ -19,7 +19,7 @@ export function filterStyleSourcePickerOptions(
   options: StyleSourcePickerOption[],
   keyword: string,
   sourceFilter: StyleSourcePickerFilter,
-  typeFilter: StyleSourcePickerTypeFilter = "ALL"
+  typeFilter: StyleSourcePickerTypeFilter = "ALL",
 ): StyleSourcePickerOption[] {
   const normalizedKeyword = keyword.trim().toLowerCase()
   return options.filter((item) => {
@@ -42,7 +42,7 @@ export function filterStyleSourcePickerOptions(
 export function toggleStyleSourcePickerSelection(
   selectedKeys: string[],
   targetKey: string,
-  disabledKeys: Set<string> = new Set()
+  disabledKeys: Set<string> = new Set(),
 ): string[] {
   if (disabledKeys.has(targetKey)) {
     return selectedKeys

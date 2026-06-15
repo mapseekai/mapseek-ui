@@ -7,9 +7,7 @@ import type { SchemaFormField, SchemaFormProps } from "./types"
 
 function nextMulti(current: unknown, value: string): string[] {
   const cur = Array.isArray(current) ? (current as string[]) : []
-  return cur.includes(value)
-    ? cur.filter((x) => x !== value)
-    : [...cur, value]
+  return cur.includes(value) ? cur.filter((x) => x !== value) : [...cur, value]
 }
 
 /**
@@ -45,10 +43,7 @@ export function SchemaForm({
                 max={f.max}
                 defaultValue={typeof f.default === "number" ? f.default : ""}
                 onChange={(e) =>
-                  onChange(
-                    f.key,
-                    e.target.value === "" ? undefined : Number(e.target.value),
-                  )
+                  onChange(f.key, e.target.value === "" ? undefined : Number(e.target.value))
                 }
               />
             )}
@@ -82,14 +77,11 @@ export function SchemaForm({
             {f.type === "multiselect" && (
               <div className="max-h-[140px] overflow-auto border border-border bg-background">
                 {f.options.length === 0 ? (
-                  <p className="px-2 py-1.5 text-[11px] text-muted-foreground">
-                    {f.emptyHint}
-                  </p>
+                  <p className="px-2 py-1.5 text-[11px] text-muted-foreground">{f.emptyHint}</p>
                 ) : (
                   f.options.map((o) => {
                     const checked =
-                      Array.isArray(values[f.key]) &&
-                      (values[f.key] as string[]).includes(o.value)
+                      Array.isArray(values[f.key]) && (values[f.key] as string[]).includes(o.value)
                     return (
                       <label
                         key={o.value}
@@ -97,9 +89,7 @@ export function SchemaForm({
                       >
                         <Checkbox
                           checked={checked}
-                          onCheckedChange={() =>
-                            onChange(f.key, nextMulti(values[f.key], o.value))
-                          }
+                          onCheckedChange={() => onChange(f.key, nextMulti(values[f.key], o.value))}
                         />
                         <span className="text-xs">{o.label}</span>
                       </label>

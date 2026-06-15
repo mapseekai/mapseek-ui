@@ -22,10 +22,7 @@ const KIND_BOX: Record<LinkedRefKind, string> = {
 }
 
 /** 状态药丸：边框/底色/文字 + 是否带前导圆点。 */
-const STATUS_TONE: Record<
-  LinkedRefStatusTone,
-  { pill: string; dot: string | null }
-> = {
+const STATUS_TONE: Record<LinkedRefStatusTone, { pill: string; dot: string | null }> = {
   active: {
     pill: "border-primary/25 bg-primary/10 text-primary",
     dot: "bg-primary",
@@ -44,11 +41,7 @@ const STATUS_TONE: Record<
  * 下方 section bar + 选中分组的条目列表。所有文案 / icon 经 props 注入；
  * 无 i18n、无副作用。action 按钮恒为 disabled（尚未接入 API）。
  */
-export function LinkedRefList({
-  groups,
-  kindIcons,
-  openLabel,
-}: LinkedRefListProps) {
+export function LinkedRefList({ groups, kindIcons, openLabel }: LinkedRefListProps) {
   const [selected, setSelected] = useState(0)
   const active = groups[selected]
 
@@ -70,9 +63,7 @@ export function LinkedRefList({
         <div className="border border-border">
           <div className="flex items-center gap-2 bg-muted/30 px-4 py-2.5">
             <span className="shrink-0">{kindIcons[active.kind]}</span>
-            <span className="text-sm font-medium text-foreground">
-              {active.title}
-            </span>
+            <span className="text-sm font-medium text-foreground">{active.title}</span>
             <span className="mono border border-border bg-background px-1.5 text-[11px] text-muted-foreground">
               {active.count}
             </span>
@@ -122,15 +113,12 @@ function SummaryCard({
         "flex flex-col gap-2 border-r border-b-2 border-border px-4 py-3 text-left transition-colors last:border-r-0",
         selected
           ? "border-b-primary bg-[oklch(0.627_0.194_149_/_0.06)]"
-          : "border-b-transparent bg-background hover:bg-muted/20"
+          : "border-b-transparent bg-background hover:bg-muted/20",
       )}
     >
       <span className="flex items-center gap-2 text-sm font-medium text-foreground">
         <span
-          className={cn(
-            "flex size-9 items-center justify-center border",
-            KIND_BOX[group.kind]
-          )}
+          className={cn("flex size-9 items-center justify-center border", KIND_BOX[group.kind])}
         >
           {icon}
         </span>
@@ -158,10 +146,7 @@ function ItemRow({
   return (
     <li className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0">
       <span
-        className={cn(
-          "flex size-9 shrink-0 items-center justify-center border",
-          KIND_BOX[kind]
-        )}
+        className={cn("flex size-9 shrink-0 items-center justify-center border", KIND_BOX[kind])}
       >
         {icon}
       </span>
@@ -176,9 +161,7 @@ function ItemRow({
         ) : null}
       </div>
       {item.time ? (
-        <span className="mono tnum shrink-0 text-[11px] text-muted-foreground">
-          {item.time}
-        </span>
+        <span className="mono tnum shrink-0 text-[11px] text-muted-foreground">{item.time}</span>
       ) : null}
       {item.status ? <StatusPill status={item.status} /> : null}
       <span className="flex shrink-0 items-center gap-1">
@@ -197,22 +180,16 @@ function ItemRow({
   )
 }
 
-function StatusPill({
-  status,
-}: {
-  status: { label: string; tone: LinkedRefStatusTone }
-}) {
+function StatusPill({ status }: { status: { label: string; tone: LinkedRefStatusTone } }) {
   const tone = STATUS_TONE[status.tone]
   return (
     <span
       className={cn(
         "inline-flex shrink-0 items-center gap-1 border px-1.5 py-0.5 text-[11px]",
-        tone.pill
+        tone.pill,
       )}
     >
-      {tone.dot ? (
-        <span className={cn("size-1.5 rounded-full", tone.dot)} />
-      ) : null}
+      {tone.dot ? <span className={cn("size-1.5 rounded-full", tone.dot)} /> : null}
       {status.label}
     </span>
   )

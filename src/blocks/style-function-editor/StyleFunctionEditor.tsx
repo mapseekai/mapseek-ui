@@ -2,28 +2,17 @@ import type * as React from "react"
 
 import { Button, type buttonVariants } from "../../components/button"
 import { cn } from "../../lib/utils"
-import type {
-  StyleFunctionPanelProps,
-  StyleFunctionStopsTableProps,
-} from "./types"
+import type { StyleFunctionPanelProps, StyleFunctionStopsTableProps } from "./types"
 
-type ButtonVariant = NonNullable<
-  Parameters<typeof buttonVariants>[0]
->["variant"]
+type ButtonVariant = NonNullable<Parameters<typeof buttonVariants>[0]>["variant"]
 
-export function StyleFunctionPanel({
-  title,
-  children,
-  className,
-}: StyleFunctionPanelProps) {
+export function StyleFunctionPanel({ title, children, className }: StyleFunctionPanelProps) {
   return (
     <section
       data-slot="style-function-panel"
       className={cn("space-y-4 border border-border bg-card p-4", className)}
     >
-      <h3 className="m-0 text-xs leading-tight font-semibold text-muted-foreground">
-        {title}
-      </h3>
+      <h3 className="m-0 text-xs leading-tight font-semibold text-muted-foreground">{title}</h3>
       <div className="space-y-4">{children}</div>
     </section>
   )
@@ -37,10 +26,7 @@ export function StyleFunctionStopsTable({
 }: StyleFunctionStopsTableProps) {
   return (
     <div className={cn("mt-6", className)}>
-      <table
-        data-slot="style-function-stops-table"
-        className="w-full table-fixed border-collapse"
-      >
+      <table data-slot="style-function-stops-table" className="w-full table-fixed border-collapse">
         <caption className="mb-2 text-left text-xs font-bold tracking-wider text-muted-foreground uppercase">
           {caption}
         </caption>
@@ -70,11 +56,7 @@ export function StyleFunctionActions({
   children: React.ReactNode
   className?: string
 }) {
-  return (
-    <div className={cn("flex justify-end gap-2 pt-0", className)}>
-      {children}
-    </div>
-  )
+  return <div className={cn("flex justify-end gap-2 pt-0", className)}>{children}</div>
 }
 
 export function StyleFunctionIconButton({

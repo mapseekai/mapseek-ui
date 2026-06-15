@@ -27,9 +27,7 @@ export function ServiceEndpointRow({
           {icon}
           <div className="flex min-w-0 flex-col">
             <span className="text-sm font-medium">{title}</span>
-            <span className="mono text-[11px] uppercase text-muted-foreground">
-              {subtitle}
-            </span>
+            <span className="mono text-[11px] uppercase text-muted-foreground">{subtitle}</span>
           </div>
         </div>
         <span className="mono shrink-0 border border-info/25 bg-info/10 px-1.5 py-0.5 text-[11px] text-info">
@@ -53,12 +51,7 @@ export function ServiceEndpointRow({
               ),
             )}
         </code>
-        <IconButton
-          size="sm"
-          title={copyLabel}
-          aria-label={copyLabel}
-          onClick={onCopy}
-        >
+        <IconButton size="sm" title={copyLabel} aria-label={copyLabel} onClick={onCopy}>
           <IconCopy size={12} stroke={1.5} />
         </IconButton>
         <Tooltip content={openTooltip}>

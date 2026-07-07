@@ -251,11 +251,11 @@ function FontBody({
 }) {
   const { slicing } = detail
   const [open, setOpen] = useState(false)
-  const [selected, setSelected] = useState<string[]>(slicing.defaultSelected)
+  const [selected, setSelected] = useState<string[]>(slicing?.defaultSelected ?? [])
   const [customChars, setCustomChars] = useState("")
 
   const totalSelected = selected.reduce((sum, id) => {
-    const c = slicing.charsets.find((x) => x.id === id)
+    const c = slicing?.charsets.find((x) => x.id === id)
     return sum + (c ? c.glyphs : 0)
   }, 0)
   const estMb = Math.round((totalSelected / 3000) * 100) / 100
@@ -290,7 +290,7 @@ function FontBody({
         </div>
       </div>
 
-      {!open ? (
+      {slicing && !open && (
         <div className={DRAWER_FOOTER_CLASS}>
           <Button size="sm" className="flex-1" onClick={() => setOpen(true)}>
             <IconScissors size={12} stroke={1.75} />
@@ -301,7 +301,8 @@ function FontBody({
             {slicing.downloadLabel}
           </Button>
         </div>
-      ) : (
+      )}
+      {slicing && open && (
         <div className="px-4 py-3.5">
           <div className="mb-2 flex items-center font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
             <span>{slicing.panelTitle}</span>

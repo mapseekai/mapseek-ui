@@ -61,7 +61,8 @@ export interface FontDetail {
   sample: string
   /** Big specimen string in the preview header (e.g. "Aa 永"). */
   specimen: string
-  slicing: {
+  /** Absent when the backend has no slice-config API for this font. */
+  slicing?: {
     configureLabel: string
     downloadLabel: string
     panelTitle: string

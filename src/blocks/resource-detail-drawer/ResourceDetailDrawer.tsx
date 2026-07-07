@@ -136,7 +136,16 @@ function IconBody({
               key={s}
               className="flex flex-col items-center gap-1 border border-border bg-muted p-2"
             >
-              <PlaceholderGlyph size={s} seed={detail.seed} />
+              {detail.svg ? (
+                <img
+                  src={svgDataUri(detail.svg)}
+                  alt={detail.title}
+                  style={{ width: s, height: s }}
+                  className="object-contain"
+                />
+              ) : (
+                <PlaceholderGlyph size={s} seed={detail.seed} />
+              )}
               <span className="font-mono text-[9px] font-medium text-muted-foreground uppercase">
                 {s}px
               </span>

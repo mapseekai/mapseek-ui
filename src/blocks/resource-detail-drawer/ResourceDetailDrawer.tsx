@@ -105,7 +105,7 @@ function IconBody({
     <div className="flex min-h-full flex-col">
       <div className="flex min-h-[140px] items-center justify-center border-b border-border bg-muted p-6">
         {detail.svg ? (
-          <img src={svgDataUri(detail.svg)} alt="" className="h-14 w-14 object-contain" />
+          <img src={svgDataUri(detail.svg)} alt={detail.title} className="h-14 w-14 object-contain" />
         ) : (
           <PlaceholderGlyph size={72} seed={detail.seed} />
         )}
@@ -173,7 +173,7 @@ function SpriteBody({
         {detail.previewUrl ? (
           <img
             src={detail.previewUrl}
-            alt=""
+            alt={detail.title}
             className="max-h-full max-w-full border border-border object-contain"
             style={CHECKER}
           />

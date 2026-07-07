@@ -193,20 +193,22 @@ function SpriteBody({
           </div>
         )}
       </div>
-      <div className="border-b border-border px-4 py-3.5">
-        <SectionTitle>{detail.sourceTitle}</SectionTitle>
-        <div className="flex flex-col gap-1.5">
-          {detail.sources.map((s, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 border border-border px-2.5 py-1.5 text-xs"
-            >
-              <span>{s.label}</span>
-              <span className="ml-auto font-mono text-[10.5px] text-muted-foreground">{s.tag}</span>
-            </div>
-          ))}
+      {detail.sources && detail.sources.length > 0 && (
+        <div className="border-b border-border px-4 py-3.5">
+          <SectionTitle>{detail.sourceTitle}</SectionTitle>
+          <div className="flex flex-col gap-1.5">
+            {detail.sources.map((s, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-2 border border-border px-2.5 py-1.5 text-xs"
+              >
+                <span>{s.label}</span>
+                <span className="ml-auto font-mono text-[10.5px] text-muted-foreground">{s.tag}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <div className="border-b border-border px-4 py-3.5">
         <SectionTitle>{detail.infoTitle}</SectionTitle>
         {detail.infoRows.map((r) => (
@@ -299,6 +301,14 @@ function FontBody({
           <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
             <IconDownload size={12} stroke={1.75} />
             {slicing.downloadLabel}
+          </Button>
+        </div>
+      )}
+      {!slicing && detail.downloadLabel && (
+        <div className={DRAWER_FOOTER_CLASS}>
+          <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
+            <IconDownload size={12} stroke={1.75} />
+            {detail.downloadLabel}
           </Button>
         </div>
       )}

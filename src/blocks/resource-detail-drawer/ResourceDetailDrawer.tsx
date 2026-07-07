@@ -13,6 +13,7 @@ import {
 import { Textarea } from "../../components/textarea"
 import { PlaceholderGlyph } from "../placeholder-glyph"
 import { cn } from "../../lib/utils"
+import { svgDataUri } from "../../lib/svg-data-uri"
 import type { FontDetail, IconDetail, ResourceDetailDrawerProps, SpriteDetail } from "./types"
 
 const CHECKER: CSSProperties = {
@@ -103,7 +104,11 @@ function IconBody({
   return (
     <div className="flex min-h-full flex-col">
       <div className="flex min-h-[140px] items-center justify-center border-b border-border bg-muted p-6">
-        <PlaceholderGlyph size={72} seed={detail.seed} />
+        {detail.svg ? (
+          <img src={svgDataUri(detail.svg)} alt="" className="h-14 w-14 object-contain" />
+        ) : (
+          <PlaceholderGlyph size={72} seed={detail.seed} />
+        )}
       </div>
       <div className="border-b border-border px-4 py-3.5">
         {detail.rows.map((r) => (
@@ -165,19 +170,28 @@ function SpriteBody({
   return (
     <div className="flex min-h-full flex-col">
       <div className="flex min-h-[200px] items-center justify-center border-b border-border bg-muted p-6">
-        <div
-          className="grid border border-border"
-          style={{
-            ...CHECKER,
-            gridTemplateColumns: `repeat(${detail.cols}, 36px)`,
-          }}
-        >
-          {detail.previewSeeds.slice(0, 32).map((seed, i) => (
-            <div key={i} className="grid size-9 place-items-center">
-              <PlaceholderGlyph size={22} seed={seed} />
-            </div>
-          ))}
-        </div>
+        {detail.previewUrl ? (
+          <img
+            src={detail.previewUrl}
+            alt=""
+            className="max-h-full max-w-full border border-border object-contain"
+            style={CHECKER}
+          />
+        ) : (
+          <div
+            className="grid border border-border"
+            style={{
+              ...CHECKER,
+              gridTemplateColumns: `repeat(${detail.cols}, 36px)`,
+            }}
+          >
+            {detail.previewSeeds.slice(0, 32).map((seed, i) => (
+              <div key={i} className="grid size-9 place-items-center">
+                <PlaceholderGlyph size={22} seed={seed} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="border-b border-border px-4 py-3.5">
         <SectionTitle>{detail.sourceTitle}</SectionTitle>

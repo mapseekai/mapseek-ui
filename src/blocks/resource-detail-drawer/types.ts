@@ -11,6 +11,8 @@ export interface IconDetail {
   title: string
   subtitle: string
   seed: string
+  /** Real SVG markup for the large preview; falls back to PlaceholderGlyph when absent. */
+  svg?: string
   rows: DetailKV[]
   tagsTitle: string
   tags: string[]
@@ -27,6 +29,8 @@ export interface SpriteDetail {
   subtitle: string
   /** Seeds for the preview mosaic (rendered up to 32). */
   previewSeeds: string[]
+  /** Real sprite.png URL; falls back to the seed mosaic when absent. */
+  previewUrl?: string
   cols: number
   sourceTitle: string
   /** Source icon groups; `tag` is a short suffix label (e.g. "引用"). */

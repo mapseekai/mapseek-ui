@@ -105,7 +105,11 @@ function IconBody({
     <div className="flex min-h-full flex-col">
       <div className="flex min-h-[140px] items-center justify-center border-b border-border bg-muted p-6">
         {detail.svg ? (
-          <img src={svgDataUri(detail.svg)} alt={detail.title} className="h-14 w-14 object-contain" />
+          <img
+            src={svgDataUri(detail.svg)}
+            alt={detail.title}
+            className="h-14 w-14 object-contain"
+          />
         ) : (
           <PlaceholderGlyph size={72} seed={detail.seed} />
         )}
@@ -212,7 +216,9 @@ function SpriteBody({
                 className="flex items-center gap-2 border border-border px-2.5 py-1.5 text-xs"
               >
                 <span>{s.label}</span>
-                <span className="ml-auto font-mono text-[10.5px] text-muted-foreground">{s.tag}</span>
+                <span className="ml-auto font-mono text-[10.5px] text-muted-foreground">
+                  {s.tag}
+                </span>
               </div>
             ))}
           </div>

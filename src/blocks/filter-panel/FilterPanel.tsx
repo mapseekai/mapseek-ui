@@ -98,7 +98,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
     patch(value, onChange, { rows: value.rows.filter((r) => r.id !== id) })
   }
   const addRow = () => {
-    const nextId = (value.rows.at(-1)?.id ?? 0) + 1
+    const nextId = (value.rows[value.rows.length - 1]?.id ?? 0) + 1
     patch(value, onChange, {
       rows: [
         ...value.rows,

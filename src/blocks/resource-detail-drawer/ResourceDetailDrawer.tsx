@@ -13,6 +13,7 @@ import {
 import { Textarea } from "../../components/textarea"
 import { PlaceholderGlyph } from "../placeholder-glyph"
 import { cn } from "../../lib/utils"
+import { svgDataUri } from "../../lib/svg-data-uri"
 import type { FontDetail, IconDetail, ResourceDetailDrawerProps, SpriteDetail } from "./types"
 
 const CHECKER: CSSProperties = {
@@ -103,7 +104,11 @@ function IconBody({
   return (
     <div className="flex min-h-full flex-col">
       <div className="flex min-h-[140px] items-center justify-center border-b border-border bg-muted p-6">
-        <PlaceholderGlyph size={72} seed={detail.seed} />
+        {detail.svg ? (
+          <img src={svgDataUri(detail.svg)} alt={detail.title} className="h-14 w-14 object-contain" />
+        ) : (
+          <PlaceholderGlyph size={72} seed={detail.seed} />
+        )}
       </div>
       <div className="border-b border-border px-4 py-3.5">
         {detail.rows.map((r) => (
@@ -131,7 +136,16 @@ function IconBody({
               key={s}
               className="flex flex-col items-center gap-1 border border-border bg-muted p-2"
             >
-              <PlaceholderGlyph size={s} seed={detail.seed} />
+              {detail.svg ? (
+                <img
+                  src={svgDataUri(detail.svg)}
+                  alt={detail.title}
+                  style={{ width: s, height: s }}
+                  className="object-contain"
+                />
+              ) : (
+                <PlaceholderGlyph size={s} seed={detail.seed} />
+              )}
               <span className="font-mono text-[9px] font-medium text-muted-foreground uppercase">
                 {s}px
               </span>
@@ -165,34 +179,45 @@ function SpriteBody({
   return (
     <div className="flex min-h-full flex-col">
       <div className="flex min-h-[200px] items-center justify-center border-b border-border bg-muted p-6">
-        <div
-          className="grid border border-border"
-          style={{
-            ...CHECKER,
-            gridTemplateColumns: `repeat(${detail.cols}, 36px)`,
-          }}
-        >
-          {detail.previewSeeds.slice(0, 32).map((seed, i) => (
-            <div key={i} className="grid size-9 place-items-center">
-              <PlaceholderGlyph size={22} seed={seed} />
-            </div>
-          ))}
-        </div>
+        {detail.previewUrl ? (
+          <img
+            src={detail.previewUrl}
+            alt={detail.title}
+            className="max-h-full max-w-full border border-border object-contain"
+            style={CHECKER}
+          />
+        ) : (
+          <div
+            className="grid border border-border"
+            style={{
+              ...CHECKER,
+              gridTemplateColumns: `repeat(${detail.cols}, 36px)`,
+            }}
+          >
+            {detail.previewSeeds.slice(0, 32).map((seed, i) => (
+              <div key={i} className="grid size-9 place-items-center">
+                <PlaceholderGlyph size={22} seed={seed} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-      <div className="border-b border-border px-4 py-3.5">
-        <SectionTitle>{detail.sourceTitle}</SectionTitle>
-        <div className="flex flex-col gap-1.5">
-          {detail.sources.map((s, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-2 border border-border px-2.5 py-1.5 text-xs"
-            >
-              <span>{s.label}</span>
-              <span className="ml-auto font-mono text-[10.5px] text-muted-foreground">{s.tag}</span>
-            </div>
-          ))}
+      {detail.sources && detail.sources.length > 0 && (
+        <div className="border-b border-border px-4 py-3.5">
+          <SectionTitle>{detail.sourceTitle}</SectionTitle>
+          <div className="flex flex-col gap-1.5">
+            {detail.sources.map((s, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-2 border border-border px-2.5 py-1.5 text-xs"
+              >
+                <span>{s.label}</span>
+                <span className="ml-auto font-mono text-[10.5px] text-muted-foreground">{s.tag}</span>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <div className="border-b border-border px-4 py-3.5">
         <SectionTitle>{detail.infoTitle}</SectionTitle>
         {detail.infoRows.map((r) => (
@@ -237,11 +262,11 @@ function FontBody({
 }) {
   const { slicing } = detail
   const [open, setOpen] = useState(false)
-  const [selected, setSelected] = useState<string[]>(slicing.defaultSelected)
+  const [selected, setSelected] = useState<string[]>(slicing?.defaultSelected ?? [])
   const [customChars, setCustomChars] = useState("")
 
   const totalSelected = selected.reduce((sum, id) => {
-    const c = slicing.charsets.find((x) => x.id === id)
+    const c = slicing?.charsets.find((x) => x.id === id)
     return sum + (c ? c.glyphs : 0)
   }, 0)
   const estMb = Math.round((totalSelected / 3000) * 100) / 100
@@ -276,7 +301,7 @@ function FontBody({
         </div>
       </div>
 
-      {!open ? (
+      {slicing && !open && (
         <div className={DRAWER_FOOTER_CLASS}>
           <Button size="sm" className="flex-1" onClick={() => setOpen(true)}>
             <IconScissors size={12} stroke={1.75} />
@@ -287,7 +312,16 @@ function FontBody({
             {slicing.downloadLabel}
           </Button>
         </div>
-      ) : (
+      )}
+      {!slicing && detail.downloadLabel && (
+        <div className={DRAWER_FOOTER_CLASS}>
+          <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
+            <IconDownload size={12} stroke={1.75} />
+            {detail.downloadLabel}
+          </Button>
+        </div>
+      )}
+      {slicing && open && (
         <div className="px-4 py-3.5">
           <div className="mb-2 flex items-center font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
             <span>{slicing.panelTitle}</span>

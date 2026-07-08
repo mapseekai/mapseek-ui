@@ -51,4 +51,8 @@ export interface ResourceGridProps {
   /** Rendered when `items` is empty. */
   empty?: ReactNode
   className?: string
+  /** 覆盖 icon 单元格预览(真实 SVG 懒取);缺省 PlaceholderGlyph。 */
+  renderIconPreview?: (item: ResourceIconItem) => ReactNode
+  /** 覆盖 sprite 卡片预览(真实 sprite.png);缺省 seed 马赛克。 */
+  renderSpritePreview?: (item: ResourceSpriteItem) => ReactNode
 }

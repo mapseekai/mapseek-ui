@@ -54,6 +54,8 @@ export function ResourceGrid({
   onContextMenu,
   empty,
   className,
+  renderIconPreview,
+  renderSpritePreview,
 }: ResourceGridProps) {
   if (items.length === 0 && empty) {
     return <div className={cn("p-4", className)}>{empty}</div>
@@ -74,7 +76,7 @@ export function ResourceGrid({
             onClick={() => onOpen("icon", it.id)}
             onContextMenu={(e) => onContextMenu(e, "icon", it.id)}
           >
-            <PlaceholderGlyph size={28} seed={it.seed} />
+            {renderIconPreview?.(it) ?? <PlaceholderGlyph size={28} seed={it.seed} />}
             <div className="w-full truncate text-center text-[10.5px] font-medium text-foreground">
               {it.name}
             </div>
@@ -98,13 +100,15 @@ export function ResourceGrid({
             onOpen={() => onOpen("sprite", s.id)}
             onContextMenu={(e) => onContextMenu(e, "sprite", s.id)}
             thumb={
-              <div className="grid grid-cols-4 border border-border" style={CHECKER}>
-                {s.previewSeeds.slice(0, 8).map((seed, i) => (
-                  <div key={i} className="grid size-7 place-items-center">
-                    <PlaceholderGlyph size={16} seed={seed} />
-                  </div>
-                ))}
-              </div>
+              renderSpritePreview?.(s) ?? (
+                <div className="grid grid-cols-4 border border-border" style={CHECKER}>
+                  {s.previewSeeds.slice(0, 8).map((seed, i) => (
+                    <div key={i} className="grid size-7 place-items-center">
+                      <PlaceholderGlyph size={16} seed={seed} />
+                    </div>
+                  ))}
+                </div>
+              )
             }
             title={<span className="font-mono text-[12.5px] font-medium">{s.name}</span>}
             status={s.status}

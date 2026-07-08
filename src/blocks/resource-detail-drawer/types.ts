@@ -11,6 +11,8 @@ export interface IconDetail {
   title: string
   subtitle: string
   seed: string
+  /** Real SVG markup for the large preview; falls back to PlaceholderGlyph when absent. */
+  svg?: string
   rows: DetailKV[]
   tagsTitle: string
   tags: string[]
@@ -27,10 +29,13 @@ export interface SpriteDetail {
   subtitle: string
   /** Seeds for the preview mosaic (rendered up to 32). */
   previewSeeds: string[]
+  /** Real sprite.png URL; falls back to the seed mosaic when absent. */
+  previewUrl?: string
   cols: number
-  sourceTitle: string
+  /** Absent when the backend has no icon-group provenance to show. */
+  sourceTitle?: string
   /** Source icon groups; `tag` is a short suffix label (e.g. "引用"). */
-  sources: { label: string; tag: string }[]
+  sources?: { label: string; tag: string }[]
   infoTitle: string
   infoRows: DetailKV[]
   filesTitle: string
@@ -57,7 +62,10 @@ export interface FontDetail {
   sample: string
   /** Big specimen string in the preview header (e.g. "Aa 永"). */
   specimen: string
-  slicing: {
+  /** Footer download-button label; used when `slicing` is absent. */
+  downloadLabel?: string
+  /** Absent when the backend has no slice-config API for this font. */
+  slicing?: {
     configureLabel: string
     downloadLabel: string
     panelTitle: string

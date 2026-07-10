@@ -128,7 +128,7 @@ export function ResourceGrid({
             key={s.id}
             onOpen={() => onOpen("sprite", s.id)}
             onContextMenu={(e) => onContextMenu(e, "sprite", s.id)}
-            thumbClassName="h-[90px]"
+            thumbClassName="h-[90px] p-0"
             thumb={
               renderSpritePreview?.(s) ?? (
                 <div className="grid grid-cols-4 border border-border" style={CHECKER}>

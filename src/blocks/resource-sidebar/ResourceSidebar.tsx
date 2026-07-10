@@ -208,7 +208,7 @@ function CategoryRow({
 }: {
   icon: React.ReactNode
   label: string
-  count: number
+  count?: number
   active: boolean
   onClick: () => void
   actions?: React.ReactNode
@@ -224,15 +224,17 @@ function CategoryRow({
       {icon}
       <span className="min-w-0 flex-1 truncate">{label}</span>
       <div className="relative ml-auto h-6 w-[50px] shrink-0">
-        <span
-          className={cn(
-            "absolute inset-y-0 right-0 flex items-center font-mono text-[10.5px] text-muted-foreground",
-            active && "text-primary",
-            actions && "group-hover/cat:hidden",
-          )}
-        >
-          {count}
-        </span>
+        {count !== undefined && (
+          <span
+            className={cn(
+              "absolute inset-y-0 right-0 flex items-center font-mono text-[10.5px] text-muted-foreground",
+              active && "text-primary",
+              actions && "group-hover/cat:hidden",
+            )}
+          >
+            {count}
+          </span>
+        )}
         {actions && (
           <div
             className="absolute inset-y-0 right-0 hidden items-center gap-0.5 group-hover/cat:flex"

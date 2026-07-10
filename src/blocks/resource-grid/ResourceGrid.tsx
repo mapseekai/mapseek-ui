@@ -69,7 +69,7 @@ export function ResourceGrid({
     return (
       <div
         className={cn(
-          "grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-px border border-border bg-border",
+          "grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-px border border-border bg-background",
           className,
         )}
       >
@@ -122,12 +122,13 @@ export function ResourceGrid({
 
   if (tab === "sprite") {
     return (
-      <div className={cn("grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3", className)}>
+      <div className={cn("grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-3", className)}>
         {(items as ResourceSpriteItem[]).map((s) => (
           <ResourceCard
             key={s.id}
             onOpen={() => onOpen("sprite", s.id)}
             onContextMenu={(e) => onContextMenu(e, "sprite", s.id)}
+            thumbClassName="h-[90px]"
             thumb={
               renderSpritePreview?.(s) ?? (
                 <div className="grid grid-cols-4 border border-border" style={CHECKER}>
@@ -156,7 +157,7 @@ export function ResourceGrid({
           onOpen={() => onOpen("font", f.id)}
           onContextMenu={(e) => onContextMenu(e, "font", f.id)}
           thumbClassName={cn(
-            "text-[42px] leading-none font-semibold tracking-[-0.02em] text-foreground",
+            "min-h-[120px] text-[42px] leading-none font-semibold tracking-[-0.02em] text-foreground",
             fontClass(f.family),
           )}
           thumb={<span>Aa 永</span>}
@@ -193,8 +194,9 @@ function ResourceCard({
       onContextMenu={onContextMenu}
     >
       <div
+        data-testid="resource-card-thumb"
         className={cn(
-          "flex min-h-[120px] items-center justify-center border-b border-border bg-muted p-[18px]",
+          "flex items-center justify-center border-b border-border bg-muted p-[18px]",
           thumbClassName,
         )}
       >

@@ -5,6 +5,7 @@ export interface ResourceSidebarCategory {
   id: string
   label: string
   count: number
+  protected?: boolean
 }
 
 export interface ResourceSidebarLabels {

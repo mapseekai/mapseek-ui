@@ -1,8 +1,9 @@
-import type { CSSProperties } from "react"
 import { IconCircleFilled, IconScissors } from "@tabler/icons-react"
+import type { CSSProperties } from "react"
 import { Badge } from "../../components/badge"
-import { PlaceholderGlyph } from "../placeholder-glyph"
+import { Checkbox } from "../../components/checkbox"
 import { cn } from "../../lib/utils"
+import { PlaceholderGlyph } from "../placeholder-glyph"
 import type {
   FontFamilyKind,
   ResourceFontItem,
@@ -52,6 +53,9 @@ export function ResourceGrid({
   items,
   onOpen,
   onContextMenu,
+  selectedIconIds,
+  onIconSelect,
+  iconSelectionLabel,
   empty,
   className,
   renderIconPreview,
@@ -69,24 +73,49 @@ export function ResourceGrid({
           className,
         )}
       >
-        {(items as ResourceIconItem[]).map((it) => (
-          <div
-            key={it.id}
-            className="relative flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 bg-background p-2.5 transition-colors hover:bg-muted"
-            onClick={() => onOpen("icon", it.id)}
-            onContextMenu={(e) => onContextMenu(e, "icon", it.id)}
-          >
-            {renderIconPreview?.(it) ?? <PlaceholderGlyph size={28} seed={it.seed} />}
-            <div className="w-full truncate text-center text-[10.5px] font-medium text-foreground">
-              {it.name}
-            </div>
-            {it.categoryLabel && (
-              <div className="font-mono text-[9.5px] tracking-[0.04em] text-muted-foreground uppercase">
-                {it.categoryLabel}
+        {(items as ResourceIconItem[]).map((it) => {
+          const selectable = Boolean(onIconSelect)
+          const selected = selectedIconIds?.has(it.id) ?? false
+
+          return (
+            <div
+              key={it.id}
+              data-selected={selected}
+              className={cn(
+                "group relative flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 p-2.5 ring-inset transition-colors hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
+                selected
+                  ? "bg-primary/5 ring-1 ring-primary hover:bg-primary/5"
+                  : "bg-background hover:bg-muted",
+              )}
+              onClick={() => onOpen("icon", it.id)}
+              onContextMenu={(e) => onContextMenu(e, "icon", it.id)}
+            >
+              {selectable && (
+                <span className="absolute top-2 left-2 z-10" onClick={(e) => e.stopPropagation()}>
+                  <Checkbox
+                    checked={selected}
+                    aria-label={iconSelectionLabel?.(it) ?? it.name}
+                    className={cn(
+                      "bg-background transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
+                      selected ? "opacity-100" : "opacity-0",
+                    )}
+                    onClick={(e) => e.stopPropagation()}
+                    onCheckedChange={(checked) => onIconSelect?.(it.id, checked === true)}
+                  />
+                </span>
+              )}
+              {renderIconPreview?.(it) ?? <PlaceholderGlyph size={28} seed={it.seed} />}
+              <div className="w-full truncate text-center text-[10.5px] font-medium text-foreground">
+                {it.name}
               </div>
-            )}
-          </div>
-        ))}
+              {it.categoryLabel && (
+                <div className="font-mono text-[9.5px] tracking-[0.04em] text-muted-foreground uppercase">
+                  {it.categoryLabel}
+                </div>
+              )}
+            </div>
+          )
+        })}
       </div>
     )
   }

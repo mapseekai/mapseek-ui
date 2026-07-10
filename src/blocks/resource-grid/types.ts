@@ -48,6 +48,9 @@ export interface ResourceGridProps {
   items: ResourceGridItem[]
   onOpen: (kind: ResourceTab, id: string) => void
   onContextMenu: (e: React.MouseEvent, kind: ResourceTab, id: string) => void
+  selectedIconIds?: ReadonlySet<string>
+  onIconSelect?: (id: string, selected: boolean) => void
+  iconSelectionLabel?: (item: ResourceIconItem) => string
   /** Rendered when `items` is empty. */
   empty?: ReactNode
   className?: string

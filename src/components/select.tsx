@@ -1,8 +1,8 @@
-import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
-import { IconChevronDown, IconCheck } from "@tabler/icons-react"
-import { cva, type VariantProps } from "class-variance-authority"
+import { IconCheck, IconChevronDown } from "@tabler/icons-react"
 import { cn } from "@workspace/ui/lib/utils"
+import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react"
 
 const selectTriggerVariants = cva(
   "inline-flex w-full cursor-pointer items-center justify-between border border-border bg-background text-xs font-medium text-foreground transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[popup-open]:bg-muted dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
@@ -49,7 +49,7 @@ function SelectItem({ value, disabled, className, children }: SelectItemProps) {
       value={value}
       disabled={disabled}
       className={cn(
-        "relative flex h-7 cursor-pointer items-center gap-1.5 px-2 pr-6 text-xs outline-none select-none",
+        "relative flex h-8 cursor-pointer items-center gap-1.5 px-2 pr-6 text-xs outline-none select-none",
         "data-[highlighted]:bg-muted",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className,

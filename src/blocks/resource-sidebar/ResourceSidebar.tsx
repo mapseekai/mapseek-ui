@@ -118,6 +118,7 @@ export function ResourceSidebar({
             count={c.count}
             onClick={() => onSelectCat(c.id)}
             actions={
+              c.isDefault ? undefined : (
               <>
                 <Tooltip content={labels.rename} side="right" delay={0}>
                   <Button
@@ -150,6 +151,7 @@ export function ResourceSidebar({
                   </Button>
                 </Tooltip>
               </>
+              )
             }
           />
         ))}

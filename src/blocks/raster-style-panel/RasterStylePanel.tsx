@@ -18,6 +18,7 @@ import { Segmented } from "./Segmented"
 import { StretchControl } from "./StretchControl"
 import type {
   NoDataKind,
+  MosaicPixelSelection,
   RasterFormatValue,
   RasterStat,
   RasterStylePanelProps,
@@ -36,6 +37,7 @@ const RESAMPLINGS: { value: Resampling; icon: TablerIcon }[] = [
 
 const TILE_SIZES: TileSize[] = [64, 128, 256, 512, 1024]
 const FORMATS: RasterFormatValue[] = ["png", "webp", "jpeg"]
+const MOSAIC_SELECTIONS: MosaicPixelSelection[] = ["first", "highest", "lowest", "mean", "median"]
 const CHANNELS = ["R", "G", "B"] as const
 type RenderMode = "single" | "rgb"
 type Channel = (typeof CHANNELS)[number]
@@ -109,6 +111,7 @@ export function RasterStylePanel({
   stats,
   labels,
   autoRange,
+  mosaic,
   className,
 }: RasterStylePanelProps) {
   const set = (patch: Partial<typeof value>) => onChange({ ...value, ...patch })
@@ -193,6 +196,22 @@ export function RasterStylePanel({
       {stats && stats.length > 0 && <RasterStatGrid stats={stats} />}
 
       <div className="grid grid-cols-[56px_1fr] gap-x-3 gap-y-2.5">
+        {mosaic && (
+          <>
+            <ParamLabel text={labels.mosaicSelection ?? "Pixel selection"} />
+            <Segmented<MosaicPixelSelection>
+              columns={3}
+              options={MOSAIC_SELECTIONS.map((selection) => ({
+                value: selection,
+                label: labels.mosaicSelectionModes?.[selection] ?? selection,
+              }))}
+              value={mosaic.pixelSelection}
+              onChange={mosaic.onPixelSelectionChange}
+              buttonClassName="font-sans text-[11px]"
+            />
+          </>
+        )}
+
         {/* Render mode */}
         {supportsRgb && (
           <>

@@ -28,4 +28,5 @@ export type {
   RasterStat,
   RasterStyleLabels,
   RasterStylePanelProps,
+  MosaicPixelSelection,
 } from "./types"

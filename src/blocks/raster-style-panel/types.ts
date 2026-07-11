@@ -16,6 +16,8 @@ export type TileSize = 64 | 128 | 256 | 512 | 1024
 
 export type RasterFormatValue = "png" | "webp" | "jpeg"
 
+export type MosaicPixelSelection = "first" | "highest" | "lowest" | "mean" | "median"
+
 export type NoDataKind = "nan" | "inf" | "-inf" | "custom"
 
 export interface RasterBand {
@@ -97,6 +99,8 @@ export interface RasterStyleLabels {
   colorFormulaPlaceholder: string
   /** Note shown where colormap would be, in multi-band mode. */
   multibandNote: string
+  mosaicSelection?: string
+  mosaicSelectionModes?: Record<MosaicPixelSelection, string>
   /** Optional per-control help text (rendered as a help tooltip). */
   help?: Partial<
     Record<"band" | "colormap" | "stretch" | "nodata" | "resampling" | "colorFormula", string>
@@ -113,6 +117,10 @@ export interface RasterStylePanelProps {
   labels: RasterStyleLabels
   /** Pre-fill target for the custom-stretch "Auto" button. */
   autoRange?: [number, number]
+  mosaic?: {
+    pixelSelection: MosaicPixelSelection
+    onPixelSelectionChange: (next: MosaicPixelSelection) => void
+  }
   className?: string
 }
 

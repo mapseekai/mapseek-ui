@@ -3,8 +3,8 @@ export type ColormapName =
   | "magma"
   | "inferno"
   | "plasma"
-  | "cividis"
   | "turbo"
+  | "terrain"
   | "greys"
   | "custom"
 

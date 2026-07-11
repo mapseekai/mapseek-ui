@@ -21,7 +21,9 @@ export interface AppTopBarProps {
    */
   status?: ReactNode
   onBack: () => void
-  onSave: () => void | Promise<void>
+  onSave?: () => void | Promise<void>
+  saveDisabled?: boolean
+  savePending?: boolean
   /** Actions rendered immediately before the Save button. */
   beforeSaveActions?: ReactNode
   /** Actions rendered immediately after the Save button. */

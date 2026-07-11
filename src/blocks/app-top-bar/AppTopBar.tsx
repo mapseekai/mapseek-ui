@@ -15,6 +15,8 @@ export function AppTopBar({
   status,
   onBack,
   onSave,
+  saveDisabled,
+  savePending,
   beforeSaveActions,
   afterSaveActions,
   endActions,
@@ -51,13 +53,17 @@ export function AppTopBar({
 
       {beforeSaveActions}
 
-      <Button
-        aria-label={labels.save}
-        onClick={() => void onSave()}
-        className="h-[26px] gap-1.5 rounded-none bg-primary px-2.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
-      >
-        <IconDeviceFloppy size={13} /> {labels.save}
-      </Button>
+      {onSave && (
+        <Button
+          aria-label={labels.save}
+          disabled={saveDisabled || savePending}
+          aria-busy={savePending || undefined}
+          onClick={() => void onSave()}
+          className="h-[26px] gap-1.5 rounded-none bg-primary px-2.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
+        >
+          <IconDeviceFloppy size={13} /> {labels.save}
+        </Button>
+      )}
 
       {afterSaveActions}
       {endActions}

@@ -15,8 +15,7 @@ export const COLORMAP_GRADIENTS: Record<ColormapName, string> = {
     "linear-gradient(to right, #000004, #1b0c42, #4a0c6b, #781c6d, #a52c60, #cf4446, #ed6925, #fb9b06, #f7d13d, #fcffa4)",
   magma:
     "linear-gradient(to right, #000004, #180f3e, #451077, #721f81, #9f2f7f, #cd4071, #f1605d, #fd9668, #feca8d, #fcfdbf)",
-  cividis:
-    "linear-gradient(to right, #00224e, #123570, #3b496c, #575d6d, #707173, #8a8678, #a59c74, #c3b369, #e1cc55, #fee838)",
+  terrain: "linear-gradient(to right, #333399, #00a6d6, #33a65c, #b5cc66, #c2a875, #ffffff)",
   turbo:
     "linear-gradient(to right, #30123b, #4145ab, #4675ed, #39a2fc, #1bcfd4, #24eca6, #61fc6c, #a4fc3c, #d1e834, #f3c63a, #fe9b2d, #f36315, #d93806, #ad1006)",
   greys: "linear-gradient(to right, #ffffff, #000000)",
@@ -28,8 +27,8 @@ export const NAMED_COLORMAPS: ColormapName[] = [
   "magma",
   "inferno",
   "plasma",
-  "cividis",
   "turbo",
+  "terrain",
   "greys",
   "custom",
 ]

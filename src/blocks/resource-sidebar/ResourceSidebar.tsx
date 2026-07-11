@@ -118,40 +118,38 @@ export function ResourceSidebar({
             count={c.count}
             onClick={() => onSelectCat(c.id)}
             actions={
-              !c.protected ? (
-                <>
-                  <Tooltip content={labels.rename} side="right" delay={0}>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="transition-none active:not-aria-[haspopup]:translate-y-0"
-                      aria-label={labels.rename}
-                      title={labels.rename}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onRenameCategory(c.id)
-                      }}
-                    >
-                      <IconPencil size={11} stroke={ICON_STROKE} />
-                    </Button>
-                  </Tooltip>
-                  <Tooltip content={labels.remove} side="right" delay={0}>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="transition-none active:not-aria-[haspopup]:translate-y-0"
-                      aria-label={labels.remove}
-                      title={labels.remove}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onRemoveCategory(c.id)
-                      }}
-                    >
-                      <IconTrash size={11} stroke={ICON_STROKE} />
-                    </Button>
-                  </Tooltip>
-                </>
-              ) : undefined
+              <>
+                <Tooltip content={labels.rename} side="right" delay={0}>
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    className="transition-none active:not-aria-[haspopup]:translate-y-0"
+                    aria-label={labels.rename}
+                    title={labels.rename}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onRenameCategory(c.id)
+                    }}
+                  >
+                    <IconPencil size={11} stroke={ICON_STROKE} />
+                  </Button>
+                </Tooltip>
+                <Tooltip content={labels.remove} side="right" delay={0}>
+                  <Button
+                    variant="ghost"
+                    size="icon-xs"
+                    className="transition-none active:not-aria-[haspopup]:translate-y-0"
+                    aria-label={labels.remove}
+                    title={labels.remove}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onRemoveCategory(c.id)
+                    }}
+                  >
+                    <IconTrash size={11} stroke={ICON_STROKE} />
+                  </Button>
+                </Tooltip>
+              </>
             }
           />
         ))}
@@ -208,7 +206,7 @@ function CategoryRow({
 }: {
   icon: React.ReactNode
   label: string
-  count?: number
+  count: number
   active: boolean
   onClick: () => void
   actions?: React.ReactNode
@@ -224,17 +222,15 @@ function CategoryRow({
       {icon}
       <span className="min-w-0 flex-1 truncate">{label}</span>
       <div className="relative ml-auto h-6 w-[50px] shrink-0">
-        {count !== undefined && (
-          <span
-            className={cn(
-              "absolute inset-y-0 right-0 flex items-center font-mono text-[10.5px] text-muted-foreground",
-              active && "text-primary",
-              actions && "group-hover/cat:hidden",
-            )}
-          >
-            {count}
-          </span>
-        )}
+        <span
+          className={cn(
+            "absolute inset-y-0 right-0 flex items-center font-mono text-[10.5px] text-muted-foreground",
+            active && "text-primary",
+            actions && "group-hover/cat:hidden",
+          )}
+        >
+          {count}
+        </span>
         {actions && (
           <div
             className="absolute inset-y-0 right-0 hidden items-center gap-0.5 group-hover/cat:flex"

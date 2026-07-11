@@ -4,8 +4,7 @@ export type ResourceTab = "icon" | "sprite" | "font"
 export interface ResourceSidebarCategory {
   id: string
   label: string
-  count?: number
-  protected?: boolean
+  count: number
 }
 
 export interface ResourceSidebarLabels {

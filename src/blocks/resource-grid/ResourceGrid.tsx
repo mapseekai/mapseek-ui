@@ -84,10 +84,10 @@ export function ResourceGrid({
               data-testid="resource-icon-card"
               data-selected={selected}
               className={cn(
-                "group relative flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 p-2.5 ring-inset transition-colors hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
+                "group relative isolate flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 bg-background p-2.5 ring-inset transition-colors hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
                 selected
-                  ? "bg-primary/5 ring-1 ring-primary hover:bg-primary/5"
-                  : "bg-background hover:bg-muted",
+                  ? "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-primary/5 ring-1 ring-primary"
+                  : "hover:bg-muted",
               )}
               onClick={() => onOpen("icon", it.id)}
               onContextMenu={(e) => onContextMenu(e, "icon", it.id)}

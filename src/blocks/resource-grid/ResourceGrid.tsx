@@ -68,8 +68,9 @@ export function ResourceGrid({
   if (tab === "icon") {
     return (
       <div
+        data-testid="resource-icon-grid"
         className={cn(
-          "grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-px border border-border bg-background",
+          "grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-px border border-border bg-border",
           className,
         )}
       >
@@ -80,6 +81,7 @@ export function ResourceGrid({
           return (
             <div
               key={it.id}
+              data-testid="resource-icon-card"
               data-selected={selected}
               className={cn(
                 "group relative flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 p-2.5 ring-inset transition-colors hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",

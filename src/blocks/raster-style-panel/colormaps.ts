@@ -30,5 +30,4 @@ export const NAMED_COLORMAPS: ColormapName[] = [
   "turbo",
   "terrain",
   "greys",
-  "custom",
 ]

@@ -23,19 +23,21 @@ export interface ColormapPickerProps {
 export function ColormapPicker({
   value,
   onChange,
-  options = NAMED_COLORMAPS,
+  options,
   customLabel,
   onEditCustom,
   columns = 4,
   disabled,
   className,
 }: ColormapPickerProps) {
+  const visibleOptions =
+    options ?? (value === "custom" ? [...NAMED_COLORMAPS, "custom" as const] : NAMED_COLORMAPS)
   return (
     <div
       className={cn("grid gap-1", disabled && "pointer-events-none opacity-50", className)}
       style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}
     >
-      {options.map((c) => {
+      {visibleOptions.map((c) => {
         const active = c === value
         return (
           <button

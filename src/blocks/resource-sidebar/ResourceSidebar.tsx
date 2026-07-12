@@ -119,38 +119,38 @@ export function ResourceSidebar({
             onClick={() => onSelectCat(c.id)}
             actions={
               c.isDefault ? undefined : (
-              <>
-                <Tooltip content={labels.rename} side="right" delay={0}>
-                  <Button
-                    variant="ghost"
-                    size="icon-xs"
-                    className="transition-none active:not-aria-[haspopup]:translate-y-0"
-                    aria-label={labels.rename}
-                    title={labels.rename}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onRenameCategory(c.id)
-                    }}
-                  >
-                    <IconPencil size={11} stroke={ICON_STROKE} />
-                  </Button>
-                </Tooltip>
-                <Tooltip content={labels.remove} side="right" delay={0}>
-                  <Button
-                    variant="ghost"
-                    size="icon-xs"
-                    className="transition-none active:not-aria-[haspopup]:translate-y-0"
-                    aria-label={labels.remove}
-                    title={labels.remove}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      onRemoveCategory(c.id)
-                    }}
-                  >
-                    <IconTrash size={11} stroke={ICON_STROKE} />
-                  </Button>
-                </Tooltip>
-              </>
+                <>
+                  <Tooltip content={labels.rename} side="right" delay={0}>
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      className="transition-none active:not-aria-[haspopup]:translate-y-0"
+                      aria-label={labels.rename}
+                      title={labels.rename}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onRenameCategory(c.id)
+                      }}
+                    >
+                      <IconPencil size={11} stroke={ICON_STROKE} />
+                    </Button>
+                  </Tooltip>
+                  <Tooltip content={labels.remove} side="right" delay={0}>
+                    <Button
+                      variant="ghost"
+                      size="icon-xs"
+                      className="transition-none active:not-aria-[haspopup]:translate-y-0"
+                      aria-label={labels.remove}
+                      title={labels.remove}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onRemoveCategory(c.id)
+                      }}
+                    >
+                      <IconTrash size={11} stroke={ICON_STROKE} />
+                    </Button>
+                  </Tooltip>
+                </>
               )
             }
           />

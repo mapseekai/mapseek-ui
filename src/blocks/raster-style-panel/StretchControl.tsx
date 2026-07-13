@@ -30,6 +30,7 @@ function NumberDraft({
   resetKey,
   report,
   onValid,
+  validate = (next) => Number.isFinite(next),
 }: {
   id: string
   label: string
@@ -37,6 +38,7 @@ function NumberDraft({
   resetKey?: string | number
   report?: (key: string, valid: boolean | null) => void
   onValid: (value: number) => void
+  validate?: (value: number) => boolean
 }) {
   const [raw, setRaw] = useState(String(value))
   useEffect(() => {
@@ -51,11 +53,58 @@ function NumberDraft({
       onChange={(event) => {
         const next = event.target.value
         setRaw(next)
-        const valid = next.trim() !== "" && Number.isFinite(Number(next))
+        const valid = next.trim() !== "" && Number.isFinite(Number(next)) && validate(Number(next))
         report?.(id, valid)
         if (valid) onValid(Number(next))
       }}
     />
+  )
+}
+
+function PercentDraft({
+  value,
+  resetKey,
+  report,
+  onValid,
+}: {
+  value: [number, number]
+  resetKey?: string | number
+  report?: StretchControlProps["reportDraft"]
+  onValid: (value: [number, number]) => void
+}) {
+  const [raw, setRaw] = useState<[string, string]>([String(value[0]), String(value[1])])
+  const validate = (pair: [string, string]) =>
+    pair.every((item) => item.trim() !== "" && Number.isFinite(Number(item))) &&
+    Number(pair[0]) >= 0 &&
+    Number(pair[0]) < Number(pair[1]) &&
+    Number(pair[1]) <= 100
+  useEffect(() => {
+    const next: [string, string] = [String(value[0]), String(value[1])]
+    setRaw(next)
+    report?.("stretch-percent", validate(next))
+    return () => report?.("stretch-percent", null)
+  }, [resetKey])
+  const update = (position: 0 | 1, next: string) => {
+    const pair: [string, string] = [...raw]
+    pair[position] = next
+    setRaw(pair)
+    const valid = validate(pair)
+    report?.("stretch-percent", valid)
+    if (valid) onValid([Number(pair[0]), Number(pair[1])])
+  }
+  return (
+    <div className="grid grid-cols-2 gap-1">
+      <Input
+        aria-label="Stretch percentile low"
+        value={raw[0]}
+        onChange={(event) => update(0, event.target.value)}
+      />
+      <Input
+        aria-label="Stretch percentile high"
+        value={raw[1]}
+        onChange={(event) => update(1, event.target.value)}
+      />
+    </div>
   )
 }
 
@@ -86,24 +135,12 @@ export function StretchControl({
       />
       {mode === "minmax" ? <span>{labels.minmaxHint}</span> : null}
       {mode === "percent" ? (
-        <div className="grid grid-cols-2 gap-1">
-          <NumberDraft
-            id="stretch-percent-low"
-            label="Stretch percentile low"
-            value={percent[0]}
-            resetKey={resetKey}
-            report={reportDraft}
-            onValid={(low) => onChange({ ...value, mode: "percent", percent: [low, percent[1]] })}
-          />
-          <NumberDraft
-            id="stretch-percent-high"
-            label="Stretch percentile high"
-            value={percent[1]}
-            resetKey={resetKey}
-            report={reportDraft}
-            onValid={(high) => onChange({ ...value, mode: "percent", percent: [percent[0], high] })}
-          />
-        </div>
+        <PercentDraft
+          value={percent}
+          resetKey={resetKey}
+          report={reportDraft}
+          onValid={(next) => onChange({ ...value, mode: "percent", percent: next })}
+        />
       ) : null}
       {mode === "stddev" ? (
         <NumberDraft
@@ -112,6 +149,7 @@ export function StretchControl({
           value={value.sigma ?? 2}
           resetKey={resetKey}
           report={reportDraft}
+          validate={(sigma) => sigma > 0}
           onValid={(sigma) => onChange({ ...value, mode: "stddev", sigma })}
         />
       ) : null}

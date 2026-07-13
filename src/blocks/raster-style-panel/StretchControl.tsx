@@ -1,4 +1,5 @@
 import { IconWand } from "@tabler/icons-react"
+import { useEffect, useState } from "react"
 import { Input } from "../../components/input"
 import { cn } from "../../lib/utils"
 import { Segmented } from "./Segmented"
@@ -28,6 +29,35 @@ export interface StretchControlProps {
   /** Pre-fill target for the single-band "Auto" button. */
   autoRange?: [number, number]
   className?: string
+  onValidityChange?: (valid: boolean) => void
+}
+
+function DraftFiniteInput({
+  value,
+  onValid,
+  onValidityChange,
+  ...props
+}: {
+  value: number
+  onValid: (value: number) => void
+  onValidityChange?: (valid: boolean) => void
+} & Omit<React.ComponentProps<typeof Input>, "value" | "onChange">) {
+  const [raw, setRaw] = useState(String(value))
+  useEffect(() => setRaw(String(value)), [value])
+  return (
+    <Input
+      {...props}
+      type="text"
+      value={raw}
+      onChange={(event) => {
+        const next = event.target.value
+        setRaw(next)
+        const valid = next.trim() !== "" && Number.isFinite(Number(next))
+        onValidityChange?.(valid)
+        if (valid) onValid(Number(next))
+      }}
+    />
+  )
 }
 
 export function StretchControl({
@@ -37,6 +67,7 @@ export function StretchControl({
   labels,
   autoRange,
   className,
+  onValidityChange,
 }: StretchControlProps) {
   const multiband = (bands?.length ?? 0) > 1
   const set = (patch: Partial<RasterStretch>) => onChange({ ...value, ...patch })
@@ -67,18 +98,18 @@ export function StretchControl({
               return (
                 <div key={b.idx} className="flex items-center gap-1">
                   <span className={cn(hint, "w-7")}>B{b.idx}</span>
-                  <Input
-                    type="number"
+                  <DraftFiniteInput
                     className={numInput}
                     value={pair[0]}
-                    onChange={(e) => update([Number(e.target.value), pair[1]])}
+                    onValid={(next) => update([next, pair[1]])}
+                    onValidityChange={onValidityChange}
                   />
                   <span className={hint}>→</span>
-                  <Input
-                    type="number"
+                  <DraftFiniteInput
                     className={numInput}
                     value={pair[1]}
-                    onChange={(e) => update([pair[0], Number(e.target.value)])}
+                    onValid={(next) => update([pair[0], next])}
+                    onValidityChange={onValidityChange}
                   />
                 </div>
               )
@@ -86,18 +117,18 @@ export function StretchControl({
           </div>
         ) : (
           <div className="flex items-center gap-1">
-            <Input
-              type="number"
+            <DraftFiniteInput
               className={numInput}
               value={rescale[0]}
-              onChange={(e) => set({ rescale: [Number(e.target.value), rescale[1]] })}
+              onValid={(next) => set({ rescale: [next, rescale[1]] })}
+              onValidityChange={onValidityChange}
             />
             <span className={hint}>→</span>
-            <Input
-              type="number"
+            <DraftFiniteInput
               className={numInput}
               value={rescale[1]}
-              onChange={(e) => set({ rescale: [rescale[0], Number(e.target.value)] })}
+              onValid={(next) => set({ rescale: [rescale[0], next] })}
+              onValidityChange={onValidityChange}
             />
             {autoRange && (
               <button
@@ -116,24 +147,24 @@ export function StretchControl({
       {value.mode === "percent" && (
         <div className="flex items-center gap-1">
           <span className={hint}>{labels.percentHint}</span>
-          <Input
-            type="number"
+          <DraftFiniteInput
             min={0}
             max={50}
             step={0.1}
             className={numInput}
             value={percent[0]}
-            onChange={(e) => set({ percent: [Number(e.target.value), percent[1]] })}
+            onValid={(next) => set({ percent: [next, percent[1]] })}
+            onValidityChange={onValidityChange}
           />
           <span className={hint}>,</span>
-          <Input
-            type="number"
+          <DraftFiniteInput
             min={50}
             max={100}
             step={0.1}
             className={numInput}
             value={percent[1]}
-            onChange={(e) => set({ percent: [percent[0], Number(e.target.value)] })}
+            onValid={(next) => set({ percent: [percent[0], next] })}
+            onValidityChange={onValidityChange}
           />
         </div>
       )}
@@ -141,14 +172,14 @@ export function StretchControl({
       {value.mode === "stddev" && (
         <div className="flex items-center gap-1">
           <span className={hint}>{labels.sigmaHint}</span>
-          <Input
-            type="number"
+          <DraftFiniteInput
             min={0.1}
             max={10}
             step={0.1}
             className={cn(numInput, "max-w-20 flex-none")}
             value={value.sigma ?? 2.0}
-            onChange={(e) => set({ sigma: Number(e.target.value) })}
+            onValid={(next) => set({ sigma: next })}
+            onValidityChange={onValidityChange}
           />
           <span className={hint}>{labels.sigmaSuffix}</span>
         </div>

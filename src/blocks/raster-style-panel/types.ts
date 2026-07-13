@@ -10,7 +10,14 @@ export type ColormapName =
 
 export type StretchMode = "custom" | "minmax" | "percent" | "stddev"
 
-export type Resampling = "nearest" | "bilinear" | "cubic" | "cubic-spline" | "lanczos" | "average"
+export type Resampling =
+  | "nearest"
+  | "bilinear"
+  | "cubic"
+  | "cubicspline"
+  | "lanczos"
+  | "average"
+  | "mode"
 
 export type TileSize = 64 | 128 | 256 | 512 | 1024
 
@@ -47,19 +54,47 @@ export interface RasterNoData {
   custom?: number
 }
 
+export type RasterBandAssignments = Partial<
+  Record<"red" | "green" | "blue" | "nir" | "swir", number>
+>
+
+export type RasterSelector =
+  | { kind: "bands"; bands: number[]; assignments: RasterBandAssignments }
+  | {
+      kind: "index"
+      index: "ndvi" | "ndwi" | "ndbi" | "evi" | "savi"
+      assignments: RasterBandAssignments
+    }
+
+export type RasterCanonicalColormap =
+  | { kind: "none" }
+  | { kind: "named"; name: Exclude<ColormapName, "custom"> }
+  | {
+      kind: "custom"
+      value: {
+        mapType: "discrete" | "continuous"
+        rescaleMode: "static" | "dynamic" | "none"
+        entries: Array<{ value: number; color: string }>
+        nodataColor?: string
+      }
+    }
+
 export interface RasterStyleValue {
-  bands: RasterBand[]
-  /** Multi-band (RGB) composite: disables colormap, enables color_formula. */
-  multiband: boolean
-  colormap: ColormapName
-  stretch: RasterStretch
-  nodata: RasterNoData
+  mode: "SINGLE" | "MOSAIC"
+  selector: RasterSelector
+  colormap: RasterCanonicalColormap
+  stretch?: RasterStretch
+  /** Canonical output ranges; independent from metadata-driven stretch. */
+  rescale?: [number, number][]
+  nodata?: RasterNoData
   resampling: Resampling
   tileSize: TileSize
   /** Output tile encoding. JPEG is lossy with no alpha (nodata renders black). */
   format: RasterFormatValue
   /** Rio-Color post-processing formula (multi-band only). */
   colorFormula?: string
+  unscale?: boolean
+  mosaicPixelSelection?: MosaicPixelSelection
 }
 
 /** A read-only stat cell in the band/size readout above the form. */
@@ -110,6 +145,7 @@ export interface RasterStyleLabels {
 export interface RasterStylePanelProps {
   value: RasterStyleValue
   onChange: (next: RasterStyleValue) => void
+  onValidityChange?: (valid: boolean) => void
   /** Total bands available in the raster. Enables single-band/RGB choices. */
   bandCount?: number
   /** Band/size/min/max readout shown above the form. Omit to hide. */
@@ -172,15 +208,4 @@ export const DEFAULT_CUSTOM_COLORMAP: CustomColormap = {
   stops: ["#2a6fdb", "#f6f4ef", "#d97757"],
   interpolation: "linear",
   colorSpace: "oklch",
-}
-
-export const DEFAULT_RASTER_STYLE: RasterStyleValue = {
-  bands: [{ idx: 1 }],
-  multiband: false,
-  colormap: "viridis",
-  stretch: { mode: "stddev", sigma: 2.0 },
-  nodata: { kind: "nan" },
-  resampling: "nearest",
-  tileSize: 256,
-  format: "webp",
 }

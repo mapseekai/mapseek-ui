@@ -1,5 +1,5 @@
-import { COLORMAP_GRADIENTS, NAMED_COLORMAPS } from "./colormaps"
 import { cn } from "../../lib/utils"
+import { COLORMAP_GRADIENTS, NAMED_COLORMAPS } from "./colormaps"
 import type { ColormapName } from "./types"
 
 export interface ColormapPickerProps {

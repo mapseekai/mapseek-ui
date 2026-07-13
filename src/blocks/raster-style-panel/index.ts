@@ -1,32 +1,35 @@
-export { RasterStylePanel } from "./RasterStylePanel"
-export { ColormapPicker } from "./ColormapPicker"
 export type { ColormapPickerProps } from "./ColormapPicker"
-export { StretchControl } from "./StretchControl"
-export type { StretchControlProps, StretchControlLabels } from "./StretchControl"
+export { ColormapPicker } from "./ColormapPicker"
 export { CustomColormapEditor } from "./CustomColormapEditor"
+export { COLORMAP_GRADIENTS, NAMED_COLORMAPS } from "./colormaps"
 export { buildColormapGradient } from "./gradient"
 export { DEFAULT_COLORMAP_PRESETS } from "./presets"
-export { COLORMAP_GRADIENTS, NAMED_COLORMAPS } from "./colormaps"
-export { DEFAULT_RASTER_STYLE, DEFAULT_CUSTOM_COLORMAP } from "./types"
+export { RasterStylePanel } from "./RasterStylePanel"
+export type { StretchControlLabels, StretchControlProps } from "./StretchControl"
+export { StretchControl } from "./StretchControl"
 export type {
   ColormapColorSpace,
   ColormapInterpolation,
+  ColormapName,
   ColormapPreset,
   CustomColormap,
   CustomColormapEditorProps,
   CustomColormapLabels,
-  ColormapName,
-  Resampling,
-  RasterFormatValue,
-  StretchMode,
-  TileSize,
+  MosaicPixelSelection,
   NoDataKind,
   RasterBand,
-  RasterStretch,
+  RasterBandAssignments,
+  RasterCanonicalColormap,
+  RasterFormatValue,
   RasterNoData,
-  RasterStyleValue,
+  RasterSelector,
   RasterStat,
+  RasterStretch,
   RasterStyleLabels,
   RasterStylePanelProps,
-  MosaicPixelSelection,
+  RasterStyleValue,
+  Resampling,
+  StretchMode,
+  TileSize,
 } from "./types"
+export { DEFAULT_CUSTOM_COLORMAP } from "./types"

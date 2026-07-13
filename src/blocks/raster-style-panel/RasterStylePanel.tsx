@@ -431,12 +431,6 @@ export function RasterStylePanel({
           value={String(value.tileSize)}
           onChange={(raw) => onChange({ ...value, tileSize: Number(raw) as TileSize })}
         />
-        <label className={labelCls}>{labels.colorFormula}</label>
-        <Input
-          aria-label={labels.colorFormula}
-          value={value.colorFormula ?? ""}
-          onChange={(event) => onChange({ ...value, colorFormula: event.target.value })}
-        />
       </div>
     </div>
   )

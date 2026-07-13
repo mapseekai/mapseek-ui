@@ -85,8 +85,6 @@ export interface RasterStyleValue {
   tileSize: TileSize
   /** Output tile encoding. JPEG is lossy with no alpha (nodata renders black). */
   format: RasterFormatValue
-  /** Rio-Color post-processing formula (multi-band only). */
-  colorFormula?: string
   unscale?: boolean
   mosaicPixelSelection?: MosaicPixelSelection
 }
@@ -124,16 +122,12 @@ export interface RasterStyleLabels {
   formatModes: Record<RasterFormatValue, string>
   /** Help text shown for the JPEG option (no alpha). */
   formatJpegNote?: string
-  colorFormula: string
-  colorFormulaPlaceholder: string
   /** Note shown where colormap would be, in multi-band mode. */
   multibandNote: string
   mosaicSelection?: string
   mosaicSelectionModes?: Record<MosaicPixelSelection, string>
   /** Optional per-control help text (rendered as a help tooltip). */
-  help?: Partial<
-    Record<"band" | "colormap" | "stretch" | "nodata" | "resampling" | "colorFormula", string>
-  >
+  help?: Partial<Record<"band" | "colormap" | "stretch" | "nodata" | "resampling", string>>
 }
 
 export interface RasterStylePanelProps {

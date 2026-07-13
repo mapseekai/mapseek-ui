@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Input } from "../../components/input"
 import { cn } from "../../lib/utils"
 import { Segmented } from "./Segmented"
@@ -26,17 +26,20 @@ export interface StretchControlProps {
 
 function CustomRangesDraft({
   value,
+  outputCount,
   resetKey,
   report,
   onValid,
 }: {
   value: [number, number][]
+  outputCount: number
   resetKey?: string | number
   report?: StretchControlProps["reportDraft"]
   onValid: (value: [number, number][]) => void
 }) {
   const strings = () => value.map(([min, max]) => [String(min), String(max)] as [string, string])
   const [raw, setRaw] = useState(strings)
+  const rawRef = useRef(raw)
   const validate = (ranges: [string, string][]) =>
     ranges.every(
       ([min, max]) =>
@@ -48,13 +51,27 @@ function CustomRangesDraft({
     )
   useEffect(() => {
     const next = strings()
+    rawRef.current = next
     setRaw(next)
     report?.("stretch-custom", validate(next))
     return () => report?.("stretch-custom", null)
   }, [resetKey])
+  useEffect(() => {
+    const previous = rawRef.current
+    const next = previous.slice(0, outputCount)
+    while (next.length < outputCount) next.push(["", ""])
+    rawRef.current = next
+    setRaw(next)
+    const valid = validate(next)
+    report?.("stretch-custom", valid)
+    if (outputCount < previous.length && valid) {
+      onValid(next.map(([min, max]) => [Number(min), Number(max)]))
+    }
+  }, [outputCount])
   const update = (index: number, position: 0 | 1, next: string) => {
-    const ranges = raw.map((range) => [...range] as [string, string])
+    const ranges = rawRef.current.map((range) => [...range] as [string, string])
     ranges[index][position] = next
+    rawRef.current = ranges
     setRaw(ranges)
     const valid = validate(ranges)
     report?.("stretch-custom", valid)
@@ -220,6 +237,7 @@ export function StretchControl({
       {mode === "custom" ? (
         <CustomRangesDraft
           value={value.ranges ?? Array.from({ length: outputCount }, () => autoRange ?? [0, 1])}
+          outputCount={outputCount}
           resetKey={resetKey}
           report={reportDraft}
           onValid={(ranges) => onChange({ mode: "custom", ranges })}

@@ -38,10 +38,8 @@ export interface RasterBand {
 
 export interface RasterStretch {
   mode: StretchMode
-  /** Single-band custom rescale [min, max]. */
-  rescale?: [number, number]
-  /** Multi-band custom rescale, one [min, max] per band (bidx order). */
-  rescaleBands?: [number, number][]
+  /** Custom output ranges, one [min, max] per selected output. */
+  ranges?: [number, number][]
   /** Percentile clip [low, high]. */
   percent?: [number, number]
   /** Standard-deviation multiplier. */
@@ -82,8 +80,6 @@ export interface RasterStyleValue {
   selector: RasterSelector
   colormap: RasterCanonicalColormap
   stretch?: RasterStretch
-  /** Canonical output ranges; independent from metadata-driven stretch. */
-  rescale?: [number, number][]
   nodata?: RasterNoData
   resampling: Resampling
   tileSize: TileSize

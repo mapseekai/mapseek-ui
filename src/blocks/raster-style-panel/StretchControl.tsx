@@ -4,7 +4,7 @@ import { cn } from "../../lib/utils"
 import { Segmented } from "./Segmented"
 import type { RasterStretch, StretchMode } from "./types"
 
-const MODES: Array<Exclude<StretchMode, "custom">> = ["minmax", "percent", "stddev"]
+const MODES: StretchMode[] = ["minmax", "percent", "stddev", "custom"]
 export interface StretchControlLabels {
   modes: Record<StretchMode, string>
   minmaxHint: string
@@ -18,9 +18,66 @@ export interface StretchControlProps {
   onChange: (next: RasterStretch) => void
   labels: StretchControlLabels
   autoRange?: [number, number]
+  outputCount?: number
   className?: string
   resetKey?: string | number
   reportDraft?: (key: string, valid: boolean | null) => void
+}
+
+function CustomRangesDraft({
+  value,
+  resetKey,
+  report,
+  onValid,
+}: {
+  value: [number, number][]
+  resetKey?: string | number
+  report?: StretchControlProps["reportDraft"]
+  onValid: (value: [number, number][]) => void
+}) {
+  const strings = () => value.map(([min, max]) => [String(min), String(max)] as [string, string])
+  const [raw, setRaw] = useState(strings)
+  const validate = (ranges: [string, string][]) =>
+    ranges.every(
+      ([min, max]) =>
+        min.trim() !== "" &&
+        max.trim() !== "" &&
+        Number.isFinite(Number(min)) &&
+        Number.isFinite(Number(max)) &&
+        Number(min) < Number(max),
+    )
+  useEffect(() => {
+    const next = strings()
+    setRaw(next)
+    report?.("stretch-custom", validate(next))
+    return () => report?.("stretch-custom", null)
+  }, [resetKey])
+  const update = (index: number, position: 0 | 1, next: string) => {
+    const ranges = raw.map((range) => [...range] as [string, string])
+    ranges[index][position] = next
+    setRaw(ranges)
+    const valid = validate(ranges)
+    report?.("stretch-custom", valid)
+    if (valid) onValid(ranges.map(([min, max]) => [Number(min), Number(max)]))
+  }
+  return (
+    <div className="flex flex-col gap-1">
+      {raw.map((range, index) => (
+        <div key={index} className="grid grid-cols-2 gap-1">
+          <Input
+            aria-label={`Custom stretch ${index + 1} minimum`}
+            value={range[0]}
+            onChange={(event) => update(index, 0, event.target.value)}
+          />
+          <Input
+            aria-label={`Custom stretch ${index + 1} maximum`}
+            value={range[1]}
+            onChange={(event) => update(index, 1, event.target.value)}
+          />
+        </div>
+      ))}
+    </div>
+  )
 }
 
 function NumberDraft({
@@ -115,8 +172,10 @@ export function StretchControl({
   className,
   resetKey,
   reportDraft,
+  autoRange,
+  outputCount = 1,
 }: StretchControlProps) {
-  const mode = value.mode === "custom" ? "minmax" : value.mode
+  const mode = value.mode
   const percent = value.percent ?? [2, 98]
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
@@ -129,7 +188,12 @@ export function StretchControl({
               ? { mode: next, percent: [2, 98] }
               : next === "stddev"
                 ? { mode: next, sigma: 2 }
-                : { mode: next },
+                : next === "custom"
+                  ? {
+                      mode: next,
+                      ranges: Array.from({ length: outputCount }, () => autoRange ?? [0, 1]),
+                    }
+                  : { mode: next },
           )
         }
       />
@@ -151,6 +215,14 @@ export function StretchControl({
           report={reportDraft}
           validate={(sigma) => sigma > 0}
           onValid={(sigma) => onChange({ ...value, mode: "stddev", sigma })}
+        />
+      ) : null}
+      {mode === "custom" ? (
+        <CustomRangesDraft
+          value={value.ranges ?? Array.from({ length: outputCount }, () => autoRange ?? [0, 1])}
+          resetKey={resetKey}
+          report={reportDraft}
+          onValid={(ranges) => onChange({ mode: "custom", ranges })}
         />
       ) : null}
     </div>

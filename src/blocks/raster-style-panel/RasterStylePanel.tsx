@@ -82,55 +82,6 @@ function DraftInput({
   )
 }
 
-function RangeDraft({
-  id,
-  index,
-  value,
-  resetKey,
-  report,
-  onValid,
-}: {
-  id: string
-  index: number
-  value: [number, number]
-  resetKey: string | number | undefined
-  report: DraftReporter
-  onValid: (value: [number, number]) => void
-}) {
-  const [raw, setRaw] = useState<[string, string]>([String(value[0]), String(value[1])])
-  const validate = (pair: [string, string]) =>
-    pair.every((item) => item.trim() !== "" && Number.isFinite(Number(item))) &&
-    Number(pair[0]) < Number(pair[1])
-  useEffect(() => {
-    const next: [string, string] = [String(value[0]), String(value[1])]
-    setRaw(next)
-    report(id, validate(next))
-    return () => report(id, null)
-  }, [id, resetKey])
-  const update = (position: 0 | 1, next: string) => {
-    const pair: [string, string] = [...raw]
-    pair[position] = next
-    setRaw(pair)
-    const valid = validate(pair)
-    report(id, valid)
-    if (valid) onValid([Number(pair[0]), Number(pair[1])])
-  }
-  return (
-    <div className="grid grid-cols-2 gap-1">
-      <Input
-        aria-label={`Rescale ${index + 1} minimum`}
-        value={raw[0]}
-        onChange={(event) => update(0, event.target.value)}
-      />
-      <Input
-        aria-label={`Rescale ${index + 1} maximum`}
-        value={raw[1]}
-        onChange={(event) => update(1, event.target.value)}
-      />
-    </div>
-  )
-}
-
 function StatGrid({ stats }: { stats: RasterStat[] }) {
   return (
     <div className="mb-2 grid grid-cols-2 gap-1.5 border border-border bg-muted p-2">
@@ -240,7 +191,6 @@ export function RasterStylePanel({
         entries: custom.entries.map((entry, i) => (i === index ? { ...entry, ...patch } : entry)),
       },
     })
-  const rescale = value.rescale
   return (
     <div className={cn("flex flex-col", className)}>
       {stats?.length ? <StatGrid stats={stats} /> : null}
@@ -432,37 +382,8 @@ export function RasterStylePanel({
           }}
           resetKey={resetKey}
           reportDraft={report}
+          outputCount={selector.kind === "bands" ? selector.bands.length : 1}
         />
-        <label className={labelCls}>Rescale</label>
-        <div>
-          {rescale ? (
-            <div className="flex flex-col gap-1">
-              {rescale.map((range, index) => (
-                <RangeDraft
-                  key={index}
-                  id={`rescale-${index}`}
-                  index={index}
-                  value={range}
-                  resetKey={resetKey}
-                  report={report}
-                  onValid={(next) =>
-                    onChange({
-                      ...value,
-                      rescale: rescale.map((item, i) => (i === index ? next : item)),
-                    })
-                  }
-                />
-              ))}
-              <button type="button" onClick={() => onChange({ ...value, rescale: undefined })}>
-                Remove rescale
-              </button>
-            </div>
-          ) : (
-            <button type="button" onClick={() => onChange({ ...value, rescale: [[0, 1]] })}>
-              Add rescale
-            </button>
-          )}
-        </div>
         <label className={labelCls}>{labels.nodata}</label>
         <DraftInput
           id="nodata"

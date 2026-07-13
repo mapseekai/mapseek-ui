@@ -72,8 +72,6 @@ export type RasterCanonicalColormap =
   | {
       kind: "custom"
       value: {
-        mapType: "discrete" | "continuous"
-        rescaleMode: "static" | "dynamic" | "none"
         entries: Array<{ value: number; color: string }>
         nodataColor?: string
       }
@@ -146,6 +144,8 @@ export interface RasterStylePanelProps {
   value: RasterStyleValue
   onChange: (next: RasterStyleValue) => void
   onValidityChange?: (valid: boolean) => void
+  /** Changes when authoritative profile data is replaced, even if scalar values are equal. */
+  resetKey?: string | number
   /** Total bands available in the raster. Enables single-band/RGB choices. */
   bandCount?: number
   /** Band/size/min/max readout shown above the form. Omit to hide. */

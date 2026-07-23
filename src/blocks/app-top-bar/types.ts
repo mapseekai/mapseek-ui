@@ -28,6 +28,8 @@ export interface AppTopBarProps {
   beforeSaveActions?: ReactNode
   /** Actions rendered immediately after the Save button. */
   afterSaveActions?: ReactNode
+  /** Center action cluster rendered between status and before-save actions. */
+  centerActions?: ReactNode
   /** Far-right action cluster (e.g. history / snapshot controls). */
   endActions?: ReactNode
   labels: AppTopBarLabels

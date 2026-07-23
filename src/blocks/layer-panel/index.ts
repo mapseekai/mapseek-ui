@@ -3,4 +3,5 @@ export type {
   LayerData,
   LayerGeometry,
   LayerPanelProps,
+  LayerPanelRenameResult,
 } from "./types"

@@ -3,37 +3,57 @@ import type * as React from "react"
 export type LayerGeometry = "point" | "polyline" | "polygon" | "mixed" | "raster"
 
 export interface LayerData {
-  id: string
-  name: string
-  visible: boolean
-  geometryType: LayerGeometry
-  featureCount?: number
-  /** e.g. "EPSG:4326" — shown as a small mono badge on the row. */
-  crsLabel?: string
+  readonly id: string
+  readonly name: string
+  readonly visible: boolean
+  readonly geometryType: LayerGeometry
+  readonly kind?: "service"
+  readonly featureCount?: number
+  readonly group?: string
   /** Caller-supplied transient flags. Read-only from the block's side. */
-  flags?: {
-    locked?: boolean
-    busy?: boolean
-    dirty?: boolean
+  readonly flags?: {
+    readonly locked?: boolean
+    readonly busy?: boolean
+    readonly dirty?: boolean
   }
 }
 
+/**
+ * Result of a group rename attempt. The block renders `message` inline and
+ * keeps the rename editor open when `ok` is false.
+ */
+export type LayerPanelRenameResult =
+  | { readonly ok: true }
+  | { readonly ok: false; readonly message: string }
+
 export interface LayerPanelProps {
-  layers: LayerData[]
-  selectedId?: string | null
-  onSelectChange?: (id: string) => void
-  onVisibleChange?: (id: string, visible: boolean) => void
-  onReorder?: (newOrder: string[]) => void
-  onRemove?: (id: string) => void
-  onLocate?: (id: string) => void
-  onOpenTable?: (id: string) => void
+  readonly layers: readonly LayerData[]
+  readonly groups?: readonly string[]
+  readonly selectedId?: string | null
+  readonly onSelectChange?: (id: string) => void | PromiseLike<void>
+  readonly onVisibleChange?: (id: string, visible: boolean) => void
+  /** Called with the complete ordered id list. Returned promises are awaited and contained. */
+  readonly onReorder?: (order: readonly string[]) => void | PromiseLike<void>
+  /** Returned promises are awaited and contained. */
+  readonly onRemove?: (id: string) => void | PromiseLike<void>
+  readonly onLocate?: (id: string) => void | PromiseLike<void>
+  readonly onOpenTable?: (id: string) => void | PromiseLike<void>
+  readonly onAddGroup?: () => void
+  readonly onAddLayer?: () => void
+  readonly onLayerGroupChange?: (id: string, group?: string) => void
+  readonly onGroupRemove?: (group: string) => void
+  /** Return a failed `LayerPanelRenameResult` to reject the rename inline. */
+  readonly onGroupRename?: (
+    group: string,
+    next: string,
+  ) => void | LayerPanelRenameResult | PromiseLike<void | LayerPanelRenameResult>
   /** Controlled collapsed state. Omit for uncontrolled (defaults to `defaultCollapsed`). */
-  collapsed?: boolean
+  readonly collapsed?: boolean
   /** Initial collapsed state for uncontrolled mode. */
-  defaultCollapsed?: boolean
-  onCollapsedChange?: (collapsed: boolean) => void
-  className?: string
-  children: React.ReactNode
+  readonly defaultCollapsed?: boolean
+  readonly onCollapsedChange?: (collapsed: boolean) => void
+  readonly className?: string
+  readonly children: React.ReactNode
 }
 
 /**
@@ -41,17 +61,35 @@ export interface LayerPanelProps {
  * to the compound sub-components. NOT part of the public API.
  */
 export interface LayerPanelContextValue {
-  layers: LayerData[]
-  selectedId: string | null
-  onSelectChange: (id: string) => void
-  onVisibleChange?: (id: string, visible: boolean) => void
-  onReorder?: (order: string[]) => void
-  onRemove?: (id: string) => void
-  onLocate?: (id: string) => void
-  onOpenTable?: (id: string) => void
-  isSectionOpen: (layerId: string, sectionId: string) => boolean
-  toggleSection: (layerId: string, sectionId: string) => void
-  registerSectionDefault: (layerId: string, sectionId: string, open: boolean) => void
-  collapsed: boolean
-  toggleCollapsed: () => void
+  readonly layers: readonly LayerData[]
+  readonly groups: readonly string[]
+  readonly selectedId: string | null
+  readonly onSelectChange: (id: string) => void | PromiseLike<void>
+  readonly onVisibleChange?: (id: string, visible: boolean) => void
+  readonly onReorder?: (order: readonly string[]) => void | PromiseLike<void>
+  readonly onRemove?: (id: string) => void | PromiseLike<void>
+  readonly onLocate?: (id: string) => void | PromiseLike<void>
+  readonly onOpenTable?: (id: string) => void | PromiseLike<void>
+  readonly onAddGroup?: () => void
+  readonly onAddLayer?: () => void
+  readonly onLayerGroupChange?: (id: string, group?: string) => void
+  readonly onGroupRemove?: (group: string) => void
+  readonly onGroupRename?: (
+    group: string,
+    next: string,
+  ) => void | LayerPanelRenameResult | PromiseLike<void | LayerPanelRenameResult>
+  readonly isSectionOpen: (layerId: string, sectionId: string) => boolean
+  readonly toggleSection: (layerId: string, sectionId: string) => void
+  readonly registerSectionDefault: (layerId: string, sectionId: string, open: boolean) => void
+  readonly collapsed: boolean
+  readonly toggleCollapsed: () => void
+  /** Latest async-callback failure to surface in an accessible alert; null when clear. */
+  readonly callbackError: string | null
+  /**
+   * Runs a panel operation (sync or PromiseLike-returning) with failure
+   * containment: clears any prior error at start, routes sync throws and
+   * rejections to the accessible alert, and ignores stale completions that
+   * settle after a newer operation started or after unmount.
+   */
+  readonly runCallback: (operation: () => void | PromiseLike<void>, errorMessage: string) => void
 }

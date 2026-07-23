@@ -17,6 +17,7 @@ export function AppTopBar({
   onSave,
   saveDisabled,
   savePending,
+  centerActions,
   beforeSaveActions,
   afterSaveActions,
   endActions,
@@ -26,47 +27,53 @@ export function AppTopBar({
   return (
     <header
       className={cn(
-        "relative z-20 flex h-10 shrink-0 items-center gap-2 border-b border-border bg-card px-3",
+        "relative z-20 grid min-h-10 shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-1 overflow-hidden border-b border-border bg-card px-2 py-1 md:h-10 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:gap-2 md:px-3 md:py-0",
         className,
       )}
     >
-      <Tooltip content={labels.backTooltip ?? labels.back} side="bottom">
-        <Button
-          aria-label={labels.back}
-          variant="ghost"
-          size="icon"
-          onClick={onBack}
-          className="-ml-1 size-6 rounded-none text-muted-foreground hover:text-foreground"
-        >
-          <IconArrowLeft size={16} />
-        </Button>
-      </Tooltip>
+      <div className="flex min-w-0 items-center gap-2 overflow-hidden">
+        <Tooltip content={labels.backTooltip ?? labels.back} side="bottom">
+          <Button
+            aria-label={labels.back}
+            variant="ghost"
+            size="icon"
+            onClick={onBack}
+            className="-ml-1 size-6 rounded-none text-muted-foreground hover:text-foreground"
+          >
+            <IconArrowLeft size={16} />
+          </Button>
+        </Tooltip>
 
-      {brand}
-      {brand && <span className="mx-0.5 h-3.5 w-px bg-border" />}
+        {brand}
+        {brand && <span className="mx-0.5 h-3.5 w-px bg-border" />}
 
-      <span className="text-[13px] leading-none font-semibold text-foreground">{projectName}</span>
+        <span className="truncate text-[13px] leading-none font-semibold text-foreground">
+          {projectName}
+        </span>
 
-      {status}
+        {status}
+      </div>
 
-      <span className="flex-1" />
+      <div className="flex min-w-0 items-center justify-center">{centerActions}</div>
 
-      {beforeSaveActions}
+      <div className="col-span-2 flex min-w-0 items-center justify-end gap-2 md:col-auto">
+        {beforeSaveActions}
 
-      {onSave && (
-        <Button
-          aria-label={labels.save}
-          disabled={saveDisabled || savePending}
-          aria-busy={savePending || undefined}
-          onClick={() => void onSave()}
-          className="h-[26px] gap-1.5 rounded-none bg-primary px-2.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
-        >
-          <IconDeviceFloppy size={13} /> {labels.save}
-        </Button>
-      )}
+        {onSave && (
+          <Button
+            aria-label={labels.save}
+            disabled={saveDisabled || savePending}
+            aria-busy={savePending || undefined}
+            onClick={() => void onSave()}
+            className="h-[26px] gap-1.5 rounded-none bg-primary px-2.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            <IconDeviceFloppy size={13} /> {labels.save}
+          </Button>
+        )}
 
-      {afterSaveActions}
-      {endActions}
+        {afterSaveActions}
+        {endActions}
+      </div>
     </header>
   )
 }

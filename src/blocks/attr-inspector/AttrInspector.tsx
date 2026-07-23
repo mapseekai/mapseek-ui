@@ -53,7 +53,7 @@ export function AttrInspector({
     <div
       data-testid="attr-inspector"
       data-mode={mode}
-      className={cn("flex flex-col border border-border bg-card", className)}
+      className={cn("flex min-h-0 max-h-full flex-col border border-border bg-card", className)}
     >
       {/* Header */}
       <div className="flex shrink-0 items-center border-b border-border">
@@ -76,7 +76,7 @@ export function AttrInspector({
       </div>
 
       {/* Body */}
-      <div className="flex flex-col">
+      <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="px-3 py-2.5">
           <div className="flex flex-col gap-2">
             {Object.keys(feature.properties).map((k) =>

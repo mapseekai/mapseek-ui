@@ -115,6 +115,7 @@ export function AttrTableSheet({
         // cursor races ahead of the easing curve.
         !isDragging && "transition-[height] duration-[180ms] ease-[var(--ease-out)]",
         className,
+        s.fullscreen && "fixed inset-0",
       )}
     >
       {/* Drag handle */}
@@ -132,7 +133,7 @@ export function AttrTableSheet({
 
       {/* Header — 3-column grid keeps the center slot horizontally centered
           regardless of the asymmetric content on either side. */}
-      <div className="grid h-10 shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-3 border-b border-border px-3">
+      <div className="grid h-10 shrink-0 grid-cols-[1fr_auto_1fr] items-center gap-1 border-b border-border px-2 sm:gap-3 sm:px-3">
         <div className="flex min-w-0 items-center gap-2">{left}</div>
 
         <div className="flex items-center justify-center">{center}</div>

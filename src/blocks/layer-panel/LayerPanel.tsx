@@ -173,7 +173,7 @@ function LayerPanelHeader({ className, children }: React.ComponentProps<"div">) 
             aria-label={collapsed ? "展开图层面板" : "收起图层面板"}
             onClick={toggleCollapsed}
           >
-            <IconLayoutSidebar className="size-4" />
+            <IconLayoutSidebar className="size-3.5" />
           </Button>
         </Tooltip>
         {children}

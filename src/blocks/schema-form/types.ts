@@ -17,6 +17,8 @@ export type SchemaFormField =
       min?: number
       max?: number
       default?: number
+      /** Hover-help text shown via a ? icon next to the label. */
+      help?: string
     }
   | {
       key: string
@@ -25,6 +27,7 @@ export type SchemaFormField =
       type: "text"
       placeholder?: string
       default?: string
+      help?: string
     }
   | {
       key: string
@@ -34,6 +37,7 @@ export type SchemaFormField =
       options: SchemaFormOption[]
       placeholder?: string
       default?: string
+      help?: string
     }
   | {
       key: string
@@ -44,6 +48,7 @@ export type SchemaFormField =
       min?: number
       /** Shown inside the box when there are no options. */
       emptyHint?: string
+      help?: string
     }
 
 export interface SchemaFormProps {

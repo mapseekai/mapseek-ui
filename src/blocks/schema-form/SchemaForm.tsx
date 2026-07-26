@@ -1,7 +1,10 @@
+import { IconHelpCircle } from "@tabler/icons-react"
+
 import { Checkbox } from "../../components/checkbox"
 import { Input } from "../../components/input"
 import { Label } from "../../components/label"
 import { Select } from "../../components/select"
+import { Tooltip } from "../../components/tooltip"
 import { cn } from "../../lib/utils"
 import type { SchemaFormField, SchemaFormProps } from "./types"
 
@@ -29,9 +32,18 @@ export function SchemaForm({
         const id = `${idPrefix}-${f.key}`
         return (
           <div key={f.key} className="flex flex-col gap-1.5">
-            <Label htmlFor={id} className="text-xs">
+            <Label htmlFor={id} className="flex items-center gap-1 text-xs">
               {f.label}
               {f.required && <span className="text-destructive"> *</span>}
+              {f.help && (
+                <Tooltip
+                  content={f.help}
+                  side="top"
+                  className="cursor-help text-muted-foreground hover:text-foreground"
+                >
+                  <IconHelpCircle size={13} aria-label={`${f.label}说明`} />
+                </Tooltip>
+              )}
             </Label>
 
             {f.type === "number" && (

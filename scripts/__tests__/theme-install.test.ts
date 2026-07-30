@@ -27,7 +27,7 @@ async function run(command: string[]) {
   if ((await process.exited) !== 0) throw new Error(\`\${command.join(" ")} failed\`)
 }
 await run(["npm", "install"])
-await run(["npx", "--yes", "shadcn@4.8.0", "add", "@mapseek/theme", "--yes", "--cwd", fixture])
+await run([${JSON.stringify(process.execPath)}, "x", "shadcn@4.8.0", "add", "@mapseek/theme", "--yes", "--cwd", fixture])
 `)
   await run(repoRoot, ["bun", installer, fixture])
 }

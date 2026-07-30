@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url"
 import { join, resolve } from "node:path"
 import { withRegistryServer } from "./registry-server"
 import { loadCatalog } from "./registry-model"
+import { bunCommand } from "./bun-command"
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url))
 
@@ -52,11 +53,11 @@ export async function verifyItems(names: readonly string[]): Promise<void> {
         await cp(join(repoRoot, "fixtures/vite-react-template"), fixture, { recursive: true })
         const componentsPath = join(fixture, "components.json")
         await writeFile(componentsPath, (await readFile(componentsPath, "utf8")).replace("__REGISTRY_ENDPOINT__", "http://127.0.0.1:4174/r/{name}.json"))
-        await run(fixture, ["bun", "install"])
-        await run(fixture, ["bunx", "shadcn@4.8.0", "add", `@mapseek/${name}`, "--yes"])
+        await run(fixture, bunCommand("install"))
+        await run(fixture, bunCommand("x", "shadcn@4.8.0", "add", `@mapseek/${name}`, "--yes"))
         await assertInstalledItemDestination(fixture, name)
-        await run(fixture, ["bun", "run", "typecheck"])
-        await run(fixture, ["bun", "run", "build"])
+        await run(fixture, bunCommand("run", "typecheck"))
+        await run(fixture, bunCommand("run", "build"))
       } finally {
         await rm(fixture, { recursive: true, force: true })
       }

@@ -12,7 +12,8 @@
     "registry:build": "bun scripts/build-registry.ts",
     "registry:serve": "bun scripts/registry-server.ts",
     "verify:items": "bun scripts/verify-items.ts",
-    "verify:aggregate": "bun scripts/verify-aggregate.ts"
+    "verify:aggregate": "bun scripts/verify-aggregate.ts",
+    "smoke:bun-command": "bun scripts/smoke-bun-command.ts"
   },
   "packageManager": "bun@1.3.5",
   "engines": {

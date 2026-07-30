@@ -3,6 +3,7 @@ import { tmpdir } from "node:os"
 import { join, resolve } from "node:path"
 import { loadCatalog } from "./registry-model"
 import { withRegistryServer } from "./registry-server"
+import { bunCommand } from "./bun-command"
 
 const repoRoot = resolve(import.meta.dir, "..")
 
@@ -17,10 +18,10 @@ export async function verifyAggregate(): Promise<void> {
     await cp(join(repoRoot, "fixtures/vite-react-smoke"), fixture, { recursive: true })
     await withRegistryServer(async () => {
       const items = await loadCatalog(repoRoot)
-      await run(fixture, ["bun", "install"])
-      if (items.length > 0) await run(fixture, ["bunx", "shadcn@4.8.0", "add", ...items.map((item) => `@mapseek/${item.name}`), "--yes"])
-      await run(fixture, ["bun", "run", "typecheck"])
-      await run(fixture, ["bun", "run", "build"])
+      await run(fixture, bunCommand("install"))
+      if (items.length > 0) await run(fixture, bunCommand("x", "shadcn@4.8.0", "add", ...items.map((item) => `@mapseek/${item.name}`), "--yes"))
+      await run(fixture, bunCommand("run", "typecheck"))
+      await run(fixture, bunCommand("run", "build"))
     })
   } finally {
     await rm(fixture, { recursive: true, force: true })

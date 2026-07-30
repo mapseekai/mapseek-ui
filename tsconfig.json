@@ -10,8 +10,14 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@/components/ui/*": ["./registry/ui/*"],
+      "@/components/blocks/*": ["./registry/blocks/*"],
+      "@/lib/utils": ["./registry/lib/utils.ts"],
+      "@/lib/mapseek-labels": ["./registry/lib/labels.ts"],
+      "@/lib/svg-data-uri": ["./registry/lib/svg-data-uri.ts"],
       "@/*": ["./*"],
-      "@workspace/ui/*": ["./src/*"]
+      "@workspace/ui/*": ["./src/*"],
+      "@mapseek/*": ["./registry/ui/*", "./registry/lib/*", "./registry/blocks/*"]
     }
   },
   "include": ["."],

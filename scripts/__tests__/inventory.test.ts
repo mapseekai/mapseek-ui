@@ -84,6 +84,30 @@ const inputAndSelectionNpmDependencies = {
   toggle: ["@base-ui/react", "class-variance-authority"],
 } as const
 
+const applicationShellStatusAndResourceBlocks = [
+  "app-top-bar", "layout", "loading-screen", "product-logo", "placeholder-glyph",
+  "notification-center", "processing-timeline", "service-status", "service-endpoint-row",
+  "resource-status", "resource-grid", "resource-sidebar", "resource-detail-drawer",
+  "linked-ref-list",
+] as const
+
+const applicationShellStatusAndResourceDependencies = {
+  "app-top-bar": ["@mapseek/button", "@mapseek/tooltip", "@mapseek/utils"],
+  layout: ["@mapseek/label", "@mapseek/utils"],
+  "loading-screen": ["@mapseek/utils", "@mapseek/labels"],
+  "product-logo": ["@mapseek/utils"],
+  "placeholder-glyph": ["@mapseek/utils"],
+  "notification-center": ["@mapseek/button", "@mapseek/dropdown-menu", "@mapseek/empty", "@mapseek/icon-button", "@mapseek/skeleton", "@mapseek/utils"],
+  "processing-timeline": ["@mapseek/button", "@mapseek/utils"],
+  "service-status": ["@mapseek/switch", "@mapseek/utils", "@mapseek/labels"],
+  "service-endpoint-row": ["@mapseek/icon-button", "@mapseek/tooltip"],
+  "resource-status": ["@mapseek/utils"],
+  "resource-grid": ["@mapseek/badge", "@mapseek/checkbox", "@mapseek/utils", "@mapseek/placeholder-glyph", "@mapseek/labels"],
+  "resource-sidebar": ["@mapseek/button", "@mapseek/tooltip", "@mapseek/utils"],
+  "resource-detail-drawer": ["@mapseek/button", "@mapseek/checkbox", "@mapseek/sheet", "@mapseek/svg-data-uri", "@mapseek/textarea", "@mapseek/utils", "@mapseek/placeholder-glyph", "@mapseek/resource-grid"],
+  "linked-ref-list": ["@mapseek/icon-button", "@mapseek/tooltip", "@mapseek/utils"],
+} as const
+
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url))
 
 describe("foundational primitive inventory", () => {
@@ -149,6 +173,21 @@ describe("overlay, data, and feedback primitive inventory", () => {
         ...overlayDataAndFeedbackDependencies[name],
       ])
       expect(item?.dependencies ?? []).toEqual(overlayDataAndFeedbackNpmDependencies[name])
+    }
+  })
+})
+
+describe("application shell, status, and resource block inventory", () => {
+  it("registers every block atomically with exact dependencies", async () => {
+    const itemsByName = new Map((await loadCatalog(repoRoot)).map((item) => [item.name, item]))
+
+    for (const name of applicationShellStatusAndResourceBlocks) {
+      const item = itemsByName.get(name)
+      expect(item, `missing ${name}`).toBeDefined()
+      expect(item?.type).toBe("registry:block")
+      expect(item?.files.length).toBeGreaterThan(0)
+      expect(item?.files.every((file) => file.target?.startsWith(`@components/blocks/${name}/`))).toBe(true)
+      expect(item?.registryDependencies).toEqual(applicationShellStatusAndResourceDependencies[name])
     }
   })
 })

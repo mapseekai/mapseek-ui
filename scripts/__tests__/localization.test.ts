@@ -19,34 +19,34 @@ beforeEach(async () => {
 afterEach(async () => rm(fixtureRoot, { recursive: true, force: true }))
 
 it("rejects Han string literals outside labels and defaults", async () => {
-  await writeFixture("registry/ui/demo.tsx", 'export const label = "地图"')
+  await writeFixture("registry/blocks/demo.tsx", 'export const label = "地图"')
   const items: readonly RegistryItem[] = [{
     name: "demo",
-    type: "registry:ui",
-    files: [{ path: "registry/ui/demo.tsx", type: "registry:ui" }],
+    type: "registry:block",
+    files: [{ path: "registry/blocks/demo.tsx", type: "registry:block" }],
   }]
   expect((await validateCatalog(fixtureRoot, items)).some((issue) => issue.code === "unlocalized-string")).toBe(true)
 })
 
 it("rejects Han text in every template literal AST form", async () => {
-  await writeFixture("registry/ui/demo.tsx", "const x = 1; const y = 2; export const labels = [`地图`, `首${x}中${y}尾`]")
+  await writeFixture("registry/blocks/demo.tsx", "const x = 1; const y = 2; export const labels = [`地图`, `首${x}中${y}尾`]")
   const items: readonly RegistryItem[] = [{
     name: "demo",
-    type: "registry:ui",
-    files: [{ path: "registry/ui/demo.tsx", type: "registry:ui" }],
+    type: "registry:block",
+    files: [{ path: "registry/blocks/demo.tsx", type: "registry:block" }],
   }]
   expect((await validateCatalog(fixtureRoot, items)).some((issue) => issue.code === "unlocalized-string")).toBe(true)
 })
 
 it("allows Han string literals in labels and defaults", async () => {
-  await writeFixture("registry/ui/labels.ts", 'export const label = "地图"')
-  await writeFixture("registry/ui/defaults.ts", 'export const label = "地图"')
+  await writeFixture("registry/blocks/labels.ts", 'export const label = "地图"')
+  await writeFixture("registry/blocks/defaults.ts", 'export const label = "地图"')
   const items: readonly RegistryItem[] = [{
     name: "demo",
-    type: "registry:ui",
+    type: "registry:block",
     files: [
-      { path: "registry/ui/labels.ts", type: "registry:ui" },
-      { path: "registry/ui/defaults.ts", type: "registry:ui" },
+      { path: "registry/blocks/labels.ts", type: "registry:block" },
+      { path: "registry/blocks/defaults.ts", type: "registry:block" },
     ],
   }]
   expect(await validateCatalog(fixtureRoot, items)).toEqual([])

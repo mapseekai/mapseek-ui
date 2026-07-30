@@ -1,4 +1,417 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "items": []
+  "items": [
+    {
+      "name": "app-top-bar",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/tooltip",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "app-top-bar/AppTopBar.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/app-top-bar/AppTopBar.tsx"
+        },
+        {
+          "path": "app-top-bar/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/app-top-bar/index.ts"
+        },
+        {
+          "path": "app-top-bar/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/app-top-bar/types.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "layout",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/label",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "layout/Block.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/layout/Block.tsx"
+        },
+        {
+          "path": "layout/Collapser.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/layout/Collapser.tsx"
+        },
+        {
+          "path": "layout/Fieldset.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/layout/Fieldset.tsx"
+        },
+        {
+          "path": "layout/ScrollContainer.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/layout/ScrollContainer.tsx"
+        },
+        {
+          "path": "layout/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layout/index.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "loading-screen",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/utils",
+        "@mapseek/labels"
+      ],
+      "files": [
+        {
+          "path": "loading-screen/LoadingScreen.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/loading-screen/LoadingScreen.tsx"
+        },
+        {
+          "path": "loading-screen/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loading-screen/defaults.ts"
+        },
+        {
+          "path": "loading-screen/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loading-screen/index.ts"
+        },
+        {
+          "path": "loading-screen/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loading-screen/labels.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "product-logo",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "product-logo/ProductLogo.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/product-logo/ProductLogo.tsx"
+        },
+        {
+          "path": "product-logo/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/product-logo/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "placeholder-glyph",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "placeholder-glyph/PlaceholderGlyph.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/placeholder-glyph/PlaceholderGlyph.tsx"
+        },
+        {
+          "path": "placeholder-glyph/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/placeholder-glyph/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "notification-center",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/dropdown-menu",
+        "@mapseek/empty",
+        "@mapseek/icon-button",
+        "@mapseek/skeleton",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "notification-center/NotificationCenter.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/notification-center/NotificationCenter.tsx"
+        },
+        {
+          "path": "notification-center/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/notification-center/index.ts"
+        },
+        {
+          "path": "notification-center/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/notification-center/types.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "processing-timeline",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "processing-timeline/ProcessingTimeline.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/processing-timeline/ProcessingTimeline.tsx"
+        },
+        {
+          "path": "processing-timeline/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/processing-timeline/index.ts"
+        },
+        {
+          "path": "processing-timeline/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/processing-timeline/types.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "service-status",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/switch",
+        "@mapseek/utils",
+        "@mapseek/labels"
+      ],
+      "files": [
+        {
+          "path": "service-status/ServiceStatus.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/service-status/ServiceStatus.tsx"
+        },
+        {
+          "path": "service-status/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-status/defaults.ts"
+        },
+        {
+          "path": "service-status/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-status/index.ts"
+        },
+        {
+          "path": "service-status/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-status/labels.ts"
+        }
+      ]
+    },
+    {
+      "name": "service-endpoint-row",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/icon-button",
+        "@mapseek/tooltip"
+      ],
+      "files": [
+        {
+          "path": "service-endpoint-row/ServiceEndpointRow.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/service-endpoint-row/ServiceEndpointRow.tsx"
+        },
+        {
+          "path": "service-endpoint-row/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-endpoint-row/index.ts"
+        },
+        {
+          "path": "service-endpoint-row/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-endpoint-row/types.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "resource-status",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "resource-status/ResourceStatusBadge.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-status/ResourceStatusBadge.tsx"
+        },
+        {
+          "path": "resource-status/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-status/index.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "resource-grid",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/badge",
+        "@mapseek/checkbox",
+        "@mapseek/utils",
+        "@mapseek/placeholder-glyph",
+        "@mapseek/labels"
+      ],
+      "files": [
+        {
+          "path": "resource-grid/ResourceGrid.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-grid/ResourceGrid.tsx"
+        },
+        {
+          "path": "resource-grid/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-grid/defaults.ts"
+        },
+        {
+          "path": "resource-grid/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-grid/index.ts"
+        },
+        {
+          "path": "resource-grid/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-grid/labels.ts"
+        },
+        {
+          "path": "resource-grid/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-grid/types.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "resource-sidebar",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/tooltip",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "resource-sidebar/ResourceSidebar.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-sidebar/ResourceSidebar.tsx"
+        },
+        {
+          "path": "resource-sidebar/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-sidebar/index.ts"
+        },
+        {
+          "path": "resource-sidebar/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-sidebar/types.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "resource-detail-drawer",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/checkbox",
+        "@mapseek/sheet",
+        "@mapseek/svg-data-uri",
+        "@mapseek/textarea",
+        "@mapseek/utils",
+        "@mapseek/placeholder-glyph",
+        "@mapseek/resource-grid"
+      ],
+      "files": [
+        {
+          "path": "resource-detail-drawer/ResourceDetailDrawer.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-detail-drawer/ResourceDetailDrawer.tsx"
+        },
+        {
+          "path": "resource-detail-drawer/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-detail-drawer/index.ts"
+        },
+        {
+          "path": "resource-detail-drawer/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-detail-drawer/types.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    },
+    {
+      "name": "linked-ref-list",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/icon-button",
+        "@mapseek/tooltip",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "linked-ref-list/LinkedRefList.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/linked-ref-list/LinkedRefList.tsx"
+        },
+        {
+          "path": "linked-ref-list/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/linked-ref-list/index.ts"
+        },
+        {
+          "path": "linked-ref-list/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/linked-ref-list/types.ts"
+        }
+      ],
+      "dependencies": [
+        "@tabler/icons-react"
+      ]
+    }
+  ]
 }

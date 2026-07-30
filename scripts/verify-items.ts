@@ -38,7 +38,10 @@ async function requiresUtils(name: string): Promise<boolean> {
 export async function assertInstalledItemDestination(fixture: string, name: string): Promise<void> {
   if (await exists(join(fixture, "@"))) throw new Error(`top-level @ directory created for ${name}`)
 
-  const expectedSources = [join(fixture, "src", "components", "ui", `${name}.tsx`)]
+  const item = (await loadCatalog(repoRoot)).find((candidate) => candidate.name === name)
+  const expectedSources = item?.type === "registry:block"
+    ? [join(fixture, "src", "components", "blocks", name, "index.ts")]
+    : [join(fixture, "src", "components", "ui", `${name}.tsx`)]
   if (await requiresUtils(name)) expectedSources.push(join(fixture, "src", "lib", "utils.ts"))
   for (const source of expectedSources) {
     if (!(await exists(source))) throw new Error(`installed ${name} source outside src: ${source}`)
@@ -48,7 +51,7 @@ export async function assertInstalledItemDestination(fixture: string, name: stri
 export async function verifyItems(names: readonly string[]): Promise<void> {
   await withRegistryServer(async () => {
     for (const name of names) {
-      const fixture = await mkdtemp(join(tmpdir(), "mapseek-vite-item-"))
+      const fixture = await mkdtemp(join(repoRoot, ".verify-item-"))
       try {
         await cp(join(repoRoot, "fixtures/vite-react-template"), fixture, { recursive: true })
         const componentsPath = join(fixture, "components.json")

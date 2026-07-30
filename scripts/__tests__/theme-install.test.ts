@@ -53,6 +53,7 @@ it("installs the Mapseek theme with its tokens and dependencies", async () => {
   await run(repoRoot, ["bun", "run", "registry:build"])
   await startRegistryServer()
   await installTheme(fixture)
+  await run(fixture, ["npm", "run", "build"])
 
   const css = await readFile(join(fixture, "src/app.css"), "utf8")
   expect(css).toContain("--color-primary")
@@ -69,4 +70,4 @@ it("installs the Mapseek theme with its tokens and dependencies", async () => {
     "@fontsource-variable/geist-mono": expect.any(String),
     "tw-animate-css": expect.any(String),
   })
-}, 60_000)
+}, 120_000)

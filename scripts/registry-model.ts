@@ -26,7 +26,7 @@ async function loadManifest(repoRoot: string, manifestPath: string): Promise<Reg
   const manifest = await readJson(join(repoRoot, manifestPath)) as { include?: string[]; items?: RegistryItem[] }
   const included = await Promise.all((manifest.include ?? []).map((include) => loadManifest(repoRoot, include)))
   const directory = dirname(manifestPath)
-  const items = (manifest.items ?? []).map((item) => ({ ...item, files: item.files.map((file) => ({ ...file, path: join(directory, file.path) })) }))
+  const items = (manifest.items ?? []).map((item) => ({ ...item, files: item.files.map((file) => ({ ...file, path: isAbsolute(file.path) ? file.path : join(directory, file.path) })) }))
   return [...items, ...included.flat()]
 }
 

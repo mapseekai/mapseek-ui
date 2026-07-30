@@ -43,6 +43,12 @@ it("normalizes nested manifest file paths for validation", async () => {
   }])
 })
 
+it("preserves absolute nested paths so validation rejects them", async () => {
+  await writeFixture("registry/ui/demo.tsx", "export {}")
+  await writeFixture("registry/ui/registry.json", JSON.stringify({ items: [{ name: "demo", type: "registry:ui", files: [{ path: "/demo.tsx", type: "registry:ui" }] }] }))
+  expect((await validateCatalog(fixtureRoot, await loadCatalog(fixtureRoot))).some((issue) => issue.code === "repository-escape")).toBe(true)
+})
+
 describe("validateCatalog", () => {
   it("rejects duplicate names", async () => {
     expect(await codes([item("demo"), item("demo")])).toContain("duplicate-name")

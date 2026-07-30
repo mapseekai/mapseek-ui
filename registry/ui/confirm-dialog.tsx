@@ -1,8 +1,8 @@
 import * as React from "react"
 import { IconAlertTriangle, IconTrash } from "@tabler/icons-react"
-import { cn } from "@workspace/ui/lib/utils"
-import { Button } from "./button"
-import { Dialog, DialogBody, DialogContent, DialogFooter } from "./dialog"
+import { cn } from "@/registry/lib/utils"
+import { Button } from "@/registry/ui/button"
+import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/registry/ui/dialog"
 
 export interface ConfirmOptions {
   title: React.ReactNode

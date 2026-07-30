@@ -13,6 +13,39 @@ const inputAndSelectionPrimitives = [
   "tabs", "textarea", "toggle-group", "toggle",
 ] as const
 
+const overlayDataAndFeedbackPrimitives = [
+  "chart", "confirm-dialog", "context-menu", "dropdown-menu", "json-viewer",
+  "sheet", "sonner", "table",
+] as const
+
+const overlayDataAndFeedbackDependencies = {
+  chart: ["@mapseek/utils"],
+  "confirm-dialog": ["@mapseek/button", "@mapseek/dialog", "@mapseek/utils"],
+  "context-menu": ["@mapseek/utils"],
+  "dropdown-menu": ["@mapseek/utils"],
+  "json-viewer": ["@mapseek/button", "@mapseek/collapsible", "@mapseek/utils"],
+  sheet: ["@mapseek/utils"],
+  sonner: [],
+  table: ["@mapseek/utils"],
+} as const
+
+const overlayDataAndFeedbackNpmDependencies = {
+  chart: ["recharts"],
+  "confirm-dialog": ["@tabler/icons-react"],
+  "context-menu": ["@base-ui/react", "@tabler/icons-react"],
+  "dropdown-menu": ["@base-ui/react", "@tabler/icons-react"],
+  "json-viewer": ["@tabler/icons-react"],
+  sheet: ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
+  sonner: ["@tabler/icons-react", "next-themes", "sonner"],
+  table: [],
+} as const
+
+const basePrimitives = [
+  ...foundationalPrimitives,
+  ...inputAndSelectionPrimitives,
+  ...overlayDataAndFeedbackPrimitives,
+] as const
+
 const inputAndSelectionDependencies = {
   checkbox: ["@mapseek/utils"],
   combobox: ["@mapseek/input-group", "@mapseek/utils"],
@@ -85,6 +118,37 @@ describe("input and selection primitive inventory", () => {
         ...inputAndSelectionDependencies[name],
       ])
       expect(item?.dependencies ?? []).toEqual(inputAndSelectionNpmDependencies[name])
+    }
+  })
+})
+
+describe("base primitive inventory", () => {
+  it("registers the complete ordered base catalog", async () => {
+    const items = await loadCatalog(repoRoot)
+
+    expect(items.filter((item) => item.type === "registry:ui").map((item) => item.name)).toEqual(
+      basePrimitives,
+    )
+  })
+})
+
+describe("overlay, data, and feedback primitive inventory", () => {
+  it("registers every primitive with exact registry and npm dependencies", async () => {
+    const items = await loadCatalog(repoRoot)
+    const itemsByName = new Map(items.map((item) => [item.name, item]))
+
+    for (const name of overlayDataAndFeedbackPrimitives) {
+      const item = itemsByName.get(name)
+      expect(item, `missing ${name}`).toBeDefined()
+      expect(item?.type).toBe("registry:ui")
+      expect(item?.files).toEqual([
+        { path: `registry/ui/${name}.tsx`, type: "registry:ui", target: `@ui/${name}.tsx` },
+      ])
+      expect(item?.registryDependencies).toEqual([
+        "@mapseek/theme",
+        ...overlayDataAndFeedbackDependencies[name],
+      ])
+      expect(item?.dependencies ?? []).toEqual(overlayDataAndFeedbackNpmDependencies[name])
     }
   })
 })

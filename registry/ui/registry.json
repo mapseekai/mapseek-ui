@@ -284,6 +284,85 @@
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "class-variance-authority"],
       "files": [{ "path": "toggle.tsx", "type": "registry:ui", "target": "@ui/toggle.tsx" }]
+    },
+    {
+      "name": "chart",
+      "type": "registry:ui",
+      "title": "Chart",
+      "description": "Composable chart primitives.",
+      "categories": ["display"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["recharts"],
+      "files": [{ "path": "chart.tsx", "type": "registry:ui", "target": "@ui/chart.tsx" }]
+    },
+    {
+      "name": "confirm-dialog",
+      "type": "registry:ui",
+      "title": "Confirm Dialog",
+      "description": "Promise-based confirmation dialog.",
+      "categories": ["overlay"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/dialog", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react"],
+      "files": [{ "path": "confirm-dialog.tsx", "type": "registry:ui", "target": "@ui/confirm-dialog.tsx" }]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "Contextual action menu.",
+      "categories": ["overlay"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [{ "path": "context-menu.tsx", "type": "registry:ui", "target": "@ui/context-menu.tsx" }]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "Dropdown action menu.",
+      "categories": ["overlay"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [{ "path": "dropdown-menu.tsx", "type": "registry:ui", "target": "@ui/dropdown-menu.tsx" }]
+    },
+    {
+      "name": "json-viewer",
+      "type": "registry:ui",
+      "title": "JSON Viewer",
+      "description": "Interactive JSON data viewer.",
+      "categories": ["data"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/collapsible", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react"],
+      "files": [{ "path": "json-viewer.tsx", "type": "registry:ui", "target": "@ui/json-viewer.tsx" }]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "Side-panel dialog surface.",
+      "categories": ["overlay"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
+      "files": [{ "path": "sheet.tsx", "type": "registry:ui", "target": "@ui/sheet.tsx" }]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "title": "Sonner",
+      "description": "Themed toast notifications.",
+      "categories": ["feedback"],
+      "registryDependencies": ["@mapseek/theme"],
+      "dependencies": ["@tabler/icons-react", "next-themes", "sonner"],
+      "files": [{ "path": "sonner.tsx", "type": "registry:ui", "target": "@ui/sonner.tsx" }]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Structured data table.",
+      "categories": ["data"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "files": [{ "path": "table.tsx", "type": "registry:ui", "target": "@ui/table.tsx" }]
     }
   ]
 }

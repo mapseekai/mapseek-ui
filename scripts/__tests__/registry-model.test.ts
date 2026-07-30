@@ -81,6 +81,11 @@ describe("validateCatalog", () => {
     expect(await codes([item("demo")])).toContain("undeclared-dependency")
   })
 
+  it("accepts React as a host-provided dependency", async () => {
+    await writeFixture("registry/ui/demo.tsx", 'import * as React from "react"\nexport type Props = React.ComponentProps<"div">')
+    expect(await codes([item("demo")])).not.toContain("undeclared-dependency")
+  })
+
   it("rejects workspace imports", async () => {
     await writeFixture("registry/ui/demo.tsx", 'import { cn } from "@workspace/ui/lib/utils"')
     expect(await codes([item("demo")])).toContain("forbidden-import")

@@ -112,7 +112,7 @@ export async function validateCatalog(repoRoot: string, items: readonly Registry
         const dependency = packageRoot(specifier)
         if (dependency.startsWith("@mapseek/")) {
           if (!(item.registryDependencies ?? []).includes(dependency)) issues.push({ code: "missing-registry-dependency", item: item.name, detail: dependency })
-        } else if (!(item.dependencies ?? []).includes(dependency)) issues.push({ code: "undeclared-dependency", item: item.name, detail: dependency })
+        } else if (dependency !== "react" && !(item.dependencies ?? []).includes(dependency)) issues.push({ code: "undeclared-dependency", item: item.name, detail: dependency })
       }
     }
     for (const dependency of item.registryDependencies ?? []) {

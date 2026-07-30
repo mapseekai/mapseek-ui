@@ -1,4 +1,130 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "items": []
+  "items": [
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Expandable content sections.",
+      "categories": ["display"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [{ "path": "accordion.tsx", "type": "registry:ui", "target": "@ui/accordion.tsx" }]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "User identity display.",
+      "categories": ["display"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "avatar.tsx", "type": "registry:ui", "target": "@ui/avatar.tsx" }]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Compact status indicator.",
+      "categories": ["display"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "files": [{ "path": "badge.tsx", "type": "registry:ui", "target": "@ui/badge.tsx" }]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Action trigger button.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "files": [{ "path": "button.tsx", "type": "registry:ui", "target": "@ui/button.tsx" }]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Grouped content container.",
+      "categories": ["layout"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "files": [{ "path": "card.tsx", "type": "registry:ui", "target": "@ui/card.tsx" }]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "Expandable content container.",
+      "categories": ["layout"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@radix-ui/react-collapsible"],
+      "files": [{ "path": "collapsible.tsx", "type": "registry:ui", "target": "@ui/collapsible.tsx" }]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Modal dialog surface.",
+      "categories": ["overlay"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [{ "path": "dialog.tsx", "type": "registry:ui", "target": "@ui/dialog.tsx" }]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "Empty state content.",
+      "categories": ["display"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "files": [{ "path": "empty.tsx", "type": "registry:ui", "target": "@ui/empty.tsx" }]
+    },
+    {
+      "name": "icon-button",
+      "type": "registry:ui",
+      "title": "Icon Button",
+      "description": "Icon-only action button.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "files": [{ "path": "icon-button.tsx", "type": "registry:ui", "target": "@ui/icon-button.tsx" }]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Form field label.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "files": [{ "path": "label.tsx", "type": "registry:ui", "target": "@ui/label.tsx" }]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Visual content divider.",
+      "categories": ["layout"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "separator.tsx", "type": "registry:ui", "target": "@ui/separator.tsx" }]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Loading placeholder content.",
+      "categories": ["feedback"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "files": [{ "path": "skeleton.tsx", "type": "registry:ui", "target": "@ui/skeleton.tsx" }]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Contextual help overlay.",
+      "categories": ["overlay"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "tooltip.tsx", "type": "registry:ui", "target": "@ui/tooltip.tsx" }]
+    }
+  ]
 }

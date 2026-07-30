@@ -28,6 +28,16 @@ it("rejects Han string literals outside labels and defaults", async () => {
   expect((await validateCatalog(fixtureRoot, items)).some((issue) => issue.code === "unlocalized-string")).toBe(true)
 })
 
+it("rejects Han text in every template literal AST form", async () => {
+  await writeFixture("registry/ui/demo.tsx", "const x = 1; const y = 2; export const labels = [`地图`, `首${x}中${y}尾`]")
+  const items: readonly RegistryItem[] = [{
+    name: "demo",
+    type: "registry:ui",
+    files: [{ path: "registry/ui/demo.tsx", type: "registry:ui" }],
+  }]
+  expect((await validateCatalog(fixtureRoot, items)).some((issue) => issue.code === "unlocalized-string")).toBe(true)
+})
+
 it("allows Han string literals in labels and defaults", async () => {
   await writeFixture("registry/ui/labels.ts", 'export const label = "地图"')
   await writeFixture("registry/ui/defaults.ts", 'export const label = "地图"')

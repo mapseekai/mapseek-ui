@@ -1,4 +1,4 @@
-import { access, readFile } from "node:fs/promises"
+import { access, readFile, realpath } from "node:fs/promises"
 import { isAbsolute, join, relative, resolve } from "node:path"
 import ts from "typescript"
 
@@ -53,7 +53,9 @@ function hasHanString(source: string, fileName: string): boolean {
   const program = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true)
   let found = false
   const visit = (node: ts.Node): void => {
-    if (ts.isStringLiteral(node) && /[\u3400-\u9fff]/u.test(node.text)) found = true
+    if (ts.isStringLiteral(node) || ts.isTemplateLiteralToken(node)) {
+      if (/[\u3400-\u9fff]/u.test(node.text)) found = true
+    }
     ts.forEachChild(node, visit)
   }
   visit(program)
@@ -69,9 +71,12 @@ export async function validateCatalog(repoRoot: string, items: readonly Registry
   const issues: ValidationIssue[] = []
   const byName = new Map<string, RegistryItem>()
   const targets = new Map<string, string>()
+  const realRepoRoot = await realpath(repoRoot)
   for (const item of items) {
     if (byName.has(item.name)) issues.push({ code: "duplicate-name", item: item.name, detail: item.name })
     else byName.set(item.name, item)
+  }
+  for (const item of items) {
     for (const file of item.files) {
       const sourcePath = resolve(repoRoot, file.path)
       if (!insideRoot(repoRoot, sourcePath)) {
@@ -89,9 +94,14 @@ export async function validateCatalog(repoRoot: string, items: readonly Registry
         issues.push({ code: "missing-file", item: item.name, detail: file.path })
         continue
       }
-      const source = await readFile(sourcePath, "utf8")
-      if (!/(?:^|\/)(?:labels|defaults)\.ts$/.test(file.path) && hasHanString(source, sourcePath)) issues.push({ code: "unlocalized-string", item: item.name, detail: file.path })
-      for (const specifier of imports(source, sourcePath)) {
+      const resolvedSourcePath = await realpath(sourcePath)
+      if (!insideRoot(realRepoRoot, resolvedSourcePath)) {
+        issues.push({ code: "repository-escape", item: item.name, detail: file.path })
+        continue
+      }
+      const source = await readFile(resolvedSourcePath, "utf8")
+      if (!/(?:^|\/)(?:labels|defaults)\.ts$/.test(file.path) && hasHanString(source, resolvedSourcePath)) issues.push({ code: "unlocalized-string", item: item.name, detail: file.path })
+      for (const specifier of imports(source, resolvedSourcePath)) {
         if (specifier.startsWith("@workspace/ui")) {
           issues.push({ code: "forbidden-import", item: item.name, detail: specifier })
           continue

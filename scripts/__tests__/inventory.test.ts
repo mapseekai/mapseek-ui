@@ -32,6 +32,25 @@ const inputAndSelectionDependencies = {
   toggle: ["@mapseek/utils"],
 } as const
 
+const inputAndSelectionNpmDependencies = {
+  checkbox: ["@base-ui/react", "@tabler/icons-react"],
+  combobox: ["@base-ui/react", "@tabler/icons-react"],
+  command: ["@tabler/icons-react", "cmdk"],
+  field: ["class-variance-authority"],
+  "input-group": ["class-variance-authority"],
+  input: ["@base-ui/react"],
+  pagination: ["@tabler/icons-react"],
+  popover: ["@base-ui/react"],
+  progress: ["@base-ui/react"],
+  select: ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
+  slider: ["@base-ui/react"],
+  switch: ["@base-ui/react"],
+  tabs: ["@base-ui/react", "class-variance-authority"],
+  textarea: [],
+  "toggle-group": ["@base-ui/react", "class-variance-authority"],
+  toggle: ["@base-ui/react", "class-variance-authority"],
+} as const
+
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url))
 
 describe("foundational primitive inventory", () => {
@@ -65,6 +84,7 @@ describe("input and selection primitive inventory", () => {
         "@mapseek/theme",
         ...inputAndSelectionDependencies[name],
       ])
+      expect(item?.dependencies ?? []).toEqual(inputAndSelectionNpmDependencies[name])
     }
   })
 })

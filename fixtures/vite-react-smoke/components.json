@@ -1,0 +1,1 @@
+{"$schema":"https://ui.shadcn.com/schema.json","style":"base-lyra","rsc":false,"tsx":true,"tailwind":{"config":"","css":"src/app.css","baseColor":"neutral","cssVariables":true},"iconLibrary":"tabler","aliases":{"components":"@/components","utils":"@/lib/utils","hooks":"@/hooks","lib":"@/lib","ui":"@/components/ui"},"registries":{"@mapseek":"http://127.0.0.1:4174/r/{name}.json"}}

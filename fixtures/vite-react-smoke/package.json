@@ -1,0 +1,1 @@
+{"name":"mapseek-vite-smoke","private":true,"type":"module","scripts":{"typecheck":"tsc --noEmit","build":"vite build"},"dependencies":{"@vitejs/plugin-react":"latest","typescript":"latest","vite":"latest","react":"latest","react-dom":"latest","tailwindcss":"latest"},"devDependencies":{}}

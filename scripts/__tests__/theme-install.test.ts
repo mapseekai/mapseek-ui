@@ -1,6 +1,6 @@
 import { afterEach, expect, it } from "vitest"
 import { spawn, type ChildProcess } from "node:child_process"
-import { cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
+import { cp, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises"
 import { join, resolve } from "node:path"
 
 const repoRoot = resolve(import.meta.dirname, "../..")
@@ -54,6 +54,11 @@ it("installs the Mapseek theme with its tokens and dependencies", async () => {
   await startRegistryServer()
   await installTheme(fixture)
   await run(fixture, ["npm", "run", "build"])
+  const assets = await readdir(join(fixture, "dist/assets"))
+  const builtCss = await readFile(join(fixture, "dist/assets", assets.find((path) => path.endsWith(".css"))!), "utf8")
+  expect(builtCss).toMatch(/--primary:oklch\(/)
+  expect(builtCss).toContain("--radius:0rem")
+  expect(builtCss).not.toMatch(/@(theme|utility|custom-variant|apply)\b/)
 
   const css = await readFile(join(fixture, "src/app.css"), "utf8")
   expect(css).toContain("--color-primary")

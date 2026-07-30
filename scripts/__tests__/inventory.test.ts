@@ -7,6 +7,31 @@ const foundationalPrimitives = [
   "empty", "icon-button", "label", "separator", "skeleton", "tooltip",
 ] as const
 
+const inputAndSelectionPrimitives = [
+  "checkbox", "combobox", "command", "field", "input-group", "input",
+  "pagination", "popover", "progress", "select", "slider", "switch",
+  "tabs", "textarea", "toggle-group", "toggle",
+] as const
+
+const inputAndSelectionDependencies = {
+  checkbox: ["@mapseek/utils"],
+  combobox: ["@mapseek/input-group", "@mapseek/utils"],
+  command: ["@mapseek/dialog", "@mapseek/input-group", "@mapseek/utils"],
+  field: ["@mapseek/label", "@mapseek/separator", "@mapseek/utils"],
+  "input-group": ["@mapseek/button", "@mapseek/input", "@mapseek/textarea", "@mapseek/utils"],
+  input: ["@mapseek/utils"],
+  pagination: ["@mapseek/button", "@mapseek/utils"],
+  popover: ["@mapseek/utils"],
+  progress: ["@mapseek/utils"],
+  select: ["@mapseek/utils"],
+  slider: ["@mapseek/utils"],
+  switch: ["@mapseek/utils"],
+  tabs: ["@mapseek/utils"],
+  textarea: ["@mapseek/utils"],
+  "toggle-group": ["@mapseek/toggle", "@mapseek/utils"],
+  toggle: ["@mapseek/utils"],
+} as const
+
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url))
 
 describe("foundational primitive inventory", () => {
@@ -21,6 +46,25 @@ describe("foundational primitive inventory", () => {
       expect(item?.files).toHaveLength(1)
       expect(item?.files[0]?.target).toMatch(/^@ui\//)
       expect(item?.registryDependencies).toContain("@mapseek/theme")
+    }
+  })
+})
+
+describe("input and selection primitive inventory", () => {
+  it("registers every input and selection primitive with exact dependencies", async () => {
+    const items = await loadCatalog(repoRoot)
+    const itemsByName = new Map(items.map((item) => [item.name, item]))
+
+    for (const name of inputAndSelectionPrimitives) {
+      const item = itemsByName.get(name)
+      expect(item, `missing ${name}`).toBeDefined()
+      expect(item?.type).toBe("registry:ui")
+      expect(item?.files).toHaveLength(1)
+      expect(item?.files[0]?.target).toMatch(/^@ui\//)
+      expect(item?.registryDependencies).toEqual([
+        "@mapseek/theme",
+        ...inputAndSelectionDependencies[name],
+      ])
     }
   })
 })

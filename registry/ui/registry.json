@@ -125,6 +125,165 @@
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],
       "files": [{ "path": "tooltip.tsx", "type": "registry:ui", "target": "@ui/tooltip.tsx" }]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Selectable checkbox control.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [{ "path": "checkbox.tsx", "type": "registry:ui", "target": "@ui/checkbox.tsx" }]
+    },
+    {
+      "name": "combobox",
+      "type": "registry:ui",
+      "title": "Combobox",
+      "description": "Searchable option selector.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/input-group", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [{ "path": "combobox.tsx", "type": "registry:ui", "target": "@ui/combobox.tsx" }]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "Command palette interface.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/dialog", "@mapseek/input-group", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react", "cmdk"],
+      "files": [{ "path": "command.tsx", "type": "registry:ui", "target": "@ui/command.tsx" }]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Composed form field layout.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/label", "@mapseek/separator", "@mapseek/utils"],
+      "dependencies": ["class-variance-authority"],
+      "files": [{ "path": "field.tsx", "type": "registry:ui", "target": "@ui/field.tsx" }]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "Input with composed controls.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/input", "@mapseek/textarea", "@mapseek/utils"],
+      "dependencies": ["class-variance-authority"],
+      "files": [{ "path": "input-group.tsx", "type": "registry:ui", "target": "@ui/input-group.tsx" }]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Single-line text input.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "input.tsx", "type": "registry:ui", "target": "@ui/input.tsx" }]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Page navigation controls.",
+      "categories": ["navigation"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react"],
+      "files": [{ "path": "pagination.tsx", "type": "registry:ui", "target": "@ui/pagination.tsx" }]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Floating contextual content.",
+      "categories": ["overlay"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "popover.tsx", "type": "registry:ui", "target": "@ui/popover.tsx" }]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "Progress indicator.",
+      "categories": ["feedback"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "progress.tsx", "type": "registry:ui", "target": "@ui/progress.tsx" }]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Option selection control.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
+      "files": [{ "path": "select.tsx", "type": "registry:ui", "target": "@ui/select.tsx" }]
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "Continuous value selection.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "slider.tsx", "type": "registry:ui", "target": "@ui/slider.tsx" }]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Binary state control.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "switch.tsx", "type": "registry:ui", "target": "@ui/switch.tsx" }]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Tabbed content navigation.",
+      "categories": ["navigation"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "files": [{ "path": "tabs.tsx", "type": "registry:ui", "target": "@ui/tabs.tsx" }]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Multi-line text input.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "files": [{ "path": "textarea.tsx", "type": "registry:ui", "target": "@ui/textarea.tsx" }]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "Grouped toggle controls.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/toggle", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "files": [{ "path": "toggle-group.tsx", "type": "registry:ui", "target": "@ui/toggle-group.tsx" }]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "Pressable toggle control.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "files": [{ "path": "toggle.tsx", "type": "registry:ui", "target": "@ui/toggle.tsx" }]
     }
   ]
 }

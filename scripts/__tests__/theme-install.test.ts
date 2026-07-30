@@ -2,6 +2,7 @@ import { afterEach, expect, it } from "vitest"
 import { spawn, type ChildProcess } from "node:child_process"
 import { cp, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises"
 import { join, resolve } from "node:path"
+import { resolveBunExecutable } from "../bun-command"
 
 const repoRoot = resolve(import.meta.dirname, "../..")
 let fixture: string | undefined
@@ -27,9 +28,9 @@ async function run(command: string[]) {
   if ((await process.exited) !== 0) throw new Error(\`\${command.join(" ")} failed\`)
 }
 await run(["npm", "install"])
-await run([${JSON.stringify(process.execPath)}, "x", "shadcn@4.8.0", "add", "@mapseek/theme", "--yes", "--cwd", fixture])
+await run([process.execPath, "x", "shadcn@4.8.0", "add", "@mapseek/theme", "--yes", "--cwd", fixture])
 `)
-  await run(repoRoot, ["bun", installer, fixture])
+  await run(repoRoot, [resolveBunExecutable(), installer, fixture])
 }
 
 

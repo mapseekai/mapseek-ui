@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "mapseek-ui",
+      "name": "@mapseek/ui-registry",
       "devDependencies": {
         "@base-ui/react": "^1.5.0",
         "@biomejs/biome": "^2.5.0",

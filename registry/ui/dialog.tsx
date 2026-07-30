@@ -66,7 +66,7 @@ function DialogContent({
             {!hideClose && (
               <DialogPrimitive.Close
                 className="grid h-8 w-8 cursor-pointer place-items-center text-muted-foreground hover:bg-muted hover:text-foreground"
-                aria-label="Close"
+                aria-label="关闭"
               >
                 <IconX size={14} />
               </DialogPrimitive.Close>

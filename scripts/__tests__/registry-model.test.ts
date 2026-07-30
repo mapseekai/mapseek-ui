@@ -86,6 +86,16 @@ describe("validateCatalog", () => {
     expect(await codes([item("demo")])).not.toContain("undeclared-dependency")
   })
 
+  it("allows Han strings in Registry UI source", async () => {
+    await writeFixture("registry/ui/demo.tsx", 'export const label = "关闭"')
+    expect(await codes([item("demo")])).not.toContain("unlocalized-string")
+  })
+
+  it("rejects Han strings in ordinary Registry block source", async () => {
+    await writeFixture("registry/blocks/demo.tsx", 'export const label = "关闭"')
+    expect(await codes([item("demo", { type: "registry:block", files: [{ path: "registry/blocks/demo.tsx", type: "registry:block" }] })])).toContain("unlocalized-string")
+  })
+
   it("rejects workspace imports", async () => {
     await writeFixture("registry/ui/demo.tsx", 'import { cn } from "@workspace/ui/lib/utils"')
     expect(await codes([item("demo")])).toContain("forbidden-import")

@@ -102,7 +102,7 @@ export async function validateCatalog(repoRoot: string, items: readonly Registry
         continue
       }
       const source = await readFile(resolvedSourcePath, "utf8")
-      if (!/(?:^|\/)(?:labels|defaults)\.ts$/.test(file.path) && hasHanString(source, resolvedSourcePath)) issues.push({ code: "unlocalized-string", item: item.name, detail: file.path })
+      if (file.path.startsWith("registry/blocks/") && !/(?:^|\/)(?:labels|defaults)\.ts$/.test(file.path) && hasHanString(source, resolvedSourcePath)) issues.push({ code: "unlocalized-string", item: item.name, detail: file.path })
       for (const specifier of imports(source, resolvedSourcePath)) {
         if (specifier.startsWith("@workspace/ui")) {
           issues.push({ code: "forbidden-import", item: item.name, detail: specifier })

@@ -25,6 +25,11 @@ describe("assertInstalledItemDestination", () => {
     await expect(assertInstalledItemDestination(fixtureRoot, "button")).resolves.toBeUndefined()
   })
 
+  it("accepts a theme-only item without utilities", async () => {
+    await writeFixture("src/components/ui/sonner.tsx")
+    await expect(assertInstalledItemDestination(fixtureRoot, "sonner")).resolves.toBeUndefined()
+  })
+
   it("rejects aliases written outside src", async () => {
     await writeFixture("components/ui/button.tsx")
     await writeFixture("lib/utils.ts")

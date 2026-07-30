@@ -3,6 +3,7 @@ import { tmpdir } from "node:os"
 import { fileURLToPath } from "node:url"
 import { join, resolve } from "node:path"
 import { withRegistryServer } from "./registry-server"
+import { loadCatalog } from "./registry-model"
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url))
 
@@ -20,13 +21,24 @@ async function exists(path: string): Promise<boolean> {
   }
 }
 
+async function requiresUtils(name: string): Promise<boolean> {
+  const items = await loadCatalog(repoRoot)
+  const byName = new Map(items.map((item) => [item.name, item]))
+  const visit = (itemName: string, seen = new Set<string>()): boolean => {
+    if (seen.has(itemName)) return false
+    seen.add(itemName)
+    const dependencies = byName.get(itemName)?.registryDependencies ?? []
+    return dependencies.includes("@mapseek/utils") ||
+      dependencies.some((dependency) => visit(dependency.slice("@mapseek/".length), seen))
+  }
+  return visit(name)
+}
+
 export async function assertInstalledItemDestination(fixture: string, name: string): Promise<void> {
   if (await exists(join(fixture, "@"))) throw new Error(`top-level @ directory created for ${name}`)
 
-  const expectedSources = [
-    join(fixture, "src", "components", "ui", `${name}.tsx`),
-    join(fixture, "src", "lib", "utils.ts"),
-  ]
+  const expectedSources = [join(fixture, "src", "components", "ui", `${name}.tsx`)]
+  if (await requiresUtils(name)) expectedSources.push(join(fixture, "src", "lib", "utils.ts"))
   for (const source of expectedSources) {
     if (!(await exists(source))) throw new Error(`installed ${name} source outside src: ${source}`)
   }

@@ -444,7 +444,7 @@ const JsonObject: React.FC<{
   const isOpen = expandedPaths.has(path)
 
   return (
-    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)}>
+    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)} asChild>
       <div>
         <CollapseTrigger
           objectKey={objectKey}
@@ -541,7 +541,7 @@ const JsonArray: React.FC<{
   const isOpen = expandedPaths.has(path)
 
   return (
-    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)}>
+    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)} asChild>
       <div>
         <CollapseTrigger
           objectKey={objectKey}

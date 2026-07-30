@@ -1,4 +1,9 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "items": []
+  "items": [
+    {"name": "utils", "type": "registry:lib", "dependencies": ["clsx", "tailwind-merge"], "files": [{"path": "utils.ts", "type": "registry:lib", "target": "@lib/utils.ts"}]},
+    {"name": "labels", "type": "registry:lib", "files": [{"path": "labels.ts", "type": "registry:lib", "target": "@lib/mapseek-labels.ts"}]},
+    {"name": "basemaps", "type": "registry:lib", "files": [{"path": "basemaps.ts", "type": "registry:lib", "target": "@lib/basemaps.ts"}]},
+    {"name": "svg-data-uri", "type": "registry:lib", "files": [{"path": "svg-data-uri.ts", "type": "registry:lib", "target": "@lib/svg-data-uri.ts"}]}
+  ]
 }

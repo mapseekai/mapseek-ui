@@ -1,5 +1,5 @@
 {
-  "name": "mapseek-ui",
+  "name": "@mapseek/ui-registry",
   "version": "0.0.0",
   "type": "module",
   "private": true,

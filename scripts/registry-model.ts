@@ -1,5 +1,5 @@
 import { access, readFile, realpath } from "node:fs/promises"
-import { isAbsolute, join, relative, resolve } from "node:path"
+import { dirname, isAbsolute, join, relative, resolve } from "node:path"
 import ts from "typescript"
 
 export type RegistryItem = {
@@ -25,7 +25,9 @@ async function readJson(path: string): Promise<unknown> {
 async function loadManifest(repoRoot: string, manifestPath: string): Promise<RegistryItem[]> {
   const manifest = await readJson(join(repoRoot, manifestPath)) as { include?: string[]; items?: RegistryItem[] }
   const included = await Promise.all((manifest.include ?? []).map((include) => loadManifest(repoRoot, include)))
-  return [...(manifest.items ?? []), ...included.flat()]
+  const directory = dirname(manifestPath)
+  const items = (manifest.items ?? []).map((item) => ({ ...item, files: item.files.map((file) => ({ ...file, path: join(directory, file.path) })) }))
+  return [...items, ...included.flat()]
 }
 
 export async function loadCatalog(repoRoot: string): Promise<readonly RegistryItem[]> {

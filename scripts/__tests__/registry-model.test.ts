@@ -3,7 +3,7 @@ import { mkdtemp, mkdir, rm, symlink, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { dirname, join } from "node:path"
 import type { RegistryItem } from "../registry-model"
-import { assertGeneratedOutputMatchesCatalog, BASE_COMPONENTS, BLOCKS, validateCatalog } from "../registry-model"
+import { assertGeneratedOutputMatchesCatalog, BASE_COMPONENTS, BLOCKS, loadCatalog, validateCatalog } from "../registry-model"
 import { assertCompleteInventory } from "../validate-registry"
 
 let fixtureRoot: string
@@ -33,6 +33,15 @@ afterEach(async () => rm(fixtureRoot, { recursive: true, force: true }))
 async function codes(items: readonly RegistryItem[]) {
   return (await validateCatalog(fixtureRoot, items)).map((issue) => issue.code)
 }
+
+it("normalizes nested manifest file paths for validation", async () => {
+  await writeFixture("registry/ui/registry.json", JSON.stringify({ items: [{ name: "demo", type: "registry:ui", files: [{ path: "demo.tsx", type: "registry:ui" }] }] }))
+  await expect(loadCatalog(fixtureRoot)).resolves.toEqual([{
+    name: "demo",
+    type: "registry:ui",
+    files: [{ path: "registry/ui/demo.tsx", type: "registry:ui" }],
+  }])
+})
 
 describe("validateCatalog", () => {
   it("rejects duplicate names", async () => {

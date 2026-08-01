@@ -33,7 +33,7 @@ const samples: Record<string, StorageMeterData> = {
 
 export const zhStorageMeterLabels = {
   unsupported: "不支持",
-  unsupportedHint: "navigator.storage.estimate() unsupported",
+  unsupportedHint: "navigator.storage.estimate() 不受支持",
   title: "本地存储",
   refresh: "刷新",
   details: "存储详情",
@@ -46,6 +46,8 @@ export const zhStorageMeterLabels = {
   unsupportedMode: "不支持",
   refreshed: "已刷新",
   errorText: "配额读取失败",
+  footerTitle: "OPFS",
+  footerDescription: "源私有文件系统说明通过 footer 插槽注入。",
 }
 
 export const enStorageMeterLabels = {
@@ -63,11 +65,13 @@ export const enStorageMeterLabels = {
   unsupportedMode: "Unsupported",
   refreshed: "Refreshed",
   errorText: "Quota read failed",
+  footerTitle: "OPFS",
+  footerDescription: "Origin-private storage notes are injected through the footer slot.",
 }
 
 export function StorageMeterDemo({ labels }: { readonly labels: typeof zhStorageMeterLabels }) {
   const [mode, setMode] = useState<keyof typeof samples>("normal")
-  const [status, setStatus] = useState("normal")
+  const [status, setStatus] = useState(labels.normal)
   const [error, setError] = useState<string | null>(null)
 
   function selectMode(nextMode: keyof typeof samples, label: string) {
@@ -123,10 +127,10 @@ export function StorageMeterDemo({ labels }: { readonly labels: typeof zhStorage
           footer={
             <div className="border-t border-border pt-2">
               <strong className="mb-1 block text-[10px] font-semibold text-muted-foreground uppercase">
-                OPFS
+                {labels.footerTitle}
               </strong>
               <p className="m-0 text-[11px] leading-relaxed text-muted-foreground">
-                Origin-private storage notes are injected through the footer slot.
+                {labels.footerDescription}
               </p>
             </div>
           }

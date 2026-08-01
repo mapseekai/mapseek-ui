@@ -1511,16 +1511,27 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
   if (block === "band-stat") {
     const demo = page.locator('[data-demo="band-stat"]')
     await expect(demo.locator('[data-demo-status="band-stat"]')).toContainText("B1")
+    await expect(demo).toContainText(localized(path, "海岸气溶胶", "Coastal aerosol"))
     await demo.locator('[data-demo-action="band-stat-next"]').click()
     await expect(demo.locator('[data-demo-status="band-stat"]')).toContainText("B4")
+    await expect(demo).toContainText(localized(path, "近红外", "Near infrared"))
     await assertNoHorizontalOverflow(demo, `${path} band stat`)
   }
 
   if (block === "linked-ref-list") {
     const demo = page.locator('[data-demo="linked-ref-list"]')
-    await demo.getByRole("button", { name: /Workflows/ }).click()
+    await expect(demo).toContainText(
+      localized(path, "派生或关联的数据集", "Derived or associated datasets"),
+    )
+    await demo
+      .getByRole("button", { name: new RegExp(localized(path, "工作流", "Workflows")) })
+      .click()
+    await expect(demo).toContainText(localized(path, "栅格预处理", "Raster preprocessing"))
     await expect(demo).toContainText("workflow.5f01-72cd")
-    await demo.getByRole("button", { name: /Mapsets/ }).click()
+    await demo
+      .getByRole("button", { name: new RegExp(localized(path, "地图集", "Mapsets")) })
+      .click()
+    await expect(demo).toContainText(localized(path, "城市绿地监测", "Urban green-space monitor"))
     await expect(demo).toContainText("mapset.18bd-44f0")
     await assertNoHorizontalOverflow(demo, `${path} linked refs`)
   }
@@ -1547,7 +1558,11 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
       trigger,
       page.locator('[data-slot="dropdown-menu-content"]').last(),
     )
-    await expect(page.locator('[data-slot="dropdown-menu-content"]').last()).toContainText("TOTAL")
+    const menu = page.locator('[data-slot="dropdown-menu-content"]').last()
+    await expect(menu).toContainText("TOTAL")
+    await expect(menu).toContainText(
+      localized(path, "栅格 · 长江 NDVI 2026Q2", "Raster · Yangtze NDVI 2026Q2"),
+    )
     await page.keyboard.press("Escape")
     await expect(trigger).toBeFocused()
 
@@ -1562,9 +1577,10 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
           exact: true,
         }),
     ).toBeVisible()
-    await page.keyboard.press("Escape")
+    await trigger.click()
+    await expect(menu).toBeHidden()
 
-    await demo.locator('[data-demo-action="notification-center-error"]').click()
+    await activateByKeyboard(demo.locator('[data-demo-action="notification-center-error"]'))
     await trigger.click()
     await page.getByRole("button", { name: localized(path, "重试", "Retry"), exact: true }).click()
     await expect(demo.locator('[data-demo-status="notification-center"]')).toContainText(
@@ -1584,12 +1600,21 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
   if (block === "placeholder-glyph") {
     const demo = page.locator('[data-demo="placeholder-glyph"]')
     await expect(demo.locator("svg")).toHaveCount(13)
+    await expect(demo).toContainText(localized(path, "搜索", "search"))
     await demo.locator('[data-demo-action="placeholder-glyph-toggle"]').click()
     await expect(demo.locator('[data-demo-status="placeholder-glyph"]')).toContainText("muted")
   }
 
   if (block === "processing-timeline") {
     const demo = page.locator('[data-demo="processing-timeline"]')
+    await expect(demo).toContainText(localized(path, "处理栅格数据", "Process raster data"))
+    await expect(demo).toContainText(
+      localized(
+        path,
+        "正在重投影栅格并写入 Cloud-Optimized GeoTIFF",
+        "Reprojecting raster and writing Cloud-Optimized GeoTIFF",
+      ),
+    )
     await demo.locator('[data-demo-action="processing-timeline-advance"]').click()
     await expect(demo.locator('[data-demo-status="processing-timeline"]')).toContainText("55%")
     await demo.getByRole("button", { name: localized(path, "复制", "Copy"), exact: true }).click()
@@ -1601,6 +1626,7 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
   if (block === "product-logo") {
     const demo = page.locator('[data-demo="product-logo"]')
     await expect(demo).toContainText("Mapseek Cloud")
+    await expect(demo).toContainText(localized(path, "主项目入口", "Primary project entry"))
     await demo.locator('[data-demo-action="product-logo-toggle"]').click()
     await expect(demo.locator('[data-demo-status="product-logo"]')).toContainText(
       localized(path, "隐藏文字", "Text hidden"),
@@ -1617,6 +1643,8 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
       })
       .click()
     await assertPortalFits(sheet, `${path} resource detail drawer`)
+    await expect(sheet).toContainText(localized(path, "搜索", "Search"))
+    await expect(sheet).toContainText(localized(path, "基础操作", "Basic operations"))
     await page.keyboard.press("Escape")
     await expect(page.locator('[data-slot="sheet-content"]')).toBeHidden()
     await expect(demo.locator('[data-demo-status="resource-detail-drawer"]')).toContainText(
@@ -1630,13 +1658,18 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
       })
       .click()
     await assertPortalFits(sheet, `${path} resource font drawer`)
+    await expect(sheet).toContainText(
+      localized(path, "城市规划用地分析与可视化呈现", "Urban planning land-use analysis"),
+    )
     await sheet
       .getByRole("button", {
-        name: "Configure slice",
+        name: localized(path, "配置切片", "Configure slice"),
         exact: true,
       })
       .click()
-    await sheet.getByRole("button", { name: "Run slice", exact: true }).click()
+    await sheet
+      .getByRole("button", { name: localized(path, "执行切片", "Run slice"), exact: true })
+      .click()
     await expect(demo.locator('[data-demo-status="resource-detail-drawer"]')).toContainText(
       localized(path, "已执行切片", "Ran font slice"),
     )
@@ -1651,12 +1684,18 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
 
   if (block === "resource-grid") {
     const demo = page.locator('[data-demo="resource-grid"]')
-    await demo.getByRole("checkbox", { name: /Locate/ }).check()
+    await expect(demo).toContainText(localized(path, "搜索", "Search"))
+    await demo
+      .getByRole("checkbox", { name: new RegExp(localized(path, "定位", "Locate")) })
+      .check()
     await expect(demo.locator('[data-demo-status="resource-grid"]')).toContainText(
       localized(path, "已选择", "Selected"),
     )
     await demo.locator('[data-demo-action="resource-grid-tab-sprite"]').click()
-    await demo.getByRole("button", { name: /basic-icons-32/ }).click()
+    await expect(demo).toContainText(localized(path, "32 个图标", "32 icons"))
+    await demo
+      .getByRole("button", { name: new RegExp(localized(path, "基础图标 32", "basic-icons-32")) })
+      .click()
     await expect(demo.locator('[data-demo-status="resource-grid"]')).toContainText(
       localized(path, "已打开", "Opened"),
     )
@@ -1669,7 +1708,8 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
     const demo = page.locator('[data-demo="resource-sidebar"]')
     await demo.getByRole("button", { name: localized(path, "字体", "Fonts") }).click()
     await expect(demo.locator('[data-demo-status="resource-sidebar"]')).toContainText("font")
-    await demo.getByRole("button", { name: /Latin|拉丁/ }).click()
+    await expect(demo).toContainText(localized(path, "拉丁", "Latin"))
+    await demo.getByRole("button", { name: localized(path, "拉丁", "Latin") }).click()
     await expect(demo.locator('[data-demo-status="resource-sidebar"]')).toContainText("fc_latin")
     await demo.getByRole("button", { name: localized(path, "新建分类", "New category") }).click()
     await expect(demo.locator('[data-demo-status="resource-sidebar"]')).toContainText(
@@ -1681,12 +1721,18 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
   if (block === "resource-status") {
     const demo = page.locator('[data-demo="resource-status"]')
     await expect(demo.locator('[data-demo-status="resource-status"]')).toContainText("ready")
+    await expect(demo).toContainText(localized(path, "已就绪", "Ready"))
     await demo.locator('[data-demo-action="resource-status-next"]').click()
     await expect(demo.locator('[data-demo-status="resource-status"]')).toContainText("processing")
+    await expect(demo).toContainText(localized(path, "处理中", "Processing"))
   }
 
   if (block === "service-endpoint-row") {
     const demo = page.locator('[data-demo="service-endpoint-row"]')
+    await expect(demo).toContainText(localized(path, "栅格瓦片服务", "Raster tile service"))
+    await expect(demo).toContainText(
+      localized(path, "云优化 GeoTIFF · HTTP Range", "Cloud Optimized GeoTIFF · HTTP Range"),
+    )
     await demo
       .getByRole("button", { name: localized(path, "复制 URL", "Copy URL"), exact: true })
       .first()
@@ -1715,10 +1761,12 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
 
   if (block === "stat-strip") {
     const demo = page.locator('[data-demo="stat-strip"]')
+    await expect(demo).toContainText(localized(path, "要素", "Features"))
     await expect(demo.locator('[data-demo-status="stat-strip"]')).toContainText(
       localized(path, "数据集统计", "Dataset stats"),
     )
     await demo.locator('[data-demo-action="stat-strip-toggle"]').click()
+    await expect(demo).toContainText(localized(path, "分辨率", "Resolution"))
     await expect(demo.locator('[data-demo-status="stat-strip"]')).toContainText(
       localized(path, "栅格统计", "Raster stats"),
     )
@@ -1727,6 +1775,9 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
 
   if (block === "storage-meter") {
     const demo = page.locator('[data-demo="storage-meter"]')
+    await expect(demo.locator('[data-demo-status="storage-meter"]')).toContainText(
+      localized(path, "正常", "Normal"),
+    )
     await demo.locator('[data-demo-action="storage-meter-full"]').click()
     await expect(demo.locator('[data-demo-status="storage-meter"]')).toContainText(
       localized(path, "接近上限", "Near limit"),
@@ -1735,6 +1786,13 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
     await trigger.click()
     const popover = page.locator('[data-slot="popover-content"]').last()
     await assertPortalFits(popover, `${path} storage meter popover`)
+    await expect(popover).toContainText(
+      localized(
+        path,
+        "源私有文件系统说明通过 footer 插槽注入。",
+        "Origin-private storage notes are injected through the footer slot.",
+      ),
+    )
     await popover.getByRole("button", { name: localized(path, "刷新", "Refresh") }).click()
     await expect(demo.locator('[data-demo-status="storage-meter"]')).toContainText(
       localized(path, "已刷新", "Refreshed"),

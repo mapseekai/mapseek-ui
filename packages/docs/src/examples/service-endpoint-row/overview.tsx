@@ -2,13 +2,33 @@ import { ServiceEndpointRow } from "@registry/blocks/service-endpoint-row"
 import { IconBraces, IconFileZip, IconGridDots } from "@tabler/icons-react"
 import { useState } from "react"
 
+export type ServiceEndpointRowDemoLabels = {
+  readonly copied: string
+  readonly opened: string
+  readonly copy: string
+  readonly open: string
+  readonly pending: string
+  readonly tilesTitle: string
+  readonly tilesSubtitle: string
+  readonly tilejsonTitle: string
+  readonly tilejsonSubtitle: string
+  readonly cogTitle: string
+  readonly cogSubtitle: string
+}
+
 export const zhServiceEndpointRowLabels = {
   copied: "已复制 URL",
   opened: "已打开服务",
   copy: "复制 URL",
   open: "新窗口打开",
   pending: "接口待接入",
-}
+  tilesTitle: "栅格瓦片服务",
+  tilesSubtitle: "XYZ · PNG / WEBP",
+  tilejsonTitle: "TileJSON 元数据",
+  tilejsonSubtitle: "TileJSON 3.0 · 元数据",
+  cogTitle: "COG 源文件",
+  cogSubtitle: "云优化 GeoTIFF · HTTP Range",
+} satisfies ServiceEndpointRowDemoLabels
 
 export const enServiceEndpointRowLabels = {
   copied: "Copied URL",
@@ -16,12 +36,18 @@ export const enServiceEndpointRowLabels = {
   copy: "Copy URL",
   open: "Open in new window",
   pending: "Endpoint pending",
-}
+  tilesTitle: "Raster tile service",
+  tilesSubtitle: "XYZ · PNG / WEBP",
+  tilejsonTitle: "TileJSON",
+  tilejsonSubtitle: "TileJSON 3.0 · metadata",
+  cogTitle: "COG source",
+  cogSubtitle: "Cloud Optimized GeoTIFF · HTTP Range",
+} satisfies ServiceEndpointRowDemoLabels
 
 export function ServiceEndpointRowDemo({
   labels,
 }: {
-  readonly labels: typeof zhServiceEndpointRowLabels
+  readonly labels: ServiceEndpointRowDemoLabels
 }) {
   const [status, setStatus] = useState(labels.pending)
 
@@ -34,8 +60,8 @@ export function ServiceEndpointRowDemo({
         {status}
       </span>
       <ServiceEndpointRow
-        title="Raster tile service"
-        subtitle="XYZ · PNG / WEBP"
+        title={labels.tilesTitle}
+        subtitle={labels.tilesSubtitle}
         method="GET"
         url="https://api.mapseek.io/v1/raster/{uid}/tiles/{z}/{x}/{y}.png"
         icon={
@@ -50,8 +76,8 @@ export function ServiceEndpointRowDemo({
         openTooltip={labels.pending}
       />
       <ServiceEndpointRow
-        title="TileJSON"
-        subtitle="TileJSON 3.0 · metadata"
+        title={labels.tilejsonTitle}
+        subtitle={labels.tilejsonSubtitle}
         method="GET"
         url="https://api.mapseek.io/v1/raster/{uid}/tilejson.json"
         icon={
@@ -66,8 +92,8 @@ export function ServiceEndpointRowDemo({
         onOpen={() => setStatus(`${labels.opened}: tilejson`)}
       />
       <ServiceEndpointRow
-        title="COG source"
-        subtitle="Cloud Optimized GeoTIFF · HTTP Range"
+        title={labels.cogTitle}
+        subtitle={labels.cogSubtitle}
         method="GET"
         url="https://api.mapseek.io/v1/raster/{uid}/source.tif"
         icon={

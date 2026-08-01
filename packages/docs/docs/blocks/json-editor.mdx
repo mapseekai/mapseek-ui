@@ -1,0 +1,64 @@
+---
+id: json-editor
+slug: /blocks/json-editor
+registryName: json-editor
+category: block
+stability: stable
+examples:
+  - json-editor/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { JsonEditorDemo, zhJsonEditorLabels } from "@site/src/examples/json-editor/overview"
+import overviewSource from "@site/src/examples/json-editor/overview.tsx?raw"
+
+# JsonEditor
+
+JsonEditor 是基于 CodeMirror 6 的 JSON 编辑器。它把对象格式化为可编辑 JSON，解析成功时通过 `onChange` 回传对象，解析失败时保留用户正在输入的无效文本。
+
+## 安装
+
+<RegistryInstall registryName="json-editor" />
+
+## 导入
+
+```tsx
+import {
+  JsonEditor,
+  type JsonEditorProps,
+  type JsonEditorTheme,
+} from "@/registry/blocks/json-editor"
+```
+
+## JSON 编辑器
+
+<ComponentDemo title="JSON 编辑器" description="示例保留 app/light/dark/none 主题切换、标题栏版本、焦点状态和解析后的受控 value 输出。" source={overviewSource} minHeight={720}>
+  <JsonEditorDemo labels={zhJsonEditorLabels} />
+</ComponentDemo>
+
+## 用法
+
+传入任意 JSON 值和 `onChange`。默认 `theme="app"` 使用 Mapseek token；需要嵌入独立预览时可使用 `light`、`dark` 或 `none`。`title` 为字符串时显示标题栏，为 `null` 时隐藏。
+
+## 公开导出与 Props
+
+导出 `JsonEditor`、`JsonEditorProps` 和 `JsonEditorTheme`。关键 props 是 `value`、`onChange`、`title`、`ariaLabel`、`theme`、`onFocus`、`onBlur`、`withScroll`、`className`、`editorClassName`、`headerClassName` 和 `titleClassName`。
+
+## 状态与校验
+
+组件内部保存编辑文本和焦点状态。只有 JSON.parse 成功时才触发 `onChange`；因此调用方可以继续显示上一个有效值，同时让用户修复无效 JSON。
+
+## 无障碍
+
+使用 `ariaLabel` 描述编辑器目的。外层应提供保存、重置或错误说明，并确保 CodeMirror 焦点不会与页面快捷键冲突。
+
+## 依赖
+
+<RegistryDependencies registryName="json-editor" />
+
+## 相关链接
+
+- [JsonEditor registry JSON](/r/json-editor.json)
+- [GeoJSONView registry JSON](/r/geojson-view.json)
+- [JsonViewer registry JSON](/r/json-viewer.json)

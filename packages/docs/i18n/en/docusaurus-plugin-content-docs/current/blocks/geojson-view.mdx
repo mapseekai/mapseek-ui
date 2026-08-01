@@ -1,0 +1,65 @@
+---
+id: geojson-view
+slug: /blocks/geojson-view
+registryName: geojson-view
+category: block
+stability: stable
+examples:
+  - geojson-view/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { GeoJSONViewDemo, enGeoJSONViewLabels } from "@site/src/examples/geojson-view/overview"
+import overviewSource from "@site/src/examples/geojson-view/overview.tsx?raw"
+
+# GeoJSONView
+
+GeoJSONView is a read-only GeoJSON viewer. The caller passes a pre-formatted JSON string; successful parses render a collapsible JSON tree, while empty values, parse failures, and primitives fall back to a line-numbered `<pre>`.
+
+## Installation
+
+<RegistryInstall registryName="geojson-view" />
+
+## Import
+
+```tsx
+import {
+  GeoJSONView,
+  stringifyGeoJSON,
+  type GeoJSONViewLabels,
+  type GeoJSONViewProps,
+} from "@/registry/blocks/geojson-view"
+```
+
+## GeoJSON Tree and Fallback
+
+<ComponentDemo title="GeoJSON tree and fallback" description="The example preserves the collapsible tree, no-selection empty state, parse-failure fallback, and stringifyGeoJSON input path." source={overviewSource} minHeight={560}>
+  <GeoJSONViewDemo labels={enGeoJSONViewLabels} />
+</ComponentDemo>
+
+## Usage
+
+Use `stringifyGeoJSON(data)` in the caller and pass the result to `json`. Pass `null` when nothing is selected, and localize the fallback with `emptyLabel`.
+
+## Public Exports and Props
+
+Exports include `GeoJSONView`, `stringifyGeoJSON`, `GeoJSONViewProps`, and `GeoJSONViewLabels`. Key props are `json`, `emptyLabel`, `title`, `expandAllLabel`, `collapseAllLabel`, `copyFeedbackDurationMs`, `labels`, and `className`.
+
+## States, Empty, and Error
+
+The component is display-only and stores no selected feature. `null` or an empty string shows the empty state; invalid JSON preserves the raw text with line numbers so the user can locate the problem.
+
+## Accessibility
+
+The tree view inherits JsonViewer expand, collapse, and copy behavior. Localize the title and expand/collapse text; never leave an empty selection as a blank panel.
+
+## Dependencies
+
+<RegistryDependencies registryName="geojson-view" />
+
+## Related Links
+
+- [GeoJSONView registry JSON](/r/geojson-view.json)
+- [JsonViewer registry JSON](/r/json-viewer.json)
+- [JsonEditor registry JSON](/r/json-editor.json)

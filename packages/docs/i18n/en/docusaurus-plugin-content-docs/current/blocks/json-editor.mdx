@@ -1,0 +1,64 @@
+---
+id: json-editor
+slug: /blocks/json-editor
+registryName: json-editor
+category: block
+stability: stable
+examples:
+  - json-editor/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { JsonEditorDemo, enJsonEditorLabels } from "@site/src/examples/json-editor/overview"
+import overviewSource from "@site/src/examples/json-editor/overview.tsx?raw"
+
+# JsonEditor
+
+JsonEditor is a CodeMirror 6 JSON editor. It formats an object as editable JSON, calls `onChange` with parsed objects, and keeps invalid in-progress text visible until the user fixes it.
+
+## Installation
+
+<RegistryInstall registryName="json-editor" />
+
+## Import
+
+```tsx
+import {
+  JsonEditor,
+  type JsonEditorProps,
+  type JsonEditorTheme,
+} from "@/registry/blocks/json-editor"
+```
+
+## JSON Editor
+
+<ComponentDemo title="JSON editor" description="The example preserves app/light/dark/none themes, a titled variant, focus state, and parsed controlled value output." source={overviewSource} minHeight={720}>
+  <JsonEditorDemo labels={enJsonEditorLabels} />
+</ComponentDemo>
+
+## Usage
+
+Pass any JSON value plus `onChange`. The default `theme="app"` uses Mapseek tokens; use `light`, `dark`, or `none` for isolated previews. A string `title` renders a header, while `null` hides it.
+
+## Public Exports and Props
+
+Exports include `JsonEditor`, `JsonEditorProps`, and `JsonEditorTheme`. Key props are `value`, `onChange`, `title`, `ariaLabel`, `theme`, `onFocus`, `onBlur`, `withScroll`, `className`, `editorClassName`, `headerClassName`, and `titleClassName`.
+
+## States and Validation
+
+The component stores editor text and focus state internally. `onChange` fires only when `JSON.parse` succeeds, so the caller can keep showing the last valid value while the user repairs invalid JSON.
+
+## Accessibility
+
+Use `ariaLabel` to describe the editor purpose. Outer UI should provide save, reset, or error messaging and avoid shortcut conflicts with CodeMirror focus.
+
+## Dependencies
+
+<RegistryDependencies registryName="json-editor" />
+
+## Related Links
+
+- [JsonEditor registry JSON](/r/json-editor.json)
+- [GeoJSONView registry JSON](/r/geojson-view.json)
+- [JsonViewer registry JSON](/r/json-viewer.json)

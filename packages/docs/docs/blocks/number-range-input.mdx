@@ -1,0 +1,63 @@
+---
+id: number-range-input
+slug: /blocks/number-range-input
+registryName: number-range-input
+category: block
+stability: stable
+examples:
+  - number-range-input/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { NumberRangeInputDemo, zhNumberRangeInputLabels } from "@site/src/examples/number-range-input/overview"
+import overviewSource from "@site/src/examples/number-range-input/overview.tsx?raw"
+
+# NumberRangeInput
+
+NumberRangeInput 把数字输入框和单滑块组合在一起，适合透明度、缩放级别、百分比和其他有 min/max 的数值配置。
+
+## 安装
+
+<RegistryInstall registryName="number-range-input" />
+
+## 导入
+
+```tsx
+import {
+  NumberRangeInput,
+  type NumberRangeInputProps,
+} from "@/registry/blocks/number-range-input"
+```
+
+## 数字范围输入
+
+<ComponentDemo title="数字范围输入" description="示例保留整数、0.5 小数步进、0.001 精度、直接输入、键盘步进和清空状态。" source={overviewSource} minHeight={560}>
+  <NumberRangeInputDemo labels={zhNumberRangeInputLabels} />
+</ComponentDemo>
+
+## 用法
+
+传入受控 `value`、`min`、`max`、`step` 和 `onChange`。用户可以拖动滑块，也可以直接输入数字；失焦后组件会根据范围和 step 归一化显示。
+
+## 公开导出与 Props
+
+导出 `NumberRangeInput` 和 `NumberRangeInputProps`。关键 props 是 `value`、`defaultValue`、`min`、`max`、`step`、`onChange`、`required`、`disabled`、`name`、`aria-label`、`className`、`sliderClassName` 和 `inputClassName`。
+
+## 状态与校验
+
+组件保存编辑中字符串，合法值才通过 `onChange` 提交。滑块会 clamp 到 min/max 并按 step 舍入；小数 step 会限制显示精度。
+
+## 无障碍
+
+为每个实例提供 `aria-label`，尤其是同一表单中有多个范围输入时。滑块和数字框都支持键盘操作；调用方应在字段外层提供单位和错误说明。
+
+## 依赖
+
+<RegistryDependencies registryName="number-range-input" />
+
+## 相关链接
+
+- [NumberRangeInput registry JSON](/r/number-range-input.json)
+- [FormInputs registry JSON](/r/form-inputs.json)
+- [Slider registry JSON](/r/slider.json)

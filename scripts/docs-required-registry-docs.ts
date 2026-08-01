@@ -264,10 +264,73 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "add-field-form",
+    {
+      category: "block",
+      examples: ["add-field-form/overview"],
+    },
+  ],
+  [
+    "attr-inspector",
+    {
+      category: "block",
+      examples: ["attr-inspector/overview"],
+    },
+  ],
+  [
+    "attr-table",
+    {
+      category: "block",
+      examples: ["attr-table/overview"],
+    },
+  ],
+  [
+    "filter-panel",
+    {
+      category: "block",
+      examples: ["filter-panel/overview"],
+    },
+  ],
+  [
+    "form-inputs",
+    {
+      category: "block",
+      examples: ["form-inputs/overview"],
+    },
+  ],
+  [
+    "geojson-view",
+    {
+      category: "block",
+      examples: ["geojson-view/overview"],
+    },
+  ],
+  [
+    "json-editor",
+    {
+      category: "block",
+      examples: ["json-editor/overview"],
+    },
+  ],
+  [
     "layer-panel",
     {
       category: "block",
       examples: ["layer-panel/basic", "layer-panel/groups"],
+    },
+  ],
+  [
+    "number-range-input",
+    {
+      category: "block",
+      examples: ["number-range-input/overview"],
+    },
+  ],
+  [
+    "schema-form",
+    {
+      category: "block",
+      examples: ["schema-form/overview"],
     },
   ],
 ] as const)

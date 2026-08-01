@@ -1,0 +1,65 @@
+---
+id: geojson-view
+slug: /blocks/geojson-view
+registryName: geojson-view
+category: block
+stability: stable
+examples:
+  - geojson-view/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { GeoJSONViewDemo, zhGeoJSONViewLabels } from "@site/src/examples/geojson-view/overview"
+import overviewSource from "@site/src/examples/geojson-view/overview.tsx?raw"
+
+# GeoJSONView
+
+GeoJSONView 是只读 GeoJSON 查看器。调用方传入预格式化 JSON 字符串；组件解析成功时渲染可折叠 JSON 树，空值、解析失败或 primitive 会回退到带行号的 `<pre>`。
+
+## 安装
+
+<RegistryInstall registryName="geojson-view" />
+
+## 导入
+
+```tsx
+import {
+  GeoJSONView,
+  stringifyGeoJSON,
+  type GeoJSONViewLabels,
+  type GeoJSONViewProps,
+} from "@/registry/blocks/geojson-view"
+```
+
+## GeoJSON 树与回退视图
+
+<ComponentDemo title="GeoJSON 树与回退视图" description="示例保留可折叠树、无选中空态和解析失败 fallback，并使用 stringifyGeoJSON 生成输入字符串。" source={overviewSource} minHeight={560}>
+  <GeoJSONViewDemo labels={zhGeoJSONViewLabels} />
+</ComponentDemo>
+
+## 用法
+
+用 `stringifyGeoJSON(data)` 在调用方生成字符串，再把结果传入 `json`。没有选中要素时传 `null`，并用 `emptyLabel` 提供本地化空态。
+
+## 公开导出与 Props
+
+导出 `GeoJSONView`、`stringifyGeoJSON`、`GeoJSONViewProps` 和 `GeoJSONViewLabels`。关键 props 是 `json`、`emptyLabel`、`title`、`expandAllLabel`、`collapseAllLabel`、`copyFeedbackDurationMs`、`labels` 和 `className`。
+
+## 状态、空态与错误
+
+组件是纯展示，不保存选中要素。`json` 为 null 或空字符串时显示空态；JSON 解析失败时保留原文并显示行号，便于用户定位问题。
+
+## 无障碍
+
+树视图继承 JsonViewer 的展开、折叠和复制交互。标题和展开/折叠文案应本地化；空态不能只显示空白区域。
+
+## 依赖
+
+<RegistryDependencies registryName="geojson-view" />
+
+## 相关链接
+
+- [GeoJSONView registry JSON](/r/geojson-view.json)
+- [JsonViewer registry JSON](/r/json-viewer.json)
+- [JsonEditor registry JSON](/r/json-editor.json)

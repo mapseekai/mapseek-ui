@@ -1,0 +1,69 @@
+---
+id: form-inputs
+slug: /blocks/form-inputs
+registryName: form-inputs
+category: block
+stability: stable
+examples:
+  - form-inputs/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { FormInputsDemo, enFormInputsLabels } from "@site/src/examples/form-inputs/overview"
+import overviewSource from "@site/src/examples/form-inputs/overview.tsx?raw"
+
+# FormInputs
+
+FormInputs is a domain-free input set extracted from style-editing workflows: string, multiline string, number, checkbox, select, short enum, autocomplete, font stack, and number range inputs.
+
+## Installation
+
+<RegistryInstall registryName="form-inputs" />
+
+## Import
+
+```tsx
+import {
+  InputAutocomplete,
+  InputCheckbox,
+  InputEnum,
+  InputFont,
+  InputMultiInput,
+  InputNumber,
+  InputSelect,
+  InputString,
+} from "@/registry/blocks/form-inputs"
+```
+
+## Input Set
+
+<ComponentDemo title="Input set" description="The example preserves commit-on-blur text and number inputs, range input, short enum, select, autocomplete, font stack, and controlled value output." source={overviewSource} minHeight={720}>
+  <FormInputsDemo labels={enFormInputsLabels} />
+</ComponentDemo>
+
+## Usage
+
+Each input receives a current value and `onChange`; the caller stores the final value. `InputString` and regular `InputNumber` keep local editing state and commit on blur or Enter. `InputEnum` chooses inline choices or a select depending on option count.
+
+## Public Exports and Props
+
+Exports include `InputString`, `InputNumber`, `InputCheckbox`, `InputSelect`, `InputEnum`, `InputMultiInput`, `InputAutocomplete`, `InputFont`, and each component props type. Common props are `value`, `default`, `options`, `fonts`, `min`, `max`, `allowRange`, `rangeStep`, `required`, `disabled`, and `aria-label`.
+
+## States and Validation
+
+Number inputs validate against min/max; range mode reuses `NumberRangeInput`. Empty strings become `undefined` or a caller fallback. The demo reset button shows empty values, no selection, and an empty font stack.
+
+## Accessibility
+
+Provide `aria-label` for inputs without visible labels. Short enums and checkboxes use clickable labels; select and autocomplete inherit keyboard behavior from the base UI. Disabled, required, and error states should be explained by the field wrapper.
+
+## Dependencies
+
+<RegistryDependencies registryName="form-inputs" />
+
+## Related Links
+
+- [FormInputs registry JSON](/r/form-inputs.json)
+- [NumberRangeInput registry JSON](/r/number-range-input.json)
+- [SchemaForm registry JSON](/r/schema-form.json)

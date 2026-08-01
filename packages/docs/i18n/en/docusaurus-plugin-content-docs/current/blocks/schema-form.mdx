@@ -1,0 +1,66 @@
+---
+id: schema-form
+slug: /blocks/schema-form
+registryName: schema-form
+category: block
+stability: stable
+examples:
+  - schema-form/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { SchemaFormDemo, enSchemaFormLabels } from "@site/src/examples/schema-form/overview"
+import overviewSource from "@site/src/examples/schema-form/overview.tsx?raw"
+
+# SchemaForm
+
+SchemaForm is a schema-driven form body for number, text, select, and multiselect fields. The caller converts domain fields into those primitive types and owns values, validation, and submission.
+
+## Installation
+
+<RegistryInstall registryName="schema-form" />
+
+## Import
+
+```tsx
+import {
+  SchemaForm,
+  isSchemaFormValid,
+  seedSchemaFormValues,
+  type SchemaFormField,
+  type SchemaFormOption,
+} from "@/registry/blocks/schema-form"
+```
+
+## Schema-Driven Form
+
+<ComponentDemo title="Schema-driven form" description="The example preserves number, text, select, multiselect, required validation, minimum selection count, empty option hints, and values output." source={overviewSource} minHeight={680}>
+  <SchemaFormDemo labels={enSchemaFormLabels} />
+</ComponentDemo>
+
+## Usage
+
+Initialize values with `seedSchemaFormValues(fields)`, then pass `fields`, `values`, and `onChange` to `SchemaForm`. Submit buttons usually read `isSchemaFormValid(fields, values)` to decide whether the operation can run.
+
+## Public Exports and Props
+
+Exports include `SchemaForm`, `seedSchemaFormValues`, `isSchemaFormValid`, `SchemaFormField`, `SchemaFormOption`, and `SchemaFormProps`. Key props are `fields`, `values`, `onChange`, `idPrefix`, and `className`.
+
+## States and Validation
+
+The component stores no business state. Number fields support min/max, text supports placeholder, select uses defaults, and multiselect supports empty hints, required, and minimum count validation.
+
+## Accessibility
+
+Every field has a `Label` associated with its control. Required fields show an asterisk; callers should add error summaries or field-level text around submit actions instead of relying only on a disabled button.
+
+## Dependencies
+
+<RegistryDependencies registryName="schema-form" />
+
+## Related Links
+
+- [SchemaForm registry JSON](/r/schema-form.json)
+- [FormInputs registry JSON](/r/form-inputs.json)
+- [AddFieldForm registry JSON](/r/add-field-form.json)

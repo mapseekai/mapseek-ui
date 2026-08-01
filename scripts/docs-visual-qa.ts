@@ -1,7 +1,7 @@
 import { type Browser, chromium, expect, type Locator, type Page } from "@playwright/test"
 
 type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots" | "onboarding"
-type DocsVisualCategory = "primitive"
+type DocsVisualCategory = "block" | "primitive"
 type DocsTheme = "dark" | "light"
 type DocsViewportName = "desktop" | "mobile"
 
@@ -42,7 +42,7 @@ function readCliOptions(): CliOptions {
     throw new Error(`Unsupported docs visual QA case: ${caseName}`)
   }
 
-  if (category !== undefined && category !== "primitive") {
+  if (category !== undefined && category !== "primitive" && category !== "block") {
     throw new Error(`Unsupported docs visual QA category: ${category}`)
   }
 
@@ -534,6 +534,65 @@ const primitivePages = [
   "tooltip",
 ] as const
 
+const blockPages = [
+  {
+    name: "add-field-form",
+    demo: "add-field-form",
+    sourceFunction: "AddFieldFormDemo",
+    importPath: "@registry/blocks/add-field-form",
+  },
+  {
+    name: "attr-inspector",
+    demo: "attr-inspector",
+    sourceFunction: "AttrInspectorDemo",
+    importPath: "@registry/blocks/attr-inspector",
+  },
+  {
+    name: "attr-table",
+    demo: "attr-table",
+    sourceFunction: "AttrTableDemo",
+    importPath: "@registry/blocks/attr-table",
+  },
+  {
+    name: "filter-panel",
+    demo: "filter-panel",
+    sourceFunction: "FilterPanelDemo",
+    importPath: "@registry/blocks/filter-panel",
+  },
+  {
+    name: "form-inputs",
+    demo: "form-inputs",
+    sourceFunction: "FormInputsDemo",
+    importPath: "@registry/blocks/form-inputs",
+  },
+  {
+    name: "geojson-view",
+    demo: "geojson-view",
+    sourceFunction: "GeoJSONViewDemo",
+    importPath: "@registry/blocks/geojson-view",
+  },
+  {
+    name: "json-editor",
+    demo: "json-editor",
+    sourceFunction: "JsonEditorDemo",
+    importPath: "@registry/blocks/json-editor",
+  },
+  {
+    name: "number-range-input",
+    demo: "number-range-input",
+    sourceFunction: "NumberRangeInputDemo",
+    importPath: "@registry/blocks/number-range-input",
+  },
+  {
+    name: "schema-form",
+    demo: "schema-form",
+    sourceFunction: "SchemaFormDemo",
+    importPath: "@registry/blocks/schema-form",
+  },
+] as const
+
+type BlockPage = (typeof blockPages)[number]
+
 function titleFromName(name: string): string {
   return name
     .split("-")
@@ -551,6 +610,19 @@ async function assertDemoPreviewAndSource(page: Page, primitive: string): Promis
   const source = section.locator("xpath=./pre/code")
   await expect(source).toContainText(`export function ${titleFromName(primitive)}OverviewDemo`)
   await expect(source).toContainText(`@registry/ui/${primitive}`)
+}
+
+async function assertBlockDemoPreviewAndSource(page: Page, block: BlockPage): Promise<void> {
+  const demo = page.locator(`[data-demo="${block.demo}"]`)
+  await expect(demo).toBeVisible()
+  await assertNoHorizontalOverflow(demo, `${block.name} preview`)
+
+  const section = demo.locator("xpath=ancestor::section").first()
+  await section.locator('[data-demo-action="source"]').click()
+  const source = section.locator("xpath=./pre/code")
+  await expect(source).toContainText(`export function ${block.sourceFunction}`)
+  await expect(source).toContainText(block.importPath)
+  await section.locator('[data-demo-action="source"]').click()
 }
 
 async function assertPortalFits(locator: Locator, label: string): Promise<void> {
@@ -892,6 +964,152 @@ async function assertPrimitiveInteraction(page: Page, primitive: string): Promis
   }
 }
 
+function localized(path: string, zh: string, en: string): string {
+  return path.startsWith("/en/") ? en : zh
+}
+
+async function assertBlockInteraction(page: Page, block: string, path: string): Promise<void> {
+  if (block === "add-field-form") {
+    const demo = page.locator('[data-demo="add-field-form"]')
+    await expect(demo.locator('[data-demo-status="validation"]')).toContainText(
+      localized(path, "字段名必填", "Field name is required"),
+    )
+    await demo
+      .getByPlaceholder(localized(path, "例如 build_year", "e.g. build_year"))
+      .fill("build_year")
+    await expect(demo.locator('[data-demo-status="validation"]')).toContainText(
+      localized(path, "可提交", "Ready to submit"),
+    )
+    await demo.getByRole("button", { name: "Enum", exact: true }).click()
+    await expect(
+      demo.getByPlaceholder(
+        localized(path, "例如 居住,商业,工业,绿地", "e.g. residential,commercial,industrial,park"),
+      ),
+    ).toBeVisible()
+    await activateByKeyboard(demo.getByRole("button", { name: localized(path, "重置", "Reset") }))
+    await expect(demo.locator('[data-demo-status="validation"]')).toContainText(
+      localized(path, "字段名必填", "Field name is required"),
+    )
+  }
+
+  if (block === "attr-inspector") {
+    const demo = page.locator('[data-demo="attr-inspector"]')
+    await demo.locator('[data-demo-action="mode-read"]').click()
+    await expect(demo.locator('[data-demo-action="mode-read"]')).toHaveClass(/bg-primary/)
+    await demo.locator('[data-demo-action="mode-edit"]').click()
+    await demo
+      .getByRole("button", { name: localized(path, "GeoJSON", "GeoJSON"), exact: true })
+      .click()
+    await expect(demo.locator('[data-demo-status="attr-inspector"]')).toContainText(
+      localized(path, "打开 GeoJSON", "Open GeoJSON"),
+    )
+    await demo.getByRole("button", { name: localized(path, "取消", "Cancel"), exact: true }).click()
+    await expect(demo.locator('[data-demo-status="attr-inspector"]')).toContainText(
+      localized(path, "已取消", "Cancelled"),
+    )
+  }
+
+  if (block === "attr-table") {
+    const demo = page.locator('[data-demo="attr-table"]')
+    await demo.locator('[data-demo-action="section-data"]').click()
+    await demo.getByLabel(localized(path, "模拟空数据", "Simulate empty")).check()
+    await expect(demo).toContainText(localized(path, "无数据", "No rows"))
+    await demo.getByLabel(localized(path, "模拟空数据", "Simulate empty")).uncheck()
+    await demo.getByLabel(localized(path, "模拟错误", "Simulate error")).check()
+    await expect(demo.getByRole("button", { name: localized(path, "重试", "Retry") })).toBeVisible()
+    await demo.getByRole("button", { name: localized(path, "重试", "Retry") }).click()
+    await demo.locator('[data-demo-action="section-schema"]').click()
+    await demo.getByPlaceholder(localized(path, "搜索字段", "Search fields")).fill("name")
+    await expect(demo).toContainText("name")
+    await demo.locator('[data-demo-action="section-sheet"]').click()
+    await demo.locator('[data-demo-action="open-sheet"]').click()
+    const sheet = page.locator('[data-demo="attr-table-sheet"]')
+    await expect(sheet).toBeVisible()
+    await assertWithinViewport(sheet, `${path} attr table sheet`)
+    await assertNoHorizontalOverflow(sheet, `${path} attr table sheet`)
+    const resize = sheet.getByRole("button", { name: "Resize attribute table", exact: true })
+    await resize.focus()
+    await page.keyboard.press("ArrowUp")
+    await assertWithinViewport(sheet, `${path} attr table sheet after keyboard resize`)
+    await sheet.getByRole("button", { name: localized(path, "关闭", "Close") }).click()
+    await expect(sheet).toBeHidden()
+  }
+
+  if (block === "filter-panel") {
+    const demo = page.locator('[data-demo="filter-panel"]')
+    await expect(demo.locator('[data-demo-status="filter-mode"]')).toContainText("builder")
+    await demo.getByRole("button", { name: "SQL", exact: true }).click()
+    await expect(demo.locator('[data-demo-status="filter-mode"]')).toContainText("sql")
+    await demo.locator("textarea").fill('code = "R2"')
+    await expect(demo.locator("pre")).toContainText("R2")
+    await demo.locator('[data-demo-action="external-clear"]').click()
+    await expect(demo.locator("pre")).toContainText('"rows": []')
+  }
+
+  if (block === "form-inputs") {
+    const demo = page.locator('[data-demo="form-inputs"]')
+    await demo.getByLabel("string", { exact: true }).fill("Buildings")
+    await demo.getByLabel("string", { exact: true }).blur()
+    await expect(demo.locator("pre")).toContainText("Buildings")
+    await demo.getByLabel("number", { exact: true }).fill("24")
+    await demo.getByLabel("number", { exact: true }).blur()
+    await expect(demo.locator("pre")).toContainText('"num": 24')
+    await activateByKeyboard(demo.locator('[data-demo-action="reset-inputs"]'))
+    await expect(demo.locator("pre")).toContainText('"checked": false')
+  }
+
+  if (block === "geojson-view") {
+    const demo = page.locator('[data-demo="geojson-view"]')
+    await expect(demo).toContainText("Feature")
+    await demo.getByLabel(localized(path, "模拟无选中", "Simulate no selection")).check()
+    await expect(demo).toContainText(localized(path, "无选中要素", "No selected feature"))
+    await demo.getByLabel(localized(path, "模拟无选中", "Simulate no selection")).uncheck()
+    await demo.getByLabel(localized(path, "模拟解析失败", "Simulate parse failure")).check()
+    await expect(demo).toContainText("{ invalid geojson")
+  }
+
+  if (block === "json-editor") {
+    const demo = page.locator('[data-demo="json-editor"]')
+    await demo.locator('[data-demo-action="theme-dark"]').click()
+    await expect(demo).toContainText(`${localized(path, "当前主题", "Current theme")} · dark`)
+    await demo.locator('[data-demo-action="theme-none"]').click()
+    await expect(demo).toContainText(`${localized(path, "当前主题", "Current theme")} · none`)
+    await demo.locator(".cm-content").first().click()
+    await expect(demo.locator('[data-demo-status="json-editor"]')).toContainText(
+      localized(path, "已聚焦", "Focused"),
+    )
+  }
+
+  if (block === "number-range-input") {
+    const demo = page.locator('[data-demo="number-range-input"]')
+    const percent = demo.getByLabel("percent").last()
+    await percent.fill("60")
+    await percent.blur()
+    await expect(demo.locator("pre")).toContainText('"percent": 60')
+    const zoomSlider = demo.getByRole("slider").nth(1)
+    await zoomSlider.focus()
+    await page.keyboard.press("ArrowRight")
+    await expect(demo.locator("pre")).toContainText('"zoom": 12.5')
+    await activateByKeyboard(demo.locator('[data-demo-action="clear-ranges"]'))
+    await expect(demo.locator("pre")).toContainText("{}")
+  }
+
+  if (block === "schema-form") {
+    const demo = page.locator('[data-demo="schema-form"]')
+    await expect(demo.locator('[data-demo-status="schema-validity"]')).toContainText(
+      localized(path, "invalid", "invalid"),
+    )
+    await demo.getByLabel(localized(path, "缓冲半径", "Buffer radius")).fill("25")
+    await demo.getByRole("checkbox", { name: localized(path, "roads", "roads") }).check()
+    await demo.getByRole("checkbox", { name: localized(path, "rivers", "rivers") }).check()
+    await expect(demo.locator('[data-demo-status="schema-validity"]')).toContainText(
+      localized(path, "valid", "valid"),
+    )
+    await demo.getByLabel(localized(path, "切换为空图层选项", "Toggle empty layer options")).check()
+    await expect(demo).toContainText(localized(path, "暂无图层", "No layers"))
+  }
+}
+
 async function runPrimitiveCategoryCase(baseUrl: string, browserChannel?: string): Promise<void> {
   await assertPreviewIsAvailable(baseUrl)
 
@@ -925,11 +1143,49 @@ async function runPrimitiveCategoryCase(baseUrl: string, browserChannel?: string
   }
 }
 
+async function runBlockCategoryCase(baseUrl: string, browserChannel?: string): Promise<void> {
+  await assertPreviewIsAvailable(baseUrl)
+
+  const browser = await launchBrowser(browserChannel)
+  const viewports: Record<DocsViewportName, { width: number; height: number }> = {
+    desktop: { width: 1280, height: 720 },
+    mobile: { width: 390, height: 760 },
+  }
+
+  try {
+    for (const viewport of Object.values(viewports)) {
+      const page = await browser.newPage({ baseURL: baseUrl, viewport })
+      try {
+        for (const block of blockPages) {
+          for (const path of [`/blocks/${block.name}`, `/en/blocks/${block.name}`] as const) {
+            for (const theme of ["light", "dark"] as const) {
+              await page.goto(path)
+              await setDocsTheme(page, theme)
+              await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
+              await assertBlockDemoPreviewAndSource(page, block)
+              await assertBlockInteraction(page, block.name, path)
+              await assertNoHorizontalOverflow(page.getByRole("article"), `${path} article`)
+            }
+          }
+        }
+      } finally {
+        await page.close()
+      }
+    }
+  } finally {
+    await browser.close()
+  }
+}
+
 async function main() {
   const options = readCliOptions()
 
   if (options.category === "primitive") {
     await runPrimitiveCategoryCase(options.baseUrl, options.browserChannel)
+    return
+  }
+  if (options.category === "block") {
+    await runBlockCategoryCase(options.baseUrl, options.browserChannel)
     return
   }
 

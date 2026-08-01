@@ -1,0 +1,66 @@
+---
+id: attr-inspector
+slug: /blocks/attr-inspector
+registryName: attr-inspector
+category: block
+stability: stable
+examples:
+  - attr-inspector/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { AttrInspectorDemo, zhAttrInspectorLabels } from "@site/src/examples/attr-inspector/overview"
+import overviewSource from "@site/src/examples/attr-inspector/overview.tsx?raw"
+
+# AttrInspector
+
+AttrInspector 是单个要素的浮动属性面板。它支持只读和编辑模式、字段元数据、枚举编辑、主键只读提示、确认/取消、删除、关闭、查看 GeoJSON 和添加字段入口。
+
+## 安装
+
+<RegistryInstall registryName="attr-inspector" />
+
+## 导入
+
+```tsx
+import {
+  AttrInspector,
+  type AttrFieldMeta,
+  type AttrInspectorFeature,
+  type AttrInspectorLabels,
+  type AttrInspectorMode,
+} from "@/registry/blocks/attr-inspector"
+```
+
+## 属性检查器
+
+<ComponentDemo title="属性检查器" description="示例保留 read/edit 切换、主键只读、枚举字段、受控 draft、确认/取消和工具按钮回调。" source={overviewSource} minHeight={680}>
+  <AttrInspectorDemo labels={zhAttrInspectorLabels} />
+</ComponentDemo>
+
+## 用法
+
+传入当前 `feature`、字段元数据 `fields`、模式 `mode`、受控 `draft` 和 `onFieldChange`。只读模式适合审阅和 GeoJSON 入口；编辑模式适合在外层保存 draft，点击确定后再提交到服务端。
+
+## 公开导出与 Props
+
+导出 `AttrInspector`、`inferAttrFieldKind`、`AttrFieldMeta`、`AttrInspectorFeature`、`AttrInspectorLabels`、`AttrInspectorMode` 和 `AttrInspectorProps`。主要 props 包括 `feature`、`mode`、`fields`、`draft`、`onFieldChange`、`labels`、`onConfirm`、`onCancel`、`onDelete`、`onViewGeoJSON`、`onAddField`、`onClose` 和 `className`。
+
+## 状态与校验
+
+组件不持久化属性数据。`draft` 中的值覆盖 `feature.properties` 的展示，确认和取消由调用方清空或提交 draft。主键字段会按字段名推断为只读；枚举字段通过 `AttrFieldMeta.enumOptions` 渲染为选择输入。
+
+## 无障碍
+
+面板按钮使用原生 `button`，关闭、删除、确认和取消由 `labels` 提供可读文本。作为浮动面板使用时，外层应管理焦点进入、Esc 关闭和地图画布快捷键冲突。
+
+## 依赖
+
+<RegistryDependencies registryName="attr-inspector" />
+
+## 相关链接
+
+- [AttrInspector registry JSON](/r/attr-inspector.json)
+- [AddFieldForm registry JSON](/r/add-field-form.json)
+- [GeoJSONView registry JSON](/r/geojson-view.json)

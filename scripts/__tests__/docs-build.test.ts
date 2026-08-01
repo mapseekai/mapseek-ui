@@ -21,6 +21,15 @@ async function readBuiltCss(assetsDir: string): Promise<string> {
   return contents.join("\n")
 }
 
+async function readBuiltJs(assetsDir: string): Promise<string> {
+  const jsDir = join(assetsDir, "js")
+  const files = await readdir(jsDir)
+  const jsFiles = files.filter((file) => file.endsWith(".js"))
+  const contents = await Promise.all(jsFiles.map((file) => readFile(join(jsDir, file), "utf8")))
+
+  return contents.join("\n")
+}
+
 it("declares the Docusaurus docs workspace contract", async () => {
   const root = await Bun.file("package.json").json()
   const docs = await Bun.file("packages/docs/package.json").json()
@@ -68,4 +77,13 @@ it("publishes installable registry artifacts and compiled theme utilities", asyn
 
   expect(css).toContain("--primary:")
   expect(css).toContain(".bg-primary")
+})
+
+it("keeps displayed example source as exact TSX source", async () => {
+  const js = await readBuiltJs("packages/docs/build/assets")
+
+  expect(js).toContain('import { Button } from "@registry/ui/button"')
+  expect(js).toContain("export function ButtonBasicDemo()")
+  expect(js).not.toContain('import{Button}from"@registry/ui/button"')
+  expect(js).not.toContain('from"react/jsx-runtime"')
 })

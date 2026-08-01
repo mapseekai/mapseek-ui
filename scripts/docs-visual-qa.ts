@@ -2128,21 +2128,29 @@ async function runPrimitiveCategoryCase(baseUrl: string, browserChannel?: string
   await assertPreviewIsAvailable(baseUrl)
 
   const browser = await launchBrowser(browserChannel)
+  const viewports: Record<DocsViewportName, { width: number; height: number }> = {
+    desktop: { width: 1280, height: 720 },
+    mobile: { width: 390, height: 760 },
+  }
 
   try {
-    const page = await browser.newPage({ baseURL: baseUrl, viewport: { width: 1280, height: 720 } })
-    try {
-      for (const primitive of primitivePages) {
-        for (const path of [`/components/${primitive}`, `/en/components/${primitive}`] as const) {
-          await page.goto(path)
-          await setDocsTheme(page, "light")
-          await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
-          await assertDemoPreviewAndSource(page, primitive)
-          await assertNoHorizontalOverflow(page.getByRole("article"), `${path} article`)
+    for (const viewport of Object.values(viewports)) {
+      const page = await browser.newPage({ baseURL: baseUrl, viewport })
+      try {
+        for (const primitive of primitivePages) {
+          for (const path of [`/components/${primitive}`, `/en/components/${primitive}`] as const) {
+            for (const theme of ["light", "dark"] as const) {
+              await page.goto(path)
+              await setDocsTheme(page, theme)
+              await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
+              await assertDemoPreviewAndSource(page, primitive)
+              await assertPrimitiveInteraction(page, primitive)
+            }
+          }
         }
+      } finally {
+        await page.close()
       }
-    } finally {
-      await page.close()
     }
   } finally {
     await browser.close()
@@ -2153,21 +2161,30 @@ async function runBlockCategoryCase(baseUrl: string, browserChannel?: string): P
   await assertPreviewIsAvailable(baseUrl)
 
   const browser = await launchBrowser(browserChannel)
+  const viewports: Record<DocsViewportName, { width: number; height: number }> = {
+    desktop: { width: 1280, height: 720 },
+    mobile: { width: 390, height: 760 },
+  }
 
   try {
-    const page = await browser.newPage({ baseURL: baseUrl, viewport: { width: 1280, height: 720 } })
-    try {
-      for (const block of blockPages) {
-        for (const path of [`/blocks/${block.name}`, `/en/blocks/${block.name}`] as const) {
-          await page.goto(path)
-          await setDocsTheme(page, "light")
-          await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
-          await assertBlockDemoPreviewAndSource(page, block)
-          await assertNoHorizontalOverflow(page.getByRole("article"), `${path} article`)
+    for (const viewport of Object.values(viewports)) {
+      const page = await browser.newPage({ baseURL: baseUrl, viewport })
+      try {
+        for (const block of blockPages) {
+          for (const path of [`/blocks/${block.name}`, `/en/blocks/${block.name}`] as const) {
+            for (const theme of ["light", "dark"] as const) {
+              await page.goto(path)
+              await setDocsTheme(page, theme)
+              await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
+              await assertBlockDemoPreviewAndSource(page, block)
+              await assertBlockInteraction(page, block.name, path)
+              await assertNoHorizontalOverflow(page.getByRole("article"), `${path} article`)
+            }
+          }
         }
+      } finally {
+        await page.close()
       }
-    } finally {
-      await page.close()
     }
   } finally {
     await browser.close()

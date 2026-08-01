@@ -68,7 +68,10 @@ export function ResourceDetailDrawer({
   const wide = detail.kind !== "icon"
   return (
     <Sheet open onOpenChange={(open) => !open && onClose()}>
-      <SheetContent side="right" className={cn(wide ? "w-[460px]" : "w-[380px]", className)}>
+      <SheetContent
+        side="right"
+        className={cn("max-w-full", wide ? "w-[460px]" : "w-[380px]", className)}
+      >
         <SheetHeader className="pr-12">
           <SheetTitle className="truncate text-[15px]">{detail.title}</SheetTitle>
           <SheetDescription className="truncate font-mono text-[11.5px]">

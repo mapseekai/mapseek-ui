@@ -24,6 +24,13 @@ const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = new Map([
       examples: ["dialog/basic", "dialog/confirmation", "dialog/long-content"],
     },
   ],
+  [
+    "layer-panel",
+    {
+      category: "block",
+      examples: ["layer-panel/basic", "layer-panel/groups"],
+    },
+  ],
 ] as const)
 
 function docsForRegistryName(

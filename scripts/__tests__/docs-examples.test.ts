@@ -22,6 +22,7 @@ const catalog: readonly RegistryItem[] = [
 
 const buttonExamples = ["button/basic", "button/variants", "button/sizes"] as const
 const dialogExamples = ["dialog/basic", "dialog/confirmation", "dialog/long-content"] as const
+const layerPanelExamples = ["layer-panel/basic", "layer-panel/groups"] as const
 
 async function writeFixture(path: string, content: string): Promise<void> {
   const target = join(fixtureRoot, path)
@@ -91,6 +92,21 @@ function dialogDoc(examples: readonly string[] = dialogExamples): string {
     ...examples.map((example) => `  - ${example}`),
     "---",
     "# Dialog",
+  ].join("\n")
+}
+
+function layerPanelDoc(examples: readonly string[] = layerPanelExamples): string {
+  return [
+    "---",
+    "id: layer-panel",
+    "slug: /blocks/layer-panel",
+    "registryName: layer-panel",
+    "category: block",
+    "stability: stable",
+    "examples:",
+    ...examples.map((example) => `  - ${example}`),
+    "---",
+    "# LayerPanel",
   ].join("\n")
 }
 
@@ -188,6 +204,31 @@ it("reports Dialog pages that omit a required portal pilot example id", async ()
     code: "missing-required-example",
     item: "dialog",
     detail: "dialog/long-content",
+  })
+})
+
+it("reports LayerPanel pages that omit a required complex-block pilot example id", async () => {
+  const layerPanelCatalog: readonly RegistryItem[] = [
+    {
+      name: "layer-panel",
+      type: "registry:block",
+      files: [],
+    },
+  ]
+  await writeFixture("docs/blocks/layer-panel.mdx", layerPanelDoc(["layer-panel/basic"]))
+  await writeFixture(
+    "i18n/en/docusaurus-plugin-content-docs/current/blocks/layer-panel.mdx",
+    layerPanelDoc(["layer-panel/basic"]),
+  )
+  await writeFixture(
+    "src/examples/layer-panel/basic.tsx",
+    "export function LayerPanelBasicDemo() {}",
+  )
+
+  expect(await validateExampleCoverage(fixtureRoot, layerPanelCatalog)).toContainEqual({
+    code: "missing-required-example",
+    item: "layer-panel",
+    detail: "layer-panel/groups",
   })
 })
 

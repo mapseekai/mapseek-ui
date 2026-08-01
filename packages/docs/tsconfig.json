@@ -5,6 +5,10 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "paths": {
+      "@/components/ui/*": ["registry/ui/*"],
+      "@/lib/mapseek-labels": ["registry/lib/labels.ts"],
+      "@/lib/svg-data-uri": ["registry/lib/svg-data-uri.ts"],
+      "@/lib/utils": ["registry/lib/utils.ts"],
       "@/registry/*": ["registry/*"],
       "@registry/*": ["registry/*"]
     },

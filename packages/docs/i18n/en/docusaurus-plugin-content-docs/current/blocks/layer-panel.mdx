@@ -1,0 +1,124 @@
+---
+id: layer-panel
+slug: /blocks/layer-panel
+registryName: layer-panel
+category: block
+stability: stable
+examples:
+  - layer-panel/basic
+  - layer-panel/groups
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { LayerPanelBasicDemo } from "@site/src/examples/layer-panel/basic"
+import basicSource from "@site/src/examples/layer-panel/basic.tsx?raw"
+import { LayerPanelGroupsDemo } from "@site/src/examples/layer-panel/groups"
+import groupsSource from "@site/src/examples/layer-panel/groups.tsx?raw"
+
+export const basicLabels = {
+  title: "Project layers",
+  addLayer: "Add layer",
+  style: "Style",
+  filter: "Filter",
+  emptyTitle: "No layers",
+  emptyDescription: "Added layers will appear here.",
+  visibilityOnStatus: "Shown",
+  visibilityOffStatus: "Hidden",
+  selectedStatus: "Selected",
+  locatedStatus: "Locate layer",
+  tableStatus: "Open attribute table",
+  removedStatus: "Removed",
+  styleOpacity: "Opacity",
+  filterMode: "Current filter",
+  layerPanel: {
+    addLayer: "Add layer",
+    point: "Point",
+    polyline: "Line",
+    polygon: "Polygon",
+    mixed: "Mixed",
+    raster: "Raster",
+    features: "features",
+    locate: "Locate",
+    zoomToLayer: "Zoom to layer",
+    attributeTable: "Attribute table",
+    delete: "Delete",
+  },
+}
+
+export const groupLabels = {
+  title: "Grouped layers",
+  style: "Style",
+  filter: "Filter",
+  collapseGroup: "Collapse group",
+  expandGroup: "Expand group",
+  renameGroup: "Rename",
+  saveRename: "Save",
+  groupMenu: "Menu",
+  zoomGroup: "Zoom to group",
+  duplicateGroup: "Duplicate group",
+  selectedStatus: "Selected",
+  visibilityOnStatus: "Shown",
+  visibilityOffStatus: "Hidden",
+  collapsedStatus: "Collapsed group",
+  expandedStatus: "Expanded group",
+  renamedStatus: "Renamed group",
+  menuStatus: "Menu action",
+  layerPanel: basicLabels.layerPanel,
+}
+
+# LayerPanel
+
+LayerPanel is a controlled layer panel for map projects. It owns the header, list, row selection, visibility buttons, row actions, empty state, and pluggable sections; the caller owns layer data, ordering, deletion, locating, attribute-table behavior, and grouping.
+
+## Installation
+
+<RegistryInstall registryName="layer-panel" />
+
+## Import
+
+```tsx
+import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
+```
+
+## Basic Controlled Panel
+
+<ComponentDemo title="Basic controlled panel" description="This example preserves visibility toggles, controlled selection, row actions, style sections, filter sections, deletion, and empty state." source={basicSource} minHeight={620}>
+  <LayerPanelBasicDemo labels={basicLabels} />
+</ComponentDemo>
+
+## Groups, Rename, and Menu
+
+<ComponentDemo title="Groups, rename, and menu" description="The group model, collapse state, rename flow, and menu state are composed in the example; every layer row is still rendered by LayerPanel.Item." source={groupsSource} minHeight={680}>
+  <LayerPanelGroupsDemo labels={groupLabels} />
+</ComponentDemo>
+
+## Controlled State
+
+`LayerPanel` does not store business data. Pass `layers`, `selectedId`, and handlers, then update project state from `onSelectChange`, `onVisibleChange`, `onReorder`, `onRemove`, `onLocate`, and `onOpenTable`. `collapsed` can be controlled, or `defaultCollapsed` can let the panel keep its own collapsed state.
+
+## Layer and Group Models
+
+`LayerData` requires at least `id`, `name`, `visible`, and `geometryType`. `featureCount`, `crsLabel`, and `flags` are display enhancements. Groups are not part of the registry API; if a project has groups, rename behavior, or group menus, keep that group model in the caller and pass the visible layers to `LayerPanel.Item`.
+
+## Required Handlers
+
+A read-only panel can pass only `layers` and `selectedId`. Provide `onVisibleChange` when visibility buttons are shown; provide `onReorder` when drag sorting is enabled; deletion, locating, and attribute-table buttons are controlled by `onRemove`, `onLocate`, and `onOpenTable`. When a handler is missing, the matching operation is not rendered.
+
+## Accessibility Labels
+
+Use `labels` to localize geometry names, add-layer, feature count, locate, attribute table, and delete text. Rows use the layer name as their accessible name; visibility, locate, table, and delete controls are native `button` elements. Caller-owned group buttons, menus, and rename inputs need their own `aria-label` or readable text.
+
+## Scrolling and Responsive Constraints
+
+Give the panel an explicit height or a parent scroll boundary. The list scrolls inside the panel and hides horizontal overflow. The docs examples use `w-full` with `max-w-*`, so they fit mobile previews; long layer names are constrained by row-level `truncate`.
+
+## Dependencies
+
+<RegistryDependencies registryName="layer-panel" />
+
+## Related Links
+
+- [LayerPanel registry JSON](/r/layer-panel.json)
+- [StylePanel registry JSON](/r/style-panel.json)
+- [FilterPanel registry JSON](/r/filter-panel.json)

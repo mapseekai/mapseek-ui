@@ -1,7 +1,8 @@
 import { type Browser, chromium, expect, type Locator, type Page } from "@playwright/test"
 
-type DocsVisualCase = "smoke" | "button" | "dialog"
+type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots"
 type DocsTheme = "dark" | "light"
+type DocsViewportName = "desktop" | "mobile"
 
 type CliOptions = {
   readonly baseUrl: string
@@ -28,7 +29,12 @@ function readCliOptions(): CliOptions {
     throw new Error("Missing required --base-url option.")
   }
 
-  if (caseName !== "smoke" && caseName !== "button" && caseName !== "dialog") {
+  if (
+    caseName !== "smoke" &&
+    caseName !== "button" &&
+    caseName !== "dialog" &&
+    caseName !== "pilots"
+  ) {
     throw new Error(`Unsupported docs visual QA case: ${caseName}`)
   }
 
@@ -88,49 +94,61 @@ async function runButtonCase(baseUrl: string, browserChannel?: string) {
     const page = await browser.newPage({ baseURL: baseUrl })
 
     await page.goto("/components/button")
-    await expect(page.getByRole("heading", { level: 1, name: "Button", exact: true })).toBeVisible()
-
-    const basicPreview = page.locator('[data-demo="button-basic"]')
-    const variantsPreview = page.locator('[data-demo="button-variants"]')
-    const sizesPreview = page.locator('[data-demo="button-sizes"]')
-    await expect(basicPreview).toBeVisible()
-    await expect(variantsPreview).toBeVisible()
-    await expect(sizesPreview).toBeVisible()
-
-    await expect(page.locator('[data-demo="button-variant-default"]')).toBeVisible()
-    await expect(page.locator('[data-demo="button-variant-secondary"]')).toBeVisible()
-    await expect(page.locator('[data-demo="button-variant-outline"]')).toBeVisible()
-    await expect(page.locator('[data-demo="button-variant-ghost"]')).toBeVisible()
-    await expect(page.locator('[data-demo="button-variant-destructive"]')).toBeVisible()
-    await expect(page.locator('[data-demo="button-variant-link"]')).toBeVisible()
-
-    await expect(page.locator('[data-demo="button-size-xs"]')).toBeVisible()
-    await expect(page.locator('[data-demo="button-size-sm"]')).toBeVisible()
-    await expect(page.locator('[data-demo="button-size-default"]')).toBeVisible()
-    await expect(page.locator('[data-demo="button-size-lg"]')).toBeVisible()
-
-    await page.locator('[data-demo="button-primary-action"]').click()
-    await expect(page.locator('[data-demo="button-press-count"]')).toHaveText("Presses: 1")
-
-    const basicDemo = basicPreview.locator("xpath=ancestor::section")
-    await basicDemo.locator('[data-demo-action="source"]').click()
-    await expect(basicDemo.locator("pre code")).toContainText("export function ButtonBasicDemo")
-    await expect(basicDemo.locator("pre code")).toContainText(
-      'import { Button } from "@registry/ui/button"',
-    )
-
-    await basicDemo.locator('[data-demo-action="reset"]').click()
-    await expect(basicDemo.locator('[data-reset-revision="1"]')).toBeVisible()
-    await expect(page.locator('[data-demo="button-press-count"]')).toHaveText("Presses: 0")
+    await assertButtonPilot(page)
   } finally {
     await browser.close()
   }
 }
 
+async function assertButtonPilot(page: Page): Promise<void> {
+  await expect(page.getByRole("heading", { level: 1, name: "Button", exact: true })).toBeVisible()
+
+  const basicPreview = page.locator('[data-demo="button-basic"]')
+  const variantsPreview = page.locator('[data-demo="button-variants"]')
+  const sizesPreview = page.locator('[data-demo="button-sizes"]')
+  await expect(basicPreview).toBeVisible()
+  await expect(variantsPreview).toBeVisible()
+  await expect(sizesPreview).toBeVisible()
+
+  await expect(page.locator('[data-demo="button-variant-default"]')).toBeVisible()
+  await expect(page.locator('[data-demo="button-variant-secondary"]')).toBeVisible()
+  await expect(page.locator('[data-demo="button-variant-outline"]')).toBeVisible()
+  await expect(page.locator('[data-demo="button-variant-ghost"]')).toBeVisible()
+  await expect(page.locator('[data-demo="button-variant-destructive"]')).toBeVisible()
+  await expect(page.locator('[data-demo="button-variant-link"]')).toBeVisible()
+
+  await expect(page.locator('[data-demo="button-size-xs"]')).toBeVisible()
+  await expect(page.locator('[data-demo="button-size-sm"]')).toBeVisible()
+  await expect(page.locator('[data-demo="button-size-default"]')).toBeVisible()
+  await expect(page.locator('[data-demo="button-size-lg"]')).toBeVisible()
+
+  await page.locator('[data-demo="button-primary-action"]').click()
+  await expect(page.locator('[data-demo="button-press-count"]')).toHaveText("Presses: 1")
+
+  const basicDemo = basicPreview.locator("xpath=ancestor::section")
+  await basicDemo.locator('[data-demo-action="source"]').click()
+  await expect(basicDemo.locator("pre code")).toContainText("export function ButtonBasicDemo")
+  await expect(basicDemo.locator("pre code")).toContainText(
+    'import { Button } from "@registry/ui/button"',
+  )
+
+  await basicDemo.locator('[data-demo-action="reset"]').click()
+  await expect(basicDemo.locator('[data-reset-revision="1"]')).toBeVisible()
+  await expect(page.locator('[data-demo="button-press-count"]')).toHaveText("Presses: 0")
+}
+
 async function setDocsTheme(page: Page, theme: DocsTheme): Promise<void> {
   const currentTheme = await page.locator("html").getAttribute("data-theme")
   if (currentTheme !== theme) {
-    await page.locator('button[class*="toggleButton"]').first().click()
+    const themeToggle = page.locator('button[class*="toggleButton"]').first()
+    if (await themeToggle.isVisible()) {
+      await themeToggle.click()
+    } else {
+      await page.evaluate((nextTheme) => {
+        document.documentElement.setAttribute("data-theme", nextTheme)
+        localStorage.setItem("theme", nextTheme)
+      }, theme)
+    }
   }
   await expect(page.locator("html")).toHaveAttribute("data-theme", theme)
 }
@@ -190,42 +208,186 @@ async function runDialogCase(baseUrl: string, browserChannel?: string) {
       for (const theme of ["light", "dark"] as const) {
         await page.goto(path)
         await setDocsTheme(page, theme)
-        await expect(
-          page.getByRole("heading", { level: 1, name: "Dialog", exact: true }),
-        ).toBeVisible()
+        await assertDialogPilot(page, path)
+      }
+    }
+  } finally {
+    await browser.close()
+  }
+}
 
-        const uncontrolledTrigger = page.locator('[data-demo="dialog-basic-uncontrolled-trigger"]')
-        await openAndAssertDialog(page, uncontrolledTrigger)
-        await closeWithButtonAndAssertFocus(
-          uncontrolledTrigger,
-          page.locator('[data-demo="dialog-basic-cancel"]'),
-        )
+async function assertDialogPilot(page: Page, path: string): Promise<void> {
+  await expect(page.getByRole("heading", { level: 1, name: "Dialog", exact: true })).toBeVisible()
 
-        const controlledTrigger = page.locator('[data-demo="dialog-basic-controlled-trigger"]')
-        await openAndAssertDialog(page, controlledTrigger)
-        await closeWithEscapeAndAssertFocus(page, controlledTrigger)
+  const uncontrolledTrigger = page.locator('[data-demo="dialog-basic-uncontrolled-trigger"]')
+  await openAndAssertDialog(page, uncontrolledTrigger)
+  await closeWithButtonAndAssertFocus(
+    uncontrolledTrigger,
+    page.locator('[data-demo="dialog-basic-cancel"]'),
+  )
 
-        const confirmationTrigger = page.locator('[data-demo="dialog-confirmation-trigger"]')
-        await openAndAssertDialog(page, confirmationTrigger)
-        await closeWithButtonAndAssertFocus(
-          confirmationTrigger,
-          page.locator('[data-demo="dialog-confirmation-cancel"]'),
-        )
-        await openAndAssertDialog(page, confirmationTrigger)
-        await page.locator('[data-demo="dialog-confirmation-save"]').click()
-        await expect(confirmationTrigger).toBeFocused()
-        await openAndAssertDialog(page, confirmationTrigger)
-        await closeWithButtonAndAssertFocus(
-          confirmationTrigger,
-          page.locator('[data-demo="dialog-confirmation-discard"]'),
-        )
-        await expect(page.locator('[data-demo="dialog-confirmation-status"]')).toContainText(
-          localizedDiscardStatus(path),
-        )
+  const controlledTrigger = page.locator('[data-demo="dialog-basic-controlled-trigger"]')
+  await openAndAssertDialog(page, controlledTrigger)
+  await closeWithEscapeAndAssertFocus(page, controlledTrigger)
 
-        const longContentTrigger = page.locator('[data-demo="dialog-long-content-trigger"]')
-        await openAndAssertDialog(page, longContentTrigger)
-        await closeWithEscapeAndAssertFocus(page, longContentTrigger)
+  const confirmationTrigger = page.locator('[data-demo="dialog-confirmation-trigger"]')
+  await openAndAssertDialog(page, confirmationTrigger)
+  await closeWithButtonAndAssertFocus(
+    confirmationTrigger,
+    page.locator('[data-demo="dialog-confirmation-cancel"]'),
+  )
+  await openAndAssertDialog(page, confirmationTrigger)
+  await page.locator('[data-demo="dialog-confirmation-save"]').click()
+  await expect(confirmationTrigger).toBeFocused()
+  await openAndAssertDialog(page, confirmationTrigger)
+  await closeWithButtonAndAssertFocus(
+    confirmationTrigger,
+    page.locator('[data-demo="dialog-confirmation-discard"]'),
+  )
+  await expect(page.locator('[data-demo="dialog-confirmation-status"]')).toContainText(
+    localizedDiscardStatus(path),
+  )
+
+  const longContentTrigger = page.locator('[data-demo="dialog-long-content-trigger"]')
+  await openAndAssertDialog(page, longContentTrigger)
+  await closeWithEscapeAndAssertFocus(page, longContentTrigger)
+}
+
+async function assertNoHorizontalOverflow(locator: Locator, label: string): Promise<void> {
+  const overflow = await locator.evaluate((element) => ({
+    clientWidth: element.clientWidth,
+    scrollWidth: element.scrollWidth,
+  }))
+  if (overflow.scrollWidth > overflow.clientWidth + 1) {
+    throw new Error(`${label} has horizontal overflow: ${JSON.stringify(overflow)}`)
+  }
+}
+
+async function assertWithinViewport(locator: Locator, label: string): Promise<void> {
+  const page = locator.page()
+  const viewport = page.viewportSize()
+  const box = await locator.boundingBox()
+  if (!viewport || !box) throw new Error(`${label} bounding box is unavailable.`)
+  if (
+    box.x < -1 ||
+    box.y < -1 ||
+    box.x + box.width > viewport.width + 1 ||
+    box.y + box.height > viewport.height + 1
+  ) {
+    throw new Error(`${label} is outside the viewport: ${JSON.stringify({ box, viewport })}`)
+  }
+}
+
+async function activateByKeyboard(locator: Locator): Promise<void> {
+  await locator.focus()
+  await locator.page().keyboard.press("Enter")
+}
+
+async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
+  await expect(
+    page.getByRole("heading", { level: 1, name: "LayerPanel", exact: true }),
+  ).toBeVisible()
+
+  const basic = page.locator('[data-demo="layer-panel-basic"]')
+  const groups = page.locator('[data-demo="layer-panel-groups"]')
+  await expect(basic).toBeVisible()
+  await expect(groups).toBeVisible()
+  await basic.scrollIntoViewIfNeeded()
+  await assertNoHorizontalOverflow(basic, `${path} basic LayerPanel demo`)
+  await assertNoHorizontalOverflow(groups, `${path} grouped LayerPanel demo`)
+
+  const basicPanel = basic.locator('[data-slot="layer-panel"]')
+  await assertWithinViewport(basicPanel, `${path} basic LayerPanel`)
+
+  await activateByKeyboard(
+    basic.locator('button[aria-label="Toggle visibility for Transit corridors"]'),
+  )
+  await expect(basic.locator('[data-demo="layer-panel-basic-status"]')).toContainText(
+    path.startsWith("/en/") ? "Hidden" : "已隐藏",
+  )
+
+  await basic.getByRole("button", { name: "Field assets", exact: true }).click()
+  await expect(basic.locator('[data-demo="layer-panel-basic-status"]')).toContainText(
+    "Field assets",
+  )
+
+  const styleButton = basic.getByRole("button", {
+    name: path.startsWith("/en/") ? "Style" : "样式",
+    exact: true,
+  })
+  await styleButton.click()
+  await styleButton.click()
+
+  await groups.scrollIntoViewIfNeeded()
+  const operationsCollapse = groups.locator('[data-demo="layer-panel-group-collapse-operations"]')
+  await operationsCollapse.click()
+  await expect(groups.getByRole("button", { name: "Water mains", exact: true })).toBeHidden()
+  await operationsCollapse.click()
+  await expect(groups.getByRole("button", { name: "Water mains", exact: true })).toBeVisible()
+
+  await groups.locator('[data-demo="layer-panel-group-rename-operations"]').click()
+  const renameInput = groups.locator('[data-demo="layer-panel-group-rename-input-operations"]')
+  await renameInput.fill(path.startsWith("/en/") ? "Response" : "响应")
+  await groups.locator('[data-demo="layer-panel-group-rename-save-operations"]').click()
+  await expect(groups.locator('[data-demo="layer-panel-group-operations"]')).toContainText(
+    path.startsWith("/en/") ? "Response" : "响应",
+  )
+
+  await groups.locator('[data-demo="layer-panel-group-menu-trigger-operations"]').click()
+  const menu = groups.locator('[data-demo="layer-panel-group-menu-operations"]')
+  await expect(menu).toBeVisible()
+  await assertNoHorizontalOverflow(menu, `${path} LayerPanel group menu`)
+  await groups.locator('[data-demo="layer-panel-group-menu-zoom-operations"]').click()
+  await expect(groups.locator('[data-demo="layer-panel-groups-status"]')).toContainText(
+    path.startsWith("/en/") ? "Menu action" : "已执行菜单",
+  )
+
+  await activateByKeyboard(
+    groups.locator('button[aria-label="Toggle visibility for Inspection points"]'),
+  )
+  await expect(groups.locator('[data-demo="layer-panel-groups-status"]')).toContainText(
+    path.startsWith("/en/") ? "Shown" : "已显示",
+  )
+}
+
+async function runPilotsCase(baseUrl: string, browserChannel?: string): Promise<void> {
+  await assertPreviewIsAvailable(baseUrl)
+
+  const browser = await launchBrowser(browserChannel)
+  const viewports: Record<DocsViewportName, { width: number; height: number }> = {
+    desktop: { width: 1280, height: 720 },
+    mobile: { width: 390, height: 760 },
+  }
+
+  try {
+    for (const viewport of Object.values(viewports)) {
+      const page = await browser.newPage({ baseURL: baseUrl, viewport })
+      try {
+        for (const path of ["/components/button", "/en/components/button"] as const) {
+          for (const theme of ["light", "dark"] as const) {
+            await page.goto(path)
+            await setDocsTheme(page, theme)
+            await assertButtonPilot(page)
+          }
+        }
+
+        for (const path of ["/components/dialog", "/en/components/dialog"] as const) {
+          for (const theme of ["light", "dark"] as const) {
+            await page.goto(path)
+            await setDocsTheme(page, theme)
+            await assertDialogPilot(page, path)
+          }
+        }
+
+        for (const path of ["/blocks/layer-panel", "/en/blocks/layer-panel"] as const) {
+          for (const theme of ["light", "dark"] as const) {
+            await page.goto(path)
+            await setDocsTheme(page, theme)
+            await assertLayerPanelPilot(page, path)
+          }
+        }
+      } finally {
+        await page.close()
       }
     }
   } finally {
@@ -244,6 +406,9 @@ async function main() {
   }
   if (options.caseName === "dialog") {
     await runDialogCase(options.baseUrl, options.browserChannel)
+  }
+  if (options.caseName === "pilots") {
+    await runPilotsCase(options.baseUrl, options.browserChannel)
   }
 }
 

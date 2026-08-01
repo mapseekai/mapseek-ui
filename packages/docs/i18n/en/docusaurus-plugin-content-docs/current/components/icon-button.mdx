@@ -1,0 +1,56 @@
+---
+id: icon-button
+slug: /components/icon-button
+registryName: icon-button
+category: primitive
+stability: stable
+examples:
+  - icon-button/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { IconButtonOverviewDemo } from "@site/src/examples/icon-button/overview"
+import overviewSource from "@site/src/examples/icon-button/overview.tsx?raw"
+
+# IconButton
+
+IconButton is for icon-only tool actions such as edit, download, refresh, and delete. It stays square and uses `danger` for destructive actions.
+
+## Installation
+
+<RegistryInstall registryName="icon-button" />
+
+## Import
+
+```tsx
+import { IconButton } from "@/registry/ui/icon-button"
+```
+
+## Usage
+
+<ComponentDemo title="Icon button states" description="Covers md, sm, danger, and disabled while preserving the Showcase tool button sizes and danger state." source={overviewSource} minHeight={300}>
+  <IconButtonOverviewDemo />
+</ComponentDemo>
+
+## Exports
+
+`icon-button.tsx` exports `IconButton`. The component inherits native `button` props and adds `size="sm" | "md"` and `danger`.
+
+## States
+
+Default buttons use muted hover styles; `danger` uses destructive foreground and a tinted background. `disabled` removes pointer interaction and lowers opacity.
+
+## Accessibility
+
+Every icon button needs `aria-label`; add `title` or an outer tooltip when the meaning is not obvious. Destructive actions still need confirmation or undo at the workflow layer.
+
+## Dependencies
+
+<RegistryDependencies registryName="icon-button" />
+
+## Related Links
+
+- [IconButton registry JSON](/r/icon-button.json)
+- [Button registry JSON](/r/button.json)
+- [Tooltip registry JSON](/r/tooltip.json)

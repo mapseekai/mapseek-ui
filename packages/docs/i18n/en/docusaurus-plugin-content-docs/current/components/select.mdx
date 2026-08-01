@@ -1,0 +1,56 @@
+---
+id: select
+slug: /components/select
+registryName: select
+category: primitive
+stability: stable
+examples:
+  - select/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { SelectOverviewDemo } from "@site/src/examples/select/overview"
+import overviewSource from "@site/src/examples/select/overview.tsx?raw"
+
+# Select
+
+Select is a finite single-value picker for CRS, formats, and modes. It is built on Base UI Select and maps item labels back into the trigger value.
+
+## Installation
+
+<RegistryInstall registryName="select" />
+
+## Import
+
+```tsx
+import { Select } from "@/registry/ui/select"
+```
+
+## Usage
+
+<ComponentDemo title="Select states" description="Covers controlled selection, preselected value, small size, and disabled while preserving the Showcase four visible groups." source={overviewSource} minHeight={440}>
+  <SelectOverviewDemo />
+</ComponentDemo>
+
+## Exports
+
+`select.tsx` exports `Select` and exposes options through `Select.Item`. The root supports `value/onValueChange`, `defaultValue`, `placeholder`, `disabled`, and `size`.
+
+## States
+
+Use `value/onValueChange` for controlled state and `defaultValue` for static defaults. `size="sm"` provides a 28px trigger; `disabled` prevents opening the list.
+
+## Accessibility
+
+Selects without visible labels need `aria-label`. Keyboard users should be able to open with Enter/Space, move with arrow keys, choose with Enter, and close with Escape.
+
+## Dependencies
+
+<RegistryDependencies registryName="select" />
+
+## Related Links
+
+- [Select registry JSON](/r/select.json)
+- [Combobox registry JSON](/r/combobox.json)
+- [Field registry JSON](/r/field.json)

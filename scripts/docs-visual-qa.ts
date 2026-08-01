@@ -494,13 +494,27 @@ const primitivePages = [
   "badge",
   "card",
   "chart",
+  "checkbox",
   "collapsible",
+  "combobox",
+  "command",
   "empty",
+  "field",
+  "icon-button",
+  "input",
+  "input-group",
   "json-viewer",
+  "label",
   "progress",
   "separator",
+  "select",
   "skeleton",
+  "slider",
+  "switch",
   "table",
+  "textarea",
+  "toggle",
+  "toggle-group",
 ] as const
 
 function titleFromName(name: string): string {
@@ -529,6 +543,30 @@ async function assertPrimitiveInteraction(page: Page, primitive: string): Promis
     await expect(single).toContainText("GeoJSON, TopoJSON")
   }
 
+  if (primitive === "checkbox") {
+    const controlled = page.locator('[data-demo="checkbox-controlled"]')
+    const checkbox = controlled.getByRole("checkbox", { name: "Include in export", exact: true })
+    await checkbox.focus()
+    await page.keyboard.press("Space")
+    await expect(controlled.getByRole("checkbox", { name: "Included in export" })).toBeChecked()
+  }
+
+  if (primitive === "combobox") {
+    const combobox = page.locator('[data-demo="combobox-format"]')
+    await combobox.getByLabel("Select format").fill("geo")
+    await expect(page.getByText("GeoJSON", { exact: true })).toBeVisible()
+    await page.keyboard.press("ArrowDown")
+    await page.keyboard.press("Enter")
+    await expect(combobox.locator('[data-demo="combobox-format-value"]')).toContainText("geojson")
+  }
+
+  if (primitive === "command") {
+    const command = page.locator('[data-demo="command-palette"]')
+    await command.getByPlaceholder("Type a command...").fill("line")
+    await expect(command.getByText("Add Line Layer", { exact: true })).toBeVisible()
+    await expect(command.getByText("Add Point Layer", { exact: true })).toBeHidden()
+  }
+
   if (primitive === "collapsible") {
     const trigger = page.locator('[data-demo="collapsible-trigger"]')
     await trigger.click()
@@ -546,6 +584,76 @@ async function assertPrimitiveInteraction(page: Page, primitive: string): Promis
     await expect(viewer).toContainText("coordinates")
     await viewer.locator('button[title="复制"]').click()
     await expect(viewer.locator('button[title="已复制"]')).toBeVisible()
+  }
+
+  if (primitive === "input") {
+    const input = page.locator('[data-demo="input-controlled"]').getByLabel("Dataset file")
+    await input.fill("buildings-2026.geojson")
+    await expect(page.locator('[data-demo="input-value"]')).toHaveText(
+      "Value: buildings-2026.geojson",
+    )
+    await expect(page.locator('[data-demo="input-readonly"] input')).toHaveAttribute("readonly", "")
+  }
+
+  if (primitive === "select") {
+    const select = page.locator('[data-demo="select-controlled"]')
+    const trigger = select.locator('[data-slot="select-trigger"]')
+    await trigger.focus()
+    await page.keyboard.press("Space")
+    await expect(page.getByText("EPSG:4326 - WGS 84", { exact: true })).toBeVisible()
+    await page.getByText("EPSG:3857 - Web Mercator", { exact: true }).click()
+    await expect(select.locator('[data-demo="select-value"]')).toHaveText("Value: 3857")
+  }
+
+  if (primitive === "slider") {
+    const slider = page.locator('[data-demo="slider-controlled"]')
+    const thumb = slider.getByRole("slider")
+    await thumb.focus()
+    await expect(thumb).toBeFocused()
+    await thumb.press("ArrowRight")
+    await expect(slider.locator('[data-demo="slider-value"]')).toHaveText("Opacity: 51%")
+  }
+
+  if (primitive === "switch") {
+    const controlledSwitch = page.getByRole("switch", { name: "Enable tile cache" })
+    await controlledSwitch.focus()
+    await page.keyboard.press("Space")
+    await expect(page.locator('[data-demo="switch-value"]')).toHaveText("checked = true")
+  }
+
+  if (primitive === "textarea") {
+    const textarea = page
+      .locator('[data-demo="textarea-controlled"]')
+      .getByLabel("Layer description")
+    await textarea.fill("Updated notes")
+    await expect(page.locator('[data-demo="textarea-count"]')).toHaveText("Characters: 13")
+    await expect(page.locator('[data-demo="textarea-readonly"] textarea')).toHaveAttribute(
+      "readonly",
+      "",
+    )
+  }
+
+  if (primitive === "toggle") {
+    const toggle = page.locator('[data-demo="toggle-controlled"]').getByRole("button", {
+      name: "Snap",
+      exact: true,
+    })
+    await toggle.focus()
+    await page.keyboard.press("Enter")
+    await expect(page.locator('[data-demo="toggle-value"]')).toHaveText("pressed = true")
+  }
+
+  if (primitive === "toggle-group") {
+    const single = page.locator('[data-demo="toggle-group-single"]')
+    await single.getByRole("button", { name: "Center", exact: true }).focus()
+    await page.keyboard.press("Enter")
+    await expect(single.locator('[data-demo="toggle-group-alignment"]')).toHaveText(
+      "Alignment: center",
+    )
+    const multiple = page.locator('[data-demo="toggle-group-multiple"]')
+    await multiple.getByRole("button", { name: "Italic", exact: true }).focus()
+    await page.keyboard.press("Enter")
+    await expect(multiple.locator('[data-demo="toggle-group-styles"]')).toContainText("italic")
   }
 }
 

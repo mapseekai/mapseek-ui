@@ -1,0 +1,56 @@
+---
+id: input
+slug: /components/input
+registryName: input
+category: primitive
+stability: stable
+examples:
+  - input/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { InputOverviewDemo } from "@site/src/examples/input/overview"
+import overviewSource from "@site/src/examples/input/overview.tsx?raw"
+
+# Input
+
+Input is the base single-line text input for names, coordinate systems, file names, and short identifiers. It inherits Base UI Input and applies Mapseek's 32px control rhythm.
+
+## Installation
+
+<RegistryInstall registryName="input" />
+
+## Import
+
+```tsx
+import { Input } from "@/registry/ui/input"
+```
+
+## Usage
+
+<ComponentDemo title="Input states" description="Covers default, controlled, filled, readOnly, disabled, and aria-invalid states while preserving the Showcase input boundary." source={overviewSource} minHeight={440}>
+  <InputOverviewDemo />
+</ComponentDemo>
+
+## Exports
+
+`input.tsx` exports `Input`. The component inherits native `input` props, including `value/onChange`, `defaultValue`, `readOnly`, `disabled`, `aria-invalid`, and `type`.
+
+## States
+
+Controlled inputs use `value/onChange`; read-only fields stay focusable and copyable; disabled fields are for non-interactive states only. Invalid state uses `aria-invalid`.
+
+## Accessibility
+
+Every input needs `Label`, `aria-label`, or `aria-labelledby`. Error copy should render near the field rather than relying on a red border alone.
+
+## Dependencies
+
+<RegistryDependencies registryName="input" />
+
+## Related Links
+
+- [Input registry JSON](/r/input.json)
+- [Field registry JSON](/r/field.json)
+- [InputGroup registry JSON](/r/input-group.json)

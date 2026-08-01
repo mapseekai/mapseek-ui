@@ -1,0 +1,56 @@
+---
+id: slider
+slug: /components/slider
+registryName: slider
+category: primitive
+stability: stable
+examples:
+  - slider/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { SliderOverviewDemo } from "@site/src/examples/slider/overview"
+import overviewSource from "@site/src/examples/slider/overview.tsx?raw"
+
+# Slider
+
+Slider handles continuous or stepped values such as layer opacity, thresholds, and style strength. It keeps Base UI keyboard and pointer dragging behavior.
+
+## Installation
+
+<RegistryInstall registryName="slider" />
+
+## Import
+
+```tsx
+import { Slider } from "@/registry/ui/slider"
+```
+
+## Usage
+
+<ComponentDemo title="Slider states" description="Covers controlled 50%, low 10%, and disabled 70% while preserving the Showcase visible states." source={overviewSource} minHeight={320}>
+  <SliderOverviewDemo />
+</ComponentDemo>
+
+## Exports
+
+`slider.tsx` exports `Slider`. The component inherits Base UI Slider root props, including `value/onValueChange`, `defaultValue`, `min`, `max`, `step`, and `disabled`.
+
+## States
+
+Controlled sliders use array values; a common single-thumb shape is `[50]`. Disabled lowers control opacity and prevents thumb interaction.
+
+## Accessibility
+
+Provide `aria-label` or a visible label. Keyboard users can use arrows, Home/End, or Page keys to change values; the page should show the current value or unit.
+
+## Dependencies
+
+<RegistryDependencies registryName="slider" />
+
+## Related Links
+
+- [Slider registry JSON](/r/slider.json)
+- [Field registry JSON](/r/field.json)
+- [Input registry JSON](/r/input.json)

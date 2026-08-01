@@ -112,3 +112,26 @@ it("keeps Task9A primitive coverage in the shared required docs manifest", () =>
   expect(requiredRegistryDocs.get("accordion")?.examples).toEqual(["accordion/overview"])
   expect(requiredRegistryDocs.get("table")?.examples).toEqual(["table/overview"])
 })
+
+it("keeps Task9B form and input primitive coverage in the shared required docs manifest", () => {
+  expect([...requiredRegistryDocs.keys()]).toEqual(
+    expect.arrayContaining([
+      "checkbox",
+      "combobox",
+      "command",
+      "field",
+      "icon-button",
+      "input",
+      "input-group",
+      "label",
+      "select",
+      "slider",
+      "switch",
+      "textarea",
+      "toggle",
+      "toggle-group",
+    ]),
+  )
+  expect(requiredRegistryDocs.get("checkbox")?.examples).toEqual(["checkbox/overview"])
+  expect(requiredRegistryDocs.get("toggle-group")?.examples).toEqual(["toggle-group/overview"])
+})

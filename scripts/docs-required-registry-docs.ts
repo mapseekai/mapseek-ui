@@ -47,10 +47,31 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "checkbox",
+    {
+      category: "primitive",
+      examples: ["checkbox/overview"],
+    },
+  ],
+  [
     "collapsible",
     {
       category: "primitive",
       examples: ["collapsible/overview"],
+    },
+  ],
+  [
+    "combobox",
+    {
+      category: "primitive",
+      examples: ["combobox/overview"],
+    },
+  ],
+  [
+    "command",
+    {
+      category: "primitive",
+      examples: ["command/overview"],
     },
   ],
   [
@@ -68,10 +89,45 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "field",
+    {
+      category: "primitive",
+      examples: ["field/overview"],
+    },
+  ],
+  [
+    "icon-button",
+    {
+      category: "primitive",
+      examples: ["icon-button/overview"],
+    },
+  ],
+  [
+    "input",
+    {
+      category: "primitive",
+      examples: ["input/overview"],
+    },
+  ],
+  [
+    "input-group",
+    {
+      category: "primitive",
+      examples: ["input-group/overview"],
+    },
+  ],
+  [
     "json-viewer",
     {
       category: "primitive",
       examples: ["json-viewer/overview"],
+    },
+  ],
+  [
+    "label",
+    {
+      category: "primitive",
+      examples: ["label/overview"],
     },
   ],
   [
@@ -89,6 +145,13 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "select",
+    {
+      category: "primitive",
+      examples: ["select/overview"],
+    },
+  ],
+  [
     "skeleton",
     {
       category: "primitive",
@@ -96,10 +159,45 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "slider",
+    {
+      category: "primitive",
+      examples: ["slider/overview"],
+    },
+  ],
+  [
+    "switch",
+    {
+      category: "primitive",
+      examples: ["switch/overview"],
+    },
+  ],
+  [
     "table",
     {
       category: "primitive",
       examples: ["table/overview"],
+    },
+  ],
+  [
+    "textarea",
+    {
+      category: "primitive",
+      examples: ["textarea/overview"],
+    },
+  ],
+  [
+    "toggle",
+    {
+      category: "primitive",
+      examples: ["toggle/overview"],
+    },
+  ],
+  [
+    "toggle-group",
+    {
+      category: "primitive",
+      examples: ["toggle-group/overview"],
     },
   ],
   [

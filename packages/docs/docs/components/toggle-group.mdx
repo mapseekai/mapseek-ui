@@ -1,0 +1,56 @@
+---
+id: toggle-group
+slug: /components/toggle-group
+registryName: toggle-group
+category: primitive
+stability: stable
+examples:
+  - toggle-group/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ToggleGroupOverviewDemo } from "@site/src/examples/toggle-group/overview"
+import overviewSource from "@site/src/examples/toggle-group/overview.tsx?raw"
+
+# ToggleGroup
+
+ToggleGroup 把多个 ToggleGroupItem 组合成单选或多选控制，用于对齐、文本样式、地图工具模式等互相关联的选项。
+
+## 安装
+
+<RegistryInstall registryName="toggle-group" />
+
+## 导入
+
+```tsx
+import { ToggleGroup, ToggleGroupItem } from "@/registry/ui/toggle-group"
+```
+
+## 用法
+
+<ComponentDemo title="切换组状态" description="覆盖受控单选、多选、disabled item 和状态回显，保留 Showcase 的 alignment/styles 两组。" source={overviewSource} minHeight={340}>
+  <ToggleGroupOverviewDemo />
+</ComponentDemo>
+
+## 导出
+
+`toggle-group.tsx` 导出 `ToggleGroup` 和 `ToggleGroupItem`。根组件支持 `value/onValueChange`、`variant`、`size`、`spacing` 和 `orientation`。
+
+## 状态
+
+`value` 是字符串数组，适合表达单选或多选。`spacing=0` 可让 outline item 形成连续组；disabled item 不响应点击和键盘。
+
+## 无障碍
+
+每个 item 文案应说明选项含义。键盘用户应能在组内移动焦点并用 Enter/Space 切换；状态回显不要只依赖背景色。
+
+## 依赖
+
+<RegistryDependencies registryName="toggle-group" />
+
+## 相关链接
+
+- [ToggleGroup registry JSON](/r/toggle-group.json)
+- [Toggle registry JSON](/r/toggle.json)
+- [Button registry JSON](/r/button.json)

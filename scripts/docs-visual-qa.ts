@@ -186,14 +186,15 @@ async function runButtonCase(baseUrl: string, browserChannel?: string) {
     const page = await browser.newPage({ baseURL: baseUrl })
 
     await page.goto("/components/button")
-    await assertButtonPilot(page)
+    await assertButtonPilot(page, "/components/button")
   } finally {
     await browser.close()
   }
 }
 
-async function assertButtonPilot(page: Page): Promise<void> {
+async function assertButtonPilot(page: Page, path: string): Promise<void> {
   await expect(page.getByRole("heading", { level: 1, name: "Button", exact: true })).toBeVisible()
+  await assertLocalizedSentinelLabels(page, path, sharedWidgetSentinels)
 
   const basicPreview = page.locator('[data-demo="button-basic"]')
   const variantsPreview = page.locator('[data-demo="button-variants"]')
@@ -215,7 +216,9 @@ async function assertButtonPilot(page: Page): Promise<void> {
   await expect(page.locator('[data-demo="button-size-lg"]')).toBeVisible()
 
   await page.locator('[data-demo="button-primary-action"]').click()
-  await expect(page.locator('[data-demo="button-press-count"]')).toHaveText("Presses: 1")
+  await expect(page.locator('[data-demo="button-press-count"]')).toHaveText(
+    localized(path, "点击次数：1", "Presses: 1"),
+  )
 
   const basicDemo = basicPreview.locator("xpath=ancestor::section")
   await basicDemo.locator('[data-demo-action="source"]').click()
@@ -226,7 +229,9 @@ async function assertButtonPilot(page: Page): Promise<void> {
 
   await basicDemo.locator('[data-demo-action="reset"]').click()
   await expect(basicDemo.locator('[data-reset-revision="1"]')).toBeVisible()
-  await expect(page.locator('[data-demo="button-press-count"]')).toHaveText("Presses: 0")
+  await expect(page.locator('[data-demo="button-press-count"]')).toHaveText(
+    localized(path, "点击次数：0", "Presses: 0"),
+  )
 }
 
 async function setDocsTheme(page: Page, theme: DocsTheme): Promise<void> {
@@ -476,7 +481,7 @@ async function runPilotsCase(baseUrl: string, browserChannel?: string): Promise<
           for (const theme of ["light", "dark"] as const) {
             await page.goto(path)
             await setDocsTheme(page, theme)
-            await assertButtonPilot(page)
+            await assertButtonPilot(page, path)
           }
         }
 
@@ -971,24 +976,40 @@ async function assertToastRendered(page: Page, text: string): Promise<void> {
   await assertWithinViewport(toast, `toast ${text}`)
 }
 
-export async function assertPrimitiveInteraction(page: Page, primitive: string): Promise<void> {
+export async function assertPrimitiveInteraction(
+  page: Page,
+  primitive: string,
+  path: string,
+): Promise<void> {
   if (primitive === "accordion") {
     const single = page.locator('[data-demo="accordion-single"]')
-    await single.getByRole("button", { name: "Supported formats?", exact: true }).click()
-    await expect(single).toContainText("GeoJSON, TopoJSON")
+    await single
+      .getByRole("button", {
+        name: localized(path, "支持哪些格式？", "Supported formats?"),
+        exact: true,
+      })
+      .click()
+    await expect(single).toContainText(localized(path, "GeoJSON、TopoJSON", "GeoJSON, TopoJSON"))
   }
 
   if (primitive === "checkbox") {
     const controlled = page.locator('[data-demo="checkbox-controlled"]')
-    const checkbox = controlled.getByRole("checkbox", { name: "Include in export", exact: true })
+    const checkbox = controlled.getByRole("checkbox", {
+      name: localized(path, "包含在导出中", "Include in export"),
+      exact: true,
+    })
     await checkbox.focus()
     await page.keyboard.press("Space")
-    await expect(controlled.getByRole("checkbox", { name: "Included in export" })).toBeChecked()
+    await expect(
+      controlled.getByRole("checkbox", {
+        name: localized(path, "已包含在导出中", "Included in export"),
+      }),
+    ).toBeChecked()
   }
 
   if (primitive === "combobox") {
     const combobox = page.locator('[data-demo="combobox-format"]')
-    await combobox.getByLabel("Select format").fill("geo")
+    await combobox.getByLabel(localized(path, "选择格式", "Select format")).fill("geo")
     await expect(page.getByText("GeoJSON", { exact: true })).toBeVisible()
     await page.keyboard.press("ArrowDown")
     await page.keyboard.press("Enter")
@@ -997,9 +1018,15 @@ export async function assertPrimitiveInteraction(page: Page, primitive: string):
 
   if (primitive === "command") {
     const command = page.locator('[data-demo="command-palette"]')
-    await command.getByPlaceholder("Type a command...").fill("line")
-    await expect(command.getByText("Add Line Layer", { exact: true })).toBeVisible()
-    await expect(command.getByText("Add Point Layer", { exact: true })).toBeHidden()
+    await command
+      .getByPlaceholder(localized(path, "输入命令...", "Type a command..."))
+      .fill(localized(path, "线", "line"))
+    await expect(
+      command.getByText(localized(path, "添加线图层", "Add Line Layer"), { exact: true }),
+    ).toBeVisible()
+    await expect(
+      command.getByText(localized(path, "添加点图层", "Add Point Layer"), { exact: true }),
+    ).toBeHidden()
   }
 
   if (primitive === "confirm-dialog") {
@@ -1124,10 +1151,12 @@ export async function assertPrimitiveInteraction(page: Page, primitive: string):
   }
 
   if (primitive === "input") {
-    const input = page.locator('[data-demo="input-controlled"]').getByLabel("Dataset file")
+    const input = page
+      .locator('[data-demo="input-controlled"]')
+      .getByLabel(localized(path, "数据集文件", "Dataset file"))
     await input.fill("buildings-2026.geojson")
     await expect(page.locator('[data-demo="input-value"]')).toHaveText(
-      "Value: buildings-2026.geojson",
+      localized(path, "当前值：buildings-2026.geojson", "Value: buildings-2026.geojson"),
     )
     await expect(page.locator('[data-demo="input-readonly"] input')).toHaveAttribute("readonly", "")
   }
@@ -1139,7 +1168,9 @@ export async function assertPrimitiveInteraction(page: Page, primitive: string):
     await page.keyboard.press("Space")
     await expect(page.getByText("EPSG:4326 - WGS 84", { exact: true })).toBeVisible()
     await page.getByText("EPSG:3857 - Web Mercator", { exact: true }).click()
-    await expect(select.locator('[data-demo="select-value"]')).toHaveText("Value: 3857")
+    await expect(select.locator('[data-demo="select-value"]')).toHaveText(
+      localized(path, "当前值：3857", "Value: 3857"),
+    )
   }
 
   if (primitive === "sheet") {
@@ -1175,11 +1206,15 @@ export async function assertPrimitiveInteraction(page: Page, primitive: string):
     await thumb.focus()
     await expect(thumb).toBeFocused()
     await thumb.press("ArrowRight")
-    await expect(slider.locator('[data-demo="slider-value"]')).toHaveText("Opacity: 51%")
+    await expect(slider.locator('[data-demo="slider-value"]')).toHaveText(
+      localized(path, "不透明度：51%", "Opacity: 51%"),
+    )
   }
 
   if (primitive === "switch") {
-    const controlledSwitch = page.getByRole("switch", { name: "Enable tile cache" })
+    const controlledSwitch = page.getByRole("switch", {
+      name: localized(path, "启用瓦片缓存", "Enable tile cache"),
+    })
     await controlledSwitch.focus()
     await page.keyboard.press("Space")
     await expect(page.locator('[data-demo="switch-value"]')).toHaveText("checked = true")
@@ -1206,9 +1241,11 @@ export async function assertPrimitiveInteraction(page: Page, primitive: string):
   if (primitive === "textarea") {
     const textarea = page
       .locator('[data-demo="textarea-controlled"]')
-      .getByLabel("Layer description")
+      .getByLabel(localized(path, "图层描述", "Layer description"))
     await textarea.fill("Updated notes")
-    await expect(page.locator('[data-demo="textarea-count"]')).toHaveText("Characters: 13")
+    await expect(page.locator('[data-demo="textarea-count"]')).toHaveText(
+      localized(path, "字符数：13", "Characters: 13"),
+    )
     await expect(page.locator('[data-demo="textarea-readonly"] textarea')).toHaveAttribute(
       "readonly",
       "",
@@ -1217,7 +1254,7 @@ export async function assertPrimitiveInteraction(page: Page, primitive: string):
 
   if (primitive === "toggle") {
     const toggle = page.locator('[data-demo="toggle-controlled"]').getByRole("button", {
-      name: "Snap",
+      name: localized(path, "吸附", "Snap"),
       exact: true,
     })
     await toggle.focus()
@@ -1227,13 +1264,17 @@ export async function assertPrimitiveInteraction(page: Page, primitive: string):
 
   if (primitive === "toggle-group") {
     const single = page.locator('[data-demo="toggle-group-single"]')
-    await single.getByRole("button", { name: "Center", exact: true }).focus()
+    await single
+      .getByRole("button", { name: localized(path, "居中", "Center"), exact: true })
+      .focus()
     await page.keyboard.press("Enter")
     await expect(single.locator('[data-demo="toggle-group-alignment"]')).toHaveText(
-      "Alignment: center",
+      localized(path, "对齐：center", "Alignment: center"),
     )
     const multiple = page.locator('[data-demo="toggle-group-multiple"]')
-    await multiple.getByRole("button", { name: "Italic", exact: true }).focus()
+    await multiple
+      .getByRole("button", { name: localized(path, "斜体", "Italic"), exact: true })
+      .focus()
     await page.keyboard.press("Enter")
     await expect(multiple.locator('[data-demo="toggle-group-styles"]')).toContainText("italic")
   }
@@ -1259,6 +1300,36 @@ export async function assertPrimitiveInteraction(page: Page, primitive: string):
 
 function localized(path: string, zh: string, en: string): string {
   return path.startsWith("/en/") ? en : zh
+}
+
+const registryWidgetSentinels = [
+  { zh: "复制安装命令", en: "Copy install command" },
+  { zh: "Registry 依赖", en: "Registry dependencies" },
+  { zh: "包依赖", en: "Package dependencies" },
+] as const
+
+const sharedWidgetSentinels = [
+  ...registryWidgetSentinels,
+  { zh: "运行查询", en: "Run query" },
+  { zh: "禁用", en: "Disabled" },
+] as const
+
+async function assertLocalizedSentinelLabels(
+  page: Page,
+  path: string,
+  sentinels: readonly { readonly zh: string; readonly en: string }[],
+): Promise<void> {
+  const article = page.getByRole("article")
+  const isEnglish = path.startsWith("/en/")
+
+  for (const sentinel of sentinels) {
+    await expect(
+      article.getByText(isEnglish ? sentinel.en : sentinel.zh, { exact: true }),
+    ).toBeVisible()
+    await expect(
+      article.getByText(isEnglish ? sentinel.zh : sentinel.en, { exact: true }),
+    ).toHaveCount(0)
+  }
 }
 
 function localizedCrsListLabel(path: string): string {
@@ -2143,8 +2214,9 @@ async function runPrimitiveCategoryCase(baseUrl: string, browserChannel?: string
               await page.goto(path)
               await setDocsTheme(page, theme)
               await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
+              await assertLocalizedSentinelLabels(page, path, registryWidgetSentinels)
               await assertDemoPreviewAndSource(page, primitive)
-              await assertPrimitiveInteraction(page, primitive)
+              await assertPrimitiveInteraction(page, primitive, path)
             }
           }
         }

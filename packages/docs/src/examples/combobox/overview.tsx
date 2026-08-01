@@ -7,6 +7,7 @@ import {
   ComboboxList,
 } from "@registry/ui/combobox"
 import { useState } from "react"
+import { useLocaleLabels } from "../use-locale-labels"
 
 const formats = [
   { value: "geojson", label: "GeoJSON" },
@@ -24,9 +25,53 @@ const crsList = [
   { value: "2154", label: "EPSG:2154 - France Lambert 93" },
 ] as const
 
-export function ComboboxOverviewDemo() {
+export type ComboboxOverviewDemoLabels = {
+  readonly searchableFormat: string
+  readonly selectFormat: string
+  readonly selectFormatPlaceholder: string
+  readonly noFormatsFound: string
+  readonly value: (value: string) => string
+  readonly none: string
+  readonly crsPicker: string
+  readonly searchCrs: string
+  readonly searchCrsPlaceholder: string
+  readonly noCrsFound: string
+}
+
+export const zhComboboxOverviewLabels = {
+  searchableFormat: "可搜索格式",
+  selectFormat: "选择格式",
+  selectFormatPlaceholder: "选择格式...",
+  noFormatsFound: "未找到格式。",
+  value: (value: string) => `当前值：${value}`,
+  none: "无",
+  crsPicker: "CRS 选择器",
+  searchCrs: "搜索 CRS",
+  searchCrsPlaceholder: "搜索 CRS...",
+  noCrsFound: "未找到 CRS。",
+} satisfies ComboboxOverviewDemoLabels
+
+export const enComboboxOverviewLabels = {
+  searchableFormat: "Searchable format",
+  selectFormat: "Select format",
+  selectFormatPlaceholder: "Select format...",
+  noFormatsFound: "No formats found.",
+  value: (value: string) => `Value: ${value}`,
+  none: "none",
+  crsPicker: "CRS picker",
+  searchCrs: "Search CRS",
+  searchCrsPlaceholder: "Search CRS...",
+  noCrsFound: "No CRS found.",
+} satisfies ComboboxOverviewDemoLabels
+
+export function ComboboxOverviewDemo({ labels }: { readonly labels?: ComboboxOverviewDemoLabels }) {
   const [formatValue, setFormatValue] = useState("")
   const [crsValue, setCrsValue] = useState("")
+  const localizedLabels = useLocaleLabels({
+    zh: zhComboboxOverviewLabels,
+    en: enComboboxOverviewLabels,
+  })
+  const demoLabels = labels ?? localizedLabels
   const normalizedFormat = formatValue.toLowerCase()
   const normalizedCrs = crsValue.toLowerCase()
   const filteredFormats = normalizedFormat
@@ -40,16 +85,16 @@ export function ComboboxOverviewDemo() {
     <div className="grid max-w-full gap-8" data-demo="combobox-overview">
       <section className="min-w-0 space-y-3" data-demo="combobox-format">
         <h4 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-          Searchable format
+          {demoLabels.searchableFormat}
         </h4>
         <Combobox
           value={formatValue}
           onValueChange={(value: string | null) => setFormatValue(value ?? "")}
         >
           <ComboboxInput
-            aria-label="Select format"
+            aria-label={demoLabels.selectFormat}
             className="w-[calc(100%-4px)] max-w-xs"
-            placeholder="Select format..."
+            placeholder={demoLabels.selectFormatPlaceholder}
             showTrigger
             showClear={formatValue.length > 0}
           />
@@ -60,27 +105,27 @@ export function ComboboxOverviewDemo() {
                   {format.label}
                 </ComboboxItem>
               ))}
-              <ComboboxEmpty>No formats found.</ComboboxEmpty>
+              <ComboboxEmpty>{demoLabels.noFormatsFound}</ComboboxEmpty>
             </ComboboxList>
           </ComboboxContent>
         </Combobox>
         <p className="text-xs text-muted-foreground" data-demo="combobox-format-value">
-          Value: {formatValue || "none"}
+          {demoLabels.value(formatValue || demoLabels.none)}
         </p>
       </section>
 
       <section className="min-w-0 space-y-3" data-demo="combobox-crs">
         <h4 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-          CRS picker
+          {demoLabels.crsPicker}
         </h4>
         <Combobox
           value={crsValue}
           onValueChange={(value: string | null) => setCrsValue(value ?? "")}
         >
           <ComboboxInput
-            aria-label="Search CRS"
+            aria-label={demoLabels.searchCrs}
             className="w-[calc(100%-4px)] max-w-xs"
-            placeholder="Search CRS..."
+            placeholder={demoLabels.searchCrsPlaceholder}
             showTrigger
             showClear={crsValue.length > 0}
           />
@@ -91,7 +136,7 @@ export function ComboboxOverviewDemo() {
                   {crs.label}
                 </ComboboxItem>
               ))}
-              <ComboboxEmpty>No CRS found.</ComboboxEmpty>
+              <ComboboxEmpty>{demoLabels.noCrsFound}</ComboboxEmpty>
             </ComboboxList>
           </ComboboxContent>
         </Combobox>

@@ -1,34 +1,101 @@
 import { Button } from "@registry/ui/button"
 import { Tooltip, TooltipProvider } from "@registry/ui/tooltip"
 import { IconDownload, IconMap, IconSettings, IconTrash, IconZoomIn } from "@tabler/icons-react"
+import { useLocaleLabels } from "../use-locale-labels"
 
-export function TooltipOverviewDemo() {
+export type TooltipOverviewDemoLabels = {
+  readonly hoverOrFocusForHelp: string
+  readonly viewMap: string
+  readonly map: string
+  readonly downloadDataset: string
+  readonly download: string
+  readonly deleteLayerCannotUndo: string
+  readonly delete: string
+  readonly layerSettings: string
+  readonly settings: string
+  readonly placement: string
+  readonly side: (side: string) => string
+  readonly disabledTooltip: string
+  readonly disabledTooltipContent: string
+  readonly noTooltip: string
+  readonly iconToolbar: string
+  readonly layerPanel: string
+  readonly zoomToSelection: string
+}
+
+export const zhTooltipOverviewLabels = {
+  hoverOrFocusForHelp: "悬停或聚焦查看帮助",
+  viewMap: "查看地图",
+  map: "地图",
+  downloadDataset: "下载数据集",
+  download: "下载",
+  deleteLayerCannotUndo: "删除图层。此操作无法撤销。",
+  delete: "删除",
+  layerSettings: "图层设置",
+  settings: "设置",
+  placement: "位置",
+  side: (side: string) => `方向：${side}`,
+  disabledTooltip: "禁用 tooltip",
+  disabledTooltipContent: "此 tooltip 已禁用",
+  noTooltip: "无 tooltip",
+  iconToolbar: "图标工具栏",
+  layerPanel: "图层面板",
+  zoomToSelection: "缩放到选中项",
+} satisfies TooltipOverviewDemoLabels
+
+export const enTooltipOverviewLabels = {
+  hoverOrFocusForHelp: "Hover or focus for help",
+  viewMap: "View map",
+  map: "Map",
+  downloadDataset: "Download dataset",
+  download: "Download",
+  deleteLayerCannotUndo: "Delete layer. This cannot be undone.",
+  delete: "Delete",
+  layerSettings: "Layer settings",
+  settings: "Settings",
+  placement: "Placement",
+  side: (side: string) => `Side: ${side}`,
+  disabledTooltip: "Disabled tooltip",
+  disabledTooltipContent: "This tooltip is disabled",
+  noTooltip: "No tooltip",
+  iconToolbar: "Icon toolbar",
+  layerPanel: "Layer panel",
+  zoomToSelection: "Zoom to selection",
+} satisfies TooltipOverviewDemoLabels
+
+export function TooltipOverviewDemo({ labels }: { readonly labels?: TooltipOverviewDemoLabels }) {
+  const localizedLabels = useLocaleLabels({
+    zh: zhTooltipOverviewLabels,
+    en: enTooltipOverviewLabels,
+  })
+  const demoLabels = labels ?? localizedLabels
+
   return (
     <TooltipProvider>
       <div className="grid gap-8" data-demo="tooltip-overview">
         <section className="space-y-3" data-demo="tooltip-actions">
           <h4 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-            Hover or focus for help
+            {demoLabels.hoverOrFocusForHelp}
           </h4>
           <div className="flex flex-wrap gap-3">
-            <Tooltip content="View map" asChild>
+            <Tooltip content={demoLabels.viewMap} asChild>
               <Button data-demo="tooltip-map" variant="outline" size="sm">
-                Map
+                {demoLabels.map}
               </Button>
             </Tooltip>
-            <Tooltip content="Download dataset" asChild>
+            <Tooltip content={demoLabels.downloadDataset} asChild>
               <Button variant="outline" size="sm">
-                Download
+                {demoLabels.download}
               </Button>
             </Tooltip>
-            <Tooltip content="Delete layer. This cannot be undone." asChild>
+            <Tooltip content={demoLabels.deleteLayerCannotUndo} asChild>
               <Button variant="destructive" size="sm">
-                Delete
+                {demoLabels.delete}
               </Button>
             </Tooltip>
-            <Tooltip content="Layer settings" asChild>
+            <Tooltip content={demoLabels.layerSettings} asChild>
               <Button variant="ghost" size="sm">
-                Settings
+                {demoLabels.settings}
               </Button>
             </Tooltip>
           </div>
@@ -36,11 +103,11 @@ export function TooltipOverviewDemo() {
 
         <section className="space-y-3" data-demo="tooltip-placement">
           <h4 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-            Placement
+            {demoLabels.placement}
           </h4>
           <div className="flex flex-wrap gap-3">
             {(["top", "bottom", "left", "right"] as const).map((side) => (
-              <Tooltip key={side} content={`Side: ${side}`} side={side} asChild>
+              <Tooltip key={side} content={demoLabels.side(side)} side={side} asChild>
                 <Button variant="outline" size="sm">
                   {side}
                 </Button>
@@ -51,43 +118,43 @@ export function TooltipOverviewDemo() {
 
         <section className="space-y-3" data-demo="tooltip-disabled">
           <h4 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-            Disabled tooltip
+            {demoLabels.disabledTooltip}
           </h4>
-          <Tooltip content="This tooltip is disabled" disabled asChild>
+          <Tooltip content={demoLabels.disabledTooltipContent} disabled asChild>
             <Button data-demo="tooltip-disabled-trigger" variant="outline" size="sm">
-              No tooltip
+              {demoLabels.noTooltip}
             </Button>
           </Tooltip>
         </section>
 
         <section className="space-y-3" data-demo="tooltip-toolbar">
           <h4 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-            Icon toolbar
+            {demoLabels.iconToolbar}
           </h4>
           <div className="flex gap-1 border border-border p-1">
-            <Tooltip content="Layer panel" asChild>
-              <Button aria-label="Layer panel" variant="ghost" size="icon-sm">
+            <Tooltip content={demoLabels.layerPanel} asChild>
+              <Button aria-label={demoLabels.layerPanel} variant="ghost" size="icon-sm">
                 <IconMap />
               </Button>
             </Tooltip>
-            <Tooltip content="Zoom to selection" asChild>
-              <Button aria-label="Zoom to selection" variant="ghost" size="icon-sm">
+            <Tooltip content={demoLabels.zoomToSelection} asChild>
+              <Button aria-label={demoLabels.zoomToSelection} variant="ghost" size="icon-sm">
                 <IconZoomIn />
               </Button>
             </Tooltip>
-            <Tooltip content="Download" asChild>
-              <Button aria-label="Download" variant="ghost" size="icon-sm">
+            <Tooltip content={demoLabels.download} asChild>
+              <Button aria-label={demoLabels.download} variant="ghost" size="icon-sm">
                 <IconDownload />
               </Button>
             </Tooltip>
-            <Tooltip content="Settings" asChild>
-              <Button aria-label="Settings" variant="ghost" size="icon-sm">
+            <Tooltip content={demoLabels.settings} asChild>
+              <Button aria-label={demoLabels.settings} variant="ghost" size="icon-sm">
                 <IconSettings />
               </Button>
             </Tooltip>
-            <Tooltip content="Delete. This cannot be undone." asChild>
+            <Tooltip content={demoLabels.deleteLayerCannotUndo} asChild>
               <Button
-                aria-label="Delete"
+                aria-label={demoLabels.delete}
                 variant="ghost"
                 size="icon-sm"
                 className="text-destructive hover:text-destructive"

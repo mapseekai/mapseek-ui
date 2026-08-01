@@ -1,33 +1,72 @@
 import { Toggle } from "@registry/ui/toggle"
 import { useState } from "react"
+import { useLocaleLabels } from "../use-locale-labels"
 
-export function ToggleOverviewDemo() {
+export type ToggleOverviewDemoLabels = {
+  readonly textToggles: string
+  readonly bold: string
+  readonly active: string
+  readonly disabled: string
+  readonly invalid: string
+  readonly controlled: string
+  readonly snap: string
+  readonly pressedValue: (pressed: boolean) => string
+}
+
+export const zhToggleOverviewLabels = {
+  textToggles: "文本切换",
+  bold: "加粗",
+  active: "激活",
+  disabled: "禁用",
+  invalid: "错误",
+  controlled: "受控",
+  snap: "吸附",
+  pressedValue: (pressed: boolean) => `pressed = ${String(pressed)}`,
+} satisfies ToggleOverviewDemoLabels
+
+export const enToggleOverviewLabels = {
+  textToggles: "Text toggles",
+  bold: "Bold",
+  active: "Active",
+  disabled: "Disabled",
+  invalid: "Invalid",
+  controlled: "Controlled",
+  snap: "Snap",
+  pressedValue: (pressed: boolean) => `pressed = ${String(pressed)}`,
+} satisfies ToggleOverviewDemoLabels
+
+export function ToggleOverviewDemo({ labels }: { readonly labels?: ToggleOverviewDemoLabels }) {
   const [pressed, setPressed] = useState(false)
+  const localizedLabels = useLocaleLabels({
+    zh: zhToggleOverviewLabels,
+    en: enToggleOverviewLabels,
+  })
+  const demoLabels = labels ?? localizedLabels
 
   return (
     <div className="space-y-8" data-demo="toggle-overview">
       <section className="space-y-3" data-demo="toggle-text">
         <h4 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-          Text toggles
+          {demoLabels.textToggles}
         </h4>
         <div className="flex flex-wrap gap-2">
-          <Toggle>Bold</Toggle>
-          <Toggle defaultPressed>Active</Toggle>
-          <Toggle disabled>Disabled</Toggle>
-          <Toggle aria-invalid>Invalid</Toggle>
+          <Toggle>{demoLabels.bold}</Toggle>
+          <Toggle defaultPressed>{demoLabels.active}</Toggle>
+          <Toggle disabled>{demoLabels.disabled}</Toggle>
+          <Toggle aria-invalid>{demoLabels.invalid}</Toggle>
         </div>
       </section>
 
       <section className="space-y-3" data-demo="toggle-controlled">
         <h4 className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
-          Controlled
+          {demoLabels.controlled}
         </h4>
         <div className="flex items-center gap-3">
           <Toggle pressed={pressed} onPressedChange={setPressed}>
-            Snap
+            {demoLabels.snap}
           </Toggle>
           <span className="font-mono text-xs text-muted-foreground" data-demo="toggle-value">
-            pressed = {String(pressed)}
+            {demoLabels.pressedValue(pressed)}
           </span>
         </div>
       </section>

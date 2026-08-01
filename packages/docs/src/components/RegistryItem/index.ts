@@ -1,6 +1,15 @@
 export {
+  enRegistryDependenciesLabels,
   RegistryDependencies,
+  type RegistryDependenciesLabels,
   type RegistryDependenciesProps,
+  zhRegistryDependenciesLabels,
 } from "./RegistryDependencies"
-export { RegistryInstall, type RegistryInstallProps } from "./RegistryInstall"
+export {
+  enRegistryInstallLabels,
+  RegistryInstall,
+  type RegistryInstallLabels,
+  type RegistryInstallProps,
+  zhRegistryInstallLabels,
+} from "./RegistryInstall"
 export { getRegistryDocItem, type RegistryDocItem } from "./registry-data"

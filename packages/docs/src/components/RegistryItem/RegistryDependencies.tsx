@@ -1,12 +1,38 @@
+import { useLocaleLabels } from "../../examples/use-locale-labels"
 import { getRegistryDocItem } from "./registry-data"
+
+export type RegistryDependenciesLabels = {
+  readonly registryDependencies: string
+  readonly packageDependencies: string
+  readonly none: string
+}
+
+export const zhRegistryDependenciesLabels = {
+  registryDependencies: "Registry 依赖",
+  packageDependencies: "包依赖",
+  none: "无",
+} satisfies RegistryDependenciesLabels
+
+export const enRegistryDependenciesLabels = {
+  registryDependencies: "Registry dependencies",
+  packageDependencies: "Package dependencies",
+  none: "None",
+} satisfies RegistryDependenciesLabels
 
 export type RegistryDependenciesProps = {
   readonly registryName: string
+  readonly labels?: RegistryDependenciesLabels
 }
 
-function DependencyList({ values }: { readonly values: readonly string[] }) {
+function DependencyList({
+  values,
+  noneLabel,
+}: {
+  readonly values: readonly string[]
+  readonly noneLabel: string
+}) {
   if (values.length === 0) {
-    return <p>None</p>
+    return <p>{noneLabel}</p>
   }
 
   return (
@@ -20,15 +46,20 @@ function DependencyList({ values }: { readonly values: readonly string[] }) {
   )
 }
 
-export function RegistryDependencies({ registryName }: RegistryDependenciesProps) {
+export function RegistryDependencies({ registryName, labels }: RegistryDependenciesProps) {
+  const localizedLabels = useLocaleLabels({
+    zh: zhRegistryDependenciesLabels,
+    en: enRegistryDependenciesLabels,
+  })
+  const dependencyLabels = labels ?? localizedLabels
   const item = getRegistryDocItem(registryName)
 
   return (
     <div>
-      <h3>Registry dependencies</h3>
-      <DependencyList values={item.registryDependencies} />
-      <h3>Package dependencies</h3>
-      <DependencyList values={item.dependencies} />
+      <h3>{dependencyLabels.registryDependencies}</h3>
+      <DependencyList values={item.registryDependencies} noneLabel={dependencyLabels.none} />
+      <h3>{dependencyLabels.packageDependencies}</h3>
+      <DependencyList values={item.dependencies} noneLabel={dependencyLabels.none} />
     </div>
   )
 }

@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "target": "ES2022",
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "docusaurus.config.ts",
+    "sidebars.ts",
+    "src",
+    "docs"
+  ]
+}

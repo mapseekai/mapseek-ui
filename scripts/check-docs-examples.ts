@@ -8,7 +8,9 @@ function docsForRegistryName(
   docs: ReadonlyMap<string, ParsedDoc>,
   registryName: string,
 ): readonly ParsedDoc[] {
-  return [...docs.values()].filter((doc) => doc.metadata.registryName === registryName)
+  return [...docs.values()].filter(
+    (doc) => !isGuideDoc(doc) && doc.metadata.registryName === registryName,
+  )
 }
 
 function addIssue(issues: ValidationIssue[], seen: Set<string>, issue: ValidationIssue): void {
@@ -55,6 +57,10 @@ async function collectExampleIds(root: string): Promise<readonly string[]> {
   return walk(root)
 }
 
+function isGuideDoc(doc: ParsedDoc): boolean {
+  return doc.metadata.id === "intro" || doc.metadata.id.startsWith("getting-started")
+}
+
 export async function validateExampleCoverage(
   root: string,
   catalog: readonly RegistryItem[],
@@ -62,10 +68,11 @@ export async function validateExampleCoverage(
   const issues: ValidationIssue[] = []
   const seenIssues = new Set<string>()
   const { zh, en } = await collectLocalizedDocs(root)
+  const componentCatalog = catalog.filter((item) => item.type !== "registry:theme")
   const registryNames = new Set(catalog.map((item) => item.name))
   const exampleOwners = new Map<string, Set<string>>()
 
-  for (const item of catalog) {
+  for (const item of componentCatalog) {
     const zhDocs = docsForRegistryName(zh, item.name)
     const enDocs = docsForRegistryName(en, item.name)
     if (zhDocs.length !== 1)
@@ -75,6 +82,7 @@ export async function validateExampleCoverage(
   }
 
   for (const doc of [...zh.values(), ...en.values()]) {
+    if (isGuideDoc(doc)) continue
     const { id, registryName, examples } = doc.metadata
     if (!registryNames.has(registryName))
       addIssue(issues, seenIssues, {

@@ -13,6 +13,11 @@ const catalog: readonly RegistryItem[] = [
     type: "registry:ui",
     files: [],
   },
+  {
+    name: "theme",
+    type: "registry:theme",
+    files: [],
+  },
 ]
 
 async function writeFixture(path: string, content: string): Promise<void> {
@@ -54,6 +59,20 @@ function doc(examples: readonly string[] = ["button/basic"], registryName = "but
     ...examples.map((example) => `  - ${example}`),
     "---",
     "# Button",
+  ].join("\n")
+}
+
+function guideDoc(id = "intro"): string {
+  return [
+    "---",
+    `id: ${id}`,
+    "slug: /",
+    "registryName: theme",
+    "category: primitive",
+    "stability: stable",
+    "examples: []",
+    "---",
+    "# Intro",
   ].join("\n")
 }
 
@@ -115,6 +134,20 @@ it("reports pages without examples and unknown registry names", async () => {
     item: "button",
     detail: "missing",
   })
+})
+
+it("allows localized guide pages without component examples", async () => {
+  await writeLocalizedDocs()
+  await writeFixture("docs/intro.mdx", guideDoc())
+  await writeFixture("i18n/en/docusaurus-plugin-content-docs/current/intro.mdx", guideDoc())
+  await writeFixture("docs/getting-started/install.mdx", guideDoc("getting-started-install"))
+  await writeFixture(
+    "i18n/en/docusaurus-plugin-content-docs/current/getting-started/install.mdx",
+    guideDoc("getting-started-install"),
+  )
+  await writeFixture("src/examples/button/basic.tsx", "export function BasicButtonDemo() {}")
+
+  expect(await validateExampleCoverage(fixtureRoot, catalog)).toEqual([])
 })
 
 it("prints one issue per line and exits non-zero from the CLI", async () => {

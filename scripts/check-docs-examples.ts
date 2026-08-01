@@ -2,36 +2,8 @@ import { access, readdir } from "node:fs/promises"
 import { extname, join, relative } from "node:path"
 import { collectLocalizedDocs } from "./check-docs-i18n"
 import type { ParsedDoc } from "./docs-check-utils"
+import { requiredRegistryDocs } from "./docs-required-registry-docs"
 import { loadCatalog, type RegistryItem, type ValidationIssue } from "./registry-model"
-
-type RequiredRegistryDoc = {
-  readonly category: "primitive" | "block"
-  readonly examples: readonly string[]
-}
-
-const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = new Map([
-  [
-    "button",
-    {
-      category: "primitive",
-      examples: ["button/basic", "button/variants", "button/sizes"],
-    },
-  ],
-  [
-    "dialog",
-    {
-      category: "primitive",
-      examples: ["dialog/basic", "dialog/confirmation", "dialog/long-content"],
-    },
-  ],
-  [
-    "layer-panel",
-    {
-      category: "block",
-      examples: ["layer-panel/basic", "layer-panel/groups"],
-    },
-  ],
-] as const)
 
 function docsForRegistryName(
   docs: ReadonlyMap<string, ParsedDoc>,

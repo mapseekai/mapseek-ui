@@ -1,5 +1,8 @@
 node_modules/
 dist/
+packages/docs/.docusaurus/
+packages/docs/build/
+.superpowers/
 .env
 .env.*
 !.env.example

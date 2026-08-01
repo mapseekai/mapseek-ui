@@ -1,0 +1,56 @@
+---
+id: avatar
+slug: /components/avatar
+registryName: avatar
+category: primitive
+stability: stable
+examples:
+  - avatar/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { AvatarOverviewDemo } from "@site/src/examples/avatar/overview"
+import overviewSource from "@site/src/examples/avatar/overview.tsx?raw"
+
+# Avatar
+
+Avatar 显示用户、团队成员或系统操作者身份。它提供圆形容器、fallback、在线徽标和头像组，适合图层协作、审计记录和成员列表。
+
+## 安装
+
+<RegistryInstall registryName="avatar" />
+
+## 导入
+
+```tsx
+import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/registry/ui/avatar"
+```
+
+## 身份展示
+
+<ComponentDemo title="身份展示" description="保留 Showcase 的文字占位和尺寸变化，并补充 badge 与 group 导出。" source={overviewSource} minHeight={300}>
+  <AvatarOverviewDemo />
+</ComponentDemo>
+
+## 导出
+
+`Avatar` 是根容器，`AvatarImage` 渲染图片，`AvatarFallback` 渲染文字占位，`AvatarBadge` 渲染角标，`AvatarGroup` 与 `AvatarGroupCount` 组合多人头像。
+
+## 状态与行为
+
+`size` 支持 `sm`、`default` 和 `lg`。图片不可用时由 Base UI fallback 显示占位文字；角标会随根尺寸自动调整。
+
+## 无障碍
+
+如果头像图片传达身份，给 `AvatarImage` 提供有意义的 `alt`。仅装饰的头像组可以隐藏图片替代文本，但相邻内容仍需要显示成员名称或上下文。
+
+## 依赖
+
+<RegistryDependencies registryName="avatar" />
+
+## 相关链接
+
+- [Avatar registry JSON](/r/avatar.json)
+- [Badge registry JSON](/r/badge.json)
+- [Table registry JSON](/r/table.json)

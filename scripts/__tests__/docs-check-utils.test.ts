@@ -3,6 +3,7 @@ import { tmpdir } from "node:os"
 import { dirname, join } from "node:path"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
 import { collectDocs, parseDocSource } from "../docs-check-utils"
+import { requiredRegistryDocs } from "../docs-required-registry-docs"
 
 let fixtureRoot: string
 
@@ -89,4 +90,25 @@ it("collects markdown docs by metadata id", async () => {
     metadata: { id: "button" },
   })
   expect(docs.has("ignored")).toBe(false)
+})
+
+it("keeps Task9A primitive coverage in the shared required docs manifest", () => {
+  expect([...requiredRegistryDocs.keys()]).toEqual(
+    expect.arrayContaining([
+      "accordion",
+      "avatar",
+      "badge",
+      "card",
+      "chart",
+      "collapsible",
+      "empty",
+      "json-viewer",
+      "progress",
+      "separator",
+      "skeleton",
+      "table",
+    ]),
+  )
+  expect(requiredRegistryDocs.get("accordion")?.examples).toEqual(["accordion/overview"])
+  expect(requiredRegistryDocs.get("table")?.examples).toEqual(["table/overview"])
 })

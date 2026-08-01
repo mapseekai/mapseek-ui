@@ -1,0 +1,56 @@
+---
+id: separator
+slug: /components/separator
+registryName: separator
+category: primitive
+stability: stable
+examples:
+  - separator/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { SeparatorOverviewDemo } from "@site/src/examples/separator/overview"
+import overviewSource from "@site/src/examples/separator/overview.tsx?raw"
+
+# Separator
+
+Separator 是轻量的内容分隔线，用于区分工具栏、元数据、菜单分组或面板中的视觉区域。
+
+## 安装
+
+<RegistryInstall registryName="separator" />
+
+## 导入
+
+```tsx
+import { Separator } from "@/registry/ui/separator"
+```
+
+## 方向
+
+<ComponentDemo title="方向" description="保留 Showcase 的水平和垂直方向。" source={overviewSource} minHeight={230}>
+  <SeparatorOverviewDemo />
+</ComponentDemo>
+
+## 导出
+
+`Separator` 继承 Base UI Separator props，并默认渲染水平分隔线。`orientation="vertical"` 会改用垂直尺寸与自拉伸样式。
+
+## 状态与行为
+
+Separator 没有交互状态。它只表达视觉分组，不应替代标题、标签或可访问结构。
+
+## 无障碍
+
+需要语义分隔时保留 separator 语义；纯装饰分隔线应避免成为键盘焦点。不要用分隔线作为唯一的信息层级。
+
+## 依赖
+
+<RegistryDependencies registryName="separator" />
+
+## 相关链接
+
+- [Separator registry JSON](/r/separator.json)
+- [Card registry JSON](/r/card.json)
+- [Table registry JSON](/r/table.json)

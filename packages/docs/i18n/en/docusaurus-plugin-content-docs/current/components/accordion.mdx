@@ -1,0 +1,56 @@
+---
+id: accordion
+slug: /components/accordion
+registryName: accordion
+category: primitive
+stability: stable
+examples:
+  - accordion/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { AccordionOverviewDemo } from "@site/src/examples/accordion/overview"
+import overviewSource from "@site/src/examples/accordion/overview.tsx?raw"
+
+# Accordion
+
+Accordion folds related explanations, settings, or help content into scannable sections. Use it for FAQ, property notes, and advanced settings, not for data that must stay visible together.
+
+## Installation
+
+<RegistryInstall registryName="accordion" />
+
+## Import
+
+```tsx
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/registry/ui/accordion"
+```
+
+## Expandable Sections
+
+<ComponentDemo title="Expandable sections" description="Preserves the Showcase single default-open section, multiple-open mode, icon swap, and content animation." source={overviewSource} minHeight={340}>
+  <AccordionOverviewDemo />
+</ComponentDemo>
+
+## Exports
+
+`accordion.tsx` exports `Accordion`, `AccordionItem`, `AccordionTrigger`, and `AccordionContent`. The root inherits Base UI Accordion props; `multiple` allows several items to stay open.
+
+## States and Behavior
+
+Use `defaultValue` for static defaults and `value/onValueChange` for controlled flows. `AccordionTrigger` swaps chevrons from `aria-expanded`, and `AccordionContent` animates height and opacity.
+
+## Accessibility
+
+Each trigger should describe the panel content. Do not hide critical state only inside collapsed content; keyboard users need a predictable trigger for each section.
+
+## Dependencies
+
+<RegistryDependencies registryName="accordion" />
+
+## Related Links
+
+- [Accordion registry JSON](/r/accordion.json)
+- [Collapsible registry JSON](/r/collapsible.json)
+- [Separator registry JSON](/r/separator.json)

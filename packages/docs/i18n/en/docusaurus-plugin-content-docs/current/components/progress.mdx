@@ -1,0 +1,56 @@
+---
+id: progress
+slug: /components/progress
+registryName: progress
+category: primitive
+stability: stable
+examples:
+  - progress/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ProgressOverviewDemo } from "@site/src/examples/progress/overview"
+import overviewSource from "@site/src/examples/progress/overview.tsx?raw"
+
+# Progress
+
+Progress communicates task completion or work that is still running but cannot be quantified. Use it for tile generation, dataset analysis, uploads, and background jobs.
+
+## Installation
+
+<RegistryInstall registryName="progress" />
+
+## Import
+
+```tsx
+import { Progress, ProgressIndicator, ProgressLabel, ProgressTrack, ProgressValue } from "@/registry/ui/progress"
+```
+
+## Progress States
+
+<ComponentDemo title="Progress states" description="Preserves the Showcase determinate progress and indeterminate analysis state." source={overviewSource} minHeight={230}>
+  <ProgressOverviewDemo />
+</ComponentDemo>
+
+## Exports
+
+`Progress` is the root. `ProgressTrack`, `ProgressIndicator`, `ProgressLabel`, and `ProgressValue` map to Base UI progress slots.
+
+## States and Behavior
+
+A numeric `value` renders determinate progress; `null` represents indeterminate work. `ProgressValue` derives percentage text from the root value.
+
+## Accessibility
+
+Give long tasks a text label, and explain at the workflow layer whether users can cancel or leave the page. Do not show only an animated bar without a task name.
+
+## Dependencies
+
+<RegistryDependencies registryName="progress" />
+
+## Related Links
+
+- [Progress registry JSON](/r/progress.json)
+- [Skeleton registry JSON](/r/skeleton.json)
+- [Chart registry JSON](/r/chart.json)

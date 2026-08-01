@@ -1,0 +1,56 @@
+---
+id: table
+slug: /components/table
+registryName: table
+category: primitive
+stability: stable
+examples:
+  - table/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { TableOverviewDemo } from "@site/src/examples/table/overview"
+import overviewSource from "@site/src/examples/table/overview.tsx?raw"
+
+# Table
+
+Table 用于展示结构化行列数据，例如要素属性、服务状态和批处理结果。它提供滚动容器、表头、表体、行、单元格和 caption。
+
+## 安装
+
+<RegistryInstall registryName="table" />
+
+## 导入
+
+```tsx
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/registry/ui/table"
+```
+
+## 数据表格
+
+<ComponentDemo title="数据表格" description="保留 Showcase 的要素行、表头、等宽 ID 和横向滚动容器。" source={overviewSource} minHeight={280}>
+  <TableOverviewDemo />
+</ComponentDemo>
+
+## 导出
+
+`Table` 创建带边框和横向滚动的容器。`TableHeader`、`TableBody`、`TableFooter`、`TableRow`、`TableHead`、`TableCell` 和 `TableCaption` 映射原生表格元素。
+
+## 状态与行为
+
+行支持 hover 背景，并会响应 `data-state="selected"` 与 `aria-expanded`。调用方可以通过 `containerClassName` 调整滚动容器。
+
+## 无障碍
+
+使用真实表格语义，不要用 div 网格替代表格数据。复杂表格需要 caption 或相邻标题，并让列头文本准确描述数据。
+
+## 依赖
+
+<RegistryDependencies registryName="table" />
+
+## 相关链接
+
+- [Table registry JSON](/r/table.json)
+- [Badge registry JSON](/r/badge.json)
+- [Skeleton registry JSON](/r/skeleton.json)

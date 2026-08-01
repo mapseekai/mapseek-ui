@@ -1,0 +1,56 @@
+---
+id: separator
+slug: /components/separator
+registryName: separator
+category: primitive
+stability: stable
+examples:
+  - separator/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { SeparatorOverviewDemo } from "@site/src/examples/separator/overview"
+import overviewSource from "@site/src/examples/separator/overview.tsx?raw"
+
+# Separator
+
+Separator is a lightweight divider for toolbars, metadata, menu groups, and visual regions inside panels.
+
+## Installation
+
+<RegistryInstall registryName="separator" />
+
+## Import
+
+```tsx
+import { Separator } from "@/registry/ui/separator"
+```
+
+## Orientation
+
+<ComponentDemo title="Orientation" description="Preserves the Showcase horizontal and vertical orientations." source={overviewSource} minHeight={230}>
+  <SeparatorOverviewDemo />
+</ComponentDemo>
+
+## Exports
+
+`Separator` inherits Base UI Separator props and renders horizontally by default. `orientation="vertical"` switches to vertical sizing and self-stretch behavior.
+
+## States and Behavior
+
+Separator has no interaction state. It communicates visual grouping and should not replace headings, labels, or accessible structure.
+
+## Accessibility
+
+Keep separator semantics when a semantic split is useful; decorative separators should never receive keyboard focus. Do not use a divider as the only information hierarchy.
+
+## Dependencies
+
+<RegistryDependencies registryName="separator" />
+
+## Related Links
+
+- [Separator registry JSON](/r/separator.json)
+- [Card registry JSON](/r/card.json)
+- [Table registry JSON](/r/table.json)

@@ -1,12 +1,14 @@
 import { type Browser, chromium, expect, type Locator, type Page } from "@playwright/test"
 
 type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots" | "onboarding"
+type DocsVisualCategory = "primitive"
 type DocsTheme = "dark" | "light"
 type DocsViewportName = "desktop" | "mobile"
 
 type CliOptions = {
   readonly baseUrl: string
   readonly browserChannel?: string
+  readonly category?: DocsVisualCategory
   readonly caseName: DocsVisualCase
 }
 
@@ -23,6 +25,7 @@ function readOption(name: string): string | undefined {
 function readCliOptions(): CliOptions {
   const baseUrl = readOption("--base-url")
   const browserChannel = readOption("--browser-channel")
+  const category = readOption("--category")
   const caseName = readOption("--case") ?? "smoke"
 
   if (!baseUrl) {
@@ -39,7 +42,11 @@ function readCliOptions(): CliOptions {
     throw new Error(`Unsupported docs visual QA case: ${caseName}`)
   }
 
-  return { baseUrl, browserChannel, caseName }
+  if (category !== undefined && category !== "primitive") {
+    throw new Error(`Unsupported docs visual QA category: ${category}`)
+  }
+
+  return { baseUrl, browserChannel, category, caseName }
 }
 
 async function assertPreviewIsAvailable(baseUrl: string) {
@@ -481,8 +488,107 @@ async function runOnboardingCase(baseUrl: string, browserChannel?: string): Prom
   }
 }
 
+const primitivePages = [
+  "accordion",
+  "avatar",
+  "badge",
+  "card",
+  "chart",
+  "collapsible",
+  "empty",
+  "json-viewer",
+  "progress",
+  "separator",
+  "skeleton",
+  "table",
+] as const
+
+function titleFromName(name: string): string {
+  return name
+    .split("-")
+    .map((part) => `${part.charAt(0).toUpperCase()}${part.slice(1)}`)
+    .join("")
+}
+
+async function assertDemoPreviewAndSource(page: Page, primitive: string): Promise<void> {
+  const demo = page.locator(`[data-demo="${primitive}-overview"]`)
+  await expect(demo).toBeVisible()
+  await assertNoHorizontalOverflow(demo, `${primitive} preview`)
+
+  const section = demo.locator("xpath=ancestor::section").first()
+  await section.locator('[data-demo-action="source"]').click()
+  const source = section.locator("xpath=./pre/code")
+  await expect(source).toContainText(`export function ${titleFromName(primitive)}OverviewDemo`)
+  await expect(source).toContainText(`@registry/ui/${primitive}`)
+}
+
+async function assertPrimitiveInteraction(page: Page, primitive: string): Promise<void> {
+  if (primitive === "accordion") {
+    const single = page.locator('[data-demo="accordion-single"]')
+    await single.getByRole("button", { name: "Supported formats?", exact: true }).click()
+    await expect(single).toContainText("GeoJSON, TopoJSON")
+  }
+
+  if (primitive === "collapsible") {
+    const trigger = page.locator('[data-demo="collapsible-trigger"]')
+    await trigger.click()
+    await expect(page.locator('[data-demo="collapsible-content"]')).toBeVisible()
+    await expect(page.locator('[data-demo="collapsible-state"]')).toHaveText("open")
+    await trigger.click()
+    await expect(page.locator('[data-demo="collapsible-state"]')).toHaveText("closed")
+  }
+
+  if (primitive === "json-viewer") {
+    const viewer = page.locator('[data-demo="json-viewer-overview"]')
+    await page.getByRole("button", { name: "全部收起", exact: true }).click()
+    await expect(viewer).toContainText("Feature")
+    await page.getByRole("button", { name: "全部展开", exact: true }).click()
+    await expect(viewer).toContainText("coordinates")
+    await viewer.locator('button[title="复制"]').click()
+    await expect(viewer.locator('button[title="已复制"]')).toBeVisible()
+  }
+}
+
+async function runPrimitiveCategoryCase(baseUrl: string, browserChannel?: string): Promise<void> {
+  await assertPreviewIsAvailable(baseUrl)
+
+  const browser = await launchBrowser(browserChannel)
+  const viewports: Record<DocsViewportName, { width: number; height: number }> = {
+    desktop: { width: 1280, height: 720 },
+    mobile: { width: 390, height: 760 },
+  }
+
+  try {
+    for (const viewport of Object.values(viewports)) {
+      const page = await browser.newPage({ baseURL: baseUrl, viewport })
+      try {
+        for (const primitive of primitivePages) {
+          for (const path of [`/components/${primitive}`, `/en/components/${primitive}`] as const) {
+            for (const theme of ["light", "dark"] as const) {
+              await page.goto(path)
+              await setDocsTheme(page, theme)
+              await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
+              await assertDemoPreviewAndSource(page, primitive)
+              await assertPrimitiveInteraction(page, primitive)
+            }
+          }
+        }
+      } finally {
+        await page.close()
+      }
+    }
+  } finally {
+    await browser.close()
+  }
+}
+
 async function main() {
   const options = readCliOptions()
+
+  if (options.category === "primitive") {
+    await runPrimitiveCategoryCase(options.baseUrl, options.browserChannel)
+    return
+  }
 
   if (options.caseName === "smoke") {
     await runSmokeCase(options.baseUrl, options.browserChannel)

@@ -1,0 +1,56 @@
+---
+id: skeleton
+slug: /components/skeleton
+registryName: skeleton
+category: primitive
+stability: stable
+examples:
+  - skeleton/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { SkeletonOverviewDemo } from "@site/src/examples/skeleton/overview"
+import overviewSource from "@site/src/examples/skeleton/overview.tsx?raw"
+
+# Skeleton
+
+Skeleton 是加载占位块，用于内容结构已知但数据尚未到达的状态。它适合文本行、卡片内容和列表占位。
+
+## 安装
+
+<RegistryInstall registryName="skeleton" />
+
+## 导入
+
+```tsx
+import { Skeleton } from "@/registry/ui/skeleton"
+```
+
+## 加载占位
+
+<ComponentDemo title="加载占位" description="保留 Showcase 的文字行骨架和卡片骨架。" source={overviewSource} minHeight={280}>
+  <SkeletonOverviewDemo />
+</ComponentDemo>
+
+## 导出
+
+`Skeleton` 是一个带 `data-slot="skeleton"` 的 `div`，继承标准 `div` props。尺寸由调用方通过 className 控制。
+
+## 状态与行为
+
+默认使用 `animate-pulse` 与 `bg-muted`。占位尺寸应接近最终内容，避免加载完成后布局跳动。
+
+## 无障碍
+
+Skeleton 本身不应朗读为内容。长时间加载需要在父级区域提供 `aria-busy` 或状态文本，避免屏幕阅读器用户无法知道正在发生什么。
+
+## 依赖
+
+<RegistryDependencies registryName="skeleton" />
+
+## 相关链接
+
+- [Skeleton registry JSON](/r/skeleton.json)
+- [Progress registry JSON](/r/progress.json)
+- [Empty registry JSON](/r/empty.json)

@@ -1,0 +1,56 @@
+---
+id: empty
+slug: /components/empty
+registryName: empty
+category: primitive
+stability: stable
+examples:
+  - empty/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { EmptyOverviewDemo } from "@site/src/examples/empty/overview"
+import overviewSource from "@site/src/examples/empty/overview.tsx?raw"
+
+# Empty
+
+Empty renders the zero-content state for lists, panels, or search results. It combines icon, title, description, and optional action so every page does not invent its own empty state.
+
+## Installation
+
+<RegistryInstall registryName="empty" />
+
+## Import
+
+```tsx
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/registry/ui/empty"
+```
+
+## Empty States
+
+<ComponentDemo title="Empty states" description="Preserves the Showcase default state, action state, and no-action search state." source={overviewSource} minHeight={340}>
+  <EmptyOverviewDemo />
+</ComponentDemo>
+
+## Exports
+
+`Empty` is the root. `EmptyHeader` groups media, title, and description; `EmptyMedia` supports `default` and `icon`; `EmptyContent` holds actions or supporting content.
+
+## States and Behavior
+
+Choose actions based on why the state is empty. Recoverable empty lists usually need a primary action; search misses are better served by guidance to adjust filters.
+
+## Accessibility
+
+The title should state what is missing, and the description should explain why or what to do next. Do not rely on the icon alone or hide the primary action in an icon-only button.
+
+## Dependencies
+
+<RegistryDependencies registryName="empty" />
+
+## Related Links
+
+- [Empty registry JSON](/r/empty.json)
+- [Button registry JSON](/r/button.json)
+- [Skeleton registry JSON](/r/skeleton.json)

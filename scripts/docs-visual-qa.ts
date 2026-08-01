@@ -4,6 +4,7 @@ type DocsVisualCase = "smoke"
 
 type CliOptions = {
   readonly baseUrl: string
+  readonly browserChannel?: string
   readonly caseName: DocsVisualCase
 }
 
@@ -19,6 +20,7 @@ function readOption(name: string): string | undefined {
 
 function readCliOptions(): CliOptions {
   const baseUrl = readOption("--base-url")
+  const browserChannel = readOption("--browser-channel")
   const caseName = readOption("--case") ?? "smoke"
 
   if (!baseUrl) {
@@ -29,7 +31,7 @@ function readCliOptions(): CliOptions {
     throw new Error(`Unsupported docs visual QA case: ${caseName}`)
   }
 
-  return { baseUrl, caseName }
+  return { baseUrl, browserChannel, caseName }
 }
 
 async function assertPreviewIsAvailable(baseUrl: string) {
@@ -40,10 +42,10 @@ async function assertPreviewIsAvailable(baseUrl: string) {
   }
 }
 
-async function runSmokeCase(baseUrl: string) {
+async function runSmokeCase(baseUrl: string, browserChannel?: string) {
   await assertPreviewIsAvailable(baseUrl)
 
-  const browser = await chromium.launch({ channel: "chrome" })
+  const browser = await chromium.launch(browserChannel ? { channel: browserChannel } : undefined)
 
   try {
     const page = await browser.newPage({ baseURL: baseUrl })
@@ -52,14 +54,14 @@ async function runSmokeCase(baseUrl: string) {
     await expect(page.getByRole("heading", { level: 1, name: "Smoke", exact: true })).toBeVisible()
     await expect(page.getByText("Smoke demo rendered")).toBeVisible()
 
-    await page.getByRole("button", { name: "Show source" }).click()
+    await page.locator('[data-demo-action="source"]').click()
     await expect(page.locator("pre code")).toContainText("export function SmokeDemo")
 
-    await page.getByRole("button", { name: "Copy source" }).click()
-    await expect(page.getByText("Source copied")).toBeVisible()
+    await page.locator('[data-demo-action="copy"]').click()
+    await expect(page.locator('[data-copy-status="copied"]')).toHaveText(/\S/)
 
-    await page.getByRole("button", { name: "Reset example" }).click()
-    await expect(page.getByText("Reset count: 1")).toBeVisible()
+    await page.locator('[data-demo-action="reset"]').click()
+    await expect(page.locator('[data-reset-revision="1"]')).toHaveText(/\S/)
 
     const themeToggle = page.locator('button[class*="toggleButton"]').first()
     await expect(themeToggle).toBeVisible()
@@ -76,7 +78,7 @@ async function main() {
   const options = readCliOptions()
 
   if (options.caseName === "smoke") {
-    await runSmokeCase(options.baseUrl)
+    await runSmokeCase(options.baseUrl, options.browserChannel)
   }
 }
 

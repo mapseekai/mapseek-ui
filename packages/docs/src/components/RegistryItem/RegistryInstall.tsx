@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { getRegistryDocItem } from "./registry-data"
 
 export type RegistryInstallProps = {
   readonly registryName: string
@@ -6,7 +7,8 @@ export type RegistryInstallProps = {
 
 export function RegistryInstall({ registryName }: RegistryInstallProps) {
   const [copied, setCopied] = useState(false)
-  const command = `bunx shadcn@4.8.0 add @mapseek/${registryName}`
+  const item = getRegistryDocItem(registryName)
+  const command = `bunx shadcn@4.8.0 add @mapseek/${item.name}`
 
   const copyCommand = async () => {
     await navigator.clipboard.writeText(command)

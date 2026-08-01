@@ -1,4 +1,5 @@
 import BrowserOnly from "@docusaurus/BrowserOnly"
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
 import { type ReactNode, useState } from "react"
 import { DemoErrorBoundary } from "./DemoErrorBoundary"
 import styles from "./styles.module.css"
@@ -18,9 +19,34 @@ export function ComponentDemo({
   children,
   minHeight = 160,
 }: ComponentDemoProps) {
+  const { i18n } = useDocusaurusContext()
   const [revision, setRevision] = useState(0)
   const [sourceVisible, setSourceVisible] = useState(false)
   const [copyStatus, setCopyStatus] = useState<"copied" | "failed" | "idle">("idle")
+  const labels =
+    i18n.currentLocale === "zh-CN"
+      ? {
+          copy: "复制源码",
+          copyFailed: "源码复制失败",
+          copied: "源码已复制",
+          error: "示例无法渲染。",
+          hideSource: "隐藏源码",
+          loading: "正在加载示例…",
+          reset: "重置示例",
+          resetCount: (count: number) => `重置次数：${count}`,
+          showSource: "查看源码",
+        }
+      : {
+          copy: "Copy source",
+          copyFailed: "Source copy failed",
+          copied: "Source copied",
+          error: "The example could not be rendered.",
+          hideSource: "Hide source",
+          loading: "Loading example…",
+          reset: "Reset example",
+          resetCount: (count: number) => `Reset count: ${count}`,
+          showSource: "Show source",
+        }
 
   const copySource = async () => {
     try {
@@ -43,31 +69,38 @@ export function ComponentDemo({
             className={styles.action}
             type="button"
             aria-expanded={sourceVisible}
+            data-demo-action="source"
             onClick={() => setSourceVisible((visible) => !visible)}
           >
-            {sourceVisible ? "Hide source" : "Show source"}
-          </button>
-          <button className={styles.action} type="button" onClick={copySource}>
-            Copy source
+            {sourceVisible ? labels.hideSource : labels.showSource}
           </button>
           <button
             className={styles.action}
             type="button"
+            data-demo-action="copy"
+            onClick={copySource}
+          >
+            {labels.copy}
+          </button>
+          <button
+            className={styles.action}
+            type="button"
+            data-demo-action="reset"
             onClick={() => setRevision((value) => value + 1)}
           >
-            Reset example
+            {labels.reset}
           </button>
         </div>
       </header>
 
       <div className={styles.preview} style={{ minHeight }}>
-        <BrowserOnly fallback={<p className={styles.status}>Loading example…</p>}>
+        <BrowserOnly fallback={<p className={styles.status}>{labels.loading}</p>}>
           {() => (
             <DemoErrorBoundary
               key={revision}
               fallback={
                 <p className={styles.error} role="alert">
-                  The example could not be rendered.
+                  {labels.error}
                 </p>
               }
             >
@@ -83,10 +116,15 @@ export function ComponentDemo({
         </pre>
       ) : null}
 
-      <p className={styles.liveStatus} aria-live="polite">
-        {copyStatus === "copied" ? "Source copied" : null}
-        {copyStatus === "failed" ? "Source copy failed" : null}
-        {revision > 0 ? ` Reset count: ${revision}` : null}
+      <p
+        className={styles.liveStatus}
+        data-copy-status={copyStatus}
+        data-reset-revision={revision}
+        aria-live="polite"
+      >
+        {copyStatus === "copied" ? labels.copied : null}
+        {copyStatus === "failed" ? labels.copyFailed : null}
+        {revision > 0 ? ` ${labels.resetCount(revision)}` : null}
       </p>
     </section>
   )

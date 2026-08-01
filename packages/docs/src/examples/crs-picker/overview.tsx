@@ -13,7 +13,7 @@ export type CrsPickerDemoLabels = {
   readonly changed: string
   readonly coreItems: readonly CrsItem[]
   readonly extraItems: readonly CrsItem[]
-  readonly picker: Partial<CrsPickerLabels>
+  readonly picker: CrsPickerLabels
 }
 
 export const zhCrsPickerLabels = {
@@ -67,6 +67,11 @@ export const zhCrsPickerLabels = {
     noResults: "没有匹配的坐标参考系",
     geographic: "地理坐标系",
     projected: "投影坐标系",
+    wgs84Description: "全球通用 · 经纬度",
+    cgcs2000Description: "国测 · 经纬度",
+    beijing1954Description: "北京 54 · 历史坐标系",
+    xian1980Description: "西安 80 · 历史坐标系",
+    webMercatorDescription: "切片底图 · 米",
   },
 } satisfies CrsPickerDemoLabels
 
@@ -121,6 +126,11 @@ export const enCrsPickerLabels = {
     noResults: "No coordinate reference system found",
     geographic: "Geographic",
     projected: "Projected",
+    wgs84Description: "Global standard · longitude/latitude",
+    cgcs2000Description: "China geodetic standard · longitude/latitude",
+    beijing1954Description: "Beijing 1954 · legacy datum",
+    xian1980Description: "Xian 1980 · legacy datum",
+    webMercatorDescription: "Tile basemap · meters",
   },
 } satisfies CrsPickerDemoLabels
 

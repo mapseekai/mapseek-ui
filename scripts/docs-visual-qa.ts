@@ -1,6 +1,8 @@
+import { access, realpath, stat } from "node:fs/promises"
+import { extname, resolve, sep } from "node:path"
 import { type Browser, chromium, expect, type Locator, type Page } from "@playwright/test"
 
-type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots" | "onboarding"
+type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots" | "onboarding" | "release"
 type DocsVisualCategory = "block" | "primitive"
 type DocsTheme = "dark" | "light"
 type DocsViewportName = "desktop" | "mobile"
@@ -12,10 +14,11 @@ type BlockPage = {
 }
 
 type CliOptions = {
-  readonly baseUrl: string
+  readonly baseUrl?: string
   readonly browserChannel?: string
   readonly category?: DocsVisualCategory
   readonly caseName: DocsVisualCase
+  readonly port: number
 }
 
 function readOption(name: string): string | undefined {
@@ -33,17 +36,15 @@ function readCliOptions(): CliOptions {
   const browserChannel = readOption("--browser-channel")
   const category = readOption("--category")
   const caseName = readOption("--case") ?? "smoke"
-
-  if (!baseUrl) {
-    throw new Error("Missing required --base-url option.")
-  }
+  const port = Number(readOption("--port") ?? process.env.DOCS_VISUAL_PORT ?? "4175")
 
   if (
     caseName !== "smoke" &&
     caseName !== "button" &&
     caseName !== "dialog" &&
     caseName !== "pilots" &&
-    caseName !== "onboarding"
+    caseName !== "onboarding" &&
+    caseName !== "release"
   ) {
     throw new Error(`Unsupported docs visual QA case: ${caseName}`)
   }
@@ -51,8 +52,85 @@ function readCliOptions(): CliOptions {
   if (category !== undefined && category !== "primitive" && category !== "block") {
     throw new Error(`Unsupported docs visual QA category: ${category}`)
   }
+  if (!Number.isInteger(port) || port <= 0 || port > 65535) {
+    throw new Error(`Unsupported docs visual QA port: ${port}`)
+  }
 
-  return { baseUrl, browserChannel, category, caseName }
+  return { baseUrl, browserChannel, category, caseName, port }
+}
+
+function contentType(path: string): string {
+  if (path.endsWith(".html")) return "text/html; charset=utf-8"
+  if (path.endsWith(".css")) return "text/css; charset=utf-8"
+  if (path.endsWith(".js")) return "text/javascript; charset=utf-8"
+  if (path.endsWith(".json")) return "application/json; charset=utf-8"
+  if (path.endsWith(".svg")) return "image/svg+xml"
+  if (path.endsWith(".png")) return "image/png"
+  if (path.endsWith(".webp")) return "image/webp"
+  return "application/octet-stream"
+}
+
+async function existingFile(path: string): Promise<string | undefined> {
+  try {
+    const info = await stat(path)
+    if (info.isFile()) return path
+  } catch {}
+  return undefined
+}
+
+async function resolveStaticFile(buildRoot: string, pathname: string): Promise<string | undefined> {
+  let decoded: string
+  try {
+    decoded = decodeURIComponent(pathname)
+  } catch {
+    return undefined
+  }
+  if (!decoded.startsWith("/")) return undefined
+
+  const candidates = decoded.endsWith("/")
+    ? [resolve(buildRoot, `.${decoded}index.html`)]
+    : [resolve(buildRoot, `.${decoded}`), resolve(buildRoot, `.${decoded}/index.html`)]
+  const realBuildRoot = await realpath(buildRoot)
+
+  for (const candidate of candidates) {
+    const file = await existingFile(candidate)
+    if (!file) continue
+    const realFile = await realpath(file)
+    if (realFile !== realBuildRoot && realFile.startsWith(`${realBuildRoot}${sep}`)) {
+      return realFile
+    }
+  }
+  return undefined
+}
+
+async function startStaticPreview(
+  requestedPort: number,
+): Promise<{ readonly baseUrl: string; stop(): void }> {
+  const buildRoot = resolve(import.meta.dirname, "../packages/docs/build")
+  await access(resolve(buildRoot, "index.html"))
+
+  for (let offset = 0; offset < 20; offset += 1) {
+    const port =
+      requestedPort + offset === 4174 ? requestedPort + offset + 1 : requestedPort + offset
+    try {
+      const server = Bun.serve({
+        hostname: "127.0.0.1",
+        port,
+        async fetch(request) {
+          const file = await resolveStaticFile(buildRoot, new URL(request.url).pathname)
+          if (!file) return new Response("Not found", { status: 404 })
+          return new Response(Bun.file(file), {
+            headers: { "content-type": contentType(extname(file)) },
+          })
+        },
+      })
+      const baseUrl = `http://127.0.0.1:${port}`
+      await assertPreviewIsAvailable(baseUrl)
+      return { baseUrl, stop: () => server.stop(true) }
+    } catch {}
+  }
+
+  throw new Error(`Unable to start docs static preview near port ${requestedPort}`)
 }
 
 async function assertPreviewIsAvailable(baseUrl: string) {
@@ -500,6 +578,13 @@ async function runOnboardingCase(baseUrl: string, browserChannel?: string): Prom
   } finally {
     await browser.close()
   }
+}
+
+async function runReleaseCase(baseUrl: string, browserChannel?: string): Promise<void> {
+  await runOnboardingCase(baseUrl, browserChannel)
+  await runPilotsCase(baseUrl, browserChannel)
+  await runPrimitiveCategoryCase(baseUrl, browserChannel)
+  await runBlockCategoryCase(baseUrl, browserChannel)
 }
 
 const primitivePages = [
@@ -1859,6 +1944,10 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
   if (block === "raster-style-panel") {
     const demo = page.locator('[data-demo="raster-style-panel"]')
     await assertNoHorizontalOverflow(demo, `${path} raster style panel`)
+    await expect(demo).toContainText(localized(path, "波段数", "BANDS"))
+    await expect(demo).toContainText(localized(path, "尺寸", "SIZE"))
+    await expect(demo).toContainText(localized(path, "最小值", "MIN"))
+    await expect(demo).toContainText(localized(path, "最大值", "MAX"))
     await demo.getByRole("button", { name: localized(path, "RGB 合成", "RGB composite") }).click()
     await expect(demo.locator('[data-demo-status="raster-style-panel"]')).toContainText(
       localized(path, "RGB 合成", "RGB composite"),
@@ -1909,7 +1998,12 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
   if (block === "style-editor-panel") {
     const demo = page.locator('[data-demo="style-editor-panel"]')
     await assertNoHorizontalOverflow(demo, `${path} style editor panel`)
+    await expect(demo).toContainText(localized(path, "地表覆盖", "Landcover"))
+    await expect(
+      demo.getByRole("textbox", { name: localized(path, "类型", "Type") }).nth(1),
+    ).toHaveValue(localized(path, "栅格", "Raster"))
     await demo.locator('[data-demo-action="style-editor-panel-add"]').click()
+    await expect(demo).toContainText(localized(path, "分析网格", "Analysis Grid"))
     await expect(demo.locator('[data-demo-status="style-editor-panel"]')).toContainText(
       localized(path, "已添加临时数据源", "Added temporary source"),
     )
@@ -1936,13 +2030,16 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
 
   if (block === "style-function-editor") {
     const demo = page.locator('[data-demo="style-function-editor"]')
+    await expect(demo).toContainText(localized(path, "基数", "Base"))
+    await expect(demo).toContainText(localized(path, "停靠点", "Stops"))
+    await expect(demo).toContainText(localized(path, "缩放级别", "Zoom"))
     await demo.locator('[data-demo-action="style-function-editor-add"]').click()
     await expect(demo.locator('[data-demo-status="style-function-editor"]')).toContainText(
-      localized(path, "已添加 stop", "Added stop"),
+      localized(path, "已添加停靠点", "Added stop"),
     )
     await demo.locator('[data-demo-action="style-function-editor-remove-0"]').click()
     await expect(demo.locator('[data-demo-status="style-function-editor"]')).toContainText(
-      localized(path, "已删除 stop", "Removed stop"),
+      localized(path, "已删除停靠点", "Removed stop"),
     )
     await demo.locator('[data-demo-action="style-function-editor-expression"]').click()
     await expect(demo.locator('[data-demo-status="style-function-editor"]')).toContainText(
@@ -1978,18 +2075,23 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
     const trigger = demo.locator('[data-demo-action="style-source-picker-dialog-open"]')
     await openAndAssertDialog(page, trigger)
     const dialog = page.locator('[data-slot="dialog-content"]').last()
+    await expect(dialog).toContainText(localized(path, "道路网络", "Road Network"))
+    await expect(dialog).toContainText(localized(path, "地形 DEM", "Terrain DEM"))
     await dialog
       .getByPlaceholder(
         localized(path, "搜索名称、路径或 UID...", "Search by name, path, or UID..."),
       )
-      .fill("road")
-    await dialog.getByRole("button", { name: /Road Network/ }).click()
+      .fill(localized(path, "道路", "road"))
+    await dialog.getByRole("button", { name: localized(path, "道路网络", "Road Network") }).click()
     await expect(dialog).toContainText(localized(path, "已选择 1 个源", "Selected 1 source(s)"))
     await dialog
       .getByRole("button", { name: localized(path, "确认", "Confirm"), exact: true })
       .click()
     await expect(demo.locator('[data-demo-status="style-source-picker-dialog"]')).toContainText(
       localized(path, "已添加源", "Added sources"),
+    )
+    await expect(demo.locator('[data-demo-status="style-source-picker-dialog"]')).toContainText(
+      localized(path, "道路网络", "Road Network"),
     )
   }
 
@@ -2087,30 +2189,40 @@ async function runBlockCategoryCase(baseUrl: string, browserChannel?: string): P
 
 async function main() {
   const options = readCliOptions()
+  const preview = options.baseUrl ? undefined : await startStaticPreview(options.port)
+  const baseUrl = options.baseUrl ?? preview?.baseUrl
+  if (!baseUrl) throw new Error("Docs visual QA did not receive or start a preview URL.")
 
-  if (options.category === "primitive") {
-    await runPrimitiveCategoryCase(options.baseUrl, options.browserChannel)
-    return
-  }
-  if (options.category === "block") {
-    await runBlockCategoryCase(options.baseUrl, options.browserChannel)
-    return
-  }
+  try {
+    if (options.category === "primitive") {
+      await runPrimitiveCategoryCase(baseUrl, options.browserChannel)
+      return
+    }
+    if (options.category === "block") {
+      await runBlockCategoryCase(baseUrl, options.browserChannel)
+      return
+    }
 
-  if (options.caseName === "smoke") {
-    await runSmokeCase(options.baseUrl, options.browserChannel)
-  }
-  if (options.caseName === "button") {
-    await runButtonCase(options.baseUrl, options.browserChannel)
-  }
-  if (options.caseName === "dialog") {
-    await runDialogCase(options.baseUrl, options.browserChannel)
-  }
-  if (options.caseName === "pilots") {
-    await runPilotsCase(options.baseUrl, options.browserChannel)
-  }
-  if (options.caseName === "onboarding") {
-    await runOnboardingCase(options.baseUrl, options.browserChannel)
+    if (options.caseName === "smoke") {
+      await runSmokeCase(baseUrl, options.browserChannel)
+    }
+    if (options.caseName === "button") {
+      await runButtonCase(baseUrl, options.browserChannel)
+    }
+    if (options.caseName === "dialog") {
+      await runDialogCase(baseUrl, options.browserChannel)
+    }
+    if (options.caseName === "pilots") {
+      await runPilotsCase(baseUrl, options.browserChannel)
+    }
+    if (options.caseName === "onboarding") {
+      await runOnboardingCase(baseUrl, options.browserChannel)
+    }
+    if (options.caseName === "release") {
+      await runReleaseCase(baseUrl, options.browserChannel)
+    }
+  } finally {
+    preview?.stop()
   }
 }
 

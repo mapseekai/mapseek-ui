@@ -18,27 +18,9 @@ type SourceItem = {
   readonly title: string
   readonly subtitle: string
   readonly tone: "dataset" | "tileset"
-  readonly type: string
+  readonly typeLabel: string
   readonly url?: string
 }
-
-const initialSources: SourceItem[] = [
-  {
-    id: "openmaptiles",
-    title: "OpenMapTiles",
-    subtitle: "openmaptiles",
-    tone: "tileset",
-    type: "vector",
-    url: "mapseek://tiles/openmaptiles",
-  },
-  {
-    id: "landcover",
-    title: "Landcover",
-    subtitle: "landcover_2026",
-    tone: "dataset",
-    type: "raster",
-  },
-]
 
 export const zhStyleEditorPanelLabels = {
   title: "数据源",
@@ -53,6 +35,22 @@ export const zhStyleEditorPanelLabels = {
   removed: "已删除",
   tileset: "瓦片集",
   dataset: "数据集",
+  vector: "矢量",
+  raster: "栅格",
+  sources: {
+    openMapTiles: {
+      title: "OpenMapTiles",
+      subtitle: "openmaptiles",
+    },
+    landcover: {
+      title: "地表覆盖",
+      subtitle: "landcover_2026",
+    },
+    analysisGrid: {
+      title: "分析网格",
+      subtitle: "analysis_grid",
+    },
+  },
 }
 
 export const enStyleEditorPanelLabels = {
@@ -68,6 +66,42 @@ export const enStyleEditorPanelLabels = {
   removed: "Removed",
   tileset: "Tileset",
   dataset: "Dataset",
+  vector: "Vector",
+  raster: "Raster",
+  sources: {
+    openMapTiles: {
+      title: "OpenMapTiles",
+      subtitle: "openmaptiles",
+    },
+    landcover: {
+      title: "Landcover",
+      subtitle: "landcover_2026",
+    },
+    analysisGrid: {
+      title: "Analysis Grid",
+      subtitle: "analysis_grid",
+    },
+  },
+}
+
+function initialSources(labels: typeof zhStyleEditorPanelLabels): SourceItem[] {
+  return [
+    {
+      id: "openmaptiles",
+      title: labels.sources.openMapTiles.title,
+      subtitle: labels.sources.openMapTiles.subtitle,
+      tone: "tileset",
+      typeLabel: labels.vector,
+      url: "mapseek://tiles/openmaptiles",
+    },
+    {
+      id: "landcover",
+      title: labels.sources.landcover.title,
+      subtitle: labels.sources.landcover.subtitle,
+      tone: "dataset",
+      typeLabel: labels.raster,
+    },
+  ]
 }
 
 function FieldRow({ label, value }: { readonly label: string; readonly value: string }) {
@@ -84,16 +118,16 @@ export function StyleEditorPanelDemo({
 }: {
   readonly labels: typeof zhStyleEditorPanelLabels
 }) {
-  const [sources, setSources] = useState(initialSources)
+  const [sources, setSources] = useState(() => initialSources(labels))
   const [status, setStatus] = useState(labels.empty)
 
   function addSource() {
     const nextSource: SourceItem = {
       id: "analysis",
-      title: "Analysis Grid",
-      subtitle: "analysis_grid",
+      title: labels.sources.analysisGrid.title,
+      subtitle: labels.sources.analysisGrid.subtitle,
       tone: "dataset",
-      type: "raster",
+      typeLabel: labels.raster,
     }
     setSources((current) =>
       current.some((source) => source.id === nextSource.id) ? current : [...current, nextSource],
@@ -149,7 +183,7 @@ export function StyleEditorPanelDemo({
                     </Button>
                   }
                 >
-                  <FieldRow label={labels.type} value={source.type} />
+                  <FieldRow label={labels.type} value={source.typeLabel} />
                   {source.url ? <FieldRow label={labels.url} value={source.url} /> : null}
                 </StyleEditorPanelCard>
               ))}

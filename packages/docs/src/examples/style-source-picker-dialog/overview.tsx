@@ -6,51 +6,16 @@ import {
 import { Button } from "@registry/ui/button"
 import { useState } from "react"
 
-const options: StyleSourcePickerOption[] = [
-  {
-    key: "dataset:roads",
-    sourceKind: "DATASET",
-    sourceUID: "roads-uid",
-    sourcePath: "public.roads",
-    sourceName: "Road Network",
-    sourceType: "vector",
-    subtitle: "public.roads",
-    status: "READY",
-  },
-  {
-    key: "dataset:dem",
-    sourceKind: "DATASET",
-    sourceUID: "dem-uid",
-    sourcePath: "public.dem",
-    sourceName: "Terrain DEM",
-    sourceType: "raster",
-    subtitle: "public.dem",
-    status: "READY",
-  },
-  {
-    key: "tileset:basemap",
-    sourceKind: "TILESET",
-    sourceUID: "basemap-uid",
-    sourceName: "Basemap Tiles",
-    sourceType: "vector",
-    subtitle: "basemap-uid",
-    status: "READY",
-  },
-  {
-    key: "tileset:imagery",
-    sourceKind: "TILESET",
-    sourceUID: "imagery-uid",
-    sourceName: "Satellite Imagery",
-    sourceType: "raster",
-    subtitle: "imagery-uid",
-    status: "READY",
-  },
-]
-
 export const zhStyleSourcePickerDialogLabels = {
   open: "打开添加源",
   confirmed: "已添加源",
   cancelled: "已关闭",
+  sources: {
+    roads: "道路网络",
+    dem: "地形 DEM",
+    basemap: "底图瓦片",
+    imagery: "卫星影像",
+  },
   labels: {
     title: "添加源",
     description: "选择一个或多个数据集或瓦片集添加到当前样式源。",
@@ -78,6 +43,12 @@ export const enStyleSourcePickerDialogLabels = {
   open: "Open add source",
   confirmed: "Added sources",
   cancelled: "Closed",
+  sources: {
+    roads: "Road Network",
+    dem: "Terrain DEM",
+    basemap: "Basemap Tiles",
+    imagery: "Satellite Imagery",
+  },
   labels: {
     title: "Add source",
     description: "Select one or more datasets or tilesets to add to the current style sources.",
@@ -99,6 +70,49 @@ export const enStyleSourcePickerDialogLabels = {
     confirming: "Confirming...",
     alreadyAdded: "Already added",
   } satisfies Partial<StyleSourcePickerLabels>,
+}
+
+function sourceOptions(labels: typeof zhStyleSourcePickerDialogLabels): StyleSourcePickerOption[] {
+  return [
+    {
+      key: "dataset:roads",
+      sourceKind: "DATASET",
+      sourceUID: "roads-uid",
+      sourcePath: "public.roads",
+      sourceName: labels.sources.roads,
+      sourceType: "vector",
+      subtitle: "public.roads",
+      status: "READY",
+    },
+    {
+      key: "dataset:dem",
+      sourceKind: "DATASET",
+      sourceUID: "dem-uid",
+      sourcePath: "public.dem",
+      sourceName: labels.sources.dem,
+      sourceType: "raster",
+      subtitle: "public.dem",
+      status: "READY",
+    },
+    {
+      key: "tileset:basemap",
+      sourceKind: "TILESET",
+      sourceUID: "basemap-uid",
+      sourceName: labels.sources.basemap,
+      sourceType: "vector",
+      subtitle: "basemap-uid",
+      status: "READY",
+    },
+    {
+      key: "tileset:imagery",
+      sourceKind: "TILESET",
+      sourceUID: "imagery-uid",
+      sourceName: labels.sources.imagery,
+      sourceType: "raster",
+      subtitle: "imagery-uid",
+      status: "READY",
+    },
+  ]
 }
 
 export function StyleSourcePickerDialogDemo({
@@ -126,7 +140,7 @@ export function StyleSourcePickerDialogDemo({
         open={open}
         loading={false}
         confirming={false}
-        options={options}
+        options={sourceOptions(labels)}
         alreadyAddedKeys={new Set(["tileset:basemap"])}
         onOpenChange={(nextOpen) => {
           setOpen(nextOpen)

@@ -19,13 +19,6 @@ const initialStyle: RasterStyleValue = {
   format: "webp",
 }
 
-const stats: RasterStat[] = [
-  { label: "BANDS", value: "4 / 13", unit: "UInt16" },
-  { label: "SIZE", value: "10,980 x 10,980" },
-  { label: "MIN", value: "-18.4" },
-  { label: "MAX", value: "3,842" },
-]
-
 export const zhRasterStylePanelLabels = {
   title: "Sentinel-2 栅格样式",
   saved: "已保存样式",
@@ -36,6 +29,13 @@ export const zhRasterStylePanelLabels = {
   summary: "当前编码",
   rgb: "RGB 合成",
   single: "单波段",
+  stats: {
+    bands: "波段数",
+    size: "尺寸",
+    min: "最小值",
+    max: "最大值",
+    dataType: "UInt16",
+  },
   labels: {
     band: "波段",
     bandAppend: "追加",
@@ -81,6 +81,13 @@ export const enRasterStylePanelLabels = {
   summary: "Current encoding",
   rgb: "RGB composite",
   single: "Single band",
+  stats: {
+    bands: "BANDS",
+    size: "SIZE",
+    min: "MIN",
+    max: "MAX",
+    dataType: "UInt16",
+  },
   labels: {
     band: "Band",
     bandAppend: "Append",
@@ -114,6 +121,15 @@ export const enRasterStylePanelLabels = {
     colormapNamed: "Preset",
     colormapCustom: "Custom",
   } satisfies RasterStyleLabels & Partial<RasterStylePanelLabels>,
+}
+
+function rasterStats(labels: typeof zhRasterStylePanelLabels): RasterStat[] {
+  return [
+    { label: labels.stats.bands, value: "4 / 13", unit: labels.stats.dataType },
+    { label: labels.stats.size, value: "10,980 x 10,980" },
+    { label: labels.stats.min, value: "-18.4" },
+    { label: labels.stats.max, value: "3,842" },
+  ]
 }
 
 export function RasterStylePanelDemo({
@@ -152,7 +168,7 @@ export function RasterStylePanelDemo({
             onValidityChange={setValid}
             resetKey={revision}
             bandCount={13}
-            stats={stats}
+            stats={rasterStats(labels)}
             labels={labels.labels}
             autoRange={[0, 3842]}
           />

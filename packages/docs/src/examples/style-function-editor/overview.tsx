@@ -26,18 +26,23 @@ const initialStops: StopRow[] = [
 export const zhStyleFunctionEditorLabels = {
   title: "背景颜色",
   functionLabel: "函数",
-  base: "Base",
-  caption: "Stops",
-  zoom: "Zoom",
+  base: "基数",
+  caption: "停靠点",
+  zoom: "缩放级别",
   output: "输出值",
-  remove: "删除 stop",
+  remove: "删除停靠点",
   undo: "撤销函数",
-  add: "添加 stop",
+  add: "添加停靠点",
   expression: "转为表达式",
-  added: "已添加 stop",
-  removed: "已删除 stop",
+  added: "已添加停靠点",
+  removed: "已删除停靠点",
   converted: "已转为表达式",
   undone: "已撤销函数",
+  functions: {
+    interpolate: "插值",
+    categorical: "分类",
+    interval: "分段",
+  },
 }
 
 export const enStyleFunctionEditorLabels = {
@@ -55,6 +60,11 @@ export const enStyleFunctionEditorLabels = {
   removed: "Removed stop",
   converted: "Converted to expression",
   undone: "Undone function",
+  functions: {
+    interpolate: "Interpolate",
+    categorical: "Categorical",
+    interval: "Interval",
+  },
 }
 
 function FieldRow({ label, children }: { readonly label: string; readonly children: ReactNode }) {
@@ -92,9 +102,9 @@ export function StyleFunctionEditorDemo({
       <StyleFunctionPanel title={labels.title}>
         <FieldRow label={labels.functionLabel}>
           <Select value="interpolate" onValueChange={() => undefined}>
-            <Select.Item value="interpolate">interpolate</Select.Item>
-            <Select.Item value="categorical">categorical</Select.Item>
-            <Select.Item value="interval">interval</Select.Item>
+            <Select.Item value="interpolate">{labels.functions.interpolate}</Select.Item>
+            <Select.Item value="categorical">{labels.functions.categorical}</Select.Item>
+            <Select.Item value="interval">{labels.functions.interval}</Select.Item>
           </Select>
         </FieldRow>
         <FieldRow label={labels.base}>

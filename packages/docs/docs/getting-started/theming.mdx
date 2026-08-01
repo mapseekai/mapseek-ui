@@ -1,0 +1,42 @@
+---
+id: getting-started-theming
+slug: /getting-started/theming
+registryName: theme
+category: primitive
+stability: stable
+examples: []
+---
+
+# 主题
+
+Mapseek UI 的基础 token 由 `@mapseek/theme` 提供。安装后，主题 CSS 进入应用源码，并由应用自己的 Tailwind 和 shadcn 配置消费。
+
+## 安装主题
+
+```bash
+bunx shadcn@4.8.0 add @mapseek/theme
+```
+
+`@mapseek/theme` 提供 Mapseek UI 组件使用的颜色、半径、阴影和状态 token。它不是远程样式表；安装后的文件属于应用源码。
+
+## src/app.css
+
+在应用的 `src/app.css` 中导入 shadcn、Tailwind 和 Mapseek 主题输出。典型入口如下：
+
+```css
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "./theme.css";
+```
+
+如果你的项目已经有 `src/app.css`，把 Mapseek theme 导入合并到现有入口，保留应用自己的 token 覆盖和 `@source` 设置。
+
+## 归属边界
+
+应用拥有 `src/app.css` 和安装后的主题文件。Mapseek UI 只提供初始 token 和组件约定；品牌色、暗色模式、字体、密度和业务状态色应在应用层审查后提交。
+
+## 下一步
+
+- [安装](/getting-started/installation)
+- [Registry](/getting-started/registry)

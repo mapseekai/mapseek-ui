@@ -1,0 +1,52 @@
+---
+id: getting-started-registry
+slug: /getting-started/registry
+registryName: theme
+category: primitive
+stability: stable
+examples: []
+---
+
+# Registry
+
+Mapseek UI 的文档站点和 shadcn registry 由同一个静态构建发布。组件页面、指南和 `/r/<name>.json` registry 文件来自同一域名，便于离线镜像、内部部署和版本固定。
+
+## 同域路径
+
+每个可安装条目都有一个同域 JSON：
+
+```text
+/r/button.json
+/r/layer-panel.json
+/r/theme.json
+```
+
+在 `components.json` 中使用 registry 模板：
+
+```json
+{
+  "registries": {
+    "@mapseek": "https://mapseek-ui.local/r/{name}.json"
+  }
+}
+```
+
+shadcn 会把 `@mapseek/button` 解析为 `https://mapseek-ui.local/r/button.json`，把 `@mapseek/layer-panel` 解析为 `https://mapseek-ui.local/r/layer-panel.json`。
+
+## 本地和内部部署
+
+如果文档站点部署在公司域名，`components.json` 中只需要替换 host。路径仍保持 `/r/{name}.json`，不需要托管搜索服务，也不需要单独 registry 服务。
+
+## 检查 JSON
+
+浏览器可以直接打开同域 registry 文件：
+
+- [Button registry JSON](/r/button.json)
+- [LayerPanel registry JSON](/r/layer-panel.json)
+- [Theme registry JSON](/r/theme.json)
+
+## 下一步
+
+- [安装](/getting-started/installation)
+- [组件](/components)
+- [区块](/blocks)

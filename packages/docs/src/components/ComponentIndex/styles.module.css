@@ -1,0 +1,68 @@
+.index {
+  margin: 2rem 0;
+}
+
+.searchLabel {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 26rem;
+  font-weight: 600;
+}
+
+.searchInput {
+  width: 100%;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  padding: 0.7rem 0.85rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.item {
+  margin: 0;
+}
+
+.card {
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 8px;
+  color: inherit;
+  display: grid;
+  gap: 0.55rem;
+  height: 100%;
+  padding: 1rem;
+  text-decoration: none;
+}
+
+.card:hover {
+  border-color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.title {
+  color: var(--ifm-heading-color);
+  font-size: 1.05rem;
+  font-weight: 650;
+}
+
+.description {
+  color: var(--ifm-color-emphasis-700);
+}
+
+.command {
+  width: fit-content;
+}
+
+.empty {
+  color: var(--ifm-color-emphasis-700);
+  margin-top: 1.5rem;
+}

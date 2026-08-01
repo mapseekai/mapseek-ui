@@ -95,6 +95,21 @@ const config: Config = {
           label: "Docs",
         },
         {
+          to: "/getting-started/installation",
+          position: "left",
+          label: "Guides",
+        },
+        {
+          to: "/components",
+          position: "left",
+          label: "Components",
+        },
+        {
+          to: "/blocks",
+          position: "left",
+          label: "Blocks",
+        },
+        {
           type: "localeDropdown",
           position: "right",
         },

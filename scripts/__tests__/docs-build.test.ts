@@ -79,6 +79,25 @@ it("publishes installable registry artifacts and compiled theme utilities", asyn
   expect(css).toContain(".bg-primary")
 })
 
+it("renders manifest-derived component and block indexes in the static build", async () => {
+  const components = await readFile("packages/docs/build/components/index.html", "utf8")
+  const blocks = await readFile("packages/docs/build/blocks/index.html", "utf8")
+  const enComponents = await readFile("packages/docs/build/en/components/index.html", "utf8")
+  const enBlocks = await readFile("packages/docs/build/en/blocks/index.html", "utf8")
+
+  expect(components).toContain("搜索组件")
+  expect(components).toContain("Button")
+  expect(components).toContain("Action trigger button.")
+  expect(components).toContain("/components/button")
+  expect(blocks).toContain("搜索区块")
+  expect(blocks).toContain("Layer Panel")
+  expect(blocks).toContain("/blocks/layer-panel")
+  expect(enComponents).toContain("Search components")
+  expect(enComponents).toContain("/en/components/button")
+  expect(enBlocks).toContain("Search blocks")
+  expect(enBlocks).toContain("/en/blocks/layer-panel")
+})
+
 it("keeps displayed example source as exact TSX source", async () => {
   const js = await readBuiltJs("packages/docs/build/assets")
 

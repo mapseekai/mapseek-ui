@@ -60,6 +60,22 @@ it("collects Chinese and English documentation from Docusaurus locale roots", as
   expect(localized.en.has("button")).toBe(true)
 })
 
+it("keeps Task 8 guide and index pages paired across locales", async () => {
+  const localized = await collectLocalizedDocs(join(import.meta.dir, "../../packages/docs"))
+  const expectedIds = [
+    "getting-started-installation",
+    "getting-started-theming",
+    "getting-started-registry",
+    "components-index",
+    "blocks-index",
+  ] as const
+
+  for (const id of expectedIds) {
+    expect(localized.zh.get(id)?.metadata).toEqual(localized.en.get(id)?.metadata)
+    expect(localized.zh.get(id)?.metadata.examples).toEqual([])
+  }
+})
+
 it("reports mismatched structural examples between locales", async () => {
   await writeFixture("docs/components/button.mdx", doc(["button/basic"]))
   await writeFixture(

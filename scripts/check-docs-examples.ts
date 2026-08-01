@@ -87,7 +87,7 @@ async function collectExampleIds(root: string): Promise<readonly string[]> {
 }
 
 function isGuideDoc(doc: ParsedDoc): boolean {
-  return doc.metadata.id === "intro" || doc.metadata.id.startsWith("getting-started")
+  return doc.metadata.registryName === "theme"
 }
 
 export async function validateExampleCoverage(

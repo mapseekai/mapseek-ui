@@ -1,6 +1,6 @@
 import { type Browser, chromium, expect, type Locator, type Page } from "@playwright/test"
 
-type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots"
+type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots" | "onboarding"
 type DocsTheme = "dark" | "light"
 type DocsViewportName = "desktop" | "mobile"
 
@@ -33,7 +33,8 @@ function readCliOptions(): CliOptions {
     caseName !== "smoke" &&
     caseName !== "button" &&
     caseName !== "dialog" &&
-    caseName !== "pilots"
+    caseName !== "pilots" &&
+    caseName !== "onboarding"
   ) {
     throw new Error(`Unsupported docs visual QA case: ${caseName}`)
   }
@@ -404,6 +405,77 @@ async function runPilotsCase(baseUrl: string, browserChannel?: string): Promise<
   }
 }
 
+async function assertLocalizedIndexFilter(
+  page: Page,
+  path: string,
+  searchLabel: string,
+  query: string,
+  expectedCard: string,
+  hiddenCard?: string,
+): Promise<void> {
+  await page.goto(path)
+  const search = page.getByLabel(searchLabel, { exact: true })
+  await expect(search).toBeVisible()
+  await search.fill(query)
+  await expect(page.locator(`[data-component-card="${expectedCard}"]`)).toBeVisible()
+  if (hiddenCard) await expect(page.locator(`[data-component-card="${hiddenCard}"]`)).toBeHidden()
+}
+
+async function assertLocaleAlternate(page: Page, path: string): Promise<void> {
+  await page.goto(path)
+  const alternate = await page.locator('link[rel="alternate"][hreflang="en"]').getAttribute("href")
+  if (!alternate) throw new Error(`Missing English alternate for ${path}`)
+  const alternatePath = new URL(alternate).pathname
+  expect(alternatePath).toBe(`/en${path}`)
+  await page.goto(alternatePath)
+  await expect(page).toHaveURL(new RegExp(`/en${path.replaceAll("/", "\\/")}$`))
+}
+
+async function runOnboardingCase(baseUrl: string, browserChannel?: string): Promise<void> {
+  await assertPreviewIsAvailable(baseUrl)
+
+  const browser = await launchBrowser(browserChannel)
+
+  try {
+    const page = await browser.newPage({ baseURL: baseUrl, viewport: { width: 1280, height: 720 } })
+
+    await page.goto("/")
+    await page.getByRole("link", { name: "安装", exact: true }).click()
+    await expect(
+      page.getByRole("heading", { level: 1, name: "安装 Mapseek UI", exact: true }),
+    ).toBeVisible()
+    const article = page.getByRole("article")
+    await expect(article.getByRole("link", { name: "主题", exact: true })).toHaveAttribute(
+      "href",
+      "/getting-started/theming",
+    )
+    await expect(article.getByRole("link", { name: "Registry", exact: true })).toHaveAttribute(
+      "href",
+      "/getting-started/registry",
+    )
+
+    await assertLocalizedIndexFilter(page, "/components", "搜索组件", "Button", "button", "dialog")
+    await assertLocalizedIndexFilter(
+      page,
+      "/en/components",
+      "Search components",
+      "Button",
+      "button",
+    )
+    await assertLocalizedIndexFilter(page, "/blocks", "搜索区块", "LayerPanel", "layer-panel")
+    await assertLocalizedIndexFilter(
+      page,
+      "/en/blocks",
+      "Search blocks",
+      "LayerPanel",
+      "layer-panel",
+    )
+    await assertLocaleAlternate(page, "/getting-started/installation")
+  } finally {
+    await browser.close()
+  }
+}
+
 async function main() {
   const options = readCliOptions()
 
@@ -418,6 +490,9 @@ async function main() {
   }
   if (options.caseName === "pilots") {
     await runPilotsCase(options.baseUrl, options.browserChannel)
+  }
+  if (options.caseName === "onboarding") {
+    await runOnboardingCase(options.baseUrl, options.browserChannel)
   }
 }
 

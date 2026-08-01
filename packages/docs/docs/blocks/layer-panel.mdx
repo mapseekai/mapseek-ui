@@ -11,61 +11,10 @@ examples:
 
 import { ComponentDemo } from "@site/src/components/ComponentDemo"
 import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
-import { LayerPanelBasicDemo } from "@site/src/examples/layer-panel/basic"
+import { LayerPanelBasicDemo, zhLayerPanelBasicLabels } from "@site/src/examples/layer-panel/basic"
 import basicSource from "@site/src/examples/layer-panel/basic.tsx?raw"
-import { LayerPanelGroupsDemo } from "@site/src/examples/layer-panel/groups"
+import { LayerPanelGroupsDemo, zhLayerPanelGroupsLabels } from "@site/src/examples/layer-panel/groups"
 import groupsSource from "@site/src/examples/layer-panel/groups.tsx?raw"
-
-export const basicLabels = {
-  title: "工程图层",
-  addLayer: "添加图层",
-  style: "样式",
-  filter: "过滤器",
-  emptyTitle: "暂无图层",
-  emptyDescription: "添加图层后会在这里显示。",
-  visibilityOnStatus: "已显示",
-  visibilityOffStatus: "已隐藏",
-  selectedStatus: "已选中",
-  locatedStatus: "定位图层",
-  tableStatus: "打开属性表",
-  removedStatus: "已删除",
-  styleOpacity: "不透明度",
-  filterMode: "当前过滤条件",
-  layerPanel: {
-    addLayer: "添加图层",
-    point: "点",
-    polyline: "线",
-    polygon: "面",
-    mixed: "混合",
-    raster: "栅格",
-    features: "要素",
-    locate: "定位",
-    zoomToLayer: "缩放到图层",
-    attributeTable: "属性表",
-    delete: "删除",
-  },
-}
-
-export const groupLabels = {
-  title: "分组图层",
-  style: "样式",
-  filter: "过滤器",
-  collapseGroup: "折叠分组",
-  expandGroup: "展开分组",
-  renameGroup: "重命名",
-  saveRename: "保存",
-  groupMenu: "菜单",
-  zoomGroup: "缩放至分组",
-  duplicateGroup: "复制分组",
-  selectedStatus: "已选中",
-  visibilityOnStatus: "已显示",
-  visibilityOffStatus: "已隐藏",
-  collapsedStatus: "已折叠分组",
-  expandedStatus: "已展开分组",
-  renamedStatus: "已重命名分组",
-  menuStatus: "已执行菜单",
-  layerPanel: basicLabels.layerPanel,
-}
 
 # LayerPanel
 
@@ -84,13 +33,13 @@ import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
 ## 基础受控面板
 
 <ComponentDemo title="基础受控面板" description="示例保留可见性切换、受控选中、行内操作、样式 section、过滤 section、删除和空状态。" source={basicSource} minHeight={620}>
-  <LayerPanelBasicDemo labels={basicLabels} />
+  <LayerPanelBasicDemo labels={zhLayerPanelBasicLabels} />
 </ComponentDemo>
 
 ## 分组、重命名和菜单
 
 <ComponentDemo title="分组、重命名和菜单" description="分组模型、折叠、重命名和菜单状态在示例层组合；每个图层行仍由 LayerPanel.Item 渲染。" source={groupsSource} minHeight={680}>
-  <LayerPanelGroupsDemo labels={groupLabels} />
+  <LayerPanelGroupsDemo labels={zhLayerPanelGroupsLabels} />
 </ComponentDemo>
 
 ## 受控状态

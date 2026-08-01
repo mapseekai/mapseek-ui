@@ -11,61 +11,10 @@ examples:
 
 import { ComponentDemo } from "@site/src/components/ComponentDemo"
 import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
-import { LayerPanelBasicDemo } from "@site/src/examples/layer-panel/basic"
+import { LayerPanelBasicDemo, enLayerPanelBasicLabels } from "@site/src/examples/layer-panel/basic"
 import basicSource from "@site/src/examples/layer-panel/basic.tsx?raw"
-import { LayerPanelGroupsDemo } from "@site/src/examples/layer-panel/groups"
+import { LayerPanelGroupsDemo, enLayerPanelGroupsLabels } from "@site/src/examples/layer-panel/groups"
 import groupsSource from "@site/src/examples/layer-panel/groups.tsx?raw"
-
-export const basicLabels = {
-  title: "Project layers",
-  addLayer: "Add layer",
-  style: "Style",
-  filter: "Filter",
-  emptyTitle: "No layers",
-  emptyDescription: "Added layers will appear here.",
-  visibilityOnStatus: "Shown",
-  visibilityOffStatus: "Hidden",
-  selectedStatus: "Selected",
-  locatedStatus: "Locate layer",
-  tableStatus: "Open attribute table",
-  removedStatus: "Removed",
-  styleOpacity: "Opacity",
-  filterMode: "Current filter",
-  layerPanel: {
-    addLayer: "Add layer",
-    point: "Point",
-    polyline: "Line",
-    polygon: "Polygon",
-    mixed: "Mixed",
-    raster: "Raster",
-    features: "features",
-    locate: "Locate",
-    zoomToLayer: "Zoom to layer",
-    attributeTable: "Attribute table",
-    delete: "Delete",
-  },
-}
-
-export const groupLabels = {
-  title: "Grouped layers",
-  style: "Style",
-  filter: "Filter",
-  collapseGroup: "Collapse group",
-  expandGroup: "Expand group",
-  renameGroup: "Rename",
-  saveRename: "Save",
-  groupMenu: "Menu",
-  zoomGroup: "Zoom to group",
-  duplicateGroup: "Duplicate group",
-  selectedStatus: "Selected",
-  visibilityOnStatus: "Shown",
-  visibilityOffStatus: "Hidden",
-  collapsedStatus: "Collapsed group",
-  expandedStatus: "Expanded group",
-  renamedStatus: "Renamed group",
-  menuStatus: "Menu action",
-  layerPanel: basicLabels.layerPanel,
-}
 
 # LayerPanel
 
@@ -84,13 +33,13 @@ import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
 ## Basic Controlled Panel
 
 <ComponentDemo title="Basic controlled panel" description="This example preserves visibility toggles, controlled selection, row actions, style sections, filter sections, deletion, and empty state." source={basicSource} minHeight={620}>
-  <LayerPanelBasicDemo labels={basicLabels} />
+  <LayerPanelBasicDemo labels={enLayerPanelBasicLabels} />
 </ComponentDemo>
 
 ## Groups, Rename, and Menu
 
 <ComponentDemo title="Groups, rename, and menu" description="The group model, collapse state, rename flow, and menu state are composed in the example; every layer row is still rendered by LayerPanel.Item." source={groupsSource} minHeight={680}>
-  <LayerPanelGroupsDemo labels={groupLabels} />
+  <LayerPanelGroupsDemo labels={enLayerPanelGroupsLabels} />
 </ComponentDemo>
 
 ## Controlled State

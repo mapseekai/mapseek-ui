@@ -30,6 +30,66 @@ export type LayerPanelBasicDemoProps = {
   readonly labels: LayerPanelBasicDemoLabels
 }
 
+export const zhLayerPanelBasicLabels = {
+  title: "工程图层",
+  addLayer: "添加图层",
+  style: "样式",
+  filter: "过滤器",
+  emptyTitle: "暂无图层",
+  emptyDescription: "添加图层后会在这里显示。",
+  visibilityOnStatus: "已显示",
+  visibilityOffStatus: "已隐藏",
+  selectedStatus: "已选中",
+  locatedStatus: "定位图层",
+  tableStatus: "打开属性表",
+  removedStatus: "已删除",
+  styleOpacity: "不透明度",
+  filterMode: "当前过滤条件",
+  layerPanel: {
+    addLayer: "添加图层",
+    point: "点",
+    polyline: "线",
+    polygon: "面",
+    mixed: "混合",
+    raster: "栅格",
+    features: "要素",
+    locate: "定位",
+    zoomToLayer: "缩放到图层",
+    attributeTable: "属性表",
+    delete: "删除",
+  },
+} satisfies LayerPanelBasicDemoLabels
+
+export const enLayerPanelBasicLabels = {
+  title: "Project layers",
+  addLayer: "Add layer",
+  style: "Style",
+  filter: "Filter",
+  emptyTitle: "No layers",
+  emptyDescription: "Added layers will appear here.",
+  visibilityOnStatus: "Shown",
+  visibilityOffStatus: "Hidden",
+  selectedStatus: "Selected",
+  locatedStatus: "Locate layer",
+  tableStatus: "Open attribute table",
+  removedStatus: "Removed",
+  styleOpacity: "Opacity",
+  filterMode: "Current filter",
+  layerPanel: {
+    addLayer: "Add layer",
+    point: "Point",
+    polyline: "Line",
+    polygon: "Polygon",
+    mixed: "Mixed",
+    raster: "Raster",
+    features: "features",
+    locate: "Locate",
+    zoomToLayer: "Zoom to layer",
+    attributeTable: "Attribute table",
+    delete: "Delete",
+  },
+} satisfies LayerPanelBasicDemoLabels
+
 const initialLayers: LayerPanelBasicLayer[] = [
   {
     id: "zoning",

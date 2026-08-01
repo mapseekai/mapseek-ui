@@ -35,6 +35,72 @@ export type LayerPanelGroupsDemoProps = {
   readonly labels: LayerPanelGroupsDemoLabels
 }
 
+export const zhLayerPanelGroupsLabels = {
+  title: "分组图层",
+  style: "样式",
+  filter: "过滤器",
+  collapseGroup: "折叠分组",
+  expandGroup: "展开分组",
+  renameGroup: "重命名",
+  saveRename: "保存",
+  groupMenu: "菜单",
+  zoomGroup: "缩放至分组",
+  duplicateGroup: "复制分组",
+  selectedStatus: "已选中",
+  visibilityOnStatus: "已显示",
+  visibilityOffStatus: "已隐藏",
+  collapsedStatus: "已折叠分组",
+  expandedStatus: "已展开分组",
+  renamedStatus: "已重命名分组",
+  menuStatus: "已执行菜单",
+  layerPanel: {
+    addLayer: "添加图层",
+    point: "点",
+    polyline: "线",
+    polygon: "面",
+    mixed: "混合",
+    raster: "栅格",
+    features: "要素",
+    locate: "定位",
+    zoomToLayer: "缩放到图层",
+    attributeTable: "属性表",
+    delete: "删除",
+  },
+} satisfies LayerPanelGroupsDemoLabels
+
+export const enLayerPanelGroupsLabels = {
+  title: "Grouped layers",
+  style: "Style",
+  filter: "Filter",
+  collapseGroup: "Collapse group",
+  expandGroup: "Expand group",
+  renameGroup: "Rename",
+  saveRename: "Save",
+  groupMenu: "Menu",
+  zoomGroup: "Zoom to group",
+  duplicateGroup: "Duplicate group",
+  selectedStatus: "Selected",
+  visibilityOnStatus: "Shown",
+  visibilityOffStatus: "Hidden",
+  collapsedStatus: "Collapsed group",
+  expandedStatus: "Expanded group",
+  renamedStatus: "Renamed group",
+  menuStatus: "Menu action",
+  layerPanel: {
+    addLayer: "Add layer",
+    point: "Point",
+    polyline: "Line",
+    polygon: "Polygon",
+    mixed: "Mixed",
+    raster: "Raster",
+    features: "features",
+    locate: "Locate",
+    zoomToLayer: "Zoom to layer",
+    attributeTable: "Attribute table",
+    delete: "Delete",
+  },
+} satisfies LayerPanelGroupsDemoLabels
+
 const initialLayers: LayerData[] = [
   {
     id: "admin-boundary",

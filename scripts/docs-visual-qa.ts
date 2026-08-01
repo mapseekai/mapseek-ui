@@ -283,6 +283,11 @@ async function activateByKeyboard(locator: Locator): Promise<void> {
   await locator.page().keyboard.press("Enter")
 }
 
+async function assertLayerPanelDemoFits(root: Locator, label: string): Promise<void> {
+  await assertNoHorizontalOverflow(root, `${label} demo`)
+  await assertWithinViewport(root.locator('[data-slot="layer-panel"]'), `${label} panel`)
+}
+
 async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
   await expect(
     page.getByRole("heading", { level: 1, name: "LayerPanel", exact: true }),
@@ -293,11 +298,7 @@ async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
   await expect(basic).toBeVisible()
   await expect(groups).toBeVisible()
   await basic.scrollIntoViewIfNeeded()
-  await assertNoHorizontalOverflow(basic, `${path} basic LayerPanel demo`)
-  await assertNoHorizontalOverflow(groups, `${path} grouped LayerPanel demo`)
-
-  const basicPanel = basic.locator('[data-slot="layer-panel"]')
-  await assertWithinViewport(basicPanel, `${path} basic LayerPanel`)
+  await assertLayerPanelDemoFits(basic, `${path} basic LayerPanel`)
 
   await activateByKeyboard(
     basic.locator('button[aria-label="Toggle visibility for Transit corridors"]'),
@@ -319,11 +320,15 @@ async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
   await styleButton.click()
 
   await groups.scrollIntoViewIfNeeded()
+  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel`)
+
   const operationsCollapse = groups.locator('[data-demo="layer-panel-group-collapse-operations"]')
   await operationsCollapse.click()
   await expect(groups.getByRole("button", { name: "Water mains", exact: true })).toBeHidden()
+  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after collapse`)
   await operationsCollapse.click()
   await expect(groups.getByRole("button", { name: "Water mains", exact: true })).toBeVisible()
+  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after expand`)
 
   await groups.locator('[data-demo="layer-panel-group-rename-operations"]').click()
   const renameInput = groups.locator('[data-demo="layer-panel-group-rename-input-operations"]')
@@ -332,15 +337,18 @@ async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
   await expect(groups.locator('[data-demo="layer-panel-group-operations"]')).toContainText(
     path.startsWith("/en/") ? "Response" : "响应",
   )
+  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after rename`)
 
   await groups.locator('[data-demo="layer-panel-group-menu-trigger-operations"]').click()
   const menu = groups.locator('[data-demo="layer-panel-group-menu-operations"]')
   await expect(menu).toBeVisible()
   await assertNoHorizontalOverflow(menu, `${path} LayerPanel group menu`)
+  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel with menu`)
   await groups.locator('[data-demo="layer-panel-group-menu-zoom-operations"]').click()
   await expect(groups.locator('[data-demo="layer-panel-groups-status"]')).toContainText(
     path.startsWith("/en/") ? "Menu action" : "已执行菜单",
   )
+  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after menu action`)
 
   await activateByKeyboard(
     groups.locator('button[aria-label="Toggle visibility for Inspection points"]'),
@@ -348,6 +356,7 @@ async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
   await expect(groups.locator('[data-demo="layer-panel-groups-status"]')).toContainText(
     path.startsWith("/en/") ? "Shown" : "已显示",
   )
+  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after visibility`)
 }
 
 async function runPilotsCase(baseUrl: string, browserChannel?: string): Promise<void> {

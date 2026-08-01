@@ -1,0 +1,82 @@
+---
+id: button
+slug: /components/button
+registryName: button
+category: primitive
+stability: stable
+examples:
+  - button/basic
+  - button/variants
+  - button/sizes
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ButtonBasicDemo } from "@site/src/examples/button/basic"
+import basicSource from "@site/src/examples/button/basic.tsx?raw"
+import { ButtonVariantsDemo } from "@site/src/examples/button/variants"
+import variantsSource from "@site/src/examples/button/variants.tsx?raw"
+import { ButtonSizesDemo } from "@site/src/examples/button/sizes"
+import sizesSource from "@site/src/examples/button/sizes.tsx?raw"
+
+# Button
+
+Button is the foundational Mapseek UI action trigger for submitting forms, running map queries, confirming settings, or opening the next step in a workflow. It is installed as source, so your application owns the styling and behavior directly.
+
+## Installation
+
+<RegistryInstall registryName="button" />
+
+## Import
+
+```tsx
+import { Button } from "@/registry/ui/button"
+```
+
+If your project uses a shadcn target path, import from the alias that points to the installed `@ui/button.tsx` file.
+
+## Basic Usage
+
+<ComponentDemo title="Basic usage" description="The default Button is the primary action; disabled buttons remove pointer interaction and lower opacity." source={basicSource} minHeight={180}>
+  <ButtonBasicDemo />
+</ComponentDemo>
+
+## Variants
+
+<ComponentDemo title="Variants" description="The Showcase variants are preserved: default, secondary, outline, ghost, destructive, and link." source={variantsSource} minHeight={160}>
+  <ButtonVariantsDemo />
+</ComponentDemo>
+
+## Sizes
+
+<ComponentDemo title="Sizes" description="Text buttons provide xs, sm, default, and lg sizes to match the existing Showcase." source={sizesSource} minHeight={150}>
+  <ButtonSizesDemo />
+</ComponentDemo>
+
+## API
+
+`Button` exports the `Button` component and the `buttonVariants` style helper. The component inherits Base UI `Button` props and adds `variant` and `size` variant props.
+
+```tsx
+import { Button, buttonVariants } from "@/registry/ui/button"
+```
+
+`Button` is built on `@base-ui/react/button`, so it keeps native button semantics, keyboard activation, focus behavior, and common button attributes. `disabled` is passed through to Base UI, while the style layer applies `pointer-events-none` and `opacity-50`.
+
+## Button vs IconButton
+
+Use `Button` for explicit text commands such as “Save”, “Run query”, or “Delete layer”. Use `IconButton` for icon-only tool actions and provide an accessible name; the `icon`, `icon-xs`, `icon-sm`, and `icon-lg` Button sizes are only appropriate when you intentionally need Button semantics with icon sizing.
+
+## Accessibility
+
+Button text should describe the result of the action, not just say “OK” or “Click”. Use the `destructive` variant for dangerous actions, and provide confirmation or undo at the workflow layer. Disabled buttons need nearby context that explains why the action is unavailable; do not rely on the disabled state alone to communicate business rules.
+
+## Dependencies
+
+<RegistryDependencies registryName="button" />
+
+## Related Links
+
+- [Button registry JSON](/r/button.json)
+- [IconButton registry JSON](/r/icon-button.json)
+- [Getting started](/)

@@ -4,6 +4,21 @@ import { collectLocalizedDocs } from "./check-docs-i18n"
 import type { ParsedDoc } from "./docs-check-utils"
 import { loadCatalog, type RegistryItem, type ValidationIssue } from "./registry-model"
 
+type RequiredRegistryDoc = {
+  readonly category: "primitive" | "block"
+  readonly examples: readonly string[]
+}
+
+const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = new Map([
+  [
+    "button",
+    {
+      category: "primitive",
+      examples: ["button/basic", "button/variants", "button/sizes"],
+    },
+  ],
+] as const)
+
 function docsForRegistryName(
   docs: ReadonlyMap<string, ParsedDoc>,
   registryName: string,
@@ -72,13 +87,31 @@ export async function validateExampleCoverage(
   const registryNames = new Set(catalog.map((item) => item.name))
   const exampleOwners = new Map<string, Set<string>>()
 
-  for (const item of componentCatalog) {
+  for (const item of componentCatalog.filter((item) => requiredRegistryDocs.has(item.name))) {
     const zhDocs = docsForRegistryName(zh, item.name)
     const enDocs = docsForRegistryName(en, item.name)
     if (zhDocs.length !== 1)
       addIssue(issues, seenIssues, { code: "registry-doc-count", item: item.name, detail: "zh" })
     if (enDocs.length !== 1)
       addIssue(issues, seenIssues, { code: "registry-doc-count", item: item.name, detail: "en" })
+    for (const doc of [...zhDocs, ...enDocs]) {
+      const requiredDoc = requiredRegistryDocs.get(item.name)
+      if (!requiredDoc) continue
+      if (doc.metadata.category !== requiredDoc.category)
+        addIssue(issues, seenIssues, {
+          code: "metadata-mismatch",
+          item: doc.metadata.id,
+          detail: "category",
+        })
+      for (const example of requiredDoc.examples) {
+        if (!doc.metadata.examples.includes(example))
+          addIssue(issues, seenIssues, {
+            code: "missing-required-example",
+            item: doc.metadata.id,
+            detail: example,
+          })
+      }
+    }
   }
 
   for (const doc of [...zh.values(), ...en.values()]) {

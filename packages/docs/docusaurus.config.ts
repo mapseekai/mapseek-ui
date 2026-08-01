@@ -22,7 +22,14 @@ function mapseekUiDocsPlugin(): Plugin {
           },
         },
         module: {
-          rules: [{ resourceQuery: /raw/, type: "asset/source" }],
+          rules: [
+            {
+              enforce: "pre",
+              resourceQuery: /raw/,
+              type: "javascript/auto",
+              use: [path.resolve(docsRoot, "src/loaders/raw-source-loader.cjs")],
+            },
+          ],
         },
       }
     },

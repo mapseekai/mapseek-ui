@@ -20,6 +20,8 @@ const catalog: readonly RegistryItem[] = [
   },
 ]
 
+const buttonExamples = ["button/basic", "button/variants", "button/sizes"] as const
+
 async function writeFixture(path: string, content: string): Promise<void> {
   const target = join(fixtureRoot, path)
   await mkdir(dirname(target), { recursive: true })
@@ -47,7 +49,7 @@ async function runCli(
   return { exitCode, stdout }
 }
 
-function doc(examples: readonly string[] = ["button/basic"], registryName = "button"): string {
+function doc(examples: readonly string[] = buttonExamples, registryName = "button"): string {
   return [
     "---",
     "id: button",
@@ -89,7 +91,9 @@ afterEach(async () => rm(fixtureRoot, { recursive: true, force: true }))
 
 it("accepts localized docs with an existing example and valid registry item", async () => {
   await writeLocalizedDocs()
-  await writeFixture("src/examples/button/basic.tsx", "export function BasicButtonDemo() {}")
+  await writeFixture("src/examples/button/basic.tsx", "export function ButtonBasicDemo() {}")
+  await writeFixture("src/examples/button/variants.tsx", "export function ButtonVariantsDemo() {}")
+  await writeFixture("src/examples/button/sizes.tsx", "export function ButtonSizesDemo() {}")
 
   expect(await validateExampleCoverage(fixtureRoot, catalog)).toEqual([])
 })
@@ -119,6 +123,29 @@ it("reports examples declared only by the English page without source files", as
   })
 })
 
+it("reports missing localized docs for required migrated registry items", async () => {
+  await writeFixture("docs/intro.mdx", guideDoc())
+  await writeFixture("i18n/en/docusaurus-plugin-content-docs/current/intro.mdx", guideDoc())
+
+  expect(await validateExampleCoverage(fixtureRoot, catalog)).toContainEqual({
+    code: "registry-doc-count",
+    item: "button",
+    detail: "zh",
+  })
+})
+
+it("reports Button pages that omit a required pilot example id", async () => {
+  await writeLocalizedDocs(doc(["button/basic", "button/variants"]))
+  await writeFixture("src/examples/button/basic.tsx", "export function ButtonBasicDemo() {}")
+  await writeFixture("src/examples/button/variants.tsx", "export function ButtonVariantsDemo() {}")
+
+  expect(await validateExampleCoverage(fixtureRoot, catalog)).toContainEqual({
+    code: "missing-required-example",
+    item: "button",
+    detail: "button/sizes",
+  })
+})
+
 it("reports pages without examples and unknown registry names", async () => {
   await writeLocalizedDocs(doc([], "missing"))
 
@@ -145,7 +172,9 @@ it("allows localized guide pages without component examples", async () => {
     "i18n/en/docusaurus-plugin-content-docs/current/getting-started/install.mdx",
     guideDoc("getting-started-install"),
   )
-  await writeFixture("src/examples/button/basic.tsx", "export function BasicButtonDemo() {}")
+  await writeFixture("src/examples/button/basic.tsx", "export function ButtonBasicDemo() {}")
+  await writeFixture("src/examples/button/variants.tsx", "export function ButtonVariantsDemo() {}")
+  await writeFixture("src/examples/button/sizes.tsx", "export function ButtonSizesDemo() {}")
 
   expect(await validateExampleCoverage(fixtureRoot, catalog)).toEqual([])
 })
@@ -169,6 +198,8 @@ it("prints one issue per line and exits non-zero from the CLI", async () => {
     expect(result.exitCode).toBe(1)
     expect(result.stdout.trim().split("\n")).toEqual([
       JSON.stringify({ code: "missing-example", item: "button", detail: "button/basic" }),
+      JSON.stringify({ code: "missing-example", item: "button", detail: "button/variants" }),
+      JSON.stringify({ code: "missing-example", item: "button", detail: "button/sizes" }),
     ])
   } finally {
     await rm(repoRoot, { recursive: true, force: true })

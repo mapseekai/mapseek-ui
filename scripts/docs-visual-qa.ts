@@ -1,6 +1,6 @@
-import { chromium, expect } from "@playwright/test"
+import { type Browser, chromium, expect } from "@playwright/test"
 
-type DocsVisualCase = "smoke"
+type DocsVisualCase = "smoke" | "button"
 
 type CliOptions = {
   readonly baseUrl: string
@@ -27,7 +27,7 @@ function readCliOptions(): CliOptions {
     throw new Error("Missing required --base-url option.")
   }
 
-  if (caseName !== "smoke") {
+  if (caseName !== "smoke" && caseName !== "button") {
     throw new Error(`Unsupported docs visual QA case: ${caseName}`)
   }
 
@@ -42,10 +42,14 @@ async function assertPreviewIsAvailable(baseUrl: string) {
   }
 }
 
+async function launchBrowser(browserChannel?: string): Promise<Browser> {
+  return chromium.launch(browserChannel ? { channel: browserChannel } : undefined)
+}
+
 async function runSmokeCase(baseUrl: string, browserChannel?: string) {
   await assertPreviewIsAvailable(baseUrl)
 
-  const browser = await chromium.launch(browserChannel ? { channel: browserChannel } : undefined)
+  const browser = await launchBrowser(browserChannel)
 
   try {
     const page = await browser.newPage({ baseURL: baseUrl })
@@ -74,11 +78,62 @@ async function runSmokeCase(baseUrl: string, browserChannel?: string) {
   }
 }
 
+async function runButtonCase(baseUrl: string, browserChannel?: string) {
+  await assertPreviewIsAvailable(baseUrl)
+
+  const browser = await launchBrowser(browserChannel)
+
+  try {
+    const page = await browser.newPage({ baseURL: baseUrl })
+
+    await page.goto("/components/button")
+    await expect(page.getByRole("heading", { level: 1, name: "Button", exact: true })).toBeVisible()
+
+    const basicPreview = page.locator('[data-demo="button-basic"]')
+    const variantsPreview = page.locator('[data-demo="button-variants"]')
+    const sizesPreview = page.locator('[data-demo="button-sizes"]')
+    await expect(basicPreview).toBeVisible()
+    await expect(variantsPreview).toBeVisible()
+    await expect(sizesPreview).toBeVisible()
+
+    await expect(page.locator('[data-demo="button-variant-default"]')).toBeVisible()
+    await expect(page.locator('[data-demo="button-variant-secondary"]')).toBeVisible()
+    await expect(page.locator('[data-demo="button-variant-outline"]')).toBeVisible()
+    await expect(page.locator('[data-demo="button-variant-ghost"]')).toBeVisible()
+    await expect(page.locator('[data-demo="button-variant-destructive"]')).toBeVisible()
+    await expect(page.locator('[data-demo="button-variant-link"]')).toBeVisible()
+
+    await expect(page.locator('[data-demo="button-size-xs"]')).toBeVisible()
+    await expect(page.locator('[data-demo="button-size-sm"]')).toBeVisible()
+    await expect(page.locator('[data-demo="button-size-default"]')).toBeVisible()
+    await expect(page.locator('[data-demo="button-size-lg"]')).toBeVisible()
+
+    await page.locator('[data-demo="button-primary-action"]').click()
+    await expect(page.locator('[data-demo="button-press-count"]')).toHaveText("Presses: 1")
+
+    const basicDemo = basicPreview.locator("xpath=ancestor::section")
+    await basicDemo.locator('[data-demo-action="source"]').click()
+    await expect(basicDemo.locator("pre code")).toContainText("export function ButtonBasicDemo")
+    await expect(basicDemo.locator("pre code")).toContainText(
+      'import { Button } from "@registry/ui/button"',
+    )
+
+    await basicDemo.locator('[data-demo-action="reset"]').click()
+    await expect(basicDemo.locator('[data-reset-revision="1"]')).toBeVisible()
+    await expect(page.locator('[data-demo="button-press-count"]')).toHaveText("Presses: 0")
+  } finally {
+    await browser.close()
+  }
+}
+
 async function main() {
   const options = readCliOptions()
 
   if (options.caseName === "smoke") {
     await runSmokeCase(options.baseUrl, options.browserChannel)
+  }
+  if (options.caseName === "button") {
+    await runButtonCase(options.baseUrl, options.browserChannel)
   }
 }
 

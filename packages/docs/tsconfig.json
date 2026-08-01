@@ -5,15 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "strict": true,
-    "target": "ES2022",
-    "types": [
-      "node"
-    ]
+    "target": "ES2022"
   },
-  "include": [
-    "docusaurus.config.ts",
-    "sidebars.ts",
-    "src",
-    "docs"
-  ]
+  "include": ["docusaurus.config.ts", "sidebars.ts", "src", "docs"]
 }

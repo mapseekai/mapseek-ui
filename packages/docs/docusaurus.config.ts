@@ -1,4 +1,4 @@
-import type { Config, Preset } from "@docusaurus/types"
+import type { Config } from "@docusaurus/types"
 
 const config: Config = {
   title: "Mapseek UI",
@@ -34,7 +34,7 @@ const config: Config = {
         theme: {
           customCss: "./src/css/custom.css",
         },
-      } satisfies Preset.Options,
+      },
     ],
   ],
   themeConfig: {

@@ -174,6 +174,10 @@ async function closeWithButtonAndAssertFocus(
   await expect(trigger).toBeFocused()
 }
 
+function localizedDiscardStatus(path: string): string {
+  return path.startsWith("/en/") ? "Discarded changes" : "已放弃修改"
+}
+
 async function runDialogCase(baseUrl: string, browserChannel?: string) {
   await assertPreviewIsAvailable(baseUrl)
 
@@ -210,6 +214,14 @@ async function runDialogCase(baseUrl: string, browserChannel?: string) {
         await openAndAssertDialog(page, confirmationTrigger)
         await page.locator('[data-demo="dialog-confirmation-save"]').click()
         await expect(confirmationTrigger).toBeFocused()
+        await openAndAssertDialog(page, confirmationTrigger)
+        await closeWithButtonAndAssertFocus(
+          confirmationTrigger,
+          page.locator('[data-demo="dialog-confirmation-discard"]'),
+        )
+        await expect(page.locator('[data-demo="dialog-confirmation-status"]')).toContainText(
+          localizedDiscardStatus(path),
+        )
 
         const longContentTrigger = page.locator('[data-demo="dialog-long-content-trigger"]')
         await openAndAssertDialog(page, longContentTrigger)

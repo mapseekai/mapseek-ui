@@ -1,0 +1,65 @@
+---
+id: resource-detail-drawer
+slug: /blocks/resource-detail-drawer
+registryName: resource-detail-drawer
+category: block
+stability: stable
+examples:
+  - resource-detail-drawer/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ResourceDetailDrawerDemo, enResourceDetailDrawerLabels } from "@site/src/examples/resource-detail-drawer/overview"
+import overviewSource from "@site/src/examples/resource-detail-drawer/overview.tsx?raw"
+
+# ResourceDetailDrawer
+
+ResourceDetailDrawer is the resource-library detail drawer for icon, sprite, and font details, including font slicing configuration.
+
+## Installation
+
+<RegistryInstall registryName="resource-detail-drawer" />
+
+## Import
+
+```tsx
+import {
+  ResourceDetailDrawer,
+  type ResourceDetail,
+  type ResourceDetailDrawerProps,
+} from "@/registry/blocks/resource-detail-drawer"
+```
+
+## Icon, sprite, and font detail drawer
+
+<ComponentDemo title="Icon, sprite, and font detail drawer" description="The preview and source share the same TSX module and preserve the core Showcase states and interactions." source={overviewSource} minHeight={540}>
+  <ResourceDetailDrawerDemo labels={enResourceDetailDrawerLabels} />
+</ComponentDemo>
+
+## Usage
+
+Pass the selected resource as the discriminated union `ResourceDetail`. Close, copy, download, sprite edit, and slice execution are caller callbacks.
+
+## Public Exports and Props
+
+Exports include `ResourceDetailDrawer`, `ResourceDetail`, `IconDetail`, `SpriteDetail`, `FontDetail`, `SliceCharset`, and props.
+
+## Loading, Empty, Error, and Status
+
+The drawer is controlled by the passed `detail` and outer open state; the demo covers all three detail kinds plus close, copy, download, and slice states.
+
+## Accessibility
+
+The drawer inherits Sheet portal behavior, focus trapping, and Escape close. Keep action labels explicit.
+
+## Dependencies
+
+<RegistryDependencies registryName="resource-detail-drawer" />
+
+## Related Links
+
+- [ResourceDetailDrawer registry JSON](/r/resource-detail-drawer.json)
+- [resource-grid registry JSON](/r/resource-grid.json)
+- [placeholder-glyph registry JSON](/r/placeholder-glyph.json)
+- [sheet registry JSON](/r/sheet.json)

@@ -1,0 +1,61 @@
+---
+id: product-logo
+slug: /blocks/product-logo
+registryName: product-logo
+category: block
+stability: stable
+examples:
+  - product-logo/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ProductLogoDemo, enProductLogoLabels } from "@site/src/examples/product-logo/overview"
+import overviewSource from "@site/src/examples/product-logo/overview.tsx?raw"
+
+# ProductLogo
+
+ProductLogo is the mark lockup for Mapseek product entry points, with icon-only or icon-plus-name modes.
+
+## Installation
+
+<RegistryInstall registryName="product-logo" />
+
+## Import
+
+```tsx
+import { ProductLogo, type ProductLogoProps } from "@/registry/blocks/product-logo"
+```
+
+## Product marks and text toggle
+
+<ComponentDemo title="Product marks and text toggle" description="The preview and source share the same TSX module and preserve the core Showcase states and interactions." source={overviewSource} minHeight={520}>
+  <ProductLogoDemo labels={enProductLogoLabels} />
+</ComponentDemo>
+
+## Usage
+
+Pass `src` and `alt`, control text with `showText`, and use `label` when the displayed name differs from alt text.
+
+## Public Exports and Props
+
+Exports include `ProductLogo` and `ProductLogoProps`. Key props are `src`, `alt`, `size`, `showText`, `label`, dimensions, and className overrides.
+
+## Loading, Empty, Error, and Status
+
+The component has no loading state; image failure, product switching, and navigation state are handled by the caller.
+
+## Accessibility
+
+`alt` provides image alternative text; for decorative marks, pass an empty alt and name the outer link.
+
+## Dependencies
+
+<RegistryDependencies registryName="product-logo" />
+
+## Related Links
+
+- [ProductLogo registry JSON](/r/product-logo.json)
+- [app-top-bar registry JSON](/r/app-top-bar.json)
+- [placeholder-glyph registry JSON](/r/placeholder-glyph.json)
+- [button registry JSON](/r/button.json)

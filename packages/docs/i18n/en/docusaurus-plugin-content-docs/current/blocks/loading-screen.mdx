@@ -1,0 +1,66 @@
+---
+id: loading-screen
+slug: /blocks/loading-screen
+registryName: loading-screen
+category: block
+stability: stable
+examples:
+  - loading-screen/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { LoadingScreenDemo, enLoadingScreenLabels } from "@site/src/examples/loading-screen/overview"
+import overviewSource from "@site/src/examples/loading-screen/overview.tsx?raw"
+
+# LoadingScreen
+
+LoadingScreen is a fullscreen or container-scoped loading placeholder for map initialization, resource refreshes, and long-running jobs.
+
+## Installation
+
+<RegistryInstall registryName="loading-screen" />
+
+## Import
+
+```tsx
+import {
+  LoadingScreen,
+  DEFAULT_LOADING_SCREEN_LABELS,
+  type LoadingScreenLabels,
+  type LoadingScreenProps,
+} from "@/registry/blocks/loading-screen"
+```
+
+## Scoped loading screen
+
+<ComponentDemo title="Scoped loading screen" description="The preview and source share the same TSX module and preserve the core Showcase states and interactions." source={overviewSource} minHeight={420}>
+  <LoadingScreenDemo labels={enLoadingScreenLabels} />
+</ComponentDemo>
+
+## Usage
+
+Pass `text` for the primary message and `description` for the second line; `fullscreen` switches to viewport sizing.
+
+## Public Exports and Props
+
+Exports include `LoadingScreen`, `LoadingScreenProps`, `LoadingScreenLabels`, and `DEFAULT_LOADING_SCREEN_LABELS`. Key props are `text`, `description`, `fullscreen`, `labels`, and `className`.
+
+## Loading, Empty, Error, and Status
+
+This is the loading branch; empty and error branches should switch to Empty or error panels instead of leaving the spinner visible.
+
+## Accessibility
+
+The root uses `role="status"` and `aria-live="polite"`, suitable for non-blocking status updates.
+
+## Dependencies
+
+<RegistryDependencies registryName="loading-screen" />
+
+## Related Links
+
+- [LoadingScreen registry JSON](/r/loading-screen.json)
+- [empty registry JSON](/r/empty.json)
+- [notification-center registry JSON](/r/notification-center.json)
+- [processing-timeline registry JSON](/r/processing-timeline.json)

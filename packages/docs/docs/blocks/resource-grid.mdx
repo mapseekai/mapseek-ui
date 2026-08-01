@@ -1,0 +1,66 @@
+---
+id: resource-grid
+slug: /blocks/resource-grid
+registryName: resource-grid
+category: block
+stability: stable
+examples:
+  - resource-grid/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ResourceGridDemo, zhResourceGridLabels } from "@site/src/examples/resource-grid/overview"
+import overviewSource from "@site/src/examples/resource-grid/overview.tsx?raw"
+
+# ResourceGrid
+
+ResourceGrid 是资源库主区域，按 icon、sprite 和 font 三种 tab 渲染不同密度的卡片布局。
+
+## 安装
+
+<RegistryInstall registryName="resource-grid" />
+
+## 导入
+
+```tsx
+import {
+  ResourceGrid,
+  type ResourceGridItem,
+  type ResourceGridProps,
+  type ResourceTab,
+} from "@/registry/blocks/resource-grid"
+```
+
+## 资源卡片、选择与空态
+
+<ComponentDemo title="资源卡片、选择与空态" description="示例复用同一个 TSX 模块作为预览和源码，覆盖 Showcase 的核心状态与交互。" source={overviewSource} minHeight={620}>
+  <ResourceGridDemo labels={zhResourceGridLabels} />
+</ComponentDemo>
+
+## 用法
+
+传入当前 `tab`、对应 `items` 和打开/右键回调。icon 模式可传 `selectedIconIds` 与 `onIconSelect` 支持批量选择。
+
+## 公开导出与 Props
+
+导出 `ResourceGrid`、`ResourceGridItem`、三类 item 类型、`ResourceStatus`、`ResourceTab`、labels 和 props 类型。
+
+## 加载、空态、错误与状态
+
+空态通过 `empty` slot 注入；加载和错误由外层切换。示例覆盖 tab、选择、打开、右键菜单和空态。
+
+## 无障碍
+
+卡片是按钮，icon 选择复选框应提供 `iconSelectionLabel`。卡片名称会截断，完整名称应可从详情获取。
+
+## 依赖
+
+<RegistryDependencies registryName="resource-grid" />
+
+## 相关链接
+
+- [ResourceGrid registry JSON](/r/resource-grid.json)
+- [resource-sidebar registry JSON](/r/resource-sidebar.json)
+- [resource-detail-drawer registry JSON](/r/resource-detail-drawer.json)
+- [placeholder-glyph registry JSON](/r/placeholder-glyph.json)

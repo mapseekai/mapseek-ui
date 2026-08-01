@@ -1,0 +1,66 @@
+---
+id: service-status
+slug: /blocks/service-status
+registryName: service-status
+category: block
+stability: stable
+examples:
+  - service-status/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ServiceStatusDemo, enServiceStatusLabels } from "@site/src/examples/service-status/overview"
+import overviewSource from "@site/src/examples/service-status/overview.tsx?raw"
+
+# ServiceStatus
+
+ServiceStatus is a running/stopped indicator that can be display-only or a controlled switch.
+
+## Installation
+
+<RegistryInstall registryName="service-status" />
+
+## Import
+
+```tsx
+import {
+  ServiceStatus,
+  DEFAULT_SERVICE_STATUS_LABELS,
+  type ServiceStatusLabels,
+  type ServiceStatusProps,
+} from "@/registry/blocks/service-status"
+```
+
+## Service running state
+
+<ComponentDemo title="Service running state" description="The preview and source share the same TSX module and preserve the core Showcase states and interactions." source={overviewSource} minHeight={360}>
+  <ServiceStatusDemo labels={enServiceStatusLabels} />
+</ComponentDemo>
+
+## Usage
+
+Pass `running` to control state; pass `onChange` for interaction and omit it for read-only display. `variant` can be framed or inline.
+
+## Public Exports and Props
+
+Exports include `ServiceStatus`, `ServiceStatusProps`, `ServiceStatusLabels`, and `DEFAULT_SERVICE_STATUS_LABELS`. Key props are `running`, labels, `onChange`, `disabled`, and `variant`.
+
+## Loading, Empty, Error, and Status
+
+Running/stopped, disabled, and inline/framed states are props-driven; the demo covers read-only, interactive, and disabled states.
+
+## Accessibility
+
+The internal Switch supports keyboard toggling; adjacent status text keeps running state from relying on color or animation.
+
+## Dependencies
+
+<RegistryDependencies registryName="service-status" />
+
+## Related Links
+
+- [ServiceStatus registry JSON](/r/service-status.json)
+- [switch registry JSON](/r/switch.json)
+- [notification-center registry JSON](/r/notification-center.json)
+- [service-endpoint-row registry JSON](/r/service-endpoint-row.json)

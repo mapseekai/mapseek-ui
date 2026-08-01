@@ -1,0 +1,66 @@
+---
+id: notification-center
+slug: /blocks/notification-center
+registryName: notification-center
+category: block
+stability: stable
+examples:
+  - notification-center/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { NotificationCenterDemo, zhNotificationCenterLabels } from "@site/src/examples/notification-center/overview"
+import overviewSource from "@site/src/examples/notification-center/overview.tsx?raw"
+
+# NotificationCenter
+
+NotificationCenter 是 header 中的通知下拉，展示处理任务、来源、流状态和清理动作。
+
+## 安装
+
+<RegistryInstall registryName="notification-center" />
+
+## 导入
+
+```tsx
+import {
+  NotificationCenter,
+  type NotificationCenterItem,
+  type NotificationCenterLabels,
+  type NotificationCenterProps,
+} from "@/registry/blocks/notification-center"
+```
+
+## 通知、加载、错误与空态
+
+<ComponentDemo title="通知、加载、错误与空态" description="示例复用同一个 TSX 模块作为预览和源码，覆盖 Showcase 的核心状态与交互。" source={overviewSource} minHeight={520}>
+  <NotificationCenterDemo labels={zhNotificationCenterLabels} />
+</ComponentDemo>
+
+## 用法
+
+传入受控 `items`、本地化 labels 和 `streamActive`。清空、单条清理和重试都通过回调交给调用方。
+
+## 公开导出与 Props
+
+导出 `NotificationCenter`、`NotificationCenterItem`、`NotificationCenterLabels`、`NotificationCenterStatusTone` 和 props 类型。状态字段包括 `isLoading`、`isError`、`streamActive`。
+
+## 加载、空态、错误与状态
+
+组件内置 loading skeleton、错误重试、空态和有数据 summary。示例按钮覆盖四条路径。
+
+## 无障碍
+
+触发器使用 `labels.trigger` 作为可访问名称；下拉内容继承 DropdownMenu 的键盘和焦点管理。
+
+## 依赖
+
+<RegistryDependencies registryName="notification-center" />
+
+## 相关链接
+
+- [NotificationCenter registry JSON](/r/notification-center.json)
+- [dropdown-menu registry JSON](/r/dropdown-menu.json)
+- [empty registry JSON](/r/empty.json)
+- [service-status registry JSON](/r/service-status.json)

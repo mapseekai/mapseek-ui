@@ -1,0 +1,66 @@
+---
+id: service-status
+slug: /blocks/service-status
+registryName: service-status
+category: block
+stability: stable
+examples:
+  - service-status/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ServiceStatusDemo, zhServiceStatusLabels } from "@site/src/examples/service-status/overview"
+import overviewSource from "@site/src/examples/service-status/overview.tsx?raw"
+
+# ServiceStatus
+
+ServiceStatus 是服务运行/停止状态指示器，可作为纯展示状态或受控开关。
+
+## 安装
+
+<RegistryInstall registryName="service-status" />
+
+## 导入
+
+```tsx
+import {
+  ServiceStatus,
+  DEFAULT_SERVICE_STATUS_LABELS,
+  type ServiceStatusLabels,
+  type ServiceStatusProps,
+} from "@/registry/blocks/service-status"
+```
+
+## 服务运行状态
+
+<ComponentDemo title="服务运行状态" description="示例复用同一个 TSX 模块作为预览和源码，覆盖 Showcase 的核心状态与交互。" source={overviewSource} minHeight={360}>
+  <ServiceStatusDemo labels={zhServiceStatusLabels} />
+</ComponentDemo>
+
+## 用法
+
+传 `running` 控制状态；需要交互时传 `onChange`，只读时省略回调。`variant` 可为 framed 或 inline。
+
+## 公开导出与 Props
+
+导出 `ServiceStatus`、`ServiceStatusProps`、`ServiceStatusLabels` 和 `DEFAULT_SERVICE_STATUS_LABELS`。关键 props 是 `running`、labels、`onChange`、`disabled`、`variant`。
+
+## 加载、空态、错误与状态
+
+running/stopped、disabled 和 inline/framed 都通过 props 控制；示例覆盖只读、可交互和禁用。
+
+## 无障碍
+
+内部 Switch 提供键盘切换；旁边的状态文字让运行状态不依赖颜色和动效。
+
+## 依赖
+
+<RegistryDependencies registryName="service-status" />
+
+## 相关链接
+
+- [ServiceStatus registry JSON](/r/service-status.json)
+- [switch registry JSON](/r/switch.json)
+- [notification-center registry JSON](/r/notification-center.json)
+- [service-endpoint-row registry JSON](/r/service-endpoint-row.json)

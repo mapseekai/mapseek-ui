@@ -1,0 +1,67 @@
+---
+id: storage-meter
+slug: /blocks/storage-meter
+registryName: storage-meter
+category: block
+stability: stable
+examples:
+  - storage-meter/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StorageMeterDemo, zhStorageMeterLabels } from "@site/src/examples/storage-meter/overview"
+import overviewSource from "@site/src/examples/storage-meter/overview.tsx?raw"
+
+# StorageMeter
+
+StorageMeter 是本地存储用量 chip，展开后显示 OPFS、IndexedDB、Caches 等明细。
+
+## 安装
+
+<RegistryInstall registryName="storage-meter" />
+
+## 导入
+
+```tsx
+import {
+  StorageMeter,
+  formatBytes,
+  type StorageMeterData,
+  type StorageMeterLabels,
+  type StorageMeterProps,
+} from "@/registry/blocks/storage-meter"
+```
+
+## 存储用量与明细 popover
+
+<ComponentDemo title="存储用量与明细 popover" description="示例复用同一个 TSX 模块作为预览和源码，覆盖 Showcase 的核心状态与交互。" source={overviewSource} minHeight={460}>
+  <StorageMeterDemo labels={zhStorageMeterLabels} />
+</ComponentDemo>
+
+## 用法
+
+把 `navigator.storage.estimate()` 或后端配额结果整理成 `StorageMeterData`，并传入 labels、刷新回调和可选 footer。
+
+## 公开导出与 Props
+
+导出 `StorageMeter`、`formatBytes`、`StorageMeterData`、`StorageMeterLabels` 和 props。关键 props 是 `data`、`loading`、`error`、`errorLabel`、`onRefresh`、`footer`。
+
+## 加载、空态、错误与状态
+
+支持正常、接近上限、unsupported、loading refresh 和 error 文案。示例覆盖正常、高水位和不支持三种数据。
+
+## 无障碍
+
+触发按钮的 aria-label 包含已用、配额和百分比；unsupported 分支通过 tooltip 解释原因。
+
+## 依赖
+
+<RegistryDependencies registryName="storage-meter" />
+
+## 相关链接
+
+- [StorageMeter registry JSON](/r/storage-meter.json)
+- [popover registry JSON](/r/popover.json)
+- [progress registry JSON](/r/progress.json)
+- [tooltip registry JSON](/r/tooltip.json)

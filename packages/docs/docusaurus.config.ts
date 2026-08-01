@@ -17,6 +17,7 @@ function mapseekUiDocsPlugin(): Plugin {
       return {
         resolve: {
           alias: {
+            "@/components/blocks": path.resolve(workspaceRoot, "registry/blocks"),
             "@/components/ui": path.resolve(workspaceRoot, "registry/ui"),
             "@/lib/mapseek-labels": path.resolve(workspaceRoot, "registry/lib/labels.ts"),
             "@/lib/svg-data-uri": path.resolve(workspaceRoot, "registry/lib/svg-data-uri.ts"),

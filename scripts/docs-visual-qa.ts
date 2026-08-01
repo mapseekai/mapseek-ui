@@ -655,6 +655,96 @@ const blockPages = [
     sourceFunction: "SplitToolPickerDemo",
     importPath: "@registry/blocks/split-tool-picker",
   },
+  {
+    name: "band-stat",
+    demo: "band-stat",
+    sourceFunction: "BandStatDemo",
+    importPath: "@registry/blocks/band-stat",
+  },
+  {
+    name: "linked-ref-list",
+    demo: "linked-ref-list",
+    sourceFunction: "LinkedRefListDemo",
+    importPath: "@registry/blocks/linked-ref-list",
+  },
+  {
+    name: "loading-screen",
+    demo: "loading-screen",
+    sourceFunction: "LoadingScreenDemo",
+    importPath: "@registry/blocks/loading-screen",
+  },
+  {
+    name: "notification-center",
+    demo: "notification-center",
+    sourceFunction: "NotificationCenterDemo",
+    importPath: "@registry/blocks/notification-center",
+  },
+  {
+    name: "placeholder-glyph",
+    demo: "placeholder-glyph",
+    sourceFunction: "PlaceholderGlyphDemo",
+    importPath: "@registry/blocks/placeholder-glyph",
+  },
+  {
+    name: "processing-timeline",
+    demo: "processing-timeline",
+    sourceFunction: "ProcessingTimelineDemo",
+    importPath: "@registry/blocks/processing-timeline",
+  },
+  {
+    name: "product-logo",
+    demo: "product-logo",
+    sourceFunction: "ProductLogoDemo",
+    importPath: "@registry/blocks/product-logo",
+  },
+  {
+    name: "resource-detail-drawer",
+    demo: "resource-detail-drawer",
+    sourceFunction: "ResourceDetailDrawerDemo",
+    importPath: "@registry/blocks/resource-detail-drawer",
+  },
+  {
+    name: "resource-grid",
+    demo: "resource-grid",
+    sourceFunction: "ResourceGridDemo",
+    importPath: "@registry/blocks/resource-grid",
+  },
+  {
+    name: "resource-sidebar",
+    demo: "resource-sidebar",
+    sourceFunction: "ResourceSidebarDemo",
+    importPath: "@registry/blocks/resource-sidebar",
+  },
+  {
+    name: "resource-status",
+    demo: "resource-status",
+    sourceFunction: "ResourceStatusDemo",
+    importPath: "@registry/blocks/resource-status",
+  },
+  {
+    name: "service-endpoint-row",
+    demo: "service-endpoint-row",
+    sourceFunction: "ServiceEndpointRowDemo",
+    importPath: "@registry/blocks/service-endpoint-row",
+  },
+  {
+    name: "service-status",
+    demo: "service-status",
+    sourceFunction: "ServiceStatusDemo",
+    importPath: "@registry/blocks/service-status",
+  },
+  {
+    name: "stat-strip",
+    demo: "stat-strip",
+    sourceFunction: "StatStripDemo",
+    importPath: "@registry/blocks/stat-strip",
+  },
+  {
+    name: "storage-meter",
+    demo: "storage-meter",
+    sourceFunction: "StorageMeterDemo",
+    importPath: "@registry/blocks/storage-meter",
+  },
 ] as const satisfies readonly BlockPage[]
 
 function titleFromName(name: string): string {
@@ -1416,6 +1506,242 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
     )
     await demo.getByLabel(localized(path, "切换为空图层选项", "Toggle empty layer options")).check()
     await expect(demo).toContainText(localized(path, "暂无图层", "No layers"))
+  }
+
+  if (block === "band-stat") {
+    const demo = page.locator('[data-demo="band-stat"]')
+    await expect(demo.locator('[data-demo-status="band-stat"]')).toContainText("B1")
+    await demo.locator('[data-demo-action="band-stat-next"]').click()
+    await expect(demo.locator('[data-demo-status="band-stat"]')).toContainText("B4")
+    await assertNoHorizontalOverflow(demo, `${path} band stat`)
+  }
+
+  if (block === "linked-ref-list") {
+    const demo = page.locator('[data-demo="linked-ref-list"]')
+    await demo.getByRole("button", { name: /Workflows/ }).click()
+    await expect(demo).toContainText("workflow.5f01-72cd")
+    await demo.getByRole("button", { name: /Mapsets/ }).click()
+    await expect(demo).toContainText("mapset.18bd-44f0")
+    await assertNoHorizontalOverflow(demo, `${path} linked refs`)
+  }
+
+  if (block === "loading-screen") {
+    const demo = page.locator('[data-demo="loading-screen"]')
+    await expect(demo.getByRole("status")).toContainText(
+      localized(path, "正在初始化图层与样式", "Initializing layers and styles"),
+    )
+    await demo.locator('[data-demo-action="loading-screen-toggle"]').click()
+    await expect(demo.locator('[data-demo-status="loading-screen"]')).toContainText(
+      localized(path, "加载中...", "Loading..."),
+    )
+  }
+
+  if (block === "notification-center") {
+    const demo = page.locator('[data-demo="notification-center"]')
+    const trigger = demo.getByRole("button", {
+      name: localized(path, "通知中心", "Notification center"),
+      exact: true,
+    })
+    await openMenuWithKeyboard(
+      page,
+      trigger,
+      page.locator('[data-slot="dropdown-menu-content"]').last(),
+    )
+    await expect(page.locator('[data-slot="dropdown-menu-content"]').last()).toContainText("TOTAL")
+    await page.keyboard.press("Escape")
+    await expect(trigger).toBeFocused()
+
+    await demo.locator('[data-demo-action="notification-center-loading"]').click()
+    await trigger.click()
+    await expect(
+      page
+        .locator('[data-slot="dropdown-menu-content"]')
+        .last()
+        .getByRole("status", {
+          name: localized(path, "正在加载通知", "Loading notifications"),
+          exact: true,
+        }),
+    ).toBeVisible()
+    await page.keyboard.press("Escape")
+
+    await demo.locator('[data-demo-action="notification-center-error"]').click()
+    await trigger.click()
+    await page.getByRole("button", { name: localized(path, "重试", "Retry"), exact: true }).click()
+    await expect(demo.locator('[data-demo-status="notification-center"]')).toContainText(
+      localized(path, "已重试", "Retried"),
+    )
+    await page.keyboard.press("Escape")
+
+    await activateByKeyboard(demo.locator('[data-demo-action="notification-center-empty"]'))
+    await trigger.click()
+    await expect(page.locator('[data-slot="dropdown-menu-content"]').last()).toContainText(
+      localized(path, "暂无新通知", "No new notifications"),
+    )
+    await page.keyboard.press("Escape")
+    await activateByKeyboard(demo.locator('[data-demo-action="notification-center-reset"]'))
+  }
+
+  if (block === "placeholder-glyph") {
+    const demo = page.locator('[data-demo="placeholder-glyph"]')
+    await expect(demo.locator("svg")).toHaveCount(13)
+    await demo.locator('[data-demo-action="placeholder-glyph-toggle"]').click()
+    await expect(demo.locator('[data-demo-status="placeholder-glyph"]')).toContainText("muted")
+  }
+
+  if (block === "processing-timeline") {
+    const demo = page.locator('[data-demo="processing-timeline"]')
+    await demo.locator('[data-demo-action="processing-timeline-advance"]').click()
+    await expect(demo.locator('[data-demo-status="processing-timeline"]')).toContainText("55%")
+    await demo.getByRole("button", { name: localized(path, "复制", "Copy"), exact: true }).click()
+    await expect(demo.locator('[data-demo-status="processing-timeline"]')).toContainText(
+      localized(path, "已复制日志", "Copied log"),
+    )
+  }
+
+  if (block === "product-logo") {
+    const demo = page.locator('[data-demo="product-logo"]')
+    await expect(demo).toContainText("Mapseek Cloud")
+    await demo.locator('[data-demo-action="product-logo-toggle"]').click()
+    await expect(demo.locator('[data-demo-status="product-logo"]')).toContainText(
+      localized(path, "隐藏文字", "Text hidden"),
+    )
+  }
+
+  if (block === "resource-detail-drawer") {
+    const demo = page.locator('[data-demo="resource-detail-drawer"]')
+    const sheet = page.locator('[data-slot="sheet-content"]').last()
+    await demo
+      .getByRole("button", {
+        name: localized(path, "图标详情", "Icon detail"),
+        exact: true,
+      })
+      .click()
+    await assertPortalFits(sheet, `${path} resource detail drawer`)
+    await page.keyboard.press("Escape")
+    await expect(page.locator('[data-slot="sheet-content"]')).toBeHidden()
+    await expect(demo.locator('[data-demo-status="resource-detail-drawer"]')).toContainText(
+      localized(path, "已关闭", "Closed"),
+    )
+
+    await demo
+      .getByRole("button", {
+        name: localized(path, "字体详情", "Font detail"),
+        exact: true,
+      })
+      .click()
+    await assertPortalFits(sheet, `${path} resource font drawer`)
+    await sheet
+      .getByRole("button", {
+        name: "Configure slice",
+        exact: true,
+      })
+      .click()
+    await sheet.getByRole("button", { name: "Run slice", exact: true }).click()
+    await expect(demo.locator('[data-demo-status="resource-detail-drawer"]')).toContainText(
+      localized(path, "已执行切片", "Ran font slice"),
+    )
+    await sheet
+      .getByRole("button", {
+        name: /关闭|Close/,
+        exact: true,
+      })
+      .click()
+    await expect(page.locator('[data-slot="sheet-content"]')).toBeHidden()
+  }
+
+  if (block === "resource-grid") {
+    const demo = page.locator('[data-demo="resource-grid"]')
+    await demo.getByRole("checkbox", { name: /Locate/ }).check()
+    await expect(demo.locator('[data-demo-status="resource-grid"]')).toContainText(
+      localized(path, "已选择", "Selected"),
+    )
+    await demo.locator('[data-demo-action="resource-grid-tab-sprite"]').click()
+    await demo.getByRole("button", { name: /basic-icons-32/ }).click()
+    await expect(demo.locator('[data-demo-status="resource-grid"]')).toContainText(
+      localized(path, "已打开", "Opened"),
+    )
+    await demo.locator('[data-demo-action="resource-grid-empty"]').click()
+    await expect(demo).toContainText(localized(path, "暂无资源", "No resources"))
+    await assertNoHorizontalOverflow(demo, `${path} resource grid`)
+  }
+
+  if (block === "resource-sidebar") {
+    const demo = page.locator('[data-demo="resource-sidebar"]')
+    await demo.getByRole("button", { name: localized(path, "字体", "Fonts") }).click()
+    await expect(demo.locator('[data-demo-status="resource-sidebar"]')).toContainText("font")
+    await demo.getByRole("button", { name: /Latin|拉丁/ }).click()
+    await expect(demo.locator('[data-demo-status="resource-sidebar"]')).toContainText("fc_latin")
+    await demo.getByRole("button", { name: localized(path, "新建分类", "New category") }).click()
+    await expect(demo.locator('[data-demo-status="resource-sidebar"]')).toContainText(
+      localized(path, "已新建分类", "Created category"),
+    )
+    await assertNoHorizontalOverflow(demo, `${path} resource sidebar`)
+  }
+
+  if (block === "resource-status") {
+    const demo = page.locator('[data-demo="resource-status"]')
+    await expect(demo.locator('[data-demo-status="resource-status"]')).toContainText("ready")
+    await demo.locator('[data-demo-action="resource-status-next"]').click()
+    await expect(demo.locator('[data-demo-status="resource-status"]')).toContainText("processing")
+  }
+
+  if (block === "service-endpoint-row") {
+    const demo = page.locator('[data-demo="service-endpoint-row"]')
+    await demo
+      .getByRole("button", { name: localized(path, "复制 URL", "Copy URL"), exact: true })
+      .first()
+      .click()
+    await expect(demo.locator('[data-demo-status="service-endpoint-row"]')).toContainText(
+      localized(path, "已复制 URL", "Copied URL"),
+    )
+    await demo
+      .getByRole("button", {
+        name: localized(path, "新窗口打开", "Open in new window"),
+        exact: true,
+      })
+      .nth(1)
+      .click()
+    await expect(demo.locator('[data-demo-status="service-endpoint-row"]')).toContainText(
+      localized(path, "已打开服务", "Opened service"),
+    )
+  }
+
+  if (block === "service-status") {
+    const demo = page.locator('[data-demo="service-status"]')
+    await expect(demo.locator('[data-demo-status="service-status"]')).toContainText("true")
+    await demo.getByRole("switch").nth(2).click()
+    await expect(demo.locator('[data-demo-status="service-status"]')).toContainText("false")
+  }
+
+  if (block === "stat-strip") {
+    const demo = page.locator('[data-demo="stat-strip"]')
+    await expect(demo.locator('[data-demo-status="stat-strip"]')).toContainText(
+      localized(path, "数据集统计", "Dataset stats"),
+    )
+    await demo.locator('[data-demo-action="stat-strip-toggle"]').click()
+    await expect(demo.locator('[data-demo-status="stat-strip"]')).toContainText(
+      localized(path, "栅格统计", "Raster stats"),
+    )
+    await assertNoHorizontalOverflow(demo, `${path} stat strip`)
+  }
+
+  if (block === "storage-meter") {
+    const demo = page.locator('[data-demo="storage-meter"]')
+    await demo.locator('[data-demo-action="storage-meter-full"]').click()
+    await expect(demo.locator('[data-demo-status="storage-meter"]')).toContainText(
+      localized(path, "接近上限", "Near limit"),
+    )
+    const trigger = demo.getByRole("button", { name: new RegExp(localized(path, "已用", "Used")) })
+    await trigger.click()
+    const popover = page.locator('[data-slot="popover-content"]').last()
+    await assertPortalFits(popover, `${path} storage meter popover`)
+    await popover.getByRole("button", { name: localized(path, "刷新", "Refresh") }).click()
+    await expect(demo.locator('[data-demo-status="storage-meter"]')).toContainText(
+      localized(path, "已刷新", "Refreshed"),
+    )
+    await page.keyboard.press("Escape")
+    await demo.locator('[data-demo-action="storage-meter-unsupported"]').click()
+    await expect(demo).toContainText(localized(path, "不支持", "Unsupported"))
   }
 }
 

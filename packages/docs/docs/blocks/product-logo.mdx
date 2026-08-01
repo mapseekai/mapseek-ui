@@ -1,0 +1,61 @@
+---
+id: product-logo
+slug: /blocks/product-logo
+registryName: product-logo
+category: block
+stability: stable
+examples:
+  - product-logo/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ProductLogoDemo, zhProductLogoLabels } from "@site/src/examples/product-logo/overview"
+import overviewSource from "@site/src/examples/product-logo/overview.tsx?raw"
+
+# ProductLogo
+
+ProductLogo 是 Mapseek 子产品入口的标识组合，可只显示图形，也可显示图形加名称。
+
+## 安装
+
+<RegistryInstall registryName="product-logo" />
+
+## 导入
+
+```tsx
+import { ProductLogo, type ProductLogoProps } from "@/registry/blocks/product-logo"
+```
+
+## 产品标识与文字开关
+
+<ComponentDemo title="产品标识与文字开关" description="示例复用同一个 TSX 模块作为预览和源码，覆盖 Showcase 的核心状态与交互。" source={overviewSource} minHeight={520}>
+  <ProductLogoDemo labels={zhProductLogoLabels} />
+</ComponentDemo>
+
+## 用法
+
+传 `src` 和 `alt`，用 `showText` 控制文字，必要时用 `label` 覆盖显示名称。
+
+## 公开导出与 Props
+
+导出 `ProductLogo` 和 `ProductLogoProps`。关键 props 是 `src`、`alt`、`size`、`showText`、`label`、尺寸和 className 覆盖。
+
+## 加载、空态、错误与状态
+
+组件无加载状态；图片加载失败、产品切换和导航状态由调用方处理。
+
+## 无障碍
+
+`alt` 用于图片替代文本；纯装饰时可传空 alt 并由外层链接提供名称。
+
+## 依赖
+
+<RegistryDependencies registryName="product-logo" />
+
+## 相关链接
+
+- [ProductLogo registry JSON](/r/product-logo.json)
+- [app-top-bar registry JSON](/r/app-top-bar.json)
+- [placeholder-glyph registry JSON](/r/placeholder-glyph.json)
+- [button registry JSON](/r/button.json)

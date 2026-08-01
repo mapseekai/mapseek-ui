@@ -1,0 +1,66 @@
+---
+id: band-stat
+slug: /blocks/band-stat
+registryName: band-stat
+category: block
+stability: stable
+examples:
+  - band-stat/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { BandStatDemo, enBandStatLabels } from "@site/src/examples/band-stat/overview"
+import overviewSource from "@site/src/examples/band-stat/overview.tsx?raw"
+
+# BandStat
+
+BandStat displays min, max, mean, stddev, and a 64-bin histogram for one raster band, suited to raster detail, pixel diagnostics, and processing result views.
+
+## Installation
+
+<RegistryInstall registryName="band-stat" />
+
+## Import
+
+```tsx
+import {
+  BandStat,
+  type BandStatData,
+  type BandStatLabels,
+  type BandStatProps,
+} from "@/registry/blocks/band-stat"
+```
+
+## Band statistics and histogram
+
+<ComponentDemo title="Band statistics and histogram" description="The preview and source share the same TSX module and preserve the core Showcase states and interactions." source={overviewSource} minHeight={620}>
+  <BandStatDemo labels={enBandStatLabels} />
+</ComponentDemo>
+
+## Usage
+
+Shape backend statistics as `BandStatData` and inject localized `BandStatLabels`. The demo preserves the Showcase band switch while the caller owns the selected band and loading lifecycle.
+
+## Public Exports and Props
+
+Exports include `BandStat`, `BandStatData`, `BandStatLabels`, and `BandStatProps`. Key props are `data.band`, `data.histogram`, the four summary values, and axis / tooltip labels.
+
+## Loading, Empty, Error, and Status
+
+The block renders available data only; loading, empty, and error branches should be switched by the outer detail panel with LoadingScreen, Empty, or an error message.
+
+## Accessibility
+
+The histogram uses the Recharts accessibility layer. Keep numeric values paired with clear labels, and do not distinguish bands by color alone.
+
+## Dependencies
+
+<RegistryDependencies registryName="band-stat" />
+
+## Related Links
+
+- [BandStat registry JSON](/r/band-stat.json)
+- [chart registry JSON](/r/chart.json)
+- [stat-strip registry JSON](/r/stat-strip.json)
+- [loading-screen registry JSON](/r/loading-screen.json)

@@ -271,6 +271,111 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "band-stat",
+    {
+      category: "block",
+      examples: ["band-stat/overview"],
+    },
+  ],
+  [
+    "linked-ref-list",
+    {
+      category: "block",
+      examples: ["linked-ref-list/overview"],
+    },
+  ],
+  [
+    "loading-screen",
+    {
+      category: "block",
+      examples: ["loading-screen/overview"],
+    },
+  ],
+  [
+    "notification-center",
+    {
+      category: "block",
+      examples: ["notification-center/overview"],
+    },
+  ],
+  [
+    "placeholder-glyph",
+    {
+      category: "block",
+      examples: ["placeholder-glyph/overview"],
+    },
+  ],
+  [
+    "processing-timeline",
+    {
+      category: "block",
+      examples: ["processing-timeline/overview"],
+    },
+  ],
+  [
+    "product-logo",
+    {
+      category: "block",
+      examples: ["product-logo/overview"],
+    },
+  ],
+  [
+    "resource-detail-drawer",
+    {
+      category: "block",
+      examples: ["resource-detail-drawer/overview"],
+    },
+  ],
+  [
+    "resource-grid",
+    {
+      category: "block",
+      examples: ["resource-grid/overview"],
+    },
+  ],
+  [
+    "resource-sidebar",
+    {
+      category: "block",
+      examples: ["resource-sidebar/overview"],
+    },
+  ],
+  [
+    "resource-status",
+    {
+      category: "block",
+      examples: ["resource-status/overview"],
+    },
+  ],
+  [
+    "service-endpoint-row",
+    {
+      category: "block",
+      examples: ["service-endpoint-row/overview"],
+    },
+  ],
+  [
+    "service-status",
+    {
+      category: "block",
+      examples: ["service-status/overview"],
+    },
+  ],
+  [
+    "stat-strip",
+    {
+      category: "block",
+      examples: ["stat-strip/overview"],
+    },
+  ],
+  [
+    "storage-meter",
+    {
+      category: "block",
+      examples: ["storage-meter/overview"],
+    },
+  ],
+  [
     "add-field-form",
     {
       category: "block",

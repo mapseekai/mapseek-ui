@@ -1,0 +1,65 @@
+---
+id: stat-strip
+slug: /blocks/stat-strip
+registryName: stat-strip
+category: block
+stability: stable
+examples:
+  - stat-strip/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StatStripDemo, enStatStripLabels } from "@site/src/examples/stat-strip/overview"
+import overviewSource from "@site/src/examples/stat-strip/overview.tsx?raw"
+
+# StatStrip
+
+StatStrip shows a small set of key metrics at the top of detail views, suited to dataset, raster, and service summaries.
+
+## Installation
+
+<RegistryInstall registryName="stat-strip" />
+
+## Import
+
+```tsx
+import {
+  StatStrip,
+  type StatItem,
+  type StatStripProps,
+} from "@/registry/blocks/stat-strip"
+```
+
+## Horizontal stat strip
+
+<ComponentDemo title="Horizontal stat strip" description="The preview and source share the same TSX module and preserve the core Showcase states and interactions." source={overviewSource} minHeight={360}>
+  <StatStripDemo labels={enStatStripLabels} />
+</ComponentDemo>
+
+## Usage
+
+Pass an `items` array with label and value plus optional unit, icon, badge, and mono. The wrapper owns responsive scrolling or wrapping.
+
+## Public Exports and Props
+
+Exports include `StatStrip`, `StatItem`, and `StatStripProps`. The component only receives `items`.
+
+## Loading, Empty, Error, and Status
+
+The component has no internal state; loading/empty/error should be replaced by skeleton, empty, or error summaries in the wrapper. The demo switches between two metric sets.
+
+## Accessibility
+
+Every item needs a text label. Icons and badges are supplementary and should not replace metric names.
+
+## Dependencies
+
+<RegistryDependencies registryName="stat-strip" />
+
+## Related Links
+
+- [StatStrip registry JSON](/r/stat-strip.json)
+- [band-stat registry JSON](/r/band-stat.json)
+- [badge registry JSON](/r/badge.json)
+- [resource-status registry JSON](/r/resource-status.json)

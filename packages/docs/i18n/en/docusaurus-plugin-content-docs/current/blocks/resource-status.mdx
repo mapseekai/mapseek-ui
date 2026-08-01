@@ -1,0 +1,65 @@
+---
+id: resource-status
+slug: /blocks/resource-status
+registryName: resource-status
+category: block
+stability: stable
+examples:
+  - resource-status/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ResourceStatusDemo, enResourceStatusLabels } from "@site/src/examples/resource-status/overview"
+import overviewSource from "@site/src/examples/resource-status/overview.tsx?raw"
+
+# ResourceStatusBadge
+
+ResourceStatusBadge provides unified status markers for resource grids, detail views, and processing lists.
+
+## Installation
+
+<RegistryInstall registryName="resource-status" />
+
+## Import
+
+```tsx
+import {
+  ResourceStatusBadge,
+  type ResourceStatusBadgeProps,
+  type ResourceStatusTone,
+} from "@/registry/blocks/resource-status"
+```
+
+## Resource status badges
+
+<ComponentDemo title="Resource status badges" description="The preview and source share the same TSX module and preserve the core Showcase states and interactions." source={overviewSource} minHeight={320}>
+  <ResourceStatusDemo labels={enResourceStatusLabels} />
+</ComponentDemo>
+
+## Usage
+
+Pass semantic `tone` and localized `label`. Tone controls icon and color, while label keeps status from being color-only.
+
+## Public Exports and Props
+
+Exports include `ResourceStatusBadge`, `ResourceStatusBadgeProps`, and `ResourceStatusTone`. Tone can be `ready`, `processing`, `failed`, or `neutral`.
+
+## Loading, Empty, Error, and Status
+
+The component has no internal state; processing tone shows a spinner icon. The demo cycles current state and displays every tone.
+
+## Accessibility
+
+Always include a text label for status; do not rely on icon color alone inside tables or cards.
+
+## Dependencies
+
+<RegistryDependencies registryName="resource-status" />
+
+## Related Links
+
+- [ResourceStatusBadge registry JSON](/r/resource-status.json)
+- [resource-grid registry JSON](/r/resource-grid.json)
+- [notification-center registry JSON](/r/notification-center.json)
+- [badge registry JSON](/r/badge.json)

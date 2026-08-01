@@ -1,0 +1,67 @@
+---
+id: storage-meter
+slug: /blocks/storage-meter
+registryName: storage-meter
+category: block
+stability: stable
+examples:
+  - storage-meter/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StorageMeterDemo, enStorageMeterLabels } from "@site/src/examples/storage-meter/overview"
+import overviewSource from "@site/src/examples/storage-meter/overview.tsx?raw"
+
+# StorageMeter
+
+StorageMeter is a local storage usage chip with an expanded breakdown for OPFS, IndexedDB, Caches, and related buckets.
+
+## Installation
+
+<RegistryInstall registryName="storage-meter" />
+
+## Import
+
+```tsx
+import {
+  StorageMeter,
+  formatBytes,
+  type StorageMeterData,
+  type StorageMeterLabels,
+  type StorageMeterProps,
+} from "@/registry/blocks/storage-meter"
+```
+
+## Storage usage and detail popover
+
+<ComponentDemo title="Storage usage and detail popover" description="The preview and source share the same TSX module and preserve the core Showcase states and interactions." source={overviewSource} minHeight={460}>
+  <StorageMeterDemo labels={enStorageMeterLabels} />
+</ComponentDemo>
+
+## Usage
+
+Shape `navigator.storage.estimate()` or backend quota results as `StorageMeterData`, then pass labels, refresh callback, and optional footer.
+
+## Public Exports and Props
+
+Exports include `StorageMeter`, `formatBytes`, `StorageMeterData`, `StorageMeterLabels`, and props. Key props are `data`, `loading`, `error`, `errorLabel`, `onRefresh`, and `footer`.
+
+## Loading, Empty, Error, and Status
+
+Supports normal, near-limit, unsupported, loading refresh, and error messaging. The demo covers normal, high-watermark, and unsupported data.
+
+## Accessibility
+
+The trigger aria-label includes used storage, quota, and percentage; the unsupported branch explains the reason through a tooltip.
+
+## Dependencies
+
+<RegistryDependencies registryName="storage-meter" />
+
+## Related Links
+
+- [StorageMeter registry JSON](/r/storage-meter.json)
+- [popover registry JSON](/r/popover.json)
+- [progress registry JSON](/r/progress.json)
+- [tooltip registry JSON](/r/tooltip.json)

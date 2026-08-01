@@ -1,0 +1,66 @@
+---
+id: band-stat
+slug: /blocks/band-stat
+registryName: band-stat
+category: block
+stability: stable
+examples:
+  - band-stat/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { BandStatDemo, zhBandStatLabels } from "@site/src/examples/band-stat/overview"
+import overviewSource from "@site/src/examples/band-stat/overview.tsx?raw"
+
+# BandStat
+
+BandStat 展示单个栅格波段的 min、max、mean、stddev 和 64-bin 直方图，适合放在栅格详情、像元诊断或处理结果页。
+
+## 安装
+
+<RegistryInstall registryName="band-stat" />
+
+## 导入
+
+```tsx
+import {
+  BandStat,
+  type BandStatData,
+  type BandStatLabels,
+  type BandStatProps,
+} from "@/registry/blocks/band-stat"
+```
+
+## 波段统计与直方图
+
+<ComponentDemo title="波段统计与直方图" description="示例复用同一个 TSX 模块作为预览和源码，覆盖 Showcase 的核心状态与交互。" source={overviewSource} minHeight={620}>
+  <BandStatDemo labels={zhBandStatLabels} />
+</ComponentDemo>
+
+## 用法
+
+把后端统计结果整理成 `BandStatData`，并注入本地化 `BandStatLabels`。示例保留 Showcase 的波段切换，调用方拥有当前波段索引和数据加载。
+
+## 公开导出与 Props
+
+导出 `BandStat`、`BandStatData`、`BandStatLabels` 和 `BandStatProps`。关键 props 是 `data.band`、`data.histogram`、四个统计值以及 labels 中的轴名和 tooltip 文案。
+
+## 加载、空态、错误与状态
+
+组件本身只渲染已获得的数据；加载、空态和错误应由外层详情面板切换到 LoadingScreen、Empty 或错误提示。
+
+## 无障碍
+
+直方图使用 Recharts accessibility layer。数值保持等宽和明确 label；不要只用颜色区分波段。
+
+## 依赖
+
+<RegistryDependencies registryName="band-stat" />
+
+## 相关链接
+
+- [BandStat registry JSON](/r/band-stat.json)
+- [chart registry JSON](/r/chart.json)
+- [stat-strip registry JSON](/r/stat-strip.json)
+- [loading-screen registry JSON](/r/loading-screen.json)

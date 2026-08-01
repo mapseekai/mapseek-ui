@@ -2,8 +2,6 @@ import { Block, Collapser, Fieldset, ScrollContainer } from "@registry/blocks/la
 import { Input } from "@registry/ui/input"
 import { useState } from "react"
 
-const rows = Array.from({ length: 20 }, (_, index) => `row ${String(index + 1).padStart(2, "0")}`)
-
 export type LayoutDemoLabels = {
   readonly blockGroup: string
   readonly fillColor: string
@@ -12,6 +10,7 @@ export type LayoutDemoLabels = {
   readonly expand: string
   readonly collapse: string
   readonly action: string
+  readonly rowPrefix: string
   readonly rowSuffix: string
 }
 
@@ -23,6 +22,7 @@ export const zhLayoutLabels = {
   expand: "展开",
   collapse: "折叠",
   action: "函数按钮已触发",
+  rowPrefix: "第",
   rowSuffix: "ScrollContainer 内容溢出滚动",
 } satisfies LayoutDemoLabels
 
@@ -34,12 +34,17 @@ export const enLayoutLabels = {
   expand: "Expand",
   collapse: "Collapse",
   action: "Function action triggered",
+  rowPrefix: "row",
   rowSuffix: "ScrollContainer overflow row",
 } satisfies LayoutDemoLabels
 
 export function LayoutDemo({ labels }: { readonly labels: LayoutDemoLabels }) {
   const [collapsed, setCollapsed] = useState(false)
   const [status, setStatus] = useState(labels.collapse)
+  const rows = Array.from(
+    { length: 20 },
+    (_, index) => `${labels.rowPrefix} ${String(index + 1).padStart(2, "0")}`,
+  )
 
   return (
     <div data-demo="layout" className="flex w-full max-w-[420px] flex-col gap-4">

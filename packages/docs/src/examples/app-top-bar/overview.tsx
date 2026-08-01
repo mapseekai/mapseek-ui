@@ -5,6 +5,7 @@ import { IconHistory } from "@tabler/icons-react"
 import { useState } from "react"
 
 export type AppTopBarDemoLabels = {
+  readonly brandAlt: string
   readonly projectName: string
   readonly saved: string
   readonly dirty: string
@@ -16,6 +17,7 @@ export type AppTopBarDemoLabels = {
 }
 
 export const zhAppTopBarLabels = {
+  brandAlt: "Mapseek Loom",
   projectName: "珠江三角洲用地规划",
   saved: "已保存",
   dirty: "未保存的更改",
@@ -27,6 +29,7 @@ export const zhAppTopBarLabels = {
 } satisfies AppTopBarDemoLabels
 
 export const enAppTopBarLabels = {
+  brandAlt: "Mapseek Loom",
   projectName: "Pearl River Delta land-use plan",
   saved: "Saved",
   dirty: "Unsaved changes",
@@ -65,7 +68,7 @@ export function AppTopBarDemo({ labels }: { readonly labels: AppTopBarDemoLabels
 
   const brand = (
     <span className="inline-flex items-center gap-1.5 text-foreground">
-      <ProductLogo src="/img/mapseek.svg" alt="Mapseek Loom" size={28} />
+      <ProductLogo src="/img/mapseek.svg" alt={labels.brandAlt} size={28} />
     </span>
   )
 

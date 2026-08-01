@@ -1,16 +1,6 @@
 import { type PixelField, PixelProbe, type PixelProbeLabels } from "@registry/blocks/pixel-probe"
 import { useState } from "react"
 
-const fields: PixelField[] = [
-  { key: "band", type: "INT", value: "1 / 1", locked: true },
-  { key: "value", type: "FLOAT", value: "128.46", unit: "m" },
-  { key: "dtype", type: "TEXT", value: "Float32" },
-  { key: "row · col", type: "INDEX", value: "4,128 · 6,572" },
-  { key: "lon · lat", type: "COORD", value: "121.4737deg · 31.2304deg" },
-  { key: "colormap", type: "ENUM", value: "viridis" },
-  { key: "updated", type: "DATE", value: "2026-04-14" },
-]
-
 export type PixelProbeDemoLabels = {
   readonly reopen: string
   readonly copied: string
@@ -18,6 +8,7 @@ export type PixelProbeDemoLabels = {
   readonly empty: string
   readonly clearSelection: string
   readonly statusPrefix: string
+  readonly fields: readonly PixelField[]
   readonly labels: PixelProbeLabels
 }
 
@@ -28,6 +19,15 @@ export const zhPixelProbeLabels = {
   empty: "暂无选中像元",
   clearSelection: "清除选中",
   statusPrefix: "像元",
+  fields: [
+    { key: "波段", type: "INT", value: "1 / 1", locked: true },
+    { key: "数值", type: "FLOAT", value: "128.46", unit: "m" },
+    { key: "数据类型", type: "TEXT", value: "Float32" },
+    { key: "行 · 列", type: "INDEX", value: "4,128 · 6,572" },
+    { key: "经度 · 纬度", type: "COORD", value: "121.4737deg · 31.2304deg" },
+    { key: "色带", type: "ENUM", value: "viridis" },
+    { key: "更新时间", type: "DATE", value: "2026-04-14" },
+  ],
   labels: {
     title: "像元探测",
     copy: "复制 JSON",
@@ -45,6 +45,15 @@ export const enPixelProbeLabels = {
   empty: "No selected pixel",
   clearSelection: "Clear selection",
   statusPrefix: "Pixel",
+  fields: [
+    { key: "band", type: "INT", value: "1 / 1", locked: true },
+    { key: "value", type: "FLOAT", value: "128.46", unit: "m" },
+    { key: "dtype", type: "TEXT", value: "Float32" },
+    { key: "row · col", type: "INDEX", value: "4,128 · 6,572" },
+    { key: "lon · lat", type: "COORD", value: "121.4737deg · 31.2304deg" },
+    { key: "colormap", type: "ENUM", value: "viridis" },
+    { key: "updated", type: "DATE", value: "2026-04-14" },
+  ],
   labels: {
     title: "Pixel probe",
     copy: "Copy JSON",
@@ -106,7 +115,7 @@ export function PixelProbeDemo({ labels }: { readonly labels: PixelProbeDemoLabe
         ) : (
           <PixelProbe
             className="absolute top-4 right-4 max-h-[calc(100%-32px)] w-[340px] shadow-[var(--shadow-map-float)]"
-            fields={fields}
+            fields={labels.fields.map((field) => ({ ...field }))}
             count={1}
             index={point}
             labels={labels.labels}

@@ -12,6 +12,23 @@ async function writeFixture(path: string, content: string): Promise<void> {
   await writeFile(target, content)
 }
 
+async function runCli(
+  path: string,
+): Promise<{ readonly exitCode: number; readonly stdout: string }> {
+  const process = Bun.spawn(["bun", "scripts/check-docs-i18n.ts", path], {
+    cwd: join(import.meta.dir, "../.."),
+    stdout: "pipe",
+    stderr: "pipe",
+  })
+  const [stdout, stderr, exitCode] = await Promise.all([
+    new Response(process.stdout).text(),
+    new Response(process.stderr).text(),
+    process.exited,
+  ])
+  expect(stderr).toBe("")
+  return { exitCode, stdout }
+}
+
 function doc(examples: readonly string[] = ["button/basic"]): string {
   return [
     "---",
@@ -57,4 +74,19 @@ it("reports mismatched structural examples between locales", async () => {
     item: "button",
     detail: "examples",
   })
+})
+
+it("prints one issue per line and exits non-zero from the CLI", async () => {
+  await writeFixture("docs/components/button.mdx", doc(["button/basic"]))
+  await writeFixture(
+    "i18n/en/docusaurus-plugin-content-docs/current/components/button.mdx",
+    doc(["button/variants"]),
+  )
+
+  const result = await runCli(fixtureRoot)
+
+  expect(result.exitCode).toBe(1)
+  expect(result.stdout.trim().split("\n")).toEqual([
+    JSON.stringify({ code: "metadata-mismatch", item: "button", detail: "examples" }),
+  ])
 })

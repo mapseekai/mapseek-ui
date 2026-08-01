@@ -11,6 +11,13 @@ function docsForRegistryName(
   return [...docs.values()].filter((doc) => doc.metadata.registryName === registryName)
 }
 
+function addIssue(issues: ValidationIssue[], seen: Set<string>, issue: ValidationIssue): void {
+  const key = `${issue.code}\0${issue.item ?? ""}\0${issue.detail}`
+  if (seen.has(key)) return
+  seen.add(key)
+  issues.push(issue)
+}
+
 async function fileExists(path: string): Promise<boolean> {
   try {
     await access(path)
@@ -53,41 +60,50 @@ export async function validateExampleCoverage(
   catalog: readonly RegistryItem[],
 ): Promise<readonly ValidationIssue[]> {
   const issues: ValidationIssue[] = []
+  const seenIssues = new Set<string>()
   const { zh, en } = await collectLocalizedDocs(root)
   const registryNames = new Set(catalog.map((item) => item.name))
-  const exampleOwners = new Map<string, string[]>()
+  const exampleOwners = new Map<string, Set<string>>()
 
   for (const item of catalog) {
     const zhDocs = docsForRegistryName(zh, item.name)
     const enDocs = docsForRegistryName(en, item.name)
     if (zhDocs.length !== 1)
-      issues.push({ code: "registry-doc-count", item: item.name, detail: "zh" })
+      addIssue(issues, seenIssues, { code: "registry-doc-count", item: item.name, detail: "zh" })
     if (enDocs.length !== 1)
-      issues.push({ code: "registry-doc-count", item: item.name, detail: "en" })
+      addIssue(issues, seenIssues, { code: "registry-doc-count", item: item.name, detail: "en" })
   }
 
-  for (const doc of zh.values()) {
+  for (const doc of [...zh.values(), ...en.values()]) {
     const { id, registryName, examples } = doc.metadata
     if (!registryNames.has(registryName))
-      issues.push({ code: "unknown-registry-name", item: id, detail: registryName })
+      addIssue(issues, seenIssues, {
+        code: "unknown-registry-name",
+        item: id,
+        detail: registryName,
+      })
     if (examples.length === 0)
-      issues.push({ code: "missing-examples", item: id, detail: "examples" })
+      addIssue(issues, seenIssues, { code: "missing-examples", item: id, detail: "examples" })
     for (const example of examples) {
-      const owners = exampleOwners.get(example) ?? []
-      owners.push(id)
+      const owners = exampleOwners.get(example) ?? new Set<string>()
+      owners.add(id)
       exampleOwners.set(example, owners)
       if (!(await fileExists(join(root, "src/examples", `${example}.tsx`))))
-        issues.push({ code: "missing-example", item: id, detail: example })
+        addIssue(issues, seenIssues, { code: "missing-example", item: id, detail: example })
     }
   }
 
   for (const [example, owners] of exampleOwners) {
-    if (owners.length !== 1)
-      issues.push({ code: "example-owner-count", item: example, detail: owners.join(",") })
+    if (owners.size !== 1)
+      addIssue(issues, seenIssues, {
+        code: "example-owner-count",
+        item: example,
+        detail: [...owners].sort().join(","),
+      })
   }
   for (const example of await collectExampleIds(join(root, "src/examples"))) {
     if (!exampleOwners.has(example))
-      issues.push({ code: "example-owner-count", item: example, detail: "0" })
+      addIssue(issues, seenIssues, { code: "example-owner-count", item: example, detail: "0" })
   }
 
   return issues

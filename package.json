@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "test": "vitest run",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p packages/docs/tsconfig.json --noEmit",
     "lint": "biome check .",
     "format": "biome format --write .",
     "registry:validate": "bun scripts/validate-registry.ts",
@@ -24,7 +24,8 @@
     "docs:serve": "bun run --cwd packages/docs serve",
     "docs:check-i18n": "bun scripts/check-docs-i18n.ts",
     "docs:check-examples": "bun scripts/check-docs-examples.ts",
-    "docs:verify": "bun run docs:check-i18n && bun run docs:check-examples && bun run docs:build"
+    "docs:visual": "bun scripts/run-docs-visual.ts",
+    "docs:verify": "bun run lint && bun run typecheck && bun test && bun run registry:validate && bun run docs:check-i18n && bun run docs:check-examples && bun run docs:build && bun run docs:visual && bun run verify:items button layout layer-panel"
   },
   "packageManager": "bun@1.3.5",
   "engines": {

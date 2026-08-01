@@ -2,6 +2,7 @@ node_modules/
 dist/
 packages/docs/.docusaurus/
 packages/docs/build/
+test-results/
 .superpowers/
 .env
 .env.*

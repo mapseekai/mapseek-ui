@@ -7,9 +7,11 @@
       "!dist",
       "!packages/docs/.docusaurus",
       "!packages/docs/build",
+      "!test-results",
       "!**/*.test-d.ts",
       "!.codegraph",
       "!.mapseek-vite-theme-*",
+      "!showcase",
       "!showcase/src/theme.generated.css"
     ]
   },

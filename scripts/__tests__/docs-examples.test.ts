@@ -21,6 +21,7 @@ const catalog: readonly RegistryItem[] = [
 ]
 
 const buttonExamples = ["button/basic", "button/variants", "button/sizes"] as const
+const dialogExamples = ["dialog/basic", "dialog/confirmation", "dialog/long-content"] as const
 
 async function writeFixture(path: string, content: string): Promise<void> {
   const target = join(fixtureRoot, path)
@@ -75,6 +76,21 @@ function guideDoc(id = "intro"): string {
     "examples: []",
     "---",
     "# Intro",
+  ].join("\n")
+}
+
+function dialogDoc(examples: readonly string[] = dialogExamples): string {
+  return [
+    "---",
+    "id: dialog",
+    "slug: /components/dialog",
+    "registryName: dialog",
+    "category: primitive",
+    "stability: stable",
+    "examples:",
+    ...examples.map((example) => `  - ${example}`),
+    "---",
+    "# Dialog",
   ].join("\n")
 }
 
@@ -143,6 +159,35 @@ it("reports Button pages that omit a required pilot example id", async () => {
     code: "missing-required-example",
     item: "button",
     detail: "button/sizes",
+  })
+})
+
+it("reports Dialog pages that omit a required portal pilot example id", async () => {
+  const dialogCatalog: readonly RegistryItem[] = [
+    {
+      name: "dialog",
+      type: "registry:ui",
+      files: [],
+    },
+  ]
+  await writeFixture(
+    "docs/components/dialog.mdx",
+    dialogDoc(["dialog/basic", "dialog/confirmation"]),
+  )
+  await writeFixture(
+    "i18n/en/docusaurus-plugin-content-docs/current/components/dialog.mdx",
+    dialogDoc(["dialog/basic", "dialog/confirmation"]),
+  )
+  await writeFixture("src/examples/dialog/basic.tsx", "export function DialogBasicDemo() {}")
+  await writeFixture(
+    "src/examples/dialog/confirmation.tsx",
+    "export function DialogConfirmationDemo() {}",
+  )
+
+  expect(await validateExampleCoverage(fixtureRoot, dialogCatalog)).toContainEqual({
+    code: "missing-required-example",
+    item: "dialog",
+    detail: "dialog/long-content",
   })
 })
 

@@ -1,0 +1,153 @@
+---
+id: dialog
+slug: /components/dialog
+registryName: dialog
+category: primitive
+stability: stable
+examples:
+  - dialog/basic
+  - dialog/confirmation
+  - dialog/long-content
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { DialogBasicDemo } from "@site/src/examples/dialog/basic"
+import basicSource from "@site/src/examples/dialog/basic.tsx?raw"
+import { DialogConfirmationDemo } from "@site/src/examples/dialog/confirmation"
+import confirmationSource from "@site/src/examples/dialog/confirmation.tsx?raw"
+import { DialogLongContentDemo } from "@site/src/examples/dialog/long-content"
+import longContentSource from "@site/src/examples/dialog/long-content.tsx?raw"
+
+export const basicLabels = {
+  uncontrolledTrigger: "打开对话框",
+  uncontrolledTitle: "图层属性",
+  uncontrolledDescription: "编辑当前图层的基本信息。",
+  uncontrolledBody: "DialogBody 是正文区域，适合放置说明、表单或局部设置。",
+  cancel: "取消",
+  confirm: "确认",
+  controlledTrigger: "受控打开",
+  controlledTitle: "受控对话框",
+  controlledBody: "open 与 onOpenChange 由外部状态拥有，Dialog 仍保留焦点管理和 Escape 关闭。",
+  controlledClose: "关闭",
+  controlledStateLabel: "受控状态",
+  controlledStateOpen: "已打开",
+  controlledStateClosed: "已关闭",
+}
+
+export const confirmationLabels = {
+  trigger: "未保存的修改",
+  title: "未保存的修改",
+  description: "是否保存当前工程的修改？此流程保留取消、放弃修改、保存并继续三个结果。",
+  cancel: "取消",
+  discard: "放弃修改",
+  save: "保存并继续",
+  statusLabel: "最近选择",
+  idleStatus: "尚未选择",
+  canceledStatus: "已取消",
+  discardedStatus: "已放弃修改",
+  savedStatus: "已保存并继续",
+}
+
+export const longContentLabels = {
+  trigger: "打开长内容对话框",
+  title: "字段计算器",
+  description: "长内容保留在 portal 中，正文区域独立滚动，不被示例容器裁切。",
+  badge: "land_use",
+  targetFieldLabel: "目标字段",
+  targetFieldValue: "area_m2",
+  expressionLabel: "表达式",
+  expressionValue: "$area / 10000",
+  noteLabel: "说明",
+  noteValue: "根据当前几何面积批量计算公顷值，并写回目标字段。",
+  sections: [
+    {
+      title: "输入检查",
+      body: "确认目标字段可写，表达式只引用当前图层已有字段。",
+    },
+    {
+      title: "影响范围",
+      body: "将更新当前筛选结果中的 13 行，未选中的图层不会被修改。",
+    },
+    {
+      title: "回滚策略",
+      body: "应用前会记录当前字段快照，失败时恢复到操作前状态。",
+    },
+    {
+      title: "审计记录",
+      body: "计算表达式、操作者和更新时间会写入处理日志，方便之后追踪。",
+    },
+  ],
+  footerStatus: "将更新 13 行 · area_m2",
+  cancel: "取消",
+  apply: "应用",
+}
+
+# Dialog
+
+Dialog 用于短流程、确认和局部表单。它通过 portal 渲染到文档根层，避免被示例容器、滚动面板或 `overflow` 裁切，同时保留焦点陷阱、Escape 关闭和触发器焦点返回。
+
+## 安装
+
+<RegistryInstall registryName="dialog" />
+
+## 导入
+
+```tsx
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/registry/ui/dialog"
+```
+
+## 基础与受控模式
+
+<ComponentDemo title="基础与受控模式" description="DialogTrigger 负责打开弹窗；受控模式由 open/onOpenChange 接管状态。" source={basicSource} minHeight={220}>
+  <DialogBasicDemo labels={basicLabels} />
+</ComponentDemo>
+
+## 确认流程
+
+<ComponentDemo title="确认流程" description="危险或会丢失数据的流程应提供明确选择，并让按钮文案表达结果。" source={confirmationSource} minHeight={180}>
+  <DialogConfirmationDemo labels={confirmationLabels} />
+</ComponentDemo>
+
+## 长内容与 portal
+
+<ComponentDemo title="长内容与 portal" description="长表单优先考虑 Sheet；必须使用 Dialog 时，让 DialogBody 独立滚动并限制内容高度。" source={longContentSource} minHeight={180}>
+  <DialogLongContentDemo labels={longContentLabels} />
+</ComponentDemo>
+
+## 结构
+
+`DialogContent` 是浮层容器，负责 portal、遮罩、最大宽度、16px 内边距和区块间距。短内容可以直接传入 `title` 与 `description`；复杂标题使用 `DialogHeader`、`DialogTitle` 和 `DialogDescription` 组合。
+
+`DialogBody` 承载正文，长内容需要给 body 设置滚动边界。`DialogFooter` 在窄屏纵向排列，在 `sm` 以上横向右对齐。业务示例不需要在 header 或 footer 上重复补内边距。
+
+## 可访问标题
+
+每个 Dialog 必须拥有可读标题。优先通过 `DialogContent title` 或 `DialogTitle` 提供标题；关闭按钮包含屏幕阅读器文本。不要把标题只做成装饰图标或只依赖占位文本。
+
+## Dialog 与 Sheet
+
+Dialog 适合短确认、少量字段和必须阻塞当前流程的任务。长表单、详情阅读、批量编辑和需要频繁滚动的内容应使用 Sheet，让用户保留更多上下文和更稳定的滚动空间。
+
+## 无障碍
+
+触发按钮应清楚说明会打开什么。关闭、取消、保存和危险操作都应使用真实 `button` 或 `DialogClose`。不要在 Dialog 内隐藏主要说明，也不要用颜色作为唯一状态提示。
+
+## 依赖
+
+<RegistryDependencies registryName="dialog" />
+
+## 相关链接
+
+- [Dialog registry JSON](/r/dialog.json)
+- [Sheet registry JSON](/r/sheet.json)
+- [Confirm Dialog registry JSON](/r/confirm-dialog.json)

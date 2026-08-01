@@ -1,6 +1,7 @@
-import { type Browser, chromium, expect } from "@playwright/test"
+import { type Browser, chromium, expect, type Locator, type Page } from "@playwright/test"
 
-type DocsVisualCase = "smoke" | "button"
+type DocsVisualCase = "smoke" | "button" | "dialog"
+type DocsTheme = "dark" | "light"
 
 type CliOptions = {
   readonly baseUrl: string
@@ -27,7 +28,7 @@ function readCliOptions(): CliOptions {
     throw new Error("Missing required --base-url option.")
   }
 
-  if (caseName !== "smoke" && caseName !== "button") {
+  if (caseName !== "smoke" && caseName !== "button" && caseName !== "dialog") {
     throw new Error(`Unsupported docs visual QA case: ${caseName}`)
   }
 
@@ -126,6 +127,100 @@ async function runButtonCase(baseUrl: string, browserChannel?: string) {
   }
 }
 
+async function setDocsTheme(page: Page, theme: DocsTheme): Promise<void> {
+  const currentTheme = await page.locator("html").getAttribute("data-theme")
+  if (currentTheme !== theme) {
+    await page.locator('button[class*="toggleButton"]').first().click()
+  }
+  await expect(page.locator("html")).toHaveAttribute("data-theme", theme)
+}
+
+async function assertDialogPortalIsVisible(page: Page): Promise<void> {
+  const dialog = page.locator('[data-slot="dialog-content"]').last()
+  await expect(dialog).toBeVisible()
+
+  const viewport = page.viewportSize()
+  const box = await dialog.boundingBox()
+  if (!viewport || !box) throw new Error("Dialog portal bounding box is unavailable.")
+  if (
+    box.x < 0 ||
+    box.y < 0 ||
+    box.x + box.width > viewport.width ||
+    box.y + box.height > viewport.height
+  ) {
+    throw new Error(`Dialog portal is outside the viewport: ${JSON.stringify({ box, viewport })}`)
+  }
+
+  const isInsideDemo = await dialog.evaluate((element) => element.closest("[data-demo]") !== null)
+  if (isInsideDemo) throw new Error("Dialog content was clipped inside the demo surface.")
+}
+
+async function openAndAssertDialog(page: Page, trigger: Locator): Promise<void> {
+  await trigger.click()
+  await assertDialogPortalIsVisible(page)
+}
+
+async function closeWithEscapeAndAssertFocus(page: Page, trigger: Locator): Promise<void> {
+  await page.keyboard.press("Escape")
+  await expect(page.locator('[data-slot="dialog-content"]')).toBeHidden()
+  await expect(trigger).toBeFocused()
+}
+
+async function closeWithButtonAndAssertFocus(
+  trigger: Locator,
+  closeButton: Locator,
+): Promise<void> {
+  await closeButton.click()
+  await expect(trigger).toBeFocused()
+}
+
+async function runDialogCase(baseUrl: string, browserChannel?: string) {
+  await assertPreviewIsAvailable(baseUrl)
+
+  const browser = await launchBrowser(browserChannel)
+
+  try {
+    const page = await browser.newPage({ baseURL: baseUrl, viewport: { width: 1280, height: 720 } })
+
+    for (const path of ["/components/dialog", "/en/components/dialog"] as const) {
+      for (const theme of ["light", "dark"] as const) {
+        await page.goto(path)
+        await setDocsTheme(page, theme)
+        await expect(
+          page.getByRole("heading", { level: 1, name: "Dialog", exact: true }),
+        ).toBeVisible()
+
+        const uncontrolledTrigger = page.locator('[data-demo="dialog-basic-uncontrolled-trigger"]')
+        await openAndAssertDialog(page, uncontrolledTrigger)
+        await closeWithButtonAndAssertFocus(
+          uncontrolledTrigger,
+          page.locator('[data-demo="dialog-basic-cancel"]'),
+        )
+
+        const controlledTrigger = page.locator('[data-demo="dialog-basic-controlled-trigger"]')
+        await openAndAssertDialog(page, controlledTrigger)
+        await closeWithEscapeAndAssertFocus(page, controlledTrigger)
+
+        const confirmationTrigger = page.locator('[data-demo="dialog-confirmation-trigger"]')
+        await openAndAssertDialog(page, confirmationTrigger)
+        await closeWithButtonAndAssertFocus(
+          confirmationTrigger,
+          page.locator('[data-demo="dialog-confirmation-cancel"]'),
+        )
+        await openAndAssertDialog(page, confirmationTrigger)
+        await page.locator('[data-demo="dialog-confirmation-save"]').click()
+        await expect(confirmationTrigger).toBeFocused()
+
+        const longContentTrigger = page.locator('[data-demo="dialog-long-content-trigger"]')
+        await openAndAssertDialog(page, longContentTrigger)
+        await closeWithEscapeAndAssertFocus(page, longContentTrigger)
+      }
+    }
+  } finally {
+    await browser.close()
+  }
+}
+
 async function main() {
   const options = readCliOptions()
 
@@ -134,6 +229,9 @@ async function main() {
   }
   if (options.caseName === "button") {
     await runButtonCase(options.baseUrl, options.browserChannel)
+  }
+  if (options.caseName === "dialog") {
+    await runDialogCase(options.baseUrl, options.browserChannel)
   }
 }
 

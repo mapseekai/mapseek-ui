@@ -8,32 +8,36 @@ function peakedHistogram(center: number, scale: number): number[] {
   )
 }
 
-const bands: BandStatData[] = [
-  {
-    band: "B1",
-    name: "Coastal aerosol",
-    type: "UINT16",
-    min: 0,
-    max: 16382,
-    mean: 1182,
-    stddev: 432,
-    histogram: peakedHistogram(12, 1000),
-  },
-  {
-    band: "B4",
-    name: "Near infrared",
-    type: "UINT16",
-    min: 0,
-    max: 16382,
-    mean: 3214,
-    stddev: 1124,
-    histogram: peakedHistogram(28, 1400),
-  },
-]
-
 export type BandStatDemoLabels = BandStatLabels & {
   readonly nextBand: string
   readonly currentBand: string
+  readonly coastalAerosol: string
+  readonly nearInfrared: string
+}
+
+function createBands(labels: BandStatDemoLabels): BandStatData[] {
+  return [
+    {
+      band: "B1",
+      name: labels.coastalAerosol,
+      type: "UINT16",
+      min: 0,
+      max: 16382,
+      mean: 1182,
+      stddev: 432,
+      histogram: peakedHistogram(12, 1000),
+    },
+    {
+      band: "B4",
+      name: labels.nearInfrared,
+      type: "UINT16",
+      min: 0,
+      max: 16382,
+      mean: 3214,
+      stddev: 1124,
+      histogram: peakedHistogram(28, 1400),
+    },
+  ]
 }
 
 export const zhBandStatLabels = {
@@ -48,6 +52,8 @@ export const zhBandStatLabels = {
   histogramCount: "数量",
   nextBand: "切换波段",
   currentBand: "当前波段",
+  coastalAerosol: "海岸气溶胶",
+  nearInfrared: "近红外",
 } satisfies BandStatDemoLabels
 
 export const enBandStatLabels = {
@@ -62,10 +68,13 @@ export const enBandStatLabels = {
   histogramCount: "Count",
   nextBand: "Switch band",
   currentBand: "Current band",
+  coastalAerosol: "Coastal aerosol",
+  nearInfrared: "Near infrared",
 } satisfies BandStatDemoLabels
 
 export function BandStatDemo({ labels }: { readonly labels: BandStatDemoLabels }) {
   const [index, setIndex] = useState(0)
+  const bands = createBands(labels)
   const band = bands[index]
 
   return (

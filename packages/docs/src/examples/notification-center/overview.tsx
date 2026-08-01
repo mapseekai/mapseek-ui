@@ -6,46 +6,15 @@ import {
 import { Button } from "@registry/ui/button"
 import { useState } from "react"
 
-const initialItems: NotificationCenterItem[] = [
-  {
-    key: "DATASET:dataset.8f12-a91c",
-    title: "Raster · Yangtze NDVI 2026Q2",
-    description: "landsat_ndvi_2026q2.tif · processing",
-    sourceUid: "dataset.8f12-a91c",
-    sourceType: "DATASET",
-    sourceLabel: "Dataset",
-    statusLabel: "Processing",
-    statusTone: "processing",
-  },
-  {
-    key: "DATASET:dataset.44cb-910e",
-    title: "Vector · road centerlines",
-    description: "roads_osm_3857.geojson · completed",
-    sourceUid: "dataset.44cb-910e",
-    sourceType: "DATASET",
-    sourceLabel: "Dataset",
-    statusLabel: "Completed",
-    statusTone: "success",
-  },
-  {
-    key: "TILESET:tileset.77e2-5db0",
-    title: "PMTiles · boundary tiles",
-    description: "admin_boundary.pmtiles · failed",
-    sourceUid: "tileset.77e2-5db0",
-    sourceType: "TILESET",
-    sourceLabel: "Tileset",
-    statusLabel: "Failed",
-    statusTone: "failed",
-  },
-]
-
 export type NotificationCenterDemoLabels = NotificationCenterLabels & {
   readonly reset: string
+  readonly itemsMode: string
   readonly loadingMode: string
   readonly errorMode: string
   readonly emptyMode: string
   readonly statusCleared: string
   readonly statusRetry: string
+  readonly items: NotificationCenterItem[]
 }
 
 export const zhNotificationCenterLabels = {
@@ -66,11 +35,44 @@ export const zhNotificationCenterLabels = {
   completed: "已完成",
   failed: "失败",
   reset: "恢复通知",
+  itemsMode: "通知列表",
   loadingMode: "加载态",
   errorMode: "错误态",
   emptyMode: "空态",
   statusCleared: "已清除",
   statusRetry: "已重试",
+  items: [
+    {
+      key: "DATASET:dataset.8f12-a91c",
+      title: "栅格 · 长江 NDVI 2026Q2",
+      description: "landsat_ndvi_2026q2.tif · 处理中",
+      sourceUid: "dataset.8f12-a91c",
+      sourceType: "DATASET",
+      sourceLabel: "数据集",
+      statusLabel: "处理中",
+      statusTone: "processing",
+    },
+    {
+      key: "DATASET:dataset.44cb-910e",
+      title: "矢量 · 道路中心线",
+      description: "roads_osm_3857.geojson · 已完成",
+      sourceUid: "dataset.44cb-910e",
+      sourceType: "DATASET",
+      sourceLabel: "数据集",
+      statusLabel: "已完成",
+      statusTone: "success",
+    },
+    {
+      key: "TILESET:tileset.77e2-5db0",
+      title: "PMTiles · 边界瓦片",
+      description: "admin_boundary.pmtiles · 失败",
+      sourceUid: "tileset.77e2-5db0",
+      sourceType: "TILESET",
+      sourceLabel: "瓦片集",
+      statusLabel: "失败",
+      statusTone: "failed",
+    },
+  ],
 } satisfies NotificationCenterDemoLabels
 
 export const enNotificationCenterLabels = {
@@ -91,11 +93,44 @@ export const enNotificationCenterLabels = {
   completed: "Completed",
   failed: "Failed",
   reset: "Restore notifications",
+  itemsMode: "Notification list",
   loadingMode: "Loading state",
   errorMode: "Error state",
   emptyMode: "Empty state",
   statusCleared: "Cleared",
   statusRetry: "Retried",
+  items: [
+    {
+      key: "DATASET:dataset.8f12-a91c",
+      title: "Raster · Yangtze NDVI 2026Q2",
+      description: "landsat_ndvi_2026q2.tif · processing",
+      sourceUid: "dataset.8f12-a91c",
+      sourceType: "DATASET",
+      sourceLabel: "Dataset",
+      statusLabel: "Processing",
+      statusTone: "processing",
+    },
+    {
+      key: "DATASET:dataset.44cb-910e",
+      title: "Vector · road centerlines",
+      description: "roads_osm_3857.geojson · completed",
+      sourceUid: "dataset.44cb-910e",
+      sourceType: "DATASET",
+      sourceLabel: "Dataset",
+      statusLabel: "Completed",
+      statusTone: "success",
+    },
+    {
+      key: "TILESET:tileset.77e2-5db0",
+      title: "PMTiles · boundary tiles",
+      description: "admin_boundary.pmtiles · failed",
+      sourceUid: "tileset.77e2-5db0",
+      sourceType: "TILESET",
+      sourceLabel: "Tileset",
+      statusLabel: "Failed",
+      statusTone: "failed",
+    },
+  ],
 } satisfies NotificationCenterDemoLabels
 
 type Mode = "items" | "loading" | "error" | "empty"
@@ -106,13 +141,13 @@ export function NotificationCenterDemo({
   readonly labels: NotificationCenterDemoLabels
 }) {
   const [mode, setMode] = useState<Mode>("items")
-  const [items, setItems] = useState(initialItems)
-  const [status, setStatus] = useState("items")
+  const [items, setItems] = useState(labels.items)
+  const [status, setStatus] = useState(labels.itemsMode)
 
   function restoreItems() {
     setMode("items")
-    setItems(initialItems)
-    setStatus("items")
+    setItems(labels.items)
+    setStatus(labels.itemsMode)
   }
 
   return (
@@ -134,7 +169,7 @@ export function NotificationCenterDemo({
           data-demo-action="notification-center-loading"
           onClick={() => {
             setMode("loading")
-            setStatus("loading")
+            setStatus(labels.loadingMode)
           }}
         >
           {labels.loadingMode}
@@ -146,7 +181,7 @@ export function NotificationCenterDemo({
           data-demo-action="notification-center-error"
           onClick={() => {
             setMode("error")
-            setStatus("error")
+            setStatus(labels.errorMode)
           }}
         >
           {labels.errorMode}
@@ -159,7 +194,7 @@ export function NotificationCenterDemo({
           onClick={() => {
             setMode("empty")
             setItems([])
-            setStatus("empty")
+            setStatus(labels.emptyMode)
           }}
         >
           {labels.emptyMode}

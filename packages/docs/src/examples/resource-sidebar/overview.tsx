@@ -6,22 +6,6 @@ import {
 } from "@registry/blocks/resource-sidebar"
 import { useState } from "react"
 
-const categories: Record<ResourceTab, ResourceSidebarCategory[]> = {
-  icon: [
-    { id: "g_basic", label: "Basic operations", count: 32, isDefault: false },
-    { id: "g_map", label: "Map navigation", count: 24, isDefault: false },
-    { id: "g_poi", label: "POI types", count: 28, isDefault: false },
-  ],
-  sprite: [
-    { id: "sc_basic", label: "Common", count: 2, isDefault: false },
-    { id: "sc_map", label: "Map and POI", count: 2, isDefault: false },
-  ],
-  font: [
-    { id: "fc_latin", label: "Latin", count: 1, isDefault: false },
-    { id: "fc_cjk", label: "Chinese", count: 2, isDefault: false },
-  ],
-}
-
 const total: Record<ResourceTab, number> = { icon: 84, sprite: 4, font: 6 }
 
 export type ResourceSidebarDemoLabels = ResourceSidebarLabels & {
@@ -32,6 +16,13 @@ export type ResourceSidebarDemoLabels = ResourceSidebarLabels & {
   readonly renamed: string
   readonly removed: string
   readonly created: string
+  readonly iconCategoryBasic: string
+  readonly iconCategoryMap: string
+  readonly iconCategoryPoi: string
+  readonly spriteCategoryCommon: string
+  readonly spriteCategoryMapPoi: string
+  readonly fontCategoryLatin: string
+  readonly fontCategoryChinese: string
 }
 
 export const zhResourceSidebarLabels = {
@@ -52,6 +43,13 @@ export const zhResourceSidebarLabels = {
   renamed: "已重命名",
   removed: "已删除",
   created: "已新建分类",
+  iconCategoryBasic: "基础操作",
+  iconCategoryMap: "地图导航",
+  iconCategoryPoi: "POI 类型",
+  spriteCategoryCommon: "通用",
+  spriteCategoryMapPoi: "地图与 POI",
+  fontCategoryLatin: "拉丁",
+  fontCategoryChinese: "中文",
 } satisfies ResourceSidebarDemoLabels
 
 export const enResourceSidebarLabels = {
@@ -72,7 +70,34 @@ export const enResourceSidebarLabels = {
   renamed: "Renamed",
   removed: "Removed",
   created: "Created category",
+  iconCategoryBasic: "Basic operations",
+  iconCategoryMap: "Map navigation",
+  iconCategoryPoi: "POI types",
+  spriteCategoryCommon: "Common",
+  spriteCategoryMapPoi: "Map and POI",
+  fontCategoryLatin: "Latin",
+  fontCategoryChinese: "Chinese",
 } satisfies ResourceSidebarDemoLabels
+
+function createCategories(
+  labels: ResourceSidebarDemoLabels,
+): Record<ResourceTab, ResourceSidebarCategory[]> {
+  return {
+    icon: [
+      { id: "g_basic", label: labels.iconCategoryBasic, count: 32, isDefault: false },
+      { id: "g_map", label: labels.iconCategoryMap, count: 24, isDefault: false },
+      { id: "g_poi", label: labels.iconCategoryPoi, count: 28, isDefault: false },
+    ],
+    sprite: [
+      { id: "sc_basic", label: labels.spriteCategoryCommon, count: 2, isDefault: false },
+      { id: "sc_map", label: labels.spriteCategoryMapPoi, count: 2, isDefault: false },
+    ],
+    font: [
+      { id: "fc_latin", label: labels.fontCategoryLatin, count: 1, isDefault: false },
+      { id: "fc_cjk", label: labels.fontCategoryChinese, count: 2, isDefault: false },
+    ],
+  }
+}
 
 function allItemsLabel(tab: ResourceTab, labels: ResourceSidebarDemoLabels): string {
   if (tab === "sprite") return labels.spriteAll
@@ -84,6 +109,7 @@ export function ResourceSidebarDemo({ labels }: { readonly labels: ResourceSideb
   const [tab, setTab] = useState<ResourceTab>("icon")
   const [active, setActive] = useState("all")
   const [status, setStatus] = useState(`${labels.selected}: all`)
+  const categories = createCategories(labels)
 
   function selectTab(nextTab: ResourceTab) {
     setTab(nextTab)

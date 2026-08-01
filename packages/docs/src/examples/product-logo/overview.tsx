@@ -2,25 +2,48 @@ import { ProductLogo } from "@registry/blocks/product-logo"
 import { Button } from "@registry/ui/button"
 import { useState } from "react"
 
-const logos = [
-  { src: "/img/mapseek.svg", alt: "Mapseek Cloud", label: "Cloud", note: "Primary project entry" },
-  { src: "/img/mapseek.svg", alt: "Mapseek Muse", label: "Muse", note: "Style editor" },
-  { src: "/img/mapseek.svg", alt: "Mapseek Loom", label: "Loom", note: "Vector editor" },
-]
+type ProductLogoFixture = {
+  readonly src: string
+  readonly alt: string
+  readonly label: string
+  readonly note: string
+}
+
+export type ProductLogoDemoLabels = {
+  readonly toggleText: string
+  readonly showing: string
+  readonly hidden: string
+  readonly logos: ProductLogoFixture[]
+}
 
 export const zhProductLogoLabels = {
   toggleText: "切换文字",
   showing: "显示文字",
   hidden: "隐藏文字",
-}
+  logos: [
+    { src: "/img/mapseek.svg", alt: "Mapseek Cloud", label: "云服务", note: "主项目入口" },
+    { src: "/img/mapseek.svg", alt: "Mapseek Muse", label: "Muse", note: "样式编辑器" },
+    { src: "/img/mapseek.svg", alt: "Mapseek Loom", label: "Loom", note: "矢量编辑器" },
+  ],
+} satisfies ProductLogoDemoLabels
 
 export const enProductLogoLabels = {
   toggleText: "Toggle text",
   showing: "Showing text",
   hidden: "Text hidden",
-}
+  logos: [
+    {
+      src: "/img/mapseek.svg",
+      alt: "Mapseek Cloud",
+      label: "Cloud",
+      note: "Primary project entry",
+    },
+    { src: "/img/mapseek.svg", alt: "Mapseek Muse", label: "Muse", note: "Style editor" },
+    { src: "/img/mapseek.svg", alt: "Mapseek Loom", label: "Loom", note: "Vector editor" },
+  ],
+} satisfies ProductLogoDemoLabels
 
-export function ProductLogoDemo({ labels }: { readonly labels: typeof zhProductLogoLabels }) {
+export function ProductLogoDemo({ labels }: { readonly labels: ProductLogoDemoLabels }) {
   const [showText, setShowText] = useState(true)
 
   return (
@@ -40,7 +63,7 @@ export function ProductLogoDemo({ labels }: { readonly labels: typeof zhProductL
         </span>
       </div>
       <section className="grid gap-3 lg:grid-cols-3">
-        {logos.map((item) => (
+        {labels.logos.map((item) => (
           <div
             key={item.alt}
             className="flex min-h-[220px] flex-col justify-between border border-border bg-background p-5"
@@ -58,7 +81,7 @@ export function ProductLogoDemo({ labels }: { readonly labels: typeof zhProductL
         ))}
       </section>
       <section className="flex flex-wrap items-center gap-6 border border-border bg-muted/30 p-5">
-        {logos.map((item) => (
+        {labels.logos.map((item) => (
           <ProductLogo
             key={item.alt}
             src={item.src}

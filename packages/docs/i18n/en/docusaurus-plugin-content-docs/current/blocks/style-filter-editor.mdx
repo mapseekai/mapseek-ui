@@ -1,0 +1,64 @@
+---
+id: style-filter-editor
+slug: /blocks/style-filter-editor
+registryName: style-filter-editor
+category: block
+stability: stable
+examples:
+  - style-filter-editor/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StyleFilterEditorDemo, enStyleFilterEditorLabels } from "@site/src/examples/style-filter-editor/overview"
+import overviewSource from "@site/src/examples/style-filter-editor/overview.tsx?raw"
+
+# StyleFilterEditor
+
+StyleFilterEditor provides row layout, single-condition layout, inline errors, action areas, and unsupported states for style filter editing.
+
+## Installation
+
+<RegistryInstall registryName="style-filter-editor" />
+
+## Import
+
+```tsx
+import {
+  StyleFilterEditorRow,
+  StyleFilterEditorSingle,
+  type StyleFilterEditorRowProps,
+} from "@/registry/blocks/style-filter-editor"
+```
+
+## Filter Rows and Error State
+
+<ComponentDemo title="Filter rows and error state" description="The demo covers condition rows, remove, add, inline errors, unsupported state, and helper text." source={overviewSource} minHeight={520}>
+  <StyleFilterEditorDemo labels={enStyleFilterEditorLabels} />
+</ComponentDemo>
+
+## Usage
+
+Callers provide property inputs, operator selects, and value inputs. `StyleFilterEditorRow` handles row and action layout, while `StyleFilterEditorSingle` only defines the single-condition grid.
+
+## Public Exports and Props
+
+Exports include row, single, actions, inline error, unsupported, info components, and their props. The block does not parse MapLibre filter syntax.
+
+## Loading, Empty, Error, and Status
+
+Show empty states in the wrapper. Use `StyleFilterEditorInlineError` for invalid conditions and `StyleFilterEditorUnsupported` with an upgrade action for nested expressions that cannot be edited.
+
+## Accessibility
+
+Every input and select needs a label. Remove buttons must identify the target condition, and error text should stay adjacent to the affected filter area.
+
+## Dependencies
+
+<RegistryDependencies registryName="style-filter-editor" />
+
+## Related Links
+
+- [StyleFilterEditor registry JSON](/r/style-filter-editor.json)
+- [style-function-editor registry JSON](/r/style-function-editor.json)
+- [style-panel registry JSON](/r/style-panel.json)

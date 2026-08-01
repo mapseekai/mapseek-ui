@@ -1,0 +1,64 @@
+---
+id: style-editor-modal
+slug: /blocks/style-editor-modal
+registryName: style-editor-modal
+category: block
+stability: stable
+examples:
+  - style-editor-modal/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StyleEditorModalDemo, zhStyleEditorModalLabels } from "@site/src/examples/style-editor-modal/overview"
+import overviewSource from "@site/src/examples/style-editor-modal/overview.tsx?raw"
+
+# StyleEditorModal
+
+StyleEditorModal 提供样式编辑任务的统一 dialog 外壳，并配套 section、alert、tile、source card 和 actions。
+
+## 安装
+
+<RegistryInstall registryName="style-editor-modal" />
+
+## 导入
+
+```tsx
+import {
+  StyleEditorModal,
+  StyleEditorModalActions,
+  type StyleEditorModalProps,
+} from "@/registry/blocks/style-editor-modal"
+```
+
+## 弹窗、提示与保存
+
+<ComponentDemo title="弹窗、提示与保存" description="示例覆盖 portal 渲染、提示关闭、模板选择、保存和取消状态。" source={overviewSource} minHeight={520}>
+  <StyleEditorModalDemo labels={zhStyleEditorModalLabels} />
+</ComponentDemo>
+
+## 用法
+
+由调用方控制 `open` 和 `onOpenChange`，弹窗内容使用导出的组合件组织。短保存流程放在 modal 内，长属性编辑应使用侧栏或抽屉。
+
+## 公开导出与 Props
+
+导出 `StyleEditorModal`、`StyleEditorModalSection`、`StyleEditorModalAlert`、`StyleEditorModalTile`、`StyleEditorModalSourceCard`、`StyleEditorModalActions` 和对应 props 类型。
+
+## 加载、空态、错误与状态
+
+错误提示使用 `StyleEditorModalAlert`；保存、取消和模板选择状态由业务层持有。示例中保存和取消都会关闭 dialog 并更新状态文本。
+
+## 无障碍
+
+标题传入 `title`，触发器和关闭动作必须有可读文案。portal 内容应保持在视口内，Escape 和按钮关闭后应返回触发上下文。
+
+## 依赖
+
+<RegistryDependencies registryName="style-editor-modal" />
+
+## 相关链接
+
+- [StyleEditorModal registry JSON](/r/style-editor-modal.json)
+- [dialog registry JSON](/r/dialog.json)
+- [style-editor-panel registry JSON](/r/style-editor-panel.json)

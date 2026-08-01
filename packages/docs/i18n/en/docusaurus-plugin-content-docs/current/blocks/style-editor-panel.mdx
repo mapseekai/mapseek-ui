@@ -1,0 +1,64 @@
+---
+id: style-editor-panel
+slug: /blocks/style-editor-panel
+registryName: style-editor-panel
+category: block
+stability: stable
+examples:
+  - style-editor-panel/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StyleEditorPanelDemo, enStyleEditorPanelLabels } from "@site/src/examples/style-editor-panel/overview"
+import overviewSource from "@site/src/examples/style-editor-panel/overview.tsx?raw"
+
+# StyleEditorPanel
+
+StyleEditorPanel provides the header, scroll content, section, card, and empty-state parts for a style-editing side panel.
+
+## Installation
+
+<RegistryInstall registryName="style-editor-panel" />
+
+## Import
+
+```tsx
+import {
+  StyleEditorPanelRoot,
+  StyleEditorPanelCard,
+  type StyleEditorPanelRootProps,
+} from "@/registry/blocks/style-editor-panel"
+```
+
+## Side Panel Source Editing
+
+<ComponentDemo title="Side panel source editing" description="The demo covers add, remove, empty section, and scroll container behavior." source={overviewSource} minHeight={620}>
+  <StyleEditorPanelDemo labels={enStyleEditorPanelLabels} />
+</ComponentDemo>
+
+## Usage
+
+Use `StyleEditorPanelRoot` for the panel boundary, `StyleEditorPanelHeader` for title and actions, `StyleEditorPanelContent` for scrolling, and product cards inside `StyleEditorPanelSection`.
+
+## Public Exports and Props
+
+Exports include root, header, content, section, card, empty components, and their props. The block owns layout and structure only, not source state.
+
+## Loading, Empty, Error, and Status
+
+Use `StyleEditorPanelEmpty` for empty sections. Loading and error states should be switched by the caller inside each section; business state such as add and remove stays outside the block.
+
+## Accessibility
+
+Titles, remove buttons, and add buttons need clear text or `aria-label`. Keep the scroll region keyboard reachable, and do not rely on icon-only card actions without names.
+
+## Dependencies
+
+<RegistryDependencies registryName="style-editor-panel" />
+
+## Related Links
+
+- [StyleEditorPanel registry JSON](/r/style-editor-panel.json)
+- [style-editor-modal registry JSON](/r/style-editor-modal.json)
+- [style-filter-editor registry JSON](/r/style-filter-editor.json)

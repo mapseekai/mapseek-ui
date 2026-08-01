@@ -153,3 +153,25 @@ it("keeps Task9C navigation feedback and overlay primitive coverage in the share
   expect(requiredRegistryDocs.get("confirm-dialog")?.examples).toEqual(["confirm-dialog/overview"])
   expect(requiredRegistryDocs.get("tooltip")?.examples).toEqual(["tooltip/overview"])
 })
+
+it("keeps Task10D style block coverage in the shared required docs manifest", () => {
+  expect([...requiredRegistryDocs.keys()]).toEqual(
+    expect.arrayContaining([
+      "raster-style-panel",
+      "style-color-input",
+      "style-editor-modal",
+      "style-editor-panel",
+      "style-filter-editor",
+      "style-function-editor",
+      "style-panel",
+      "style-source-picker-dialog",
+      "toggle-config-popover",
+    ]),
+  )
+  expect(requiredRegistryDocs.get("raster-style-panel")?.examples).toEqual([
+    "raster-style-panel/overview",
+  ])
+  expect(requiredRegistryDocs.get("toggle-config-popover")?.examples).toEqual([
+    "toggle-config-popover/overview",
+  ])
+})

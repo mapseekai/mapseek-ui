@@ -508,4 +508,67 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
       examples: ["split-tool-picker/overview"],
     },
   ],
+  [
+    "raster-style-panel",
+    {
+      category: "block",
+      examples: ["raster-style-panel/overview"],
+    },
+  ],
+  [
+    "style-color-input",
+    {
+      category: "block",
+      examples: ["style-color-input/overview"],
+    },
+  ],
+  [
+    "style-editor-modal",
+    {
+      category: "block",
+      examples: ["style-editor-modal/overview"],
+    },
+  ],
+  [
+    "style-editor-panel",
+    {
+      category: "block",
+      examples: ["style-editor-panel/overview"],
+    },
+  ],
+  [
+    "style-filter-editor",
+    {
+      category: "block",
+      examples: ["style-filter-editor/overview"],
+    },
+  ],
+  [
+    "style-function-editor",
+    {
+      category: "block",
+      examples: ["style-function-editor/overview"],
+    },
+  ],
+  [
+    "style-panel",
+    {
+      category: "block",
+      examples: ["style-panel/overview"],
+    },
+  ],
+  [
+    "style-source-picker-dialog",
+    {
+      category: "block",
+      examples: ["style-source-picker-dialog/overview"],
+    },
+  ],
+  [
+    "toggle-config-popover",
+    {
+      category: "block",
+      examples: ["toggle-config-popover/overview"],
+    },
+  ],
 ] as const)

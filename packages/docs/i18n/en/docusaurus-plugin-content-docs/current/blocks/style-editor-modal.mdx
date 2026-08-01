@@ -1,0 +1,64 @@
+---
+id: style-editor-modal
+slug: /blocks/style-editor-modal
+registryName: style-editor-modal
+category: block
+stability: stable
+examples:
+  - style-editor-modal/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StyleEditorModalDemo, enStyleEditorModalLabels } from "@site/src/examples/style-editor-modal/overview"
+import overviewSource from "@site/src/examples/style-editor-modal/overview.tsx?raw"
+
+# StyleEditorModal
+
+StyleEditorModal provides a shared dialog shell for style-editing tasks with section, alert, tile, source-card, and action primitives.
+
+## Installation
+
+<RegistryInstall registryName="style-editor-modal" />
+
+## Import
+
+```tsx
+import {
+  StyleEditorModal,
+  StyleEditorModalActions,
+  type StyleEditorModalProps,
+} from "@/registry/blocks/style-editor-modal"
+```
+
+## Dialog, Alert, and Save Flow
+
+<ComponentDemo title="Dialog, alert, and save flow" description="The demo covers portal rendering, alert dismissal, template selection, save, and cancel state." source={overviewSource} minHeight={520}>
+  <StyleEditorModalDemo labels={enStyleEditorModalLabels} />
+</ComponentDemo>
+
+## Usage
+
+Control `open` and `onOpenChange` from the caller, and compose modal content with the exported parts. Keep short save flows in the modal; use a side panel or drawer for long property editing.
+
+## Public Exports and Props
+
+Exports include `StyleEditorModal`, `StyleEditorModalSection`, `StyleEditorModalAlert`, `StyleEditorModalTile`, `StyleEditorModalSourceCard`, `StyleEditorModalActions`, and their props.
+
+## Loading, Empty, Error, and Status
+
+Use `StyleEditorModalAlert` for errors. Save, cancel, and template selection state belongs to the product layer. In the demo, save and cancel both close the dialog and update status text.
+
+## Accessibility
+
+Pass a readable `title`, and make trigger and close actions legible. Portal content should stay within the viewport, and Escape or button close should return focus to the trigger context.
+
+## Dependencies
+
+<RegistryDependencies registryName="style-editor-modal" />
+
+## Related Links
+
+- [StyleEditorModal registry JSON](/r/style-editor-modal.json)
+- [dialog registry JSON](/r/dialog.json)
+- [style-editor-panel registry JSON](/r/style-editor-panel.json)

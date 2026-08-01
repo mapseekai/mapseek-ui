@@ -1,0 +1,64 @@
+---
+id: style-panel
+slug: /blocks/style-panel
+registryName: style-panel
+category: block
+stability: stable
+examples:
+  - style-panel/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StylePanelDemo, zhStylePanelLabels } from "@site/src/examples/style-panel/overview"
+import overviewSource from "@site/src/examples/style-panel/overview.tsx?raw"
+
+# StylePanel
+
+StylePanel 是矢量图层样式面板，提供填充、透明度、描边和符号控制。
+
+## 安装
+
+<RegistryInstall registryName="style-panel" />
+
+## 导入
+
+```tsx
+import {
+  StylePanel,
+  type StylePanelProps,
+  type StyleValue,
+} from "@/registry/blocks/style-panel"
+```
+
+## 矢量样式控制
+
+<ComponentDemo title="矢量样式控制" description="示例覆盖 swatch、opacity slider、stroke slider、marker 切换和 reset。" source={overviewSource} minHeight={520}>
+  <StylePanelDemo labels={zhStylePanelLabels} />
+</ComponentDemo>
+
+## 用法
+
+将 `StylePanel` 作为受控容器使用，按几何类型组合 `StylePanel.Fill`、`StylePanel.Opacity`、`StylePanel.Stroke` 和 `StylePanel.Marker`。
+
+## 公开导出与 Props
+
+导出 `StylePanel` 复合组件，以及 `StylePanelProps`、`StyleValue` 和 labels 类型。子控件必须放在 `StylePanel` 内部。
+
+## 加载、空态、错误与状态
+
+组件只编辑传入的样式值，不处理加载或保存。保存失败、重置和未保存状态应由外层工具栏或面板状态显示。
+
+## 无障碍
+
+色块按钮使用 `fillColor` 生成可读名称，slider 暴露数值。符号按钮需要保持清晰 title 或 `aria-label`。
+
+## 依赖
+
+<RegistryDependencies registryName="style-panel" />
+
+## 相关链接
+
+- [StylePanel registry JSON](/r/style-panel.json)
+- [style-color-input registry JSON](/r/style-color-input.json)
+- [layer-panel registry JSON](/r/layer-panel.json)

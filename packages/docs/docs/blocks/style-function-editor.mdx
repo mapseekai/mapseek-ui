@@ -1,0 +1,64 @@
+---
+id: style-function-editor
+slug: /blocks/style-function-editor
+registryName: style-function-editor
+category: block
+stability: stable
+examples:
+  - style-function-editor/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StyleFunctionEditorDemo, zhStyleFunctionEditorLabels } from "@site/src/examples/style-function-editor/overview"
+import overviewSource from "@site/src/examples/style-function-editor/overview.tsx?raw"
+
+# StyleFunctionEditor
+
+StyleFunctionEditor 提供样式函数编辑器的面板、stops 表格、动作区和图标按钮。
+
+## 安装
+
+<RegistryInstall registryName="style-function-editor" />
+
+## 导入
+
+```tsx
+import {
+  StyleFunctionPanel,
+  StyleFunctionStopsTable,
+  type StyleFunctionStopsTableProps,
+} from "@/registry/blocks/style-function-editor"
+```
+
+## Stops 表格与动作
+
+<ComponentDemo title="Stops 表格与动作" description="示例覆盖函数类型、stops 行、新增、删除、撤销和转表达式操作。" source={overviewSource} minHeight={560}>
+  <StyleFunctionEditorDemo labels={zhStyleFunctionEditorLabels} />
+</ComponentDemo>
+
+## 用法
+
+调用方提供具体输入控件和 stops 数据。`StyleFunctionPanel` 固定容器，`StyleFunctionStopsTable` 固定表格结构，`StyleFunctionActions` 放置保存或转换动作。
+
+## 公开导出与 Props
+
+导出 `StyleFunctionPanel`、`StyleFunctionStopsTable`、`StyleFunctionActions`、`StyleFunctionIconButton` 以及 table column 和 props 类型。
+
+## 加载、空态、错误与状态
+
+组件不解析表达式，也不验证 stops。外层应在行内显示错误，并在 loading 或空状态时替换表格 body。
+
+## 无障碍
+
+表格需要 caption 和列标题。图标按钮必须传入 `aria-label`，tooltip 只作为补充说明。
+
+## 依赖
+
+<RegistryDependencies registryName="style-function-editor" />
+
+## 相关链接
+
+- [StyleFunctionEditor registry JSON](/r/style-function-editor.json)
+- [style-filter-editor registry JSON](/r/style-filter-editor.json)
+- [style-panel registry JSON](/r/style-panel.json)

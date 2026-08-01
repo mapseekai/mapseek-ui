@@ -745,6 +745,60 @@ const blockPages = [
     sourceFunction: "StorageMeterDemo",
     importPath: "@registry/blocks/storage-meter",
   },
+  {
+    name: "raster-style-panel",
+    demo: "raster-style-panel",
+    sourceFunction: "RasterStylePanelDemo",
+    importPath: "@registry/blocks/raster-style-panel",
+  },
+  {
+    name: "style-color-input",
+    demo: "style-color-input",
+    sourceFunction: "StyleColorInputDemo",
+    importPath: "@registry/blocks/style-color-input",
+  },
+  {
+    name: "style-editor-modal",
+    demo: "style-editor-modal",
+    sourceFunction: "StyleEditorModalDemo",
+    importPath: "@registry/blocks/style-editor-modal",
+  },
+  {
+    name: "style-editor-panel",
+    demo: "style-editor-panel",
+    sourceFunction: "StyleEditorPanelDemo",
+    importPath: "@registry/blocks/style-editor-panel",
+  },
+  {
+    name: "style-filter-editor",
+    demo: "style-filter-editor",
+    sourceFunction: "StyleFilterEditorDemo",
+    importPath: "@registry/blocks/style-filter-editor",
+  },
+  {
+    name: "style-function-editor",
+    demo: "style-function-editor",
+    sourceFunction: "StyleFunctionEditorDemo",
+    importPath: "@registry/blocks/style-function-editor",
+  },
+  {
+    name: "style-panel",
+    demo: "style-panel",
+    sourceFunction: "StylePanelDemo",
+    importPath: "@registry/blocks/style-panel",
+  },
+  {
+    name: "style-source-picker-dialog",
+    demo: "style-source-picker-dialog",
+    sourceFunction: "StyleSourcePickerDialogDemo",
+    importPath: "@registry/blocks/style-source-picker-dialog",
+  },
+  {
+    name: "toggle-config-popover",
+    demo: "toggle-config-popover",
+    sourceFunction: "ToggleConfigPopoverDemo",
+    importPath: "@registry/blocks/toggle-config-popover",
+  },
 ] as const satisfies readonly BlockPage[]
 
 function titleFromName(name: string): string {
@@ -1800,6 +1854,167 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
     await page.keyboard.press("Escape")
     await demo.locator('[data-demo-action="storage-meter-unsupported"]').click()
     await expect(demo).toContainText(localized(path, "不支持", "Unsupported"))
+  }
+
+  if (block === "raster-style-panel") {
+    const demo = page.locator('[data-demo="raster-style-panel"]')
+    await assertNoHorizontalOverflow(demo, `${path} raster style panel`)
+    await demo.getByRole("button", { name: localized(path, "RGB 合成", "RGB composite") }).click()
+    await expect(demo.locator('[data-demo-status="raster-style-panel"]')).toContainText(
+      localized(path, "RGB 合成", "RGB composite"),
+    )
+    await demo.locator('[data-demo-action="raster-style-panel-save"]').click()
+    await expect(demo.locator('[data-demo-status="raster-style-panel"]')).toContainText(
+      localized(path, "已保存样式", "Saved style"),
+    )
+    await demo.locator('[data-demo-action="raster-style-panel-reset"]').click()
+    await expect(demo.locator('[data-demo-status="raster-style-panel"]')).toContainText(
+      localized(path, "重置", "Reset"),
+    )
+  }
+
+  if (block === "style-color-input") {
+    const demo = page.locator('[data-demo="style-color-input"]')
+    const trigger = demo.getByRole("button", {
+      name: localized(path, "打开: 按钮和输入框", "Open: Button and input"),
+      exact: true,
+    })
+    await openMenuWithKeyboard(page, trigger, page.locator('[data-slot="popover-content"]').last())
+    await page
+      .getByRole("button", { name: `${localized(path, "套用", "Apply")}: #2563eb`, exact: true })
+      .click()
+    await expect(demo.locator('[data-demo-status="style-color-input"]')).toContainText("#2563eb")
+    await page.getByRole("button", { name: localized(path, "关闭", "Close"), exact: true }).click()
+    await expect(page.locator('[data-slot="popover-content"]')).toBeHidden()
+  }
+
+  if (block === "style-editor-modal") {
+    const demo = page.locator('[data-demo="style-editor-modal"]')
+    const trigger = demo.locator('[data-demo-action="style-editor-modal-open"]')
+    await openAndAssertDialog(page, trigger)
+    const dialog = page.locator('[data-slot="dialog-content"]').last()
+    await dialog
+      .getByRole("button", { name: localized(path, "关闭提示", "Dismiss alert"), exact: true })
+      .click()
+    await dialog.getByRole("button", { name: "OpenMapTiles", exact: true }).click()
+    await expect(demo.locator('[data-demo-status="style-editor-modal"]')).toContainText(
+      localized(path, "已选择模板", "Selected template"),
+    )
+    await dialog.getByRole("button", { name: localized(path, "保存", "Save"), exact: true }).click()
+    await expect(demo.locator('[data-demo-status="style-editor-modal"]')).toContainText(
+      localized(path, "已保存样式", "Saved style"),
+    )
+  }
+
+  if (block === "style-editor-panel") {
+    const demo = page.locator('[data-demo="style-editor-panel"]')
+    await assertNoHorizontalOverflow(demo, `${path} style editor panel`)
+    await demo.locator('[data-demo-action="style-editor-panel-add"]').click()
+    await expect(demo.locator('[data-demo-status="style-editor-panel"]')).toContainText(
+      localized(path, "已添加临时数据源", "Added temporary source"),
+    )
+    await demo.locator('[data-demo-action="style-editor-panel-remove-openmaptiles"]').click()
+    await expect(demo.locator('[data-demo-status="style-editor-panel"]')).toContainText(
+      localized(path, "已删除", "Removed"),
+    )
+  }
+
+  if (block === "style-filter-editor") {
+    const demo = page.locator('[data-demo="style-filter-editor"]')
+    await demo.locator('[data-demo-action="style-filter-editor-add"]').click()
+    await expect(demo.locator('[data-demo-status="style-filter-editor"]')).toContainText(
+      localized(path, "已添加过滤器", "Added filter"),
+    )
+    await demo.locator('[data-demo-action="style-filter-editor-remove-0"]').click()
+    await expect(demo.locator('[data-demo-status="style-filter-editor"]')).toContainText(
+      localized(path, "已删除过滤器", "Removed filter"),
+    )
+    await expect(demo).toContainText(
+      localized(path, "不支持嵌套过滤器。", "Nested filters are not supported."),
+    )
+  }
+
+  if (block === "style-function-editor") {
+    const demo = page.locator('[data-demo="style-function-editor"]')
+    await demo.locator('[data-demo-action="style-function-editor-add"]').click()
+    await expect(demo.locator('[data-demo-status="style-function-editor"]')).toContainText(
+      localized(path, "已添加 stop", "Added stop"),
+    )
+    await demo.locator('[data-demo-action="style-function-editor-remove-0"]').click()
+    await expect(demo.locator('[data-demo-status="style-function-editor"]')).toContainText(
+      localized(path, "已删除 stop", "Removed stop"),
+    )
+    await demo.locator('[data-demo-action="style-function-editor-expression"]').click()
+    await expect(demo.locator('[data-demo-status="style-function-editor"]')).toContainText(
+      localized(path, "已转为表达式", "Converted to expression"),
+    )
+  }
+
+  if (block === "style-panel") {
+    const demo = page.locator('[data-demo="style-panel"]')
+    await demo
+      .getByRole("button", {
+        name: `${localized(path, "填充颜色", "Fill color")} #2563eb`,
+        exact: true,
+      })
+      .click()
+    await expect(demo.locator('[data-demo-status="style-panel"]')).toContainText(
+      localized(path, "已更新样式", "Updated style"),
+    )
+    const slider = demo.getByRole("slider").first()
+    await slider.focus()
+    await page.keyboard.press("ArrowRight")
+    await expect(demo.locator('[data-demo-status="style-panel"]')).toContainText(
+      localized(path, "已更新样式", "Updated style"),
+    )
+    await demo.locator('[data-demo-action="style-panel-reset"]').click()
+    await expect(demo.locator('[data-demo-status="style-panel"]')).toContainText(
+      localized(path, "重置", "Reset"),
+    )
+  }
+
+  if (block === "style-source-picker-dialog") {
+    const demo = page.locator('[data-demo="style-source-picker-dialog"]')
+    const trigger = demo.locator('[data-demo-action="style-source-picker-dialog-open"]')
+    await openAndAssertDialog(page, trigger)
+    const dialog = page.locator('[data-slot="dialog-content"]').last()
+    await dialog
+      .getByPlaceholder(
+        localized(path, "搜索名称、路径或 UID...", "Search by name, path, or UID..."),
+      )
+      .fill("road")
+    await dialog.getByRole("button", { name: /Road Network/ }).click()
+    await expect(dialog).toContainText(localized(path, "已选择 1 个源", "Selected 1 source(s)"))
+    await dialog
+      .getByRole("button", { name: localized(path, "确认", "Confirm"), exact: true })
+      .click()
+    await expect(demo.locator('[data-demo-status="style-source-picker-dialog"]')).toContainText(
+      localized(path, "已添加源", "Added sources"),
+    )
+  }
+
+  if (block === "toggle-config-popover") {
+    const demo = page.locator('[data-demo="toggle-config-popover"]')
+    const switchButton = demo.getByRole("switch", {
+      name: localized(path, "顶点和边吸附", "Vertex and edge snapping"),
+      exact: true,
+    })
+    await switchButton.click()
+    await expect(demo.locator('[data-demo-status="toggle-config-popover"]')).toContainText(
+      localized(path, "已关闭", "Disabled"),
+    )
+    await switchButton.click()
+    const trigger = demo.getByRole("button", {
+      name: localized(path, "打开吸附设置", "Open snapping settings"),
+      exact: true,
+    })
+    await openMenuWithKeyboard(page, trigger, page.locator('[data-slot="popover-content"]').last())
+    const popover = page.locator('[data-slot="popover-content"]').last()
+    const threshold = popover.getByRole("slider")
+    await threshold.focus()
+    await page.keyboard.press("ArrowRight")
+    await popover.getByRole("checkbox").first().click()
+    await assertPortalFits(popover, `${path} toggle config popover`)
   }
 }
 

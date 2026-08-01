@@ -1,0 +1,64 @@
+---
+id: style-filter-editor
+slug: /blocks/style-filter-editor
+registryName: style-filter-editor
+category: block
+stability: stable
+examples:
+  - style-filter-editor/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { StyleFilterEditorDemo, zhStyleFilterEditorLabels } from "@site/src/examples/style-filter-editor/overview"
+import overviewSource from "@site/src/examples/style-filter-editor/overview.tsx?raw"
+
+# StyleFilterEditor
+
+StyleFilterEditor 提供样式过滤器编辑器的行布局、单条件布局、错误提示、操作区和不支持状态。
+
+## 安装
+
+<RegistryInstall registryName="style-filter-editor" />
+
+## 导入
+
+```tsx
+import {
+  StyleFilterEditorRow,
+  StyleFilterEditorSingle,
+  type StyleFilterEditorRowProps,
+} from "@/registry/blocks/style-filter-editor"
+```
+
+## 过滤器行与错误状态
+
+<ComponentDemo title="过滤器行与错误状态" description="示例覆盖条件行、删除、新增、内联错误、不支持状态和说明文本。" source={overviewSource} minHeight={520}>
+  <StyleFilterEditorDemo labels={zhStyleFilterEditorLabels} />
+</ComponentDemo>
+
+## 用法
+
+调用方提供属性输入、运算符选择和值输入。`StyleFilterEditorRow` 管理行和 action 布局，`StyleFilterEditorSingle` 只负责单条件栅格。
+
+## 公开导出与 Props
+
+导出 row、single、actions、inline error、unsupported、info 组件及其 props 类型。组件不解析 MapLibre filter 语法。
+
+## 加载、空态、错误与状态
+
+空态由外层显示。无效条件使用 `StyleFilterEditorInlineError`，无法编辑的嵌套表达式使用 `StyleFilterEditorUnsupported` 并提供升级动作。
+
+## 无障碍
+
+每个输入和选择器都需要 label。删除按钮必须命名到对应条件，错误文本应紧邻有问题的过滤器区域。
+
+## 依赖
+
+<RegistryDependencies registryName="style-filter-editor" />
+
+## 相关链接
+
+- [StyleFilterEditor registry JSON](/r/style-filter-editor.json)
+- [style-function-editor registry JSON](/r/style-function-editor.json)
+- [style-panel registry JSON](/r/style-panel.json)

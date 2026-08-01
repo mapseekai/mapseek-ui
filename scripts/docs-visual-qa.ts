@@ -4,6 +4,12 @@ type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots" | "onboarding"
 type DocsVisualCategory = "block" | "primitive"
 type DocsTheme = "dark" | "light"
 type DocsViewportName = "desktop" | "mobile"
+type BlockPage = {
+  readonly name: string
+  readonly demo: string
+  readonly sourceFunction: string
+  readonly importPath: string
+}
 
 type CliOptions = {
   readonly baseUrl: string
@@ -536,6 +542,36 @@ const primitivePages = [
 
 const blockPages = [
   {
+    name: "app-top-bar",
+    demo: "app-top-bar",
+    sourceFunction: "AppTopBarDemo",
+    importPath: "@registry/blocks/app-top-bar",
+  },
+  {
+    name: "crs-picker",
+    demo: "crs-picker",
+    sourceFunction: "CrsPickerDemo",
+    importPath: "@registry/blocks/crs-picker",
+  },
+  {
+    name: "layer-editor-group",
+    demo: "layer-editor-group",
+    sourceFunction: "LayerEditorGroupDemo",
+    importPath: "@registry/blocks/layer-editor-group",
+  },
+  {
+    name: "layer-style-editor",
+    demo: "layer-style-editor",
+    sourceFunction: "LayerStyleEditorDemo",
+    importPath: "@registry/blocks/layer-style-editor",
+  },
+  {
+    name: "layout",
+    demo: "layout",
+    sourceFunction: "LayoutDemo",
+    importPath: "@registry/blocks/layout",
+  },
+  {
     name: "add-field-form",
     demo: "add-field-form",
     sourceFunction: "AddFieldFormDemo",
@@ -578,6 +614,24 @@ const blockPages = [
     importPath: "@registry/blocks/json-editor",
   },
   {
+    name: "map-controls",
+    demo: "map-controls",
+    sourceFunction: "MapControlsDemo",
+    importPath: "@registry/blocks/map-controls",
+  },
+  {
+    name: "map-coordinate-status",
+    demo: "map-coordinate-status",
+    sourceFunction: "MapCoordinateStatusDemo",
+    importPath: "@registry/blocks/map-coordinate-status",
+  },
+  {
+    name: "map-switcher",
+    demo: "map-switcher",
+    sourceFunction: "MapSwitcherDemo",
+    importPath: "@registry/blocks/map-switcher",
+  },
+  {
     name: "number-range-input",
     demo: "number-range-input",
     sourceFunction: "NumberRangeInputDemo",
@@ -589,9 +643,19 @@ const blockPages = [
     sourceFunction: "SchemaFormDemo",
     importPath: "@registry/blocks/schema-form",
   },
-] as const
-
-type BlockPage = (typeof blockPages)[number]
+  {
+    name: "pixel-probe",
+    demo: "pixel-probe",
+    sourceFunction: "PixelProbeDemo",
+    importPath: "@registry/blocks/pixel-probe",
+  },
+  {
+    name: "split-tool-picker",
+    demo: "split-tool-picker",
+    sourceFunction: "SplitToolPickerDemo",
+    importPath: "@registry/blocks/split-tool-picker",
+  },
+] as const satisfies readonly BlockPage[]
 
 function titleFromName(name: string): string {
   return name
@@ -969,6 +1033,105 @@ function localized(path: string, zh: string, en: string): string {
 }
 
 async function assertBlockInteraction(page: Page, block: string, path: string): Promise<void> {
+  if (block === "app-top-bar") {
+    const demo = page.locator('[data-demo="app-top-bar"]')
+    await demo.getByRole("button", { name: localized(path, "保存", "Save"), exact: true }).click()
+    await expect(demo.locator('[data-demo-status="app-top-bar"]')).toContainText(
+      localized(path, "状态已保存", "Status saved"),
+    )
+    await demo.locator('[data-demo-action="app-top-bar-save-as"]').click()
+    await expect(demo.locator('[data-demo-status="app-top-bar"]')).toContainText(
+      localized(path, "状态已标脏", "Status marked dirty"),
+    )
+    await demo.locator('[data-demo-action="app-top-bar-snapshot"]').click()
+    await expect(demo.locator('[data-demo-status="app-top-bar"]')).toContainText(
+      localized(path, "快照", "Snapshot"),
+    )
+    await activateByKeyboard(
+      demo.getByRole("button", { name: localized(path, "返回", "Back"), exact: true }),
+    )
+    await expect(demo.locator('[data-demo-status="app-top-bar"]')).toContainText(
+      localized(path, "返回", "Back"),
+    )
+  }
+
+  if (block === "crs-picker") {
+    const demo = page.locator('[data-demo="crs-picker"]')
+    await demo.locator('[data-demo-action="crs-picker-switch-3857"]').click()
+    await expect(demo.locator('[data-demo-status="crs-picker"]')).toContainText("EPSG:3857")
+    await demo.locator('[data-demo-action="crs-picker-switch-4326"]').click()
+    await expect(demo.locator('[data-demo-status="crs-picker"]')).toContainText("EPSG:4326")
+    await assertNoHorizontalOverflow(demo, `${path} crs picker`)
+  }
+
+  if (block === "layer-editor-group") {
+    const demo = page.locator('[data-demo="layer-editor-group"]')
+    const panel = demo.locator('[data-demo-panel="layer-editor-group"]')
+    await assertNoHorizontalOverflow(panel, `${path} layer editor group`)
+    await panel.scrollIntoViewIfNeeded()
+    await demo
+      .getByRole("button", { name: localized(path, "绘制属性", "Paint"), exact: true })
+      .click()
+    await expect(demo.locator('input[value="rgb(242,243,240)"]')).toBeHidden()
+    await activateByKeyboard(
+      demo.getByRole("button", { name: localized(path, "绘制属性", "Paint"), exact: true }),
+    )
+    await expect(demo.locator('input[value="rgb(242,243,240)"]')).toBeVisible()
+  }
+
+  if (block === "layer-style-editor") {
+    const demo = page.locator('[data-demo="layer-style-editor"]')
+    await assertNoHorizontalOverflow(
+      demo.locator('[data-slot="layer-style-editor"]'),
+      `${path} layer style editor`,
+    )
+    await demo.getByRole("tab", { name: localized(path, "数据", "Data"), exact: true }).click()
+    await expect(demo.locator('input[value="[\\"==\\", \\"class\\", \\"park\\"]"]')).toBeVisible()
+    await demo.getByRole("tab", { name: "JSON", exact: true }).click()
+    await expect(demo).toContainText("background-color")
+    const actionTrigger = demo.getByRole("button", {
+      name: localized(path, "图层选项", "Layer options"),
+      exact: true,
+    })
+    await openMenuWithKeyboard(
+      page,
+      actionTrigger,
+      page.locator('[data-slot="dropdown-menu-content"]').last(),
+    )
+    await page
+      .getByRole("menuitem", { name: localized(path, "复制图层", "Duplicate layer"), exact: true })
+      .click()
+    await expect(demo.locator('[data-demo-status="layer-style-editor"]')).toContainText(
+      localized(path, "复制图层", "Duplicate layer"),
+    )
+    await activateByKeyboard(
+      demo.getByRole("button", {
+        name: localized(path, "关闭图层编辑器", "Close layer editor"),
+        exact: true,
+      }),
+    )
+    await expect(demo.locator('[data-demo-status="layer-style-editor"]')).toContainText(
+      localized(path, "已关闭", "Closed"),
+    )
+  }
+
+  if (block === "layout") {
+    const demo = page.locator('[data-demo="layout"]')
+    await assertNoHorizontalOverflow(demo, `${path} layout demo`)
+    await assertNoHorizontalOverflow(
+      demo.locator('[data-demo-panel="layout-scroll"]'),
+      `${path} layout scroll`,
+    )
+    await demo.locator('[data-demo-action="layout-field-action"]').click()
+    await expect(demo.locator('[data-demo-status="layout"]')).toContainText(
+      localized(path, "函数按钮已触发", "Function action triggered"),
+    )
+    await activateByKeyboard(demo.locator('[data-demo-action="layout-collapse"]'))
+    await expect(demo.locator('[data-demo-status="layout"]')).toContainText(
+      localized(path, "展开", "Expand"),
+    )
+  }
+
   if (block === "add-field-form") {
     const demo = page.locator('[data-demo="add-field-form"]')
     await expect(demo.locator('[data-demo-status="validation"]')).toContainText(
@@ -1078,6 +1241,110 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
     await expect(demo.locator('[data-demo-status="json-editor"]')).toContainText(
       localized(path, "已聚焦", "Focused"),
     )
+  }
+
+  if (block === "map-controls") {
+    const demo = page.locator('[data-demo="map-controls"]')
+    await demo
+      .getByRole("button", { name: localized(path, "放大", "Zoom in"), exact: true })
+      .click()
+    await expect(demo.locator('[data-demo-status="map-controls"]')).toContainText(
+      localized(path, "已放大", "Zoomed in"),
+    )
+    await activateByKeyboard(
+      demo.getByRole("button", { name: localized(path, "定位", "Locate"), exact: true }),
+    )
+    await expect(demo.locator('[data-demo-status="map-controls"]')).toContainText(
+      localized(path, "已定位", "Located"),
+    )
+    await demo.getByRole("button", { name: localized(path, "归位", "Home"), exact: true }).click()
+    await expect(demo.locator('[data-demo-status="map-controls"]')).toContainText(
+      localized(path, "已归位", "Returned home"),
+    )
+  }
+
+  if (block === "map-coordinate-status") {
+    const demo = page.locator('[data-demo="map-coordinate-status"]')
+    await expect(demo).toContainText("EPSG:3857")
+    await expect(demo).toContainText("13,522,425.02 m")
+    await demo.locator('[data-demo-action="map-coordinate-status-update-view"]').click()
+    await expect(demo.locator('[data-demo-status="map-coordinate-status"]')).toContainText(
+      localized(path, "已更新 view", "View updated"),
+    )
+    await demo.locator('[data-demo-action="map-coordinate-status-toggle-crs"]').click()
+    await expect(demo.locator('[data-demo-status="map-coordinate-status"]')).toContainText(
+      "EPSG:4326",
+    )
+    await expect(demo).toContainText("121.4737° E")
+    await demo.locator('[data-demo-action="map-coordinate-status-copy"]').click()
+    await expect(demo.locator('[data-demo-status="map-coordinate-status"]')).toContainText(
+      localized(path, "已复制读数", "Readout copied"),
+    )
+  }
+
+  if (block === "map-switcher") {
+    const demo = page.locator('[data-demo="map-switcher"]')
+    const controlled = demo.locator('[data-demo-section="map-switcher-controlled"]')
+    await controlled.locator('[data-demo-action="map-switcher-toggle-open"]').click()
+    const panel = controlled.locator('[data-slot="map-switcher-panel"]')
+    await expect(panel).toBeVisible()
+    await assertWithinViewport(panel, `${path} map switcher panel`)
+    await assertNoHorizontalOverflow(panel, `${path} map switcher panel`)
+    await panel
+      .locator("button")
+      .filter({ hasText: localized(path, "地形", "Terrain") })
+      .click()
+    await expect(demo.locator('[data-demo-status="map-switcher"]')).toContainText("terrain")
+    await controlled.locator('[data-demo-action="map-switcher-next"]').click()
+    await expect(demo.locator('[data-demo-status="map-switcher"]')).toContainText("dark")
+  }
+
+  if (block === "pixel-probe") {
+    const demo = page.locator('[data-demo="pixel-probe"]')
+    await expect(demo.locator('[data-testid="pixel-probe"]')).toBeVisible()
+    await demo.getByTitle(localized(path, "复制 JSON", "Copy JSON")).click()
+    await expect(demo.locator('[data-demo-status="pixel-probe"]')).toContainText(
+      localized(path, "已复制 JSON", "Copied JSON"),
+    )
+    await demo.locator('[data-slot="icon-button"]').last().click()
+    await expect(demo.locator('[data-demo-status="pixel-probe"]')).toContainText(
+      localized(path, "像元 2", "Pixel 2"),
+    )
+    await demo.getByTitle(localized(path, "关闭", "Close")).click()
+    await demo
+      .getByRole("button", { name: localized(path, "重新打开", "Reopen"), exact: true })
+      .click()
+    await expect(demo.locator('[data-testid="pixel-probe"]')).toBeVisible()
+    await demo.locator('[data-demo-action="pixel-probe-clear-selection"]').click()
+    await expect(demo.locator('[data-demo-empty="pixel-probe"]')).toContainText(
+      localized(path, "暂无选中像元", "No selected pixel"),
+    )
+  }
+
+  if (block === "split-tool-picker") {
+    const demo = page.locator('[data-demo="split-tool-picker"]')
+    const selectPicker = demo.locator('[data-demo-action="split-tool-picker-select"]')
+    await activateByKeyboard(
+      selectPicker.getByRole("button", { name: "Point select", exact: true }),
+    )
+    await expect(demo.locator('[data-demo-status="split-tool-picker"]')).toContainText(
+      localized(path, "主按钮", "Primary button"),
+    )
+    const selectMenuTrigger = selectPicker.getByRole("button").nth(1)
+    await openMenuWithKeyboard(
+      page,
+      selectMenuTrigger,
+      page.locator('[data-slot="popover-content"]').last(),
+    )
+    await page.getByRole("option", { name: /Box select/ }).focus()
+    await page.keyboard.press("Enter")
+    await expect(demo.locator('[data-demo-status="split-tool-picker"]')).toContainText(
+      localized(path, "下拉菜单", "Menu"),
+    )
+    await expect(demo).toContainText("Box select")
+    await expect(
+      demo.locator('[data-demo-action="split-tool-picker-disabled"]').getByRole("button").first(),
+    ).toBeDisabled()
   }
 
   if (block === "number-range-input") {

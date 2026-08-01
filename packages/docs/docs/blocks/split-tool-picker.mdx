@@ -1,0 +1,66 @@
+---
+id: split-tool-picker
+slug: /blocks/split-tool-picker
+registryName: split-tool-picker
+category: block
+stability: stable
+examples:
+  - split-tool-picker/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { SplitToolPickerDemo, zhSplitToolPickerLabels } from "@site/src/examples/split-tool-picker/overview"
+import overviewSource from "@site/src/examples/split-tool-picker/overview.tsx?raw"
+
+# SplitToolPicker
+
+SplitToolPicker 是拆分式工具按钮：主按钮触发当前工具，下拉菜单切换工具。它适合选择、绘制、测量等地图工具组；活动工具、工具动作和工具栏布局由调用方维护。
+
+## 安装
+
+<RegistryInstall registryName="split-tool-picker" />
+
+## 导入
+
+```tsx
+import {
+  SplitToolPicker,
+  type SplitToolActionSource,
+  type SplitToolItem,
+  type SplitToolPickerLabels,
+  type SplitToolPickerProps,
+} from "@/registry/blocks/split-tool-picker"
+```
+
+## 拆分工具按钮
+
+<ComponentDemo title="拆分工具按钮" description="示例保留 Showcase 中的选择工具组、绘制工具组、主按钮动作、菜单动作、当前状态和禁用态。" source={overviewSource} minHeight={420}>
+  <SplitToolPickerDemo labels={zhSplitToolPickerLabels} />
+</ComponentDemo>
+
+## 用法
+
+为每个工具提供 `id`、Tabler `icon`、`label`，并可选 `hint` 与 `description`。受控模式下传 `value` 和 `onValueChange`。`onAction` 会收到工具 id 和来源，来源为 `primary` 或 `menu`，可用于区分立即执行和菜单选择。
+
+## 公开导出与 Props
+
+导出 `SplitToolPicker`、`SplitToolPickerProps`、`SplitToolPickerLabels`、`SplitToolItem` 和 `SplitToolActionSource`。关键 props 是 `items`、`value`、`defaultValue`、`onValueChange`、`onAction`、`active`、`disabled`、`label`、`labels`、`className` 和 `contentClassName`。
+
+## 受控状态
+
+组件可用 `defaultValue` 自持当前工具，也可用 `value` 完全受控。示例中选择工具和绘制工具分别保存当前值，`onAction` 把工具组、工具名和触发来源写入外层日志。
+
+## 无障碍
+
+主按钮使用当前工具 label 作为 `aria-label`，并通过 `aria-pressed` 表示 active。菜单 trigger 使用工具组 label 和菜单文案组合成可访问名称。菜单项使用 `role="option"` 和 `aria-selected`，工具 hint 不应作为唯一标签。
+
+## 依赖
+
+<RegistryDependencies registryName="split-tool-picker" />
+
+## 相关链接
+
+- [SplitToolPicker registry JSON](/r/split-tool-picker.json)
+- [Popover registry JSON](/r/popover.json)
+- [Tooltip registry JSON](/r/tooltip.json)

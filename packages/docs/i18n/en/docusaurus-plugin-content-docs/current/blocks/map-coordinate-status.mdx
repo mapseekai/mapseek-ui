@@ -1,0 +1,65 @@
+---
+id: map-coordinate-status
+slug: /blocks/map-coordinate-status
+registryName: map-coordinate-status
+category: block
+stability: stable
+examples:
+  - map-coordinate-status/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { MapCoordinateStatusDemo, enMapCoordinateStatusLabels } from "@site/src/examples/map-coordinate-status/overview"
+import overviewSource from "@site/src/examples/map-coordinate-status/overview.tsx?raw"
+
+# MapCoordinateStatus
+
+MapCoordinateStatus is a CRS switcher and coordinate readout for map canvases. It renders the current CRS, center point, zoom or scale, and delegates CRS selection to CrsPicker; map view state, projection transforms, and reload behavior stay with the caller.
+
+## Installation
+
+<RegistryInstall registryName="map-coordinate-status" />
+
+## Import
+
+```tsx
+import {
+  MapCoordinateStatus,
+  type MapCoordinateStatusLabels,
+  type MapCoordinateStatusProps,
+  type MapCoordinateStatusReadout,
+} from "@/registry/blocks/map-coordinate-status"
+```
+
+## Controlled CRS and View
+
+<ComponentDemo title="Controlled CRS and view" description="The example preserves the Showcase EPSG:3857 / EPSG:4326 switch, external view update, and bottom-right status bar." source={overviewSource} minHeight={300}>
+  <MapCoordinateStatusDemo labels={enMapCoordinateStatusLabels} />
+</ComponentDemo>
+
+## Usage
+
+Pass controlled `crs`, current `center`, and `zoom`. If the map only exposes scale, pass `scale` as a fallback. For fully custom display, pass `readouts`; it replaces the default center and level readouts. `allowedEpsgs` and `extraItems` are forwarded to the internal CrsPicker.
+
+## Public Exports and Props
+
+Exports include `MapCoordinateStatus`, `MapCoordinateStatusProps`, `MapCoordinateStatusReadout`, and `MapCoordinateStatusLabels`. Key props are `crs`, `center`, `zoom`, `scale`, `readouts`, `onCrsChange`, `allowedEpsgs`, `extraItems`, `labels`, `className`, and `pickerClassName`.
+
+## Controlled State
+
+The component only owns popover open state. `crs` and `view` must be updated by the caller; the demo's `applyCrs` changes both CRS and sample coordinates to model how a real map refreshes center after a projection change.
+
+## Accessibility
+
+The CRS trigger uses `labels.switchCrs`, and readout items use localized labels. Longitude/latitude and projected coordinates should retain units or direction. The popup CRS list inherits CrsPicker search, list labeling, and empty-result behavior.
+
+## Dependencies
+
+<RegistryDependencies registryName="map-coordinate-status" />
+
+## Related Links
+
+- [MapCoordinateStatus registry JSON](/r/map-coordinate-status.json)
+- [CrsPicker registry JSON](/r/crs-picker.json)
+- [Popover registry JSON](/r/popover.json)

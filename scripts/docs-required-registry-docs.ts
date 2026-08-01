@@ -264,6 +264,13 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "app-top-bar",
+    {
+      category: "block",
+      examples: ["app-top-bar/overview"],
+    },
+  ],
+  [
     "add-field-form",
     {
       category: "block",
@@ -282,6 +289,13 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     {
       category: "block",
       examples: ["attr-table/overview"],
+    },
+  ],
+  [
+    "crs-picker",
+    {
+      category: "block",
+      examples: ["crs-picker/overview"],
     },
   ],
   [
@@ -320,6 +334,48 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "layer-editor-group",
+    {
+      category: "block",
+      examples: ["layer-editor-group/overview"],
+    },
+  ],
+  [
+    "layer-style-editor",
+    {
+      category: "block",
+      examples: ["layer-style-editor/overview"],
+    },
+  ],
+  [
+    "layout",
+    {
+      category: "block",
+      examples: ["layout/overview"],
+    },
+  ],
+  [
+    "map-controls",
+    {
+      category: "block",
+      examples: ["map-controls/overview"],
+    },
+  ],
+  [
+    "map-coordinate-status",
+    {
+      category: "block",
+      examples: ["map-coordinate-status/overview"],
+    },
+  ],
+  [
+    "map-switcher",
+    {
+      category: "block",
+      examples: ["map-switcher/overview"],
+    },
+  ],
+  [
     "number-range-input",
     {
       category: "block",
@@ -327,10 +383,24 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "pixel-probe",
+    {
+      category: "block",
+      examples: ["pixel-probe/overview"],
+    },
+  ],
+  [
     "schema-form",
     {
       category: "block",
       examples: ["schema-form/overview"],
+    },
+  ],
+  [
+    "split-tool-picker",
+    {
+      category: "block",
+      examples: ["split-tool-picker/overview"],
     },
   ],
 ] as const)

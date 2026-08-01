@@ -1,0 +1,65 @@
+---
+id: crs-picker
+slug: /blocks/crs-picker
+registryName: crs-picker
+category: block
+stability: stable
+examples:
+  - crs-picker/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { CrsPickerDemo, enCrsPickerLabels } from "@site/src/examples/crs-picker/overview"
+import overviewSource from "@site/src/examples/crs-picker/overview.tsx?raw"
+
+# CrsPicker
+
+CrsPicker is a coordinate reference system picker. It combines built-in EPSG entries, search, grouping, and controlled selection for map products; coordinate transforms, projection support checks, and map-engine reloads stay with the caller.
+
+## Installation
+
+<RegistryInstall registryName="crs-picker" />
+
+## Import
+
+```tsx
+import {
+  CrsPicker,
+  type CrsItem,
+  type CrsPickerLabels,
+  type CrsPickerProps,
+} from "@/registry/blocks/crs-picker"
+```
+
+## Controlled CRS Selection
+
+<ComponentDemo title="Controlled CRS selection" description="The example preserves the allowedEpsgs subset, custom extraItems, EPSG override, and controlled onChange log." source={overviewSource} minHeight={560}>
+  <CrsPickerDemo labels={enCrsPickerLabels} />
+</ComponentDemo>
+
+## Usage
+
+When `allowedEpsgs` is omitted, all built-in entries are shown. Pass `allowedEpsgs` to restrict the choices to what the map engine supports; pass `extraItems` to add project-specific CRS entries or override built-in names. Use `value` plus `onChange` for controlled mode, or `defaultValue` for uncontrolled mode.
+
+## Public Exports and Props
+
+Exports include `CrsPicker`, `buildCrsList`, `DEFAULT_CRS_ITEMS`, `DEFAULT_CRS_PICKER_LABELS`, `CrsItem`, `CrsKind`, `CrsPickerProps`, and `CrsPickerLabels`. Key props are `value`, `defaultValue`, `onChange`, `allowedEpsgs`, `extraItems`, `labels`, and `className`.
+
+## Controlled State
+
+The component can keep its own initial selection or be fully controlled by the caller. The demo's external buttons call the same `handleChange` function to simulate CRS changes from map state, URL parameters, or project configuration outside the picker.
+
+## Accessibility
+
+The trigger and search input use label text, the list is named by `labels.listLabel`, and empty results use `labels.noResults`. When localizing `labels`, keep EPSG codes intact and make the geographic/projected group names readable.
+
+## Dependencies
+
+<RegistryDependencies registryName="crs-picker" />
+
+## Related Links
+
+- [CrsPicker registry JSON](/r/crs-picker.json)
+- [MapCoordinateStatus registry JSON](/r/map-coordinate-status.json)
+- [Popover registry JSON](/r/popover.json)

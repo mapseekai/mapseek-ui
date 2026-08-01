@@ -1,0 +1,64 @@
+---
+id: map-switcher
+slug: /blocks/map-switcher
+registryName: map-switcher
+category: block
+stability: stable
+examples:
+  - map-switcher/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { MapSwitcherDemo, enMapSwitcherLabels } from "@site/src/examples/map-switcher/overview"
+import overviewSource from "@site/src/examples/map-switcher/overview.tsx?raw"
+
+# MapSwitcher
+
+MapSwitcher is a basemap switcher. It exposes Trigger, Panel, and Item as a compound component, supports thumbnail image mode and compact button-list mode, and leaves basemap data, selected value, open state, and basemap side effects to the caller.
+
+## Installation
+
+<RegistryInstall registryName="map-switcher" />
+
+## Import
+
+```tsx
+import {
+  MapSwitcher,
+  type MapSwitcherItemData,
+  type MapSwitcherProps,
+} from "@/registry/blocks/map-switcher"
+```
+
+## Basemap Switcher
+
+<ComponentDemo title="Basemap switcher" description="The example preserves the Showcase image mode, button mode, and controlled value + open + callback log." source={overviewSource} minHeight={980}>
+  <MapSwitcherDemo labels={enMapSwitcherLabels} />
+</ComponentDemo>
+
+## Usage
+
+Place `MapSwitcher` in a map overlay and compose `MapSwitcher.Trigger`, `MapSwitcher.Panel`, and multiple `MapSwitcher.Item` children inside it. In image mode, pass `image` to items; in button mode, `color` and `label` are enough. For controlled mode, pass `value`, `onChange`, `open`, and `onOpenChange`.
+
+## Public Exports and Props
+
+Exports include `MapSwitcher`, `MapSwitcherProps`, and `MapSwitcherItemData`. Root props are `value`, `defaultValue`, `onChange`, `open`, `defaultOpen`, `onOpenChange`, `mode`, `className`, and `children`. Items require `id` and `label`, with optional `image` and `color`.
+
+## Controlled State
+
+The selected basemap and panel open state can be controlled or uncontrolled. The third demo controls both `value` and `open`, so external buttons can toggle the panel or advance to the next basemap, showing how callers can synchronize basemap state with a map engine.
+
+## Accessibility
+
+Trigger uses `aria-expanded` and `aria-haspopup="listbox"`, Panel uses `role="listbox"`, and Item uses `role="option"` with `aria-selected`. Basemap thumbnails need readable labels, and remote images should not be the only source of information.
+
+## Dependencies
+
+<RegistryDependencies registryName="map-switcher" />
+
+## Related Links
+
+- [MapSwitcher registry JSON](/r/map-switcher.json)
+- [MapControls registry JSON](/r/map-controls.json)
+- [Button registry JSON](/r/button.json)

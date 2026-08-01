@@ -1,0 +1,64 @@
+---
+id: map-switcher
+slug: /blocks/map-switcher
+registryName: map-switcher
+category: block
+stability: stable
+examples:
+  - map-switcher/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { MapSwitcherDemo, zhMapSwitcherLabels } from "@site/src/examples/map-switcher/overview"
+import overviewSource from "@site/src/examples/map-switcher/overview.tsx?raw"
+
+# MapSwitcher
+
+MapSwitcher 是地图底图切换器。它以复合组件方式提供 Trigger、Panel 和 Item，支持图片缩略图模式与按钮列表模式；底图数据、当前选中值、打开状态和底图切换副作用由调用方维护。
+
+## 安装
+
+<RegistryInstall registryName="map-switcher" />
+
+## 导入
+
+```tsx
+import {
+  MapSwitcher,
+  type MapSwitcherItemData,
+  type MapSwitcherProps,
+} from "@/registry/blocks/map-switcher"
+```
+
+## 底图切换器
+
+<ComponentDemo title="底图切换器" description="示例保留 Showcase 中的图片模式、按钮模式，以及受控 value + open + 回调日志。" source={overviewSource} minHeight={980}>
+  <MapSwitcherDemo labels={zhMapSwitcherLabels} />
+</ComponentDemo>
+
+## 用法
+
+把 `MapSwitcher` 放在地图 overlay 中，并在内部组合 `MapSwitcher.Trigger`、`MapSwitcher.Panel` 和多个 `MapSwitcher.Item`。图片模式给 item 传 `image`，按钮模式可以只传 `color` 和 `label`。受控模式下传 `value`、`onChange`、`open` 和 `onOpenChange`。
+
+## 公开导出与 Props
+
+导出 `MapSwitcher`、`MapSwitcherProps` 和 `MapSwitcherItemData`。根组件关键 props 是 `value`、`defaultValue`、`onChange`、`open`、`defaultOpen`、`onOpenChange`、`mode`、`className` 和 `children`。Item 需要 `id`、`label`，并可选 `image` 与 `color`。
+
+## 受控状态
+
+选中底图和面板打开状态都可以受控或非受控。示例的第三组同时控制 `value` 和 `open`，外部按钮可以切换打开状态或切到下一个底图，展示调用方如何把底图状态同步到地图引擎。
+
+## 无障碍
+
+Trigger 使用 `aria-expanded` 和 `aria-haspopup="listbox"`，Panel 使用 `role="listbox"`，Item 使用 `role="option"` 与 `aria-selected`。底图缩略图需要可读 `label`，远程图片应避免成为唯一信息来源。
+
+## 依赖
+
+<RegistryDependencies registryName="map-switcher" />
+
+## 相关链接
+
+- [MapSwitcher registry JSON](/r/map-switcher.json)
+- [MapControls registry JSON](/r/map-controls.json)
+- [Button registry JSON](/r/button.json)

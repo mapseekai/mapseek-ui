@@ -1,0 +1,61 @@
+---
+id: context-menu
+slug: /components/context-menu
+registryName: context-menu
+category: primitive
+stability: stable
+examples:
+  - context-menu/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ContextMenuOverviewDemo } from "@site/src/examples/context-menu/overview"
+import overviewSource from "@site/src/examples/context-menu/overview.tsx?raw"
+
+# Context Menu
+
+Context Menu provides right-click and contextual actions for map layers, table rows, and resource cards.
+
+## Installation
+
+<RegistryInstall registryName="context-menu" />
+
+## Import
+
+```tsx
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/registry/ui/context-menu"
+```
+
+## Usage
+
+<ComponentDemo title="Layer context menu" description="Covers labels, shortcuts, disabled, destructive, checkbox, radio, and submenu states, with portal content outside the preview clipping boundary." source={overviewSource} minHeight={320}>
+  <ContextMenuOverviewDemo />
+</ComponentDemo>
+
+## Exports
+
+`context-menu.tsx` exports root, trigger, content, group, label, item, checkbox item, radio group, submenu, separator, and shortcut components.
+
+## States
+
+Items support `disabled` and `variant="destructive"`. Checkbox items use `checked/onCheckedChange`; radio items live inside `ContextMenuRadioGroup`; nested actions use `ContextMenuSub`.
+
+## Accessibility
+
+The trigger region must be focusable and keyboard reachable. After opening, the menu should support arrow navigation, Enter selection, Escape close, and focus return. Do not make right click the only path to critical actions.
+
+## Dependencies
+
+<RegistryDependencies registryName="context-menu" />
+
+## Related Links
+
+- [Context Menu registry JSON](/r/context-menu.json)
+- [Dropdown Menu registry JSON](/r/dropdown-menu.json)
+- [Tooltip registry JSON](/r/tooltip.json)

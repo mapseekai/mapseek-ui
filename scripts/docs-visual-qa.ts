@@ -273,17 +273,25 @@ async function assertNoHorizontalOverflow(locator: Locator, label: string): Prom
 
 async function assertWithinViewport(locator: Locator, label: string): Promise<void> {
   const page = locator.page()
-  const viewport = page.viewportSize()
-  const box = await locator.boundingBox()
-  if (!viewport || !box) throw new Error(`${label} bounding box is unavailable.`)
-  if (
-    box.x < -1 ||
-    box.y < -1 ||
-    box.x + box.width > viewport.width + 1 ||
-    box.y + box.height > viewport.height + 1
-  ) {
-    throw new Error(`${label} is outside the viewport: ${JSON.stringify({ box, viewport })}`)
-  }
+  await expect
+    .poll(
+      async () => {
+        const viewport = page.viewportSize()
+        const box = await locator.boundingBox()
+        if (!viewport || !box) return { fits: false, viewport, box }
+        return {
+          fits:
+            box.x >= -1 &&
+            box.y >= -1 &&
+            box.x + box.width <= viewport.width + 1 &&
+            box.y + box.height <= viewport.height + 1,
+          viewport,
+          box,
+        }
+      },
+      { message: `${label} stays within the viewport` },
+    )
+    .toMatchObject({ fits: true })
 }
 
 async function activateByKeyboard(locator: Locator): Promise<void> {
@@ -498,6 +506,9 @@ const primitivePages = [
   "collapsible",
   "combobox",
   "command",
+  "confirm-dialog",
+  "context-menu",
+  "dropdown-menu",
   "empty",
   "field",
   "icon-button",
@@ -505,16 +516,22 @@ const primitivePages = [
   "input-group",
   "json-viewer",
   "label",
+  "pagination",
+  "popover",
   "progress",
   "separator",
   "select",
+  "sheet",
   "skeleton",
+  "sonner",
   "slider",
   "switch",
   "table",
+  "tabs",
   "textarea",
   "toggle",
   "toggle-group",
+  "tooltip",
 ] as const
 
 function titleFromName(name: string): string {
@@ -534,6 +551,59 @@ async function assertDemoPreviewAndSource(page: Page, primitive: string): Promis
   const source = section.locator("xpath=./pre/code")
   await expect(source).toContainText(`export function ${titleFromName(primitive)}OverviewDemo`)
   await expect(source).toContainText(`@registry/ui/${primitive}`)
+}
+
+async function assertPortalFits(locator: Locator, label: string): Promise<void> {
+  await expect(locator).toBeVisible()
+  await assertWithinViewport(locator, label)
+
+  const isInsideDemo = await locator.evaluate(
+    (element) => element.parentElement?.closest("[data-demo]") !== null,
+  )
+  if (isInsideDemo) throw new Error(`${label} was clipped inside the demo surface.`)
+}
+
+async function openMenuWithKeyboard(page: Page, trigger: Locator, content: Locator): Promise<void> {
+  await trigger.focus()
+  await expect(trigger).toBeFocused()
+  await page.keyboard.press("Enter")
+  await assertPortalFits(content, "keyboard-opened menu portal")
+}
+
+async function openContextMenu(page: Page): Promise<void> {
+  const trigger = page.locator('[data-demo="context-menu-trigger"]')
+  await trigger.scrollIntoViewIfNeeded()
+  await trigger.focus()
+  await expect(trigger).toBeFocused()
+  const box = await trigger.boundingBox()
+  if (!box) throw new Error("Context menu trigger bounding box is unavailable.")
+  await trigger.evaluate(
+    (element, point) =>
+      element.dispatchEvent(
+        new MouseEvent("contextmenu", {
+          bubbles: true,
+          button: 2,
+          buttons: 2,
+          cancelable: true,
+          clientX: point.x,
+          clientY: point.y,
+        }),
+      ),
+    {
+      x: Math.round(box.x + box.width / 2),
+      y: Math.round(box.y + box.height / 2),
+    },
+  )
+  await assertPortalFits(
+    page.locator('[data-slot="context-menu-content"]').last(),
+    "context menu portal",
+  )
+}
+
+async function assertToastRendered(page: Page, text: string): Promise<void> {
+  const toast = page.locator("[data-sonner-toast]").filter({ hasText: text }).first()
+  await expect(toast).toBeVisible()
+  await assertWithinViewport(toast, `toast ${text}`)
 }
 
 async function assertPrimitiveInteraction(page: Page, primitive: string): Promise<void> {
@@ -567,6 +637,82 @@ async function assertPrimitiveInteraction(page: Page, primitive: string): Promis
     await expect(command.getByText("Add Point Layer", { exact: true })).toBeHidden()
   }
 
+  if (primitive === "confirm-dialog") {
+    const saveTrigger = page.locator('[data-demo="confirm-dialog-save-trigger"]')
+    await saveTrigger.click()
+    await assertDialogPortalIsVisible(page)
+    await page.keyboard.press("Escape")
+    await expect(page.locator('[data-slot="dialog-content"]')).toBeHidden()
+    await expect(saveTrigger).toBeFocused()
+    await expect(page.locator('[data-demo="confirm-dialog-status"]')).toHaveText(
+      "Changes discarded",
+    )
+
+    const deleteTrigger = page.locator('[data-demo="confirm-dialog-delete-trigger"]')
+    await deleteTrigger.click()
+    await assertDialogPortalIsVisible(page)
+    await page.getByRole("button", { name: "Delete", exact: true }).click()
+    await expect(deleteTrigger).toBeFocused()
+    await expect(page.locator('[data-demo="confirm-dialog-status"]')).toHaveText("Delete confirmed")
+  }
+
+  if (primitive === "context-menu") {
+    await openContextMenu(page)
+    await page.locator('[data-demo="context-menu-duplicate"]').focus()
+    await page.keyboard.press("Enter")
+    await expect(page.locator('[data-demo="context-menu-status"]')).toContainText(
+      "Duplicated layer",
+    )
+
+    await openContextMenu(page)
+    await page.locator('[data-demo="context-menu-snapping"]').focus()
+    await page.keyboard.press("Space")
+    await expect(page.locator('[data-demo="context-menu-status"]')).toContainText("snapping off")
+    await page.keyboard.press("Escape")
+    await expect(page.locator('[data-slot="context-menu-content"]')).toBeHidden()
+
+    await openContextMenu(page)
+    await page.locator('[data-demo="context-menu-unit-trigger"]').focus()
+    await page.keyboard.press("ArrowRight")
+    await assertPortalFits(
+      page.locator('[data-slot="context-menu-sub-content"]').last(),
+      "context menu submenu portal",
+    )
+    await page.locator('[data-demo="context-menu-unit-kilometers"]').focus()
+    await page.keyboard.press("Enter")
+    await expect(page.locator('[data-demo="context-menu-status"]')).toContainText("unit kilometers")
+  }
+
+  if (primitive === "dropdown-menu") {
+    const trigger = page.locator('[data-demo="dropdown-menu-trigger"]')
+    const content = page.locator('[data-slot="dropdown-menu-content"]').last()
+    await openMenuWithKeyboard(page, trigger, content)
+    await page.locator('[data-demo="dropdown-menu-rename"]').focus()
+    await page.keyboard.press("Enter")
+    await expect(page.locator('[data-demo="dropdown-menu-status"]')).toContainText("Renamed layer")
+    await expect(trigger).toBeFocused()
+
+    await openMenuWithKeyboard(page, trigger, content)
+    await page.locator('[data-demo="dropdown-menu-grid"]').focus()
+    await page.keyboard.press("Space")
+    await expect(page.locator('[data-demo="dropdown-menu-status"]')).toContainText("grid hidden")
+    await page.keyboard.press("Escape")
+    await expect(trigger).toBeFocused()
+
+    await openMenuWithKeyboard(page, trigger, content)
+    await page.locator('[data-demo="dropdown-menu-format-trigger"]').focus()
+    await page.keyboard.press("ArrowRight")
+    await assertPortalFits(
+      page.locator('[data-slot="dropdown-menu-sub-content"]').last(),
+      "dropdown submenu portal",
+    )
+    await page.locator('[data-demo="dropdown-menu-format-topojson"]').focus()
+    await page.keyboard.press("Enter")
+    await expect(page.locator('[data-demo="dropdown-menu-status"]')).toContainText(
+      "export topojson",
+    )
+  }
+
   if (primitive === "collapsible") {
     const trigger = page.locator('[data-demo="collapsible-trigger"]')
     await trigger.click()
@@ -584,6 +730,32 @@ async function assertPrimitiveInteraction(page: Page, primitive: string): Promis
     await expect(viewer).toContainText("coordinates")
     await viewer.locator('button[title="复制"]').click()
     await expect(viewer.locator('button[title="已复制"]')).toBeVisible()
+  }
+
+  if (primitive === "pagination") {
+    await expect(page.locator('[data-demo="pagination-current"]')).toHaveText("3")
+    await expect(page.locator('[data-demo="pagination-current"]')).toHaveAttribute(
+      "aria-current",
+      "page",
+    )
+    await page.locator('[data-demo="pagination-next"]').click()
+    await expect(page.locator('[data-demo="pagination-status"]')).toHaveText("Page 4 of 12")
+    await expect(page.locator('[data-demo="pagination-current"]')).toHaveText("4")
+    await expect(page.locator('[data-demo="pagination-current"]')).toHaveAttribute(
+      "aria-current",
+      "page",
+    )
+    await page.locator('[data-demo="pagination-previous"]').click()
+    await expect(page.locator('[data-demo="pagination-status"]')).toHaveText("Page 3 of 12")
+  }
+
+  if (primitive === "popover") {
+    const trigger = page.locator('[data-demo="popover-controlled-trigger"]')
+    await trigger.click()
+    await assertPortalFits(page.locator('[data-slot="popover-content"]').last(), "popover portal")
+    await page.keyboard.press("Escape")
+    await expect(page.locator('[data-slot="popover-content"]')).toBeHidden()
+    await expect(trigger).toBeFocused()
   }
 
   if (primitive === "input") {
@@ -605,6 +777,33 @@ async function assertPrimitiveInteraction(page: Page, primitive: string): Promis
     await expect(select.locator('[data-demo="select-value"]')).toHaveText("Value: 3857")
   }
 
+  if (primitive === "sheet") {
+    const rightTrigger = page.locator('[data-demo="sheet-right-trigger"]')
+    await rightTrigger.click()
+    await assertPortalFits(page.locator('[data-slot="sheet-content"]').last(), "sheet portal")
+    await page.keyboard.press("Escape")
+    await expect(page.locator('[data-slot="sheet-content"]')).toBeHidden()
+    await expect(rightTrigger).toBeFocused()
+
+    const bottomTrigger = page.locator('[data-demo="sheet-bottom-trigger"]')
+    await bottomTrigger.click()
+    await assertPortalFits(
+      page.locator('[data-slot="sheet-content"]').last(),
+      "bottom sheet portal",
+    )
+    await page.locator('[data-demo="sheet-bottom-close"]').click()
+    await expect(bottomTrigger).toBeFocused()
+  }
+
+  if (primitive === "sonner") {
+    await page.locator('[data-demo="sonner-success"]').click()
+    await assertToastRendered(page, "Dataset uploaded successfully.")
+    await page.locator('[data-demo="sonner-action"]').click()
+    await assertToastRendered(page, "Upload failed")
+    await page.getByRole("button", { name: "Retry", exact: true }).click()
+    await assertToastRendered(page, "Retry queued.")
+  }
+
   if (primitive === "slider") {
     const slider = page.locator('[data-demo="slider-controlled"]')
     const thumb = slider.getByRole("slider")
@@ -619,6 +818,24 @@ async function assertPrimitiveInteraction(page: Page, primitive: string): Promis
     await controlledSwitch.focus()
     await page.keyboard.press("Space")
     await expect(page.locator('[data-demo="switch-value"]')).toHaveText("checked = true")
+  }
+
+  if (primitive === "tabs") {
+    const controlled = page.locator('[data-demo="tabs-controlled"]')
+    await expect(controlled.locator('[data-demo="tabs-controlled-value"]')).toHaveText(
+      "Selected: schema",
+    )
+    await controlled.locator('[data-demo="tabs-trigger-schema"]').focus()
+    await page.keyboard.press("ArrowRight")
+    await page.keyboard.press("Enter")
+    await expect(controlled.locator('[data-demo="tabs-controlled-value"]')).toHaveText(
+      "Selected: export",
+    )
+    await page.keyboard.press("ArrowLeft")
+    await page.keyboard.press("Enter")
+    await expect(controlled.locator('[data-demo="tabs-controlled-value"]')).toHaveText(
+      "Selected: schema",
+    )
   }
 
   if (primitive === "textarea") {
@@ -654,6 +871,24 @@ async function assertPrimitiveInteraction(page: Page, primitive: string): Promis
     await multiple.getByRole("button", { name: "Italic", exact: true }).focus()
     await page.keyboard.press("Enter")
     await expect(multiple.locator('[data-demo="toggle-group-styles"]')).toContainText("italic")
+  }
+
+  if (primitive === "tooltip") {
+    const trigger = page.locator('[data-demo="tooltip-map"]')
+    await page.keyboard.press("Tab")
+    await trigger.focus()
+    const tooltip = page.locator('[data-slot="tooltip-content"]').last()
+    await assertPortalFits(tooltip, "focused tooltip portal")
+    await page.keyboard.press("Escape")
+    await expect(page.locator('[data-slot="tooltip-content"]')).toBeHidden()
+
+    await trigger.hover()
+    await assertPortalFits(tooltip, "hovered tooltip portal")
+    await page.mouse.move(0, 0)
+    await expect(page.locator('[data-slot="tooltip-content"]')).toBeHidden()
+
+    await page.locator('[data-demo="tooltip-disabled-trigger"]').hover()
+    await expect(page.locator('[data-slot="tooltip-content"]')).toBeHidden()
   }
 }
 

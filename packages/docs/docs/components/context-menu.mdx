@@ -1,0 +1,61 @@
+---
+id: context-menu
+slug: /components/context-menu
+registryName: context-menu
+category: primitive
+stability: stable
+examples:
+  - context-menu/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { ContextMenuOverviewDemo } from "@site/src/examples/context-menu/overview"
+import overviewSource from "@site/src/examples/context-menu/overview.tsx?raw"
+
+# Context Menu
+
+Context Menu 用于右键或上下文触发的局部动作，适合地图图层、表格行和资源卡片的次级操作。
+
+## 安装
+
+<RegistryInstall registryName="context-menu" />
+
+## 导入
+
+```tsx
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/registry/ui/context-menu"
+```
+
+## 用法
+
+<ComponentDemo title="图层上下文菜单" description="覆盖标签、快捷键、disabled、destructive、checkbox、radio 与 submenu 状态，并通过 portal 避免被预览容器裁切。" source={overviewSource} minHeight={320}>
+  <ContextMenuOverviewDemo />
+</ComponentDemo>
+
+## 导出
+
+`context-menu.tsx` 导出根、触发器、内容、分组、标签、普通项、checkbox 项、radio 组、submenu、分隔线和快捷键组件。
+
+## 状态
+
+菜单项支持 `disabled` 和 `variant="destructive"`。复选项使用 `checked/onCheckedChange`；单选项放在 `ContextMenuRadioGroup` 中；嵌套动作使用 `ContextMenuSub`。
+
+## 无障碍
+
+触发区域必须可聚焦并可通过键盘打开。菜单打开后应支持方向键导航、Enter 选择、Escape 关闭和焦点返回。关键操作不要只依赖右键入口。
+
+## 依赖
+
+<RegistryDependencies registryName="context-menu" />
+
+## 相关链接
+
+- [Context Menu registry JSON](/r/context-menu.json)
+- [Dropdown Menu registry JSON](/r/dropdown-menu.json)
+- [Tooltip registry JSON](/r/tooltip.json)

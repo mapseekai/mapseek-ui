@@ -75,10 +75,31 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "confirm-dialog",
+    {
+      category: "primitive",
+      examples: ["confirm-dialog/overview"],
+    },
+  ],
+  [
+    "context-menu",
+    {
+      category: "primitive",
+      examples: ["context-menu/overview"],
+    },
+  ],
+  [
     "dialog",
     {
       category: "primitive",
       examples: ["dialog/basic", "dialog/confirmation", "dialog/long-content"],
+    },
+  ],
+  [
+    "dropdown-menu",
+    {
+      category: "primitive",
+      examples: ["dropdown-menu/overview"],
     },
   ],
   [
@@ -131,6 +152,20 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "pagination",
+    {
+      category: "primitive",
+      examples: ["pagination/overview"],
+    },
+  ],
+  [
+    "popover",
+    {
+      category: "primitive",
+      examples: ["popover/overview"],
+    },
+  ],
+  [
     "progress",
     {
       category: "primitive",
@@ -152,10 +187,24 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "sheet",
+    {
+      category: "primitive",
+      examples: ["sheet/overview"],
+    },
+  ],
+  [
     "skeleton",
     {
       category: "primitive",
       examples: ["skeleton/overview"],
+    },
+  ],
+  [
+    "sonner",
+    {
+      category: "primitive",
+      examples: ["sonner/overview"],
     },
   ],
   [
@@ -180,10 +229,24 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "tabs",
+    {
+      category: "primitive",
+      examples: ["tabs/overview"],
+    },
+  ],
+  [
     "textarea",
     {
       category: "primitive",
       examples: ["textarea/overview"],
+    },
+  ],
+  [
+    "tooltip",
+    {
+      category: "primitive",
+      examples: ["tooltip/overview"],
     },
   ],
   [

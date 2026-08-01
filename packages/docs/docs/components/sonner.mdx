@@ -1,0 +1,55 @@
+---
+id: sonner
+slug: /components/sonner
+registryName: sonner
+category: primitive
+stability: stable
+examples:
+  - sonner/overview
+---
+
+import { ComponentDemo } from "@site/src/components/ComponentDemo"
+import { RegistryDependencies, RegistryInstall } from "@site/src/components/RegistryItem"
+import { SonnerOverviewDemo } from "@site/src/examples/sonner/overview"
+import overviewSource from "@site/src/examples/sonner/overview.tsx?raw"
+
+# Sonner
+
+Sonner 提供 Mapseek 风格的 toast：方角、细边界、类型图标和顶部居中位置，用于即时成功、失败、警告和后台状态。
+
+## 安装
+
+<RegistryInstall registryName="sonner" />
+
+## 导入
+
+```tsx
+import { Toaster, toast } from "@/registry/ui/sonner"
+```
+
+## 用法
+
+<ComponentDemo title="Toast 类型" description="覆盖 success、error、warning、info、default、description 和 action，使用页面根部 Toaster 渲染。" source={overviewSource} minHeight={300}>
+  <SonnerOverviewDemo />
+</ComponentDemo>
+
+## 导出
+
+`sonner.tsx` 导出 `Toaster` 和从 `sonner` 透传的 `toast`。在应用根部渲染一次 `Toaster`，功能代码通过 `toast.*` 触发通知。
+
+## 状态
+
+使用 `toast.success`、`toast.error`、`toast.warning`、`toast.info` 或 `toast` 表达类型。可附加 `description`、`action` 和 `cancel`。
+
+## 无障碍
+
+Toast 应用于短暂结果或后台状态，不要替代页面内持久状态。错误和可恢复动作应在触发区域附近也保留说明。
+
+## 依赖
+
+<RegistryDependencies registryName="sonner" />
+
+## 相关链接
+
+- [Sonner registry JSON](/r/sonner.json)
+- [Button registry JSON](/r/button.json)

@@ -135,3 +135,21 @@ it("keeps Task9B form and input primitive coverage in the shared required docs m
   expect(requiredRegistryDocs.get("checkbox")?.examples).toEqual(["checkbox/overview"])
   expect(requiredRegistryDocs.get("toggle-group")?.examples).toEqual(["toggle-group/overview"])
 })
+
+it("keeps Task9C navigation feedback and overlay primitive coverage in the shared required docs manifest", () => {
+  expect([...requiredRegistryDocs.keys()]).toEqual(
+    expect.arrayContaining([
+      "confirm-dialog",
+      "context-menu",
+      "dropdown-menu",
+      "pagination",
+      "popover",
+      "sheet",
+      "sonner",
+      "tabs",
+      "tooltip",
+    ]),
+  )
+  expect(requiredRegistryDocs.get("confirm-dialog")?.examples).toEqual(["confirm-dialog/overview"])
+  expect(requiredRegistryDocs.get("tooltip")?.examples).toEqual(["tooltip/overview"])
+})

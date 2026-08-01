@@ -20,6 +20,9 @@ export type LayerEditorGroupDemoLabels = {
     readonly visibility: string
     readonly sortKey: string
   }
+  readonly values: {
+    readonly note: string
+  }
   readonly sections: {
     readonly layer: string
     readonly paint: string
@@ -30,7 +33,7 @@ export type LayerEditorGroupDemoLabels = {
 }
 
 export const zhLayerEditorGroupLabels = {
-  title: "Sticky section editor",
+  title: "粘性分组编辑器",
   intro: "业务组件接收任意数量的 sections；每个 section 的内容由调用方提供。",
   fields: {
     layerId: "图层 ID",
@@ -43,6 +46,9 @@ export const zhLayerEditorGroupLabels = {
     opacity: "不透明度",
     visibility: "可见性",
     sortKey: "排序键",
+  },
+  values: {
+    note: "地图底图背景。",
   },
   sections: {
     layer: "图层",
@@ -67,6 +73,9 @@ export const enLayerEditorGroupLabels = {
     opacity: "Opacity",
     visibility: "Visibility",
     sortKey: "Sort key",
+  },
+  values: {
+    note: "Map basemap background.",
   },
   sections: {
     layer: "Layer",
@@ -105,7 +114,7 @@ export function buildLayerEditorSections(
             <span className="pt-2 text-xs font-medium text-muted-foreground">
               {labels.fields.note}
             </span>
-            <Textarea value="地图底图背景。" readOnly className="min-h-20 resize-none" />
+            <Textarea value={labels.values.note} readOnly className="min-h-20 resize-none" />
           </Label>
         </div>
       ),

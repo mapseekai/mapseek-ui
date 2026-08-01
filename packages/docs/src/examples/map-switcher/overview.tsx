@@ -1,6 +1,18 @@
 import { MapSwitcher, type MapSwitcherItemData } from "@registry/blocks/map-switcher"
 import { useState } from "react"
 
+function mapThumbnailDataUri(primary: string, accent: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 104"><rect width="152" height="104" fill="${primary}"/><path d="M-10 84C24 62 42 70 72 48s54-28 92-18" fill="none" stroke="${accent}" stroke-width="14" stroke-linecap="round"/><path d="M8 18h136M18 8v88M76 0v104M128 4v96" stroke="rgba(255,255,255,.38)" stroke-width="2"/></svg>`
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`
+}
+
+const mapThumbnails = {
+  road: mapThumbnailDataUri("#eef2f7", "#64748b"),
+  satellite: mapThumbnailDataUri("#173b2f", "#84cc16"),
+  terrain: mapThumbnailDataUri("#d9e5c7", "#7c8f3f"),
+  dark: mapThumbnailDataUri("#111827", "#38bdf8"),
+} as const
+
 export type MapSwitcherDemoLabels = {
   readonly imageMode: string
   readonly buttonMode: string
@@ -36,25 +48,25 @@ export const zhMapSwitcherLabels = {
     {
       id: "road",
       label: "标准",
-      image: "https://picsum.photos/seed/map-road/152/104",
+      image: mapThumbnails.road,
       color: "var(--muted)",
     },
     {
       id: "satellite",
       label: "卫星",
-      image: "https://picsum.photos/seed/map-satellite/152/104",
+      image: mapThumbnails.satellite,
       color: "var(--cat-2)",
     },
     {
       id: "terrain",
       label: "地形",
-      image: "https://picsum.photos/seed/map-terrain/152/104",
+      image: mapThumbnails.terrain,
       color: "var(--cat-3)",
     },
     {
       id: "dark",
       label: "暗色",
-      image: "https://picsum.photos/seed/map-dark/152/104",
+      image: mapThumbnails.dark,
       color: "var(--cat-4)",
     },
   ],
@@ -78,25 +90,25 @@ export const enMapSwitcherLabels = {
     {
       id: "road",
       label: "Road",
-      image: "https://picsum.photos/seed/map-road/152/104",
+      image: mapThumbnails.road,
       color: "var(--muted)",
     },
     {
       id: "satellite",
       label: "Satellite",
-      image: "https://picsum.photos/seed/map-satellite/152/104",
+      image: mapThumbnails.satellite,
       color: "var(--cat-2)",
     },
     {
       id: "terrain",
       label: "Terrain",
-      image: "https://picsum.photos/seed/map-terrain/152/104",
+      image: mapThumbnails.terrain,
       color: "var(--cat-3)",
     },
     {
       id: "dark",
       label: "Dark",
-      image: "https://picsum.photos/seed/map-dark/152/104",
+      image: mapThumbnails.dark,
       color: "var(--cat-4)",
     },
   ],

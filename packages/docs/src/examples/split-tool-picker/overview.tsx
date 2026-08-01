@@ -13,47 +13,10 @@ import {
 } from "@tabler/icons-react"
 import { useState } from "react"
 
-const selectTools: SplitToolItem[] = [
-  {
-    id: "point",
-    icon: IconPointer,
-    label: "Point select",
-    hint: "V",
-    description: "Click a feature",
-  },
-  {
-    id: "rect",
-    icon: IconMarquee2,
-    label: "Box select",
-    hint: "R",
-    description: "Drag a rectangle",
-  },
-  {
-    id: "lasso",
-    icon: IconLasso,
-    label: "Lasso select",
-    hint: "L",
-    description: "Draw a freehand area",
-  },
-]
-
-const editTools: SplitToolItem[] = [
-  {
-    id: "polygon",
-    icon: IconPolygon,
-    label: "Polygon",
-    hint: "P",
-    description: "Draw a closed polygon",
-  },
-  { id: "line", icon: IconVectorBezier2, label: "Line", hint: "L", description: "Draw a polyline" },
-  {
-    id: "triangle",
-    icon: IconVectorTriangle,
-    label: "Triangle",
-    hint: "T",
-    description: "Create a triangle quickly",
-  },
-]
+type SplitToolText = {
+  readonly label: string
+  readonly description: string
+}
 
 export type SplitToolPickerDemoLabels = {
   readonly title: string
@@ -66,6 +29,14 @@ export type SplitToolPickerDemoLabels = {
   readonly editGroup: string
   readonly primarySource: string
   readonly menuSource: string
+  readonly tools: {
+    readonly point: SplitToolText
+    readonly rect: SplitToolText
+    readonly lasso: SplitToolText
+    readonly polygon: SplitToolText
+    readonly line: SplitToolText
+    readonly triangle: SplitToolText
+  }
 }
 
 export const zhSplitToolPickerLabels = {
@@ -79,6 +50,14 @@ export const zhSplitToolPickerLabels = {
   editGroup: "绘制",
   primarySource: "主按钮",
   menuSource: "下拉菜单",
+  tools: {
+    point: { label: "点选", description: "点击一个要素" },
+    rect: { label: "框选", description: "拖拽一个矩形" },
+    lasso: { label: "套索选择", description: "绘制自由区域" },
+    polygon: { label: "面", description: "绘制闭合多边形" },
+    line: { label: "线", description: "绘制折线" },
+    triangle: { label: "三角形", description: "快速创建三角形" },
+  },
 } satisfies SplitToolPickerDemoLabels
 
 export const enSplitToolPickerLabels = {
@@ -92,13 +71,75 @@ export const enSplitToolPickerLabels = {
   editGroup: "Draw",
   primarySource: "Primary button",
   menuSource: "Menu",
+  tools: {
+    point: { label: "Point select", description: "Click a feature" },
+    rect: { label: "Box select", description: "Drag a rectangle" },
+    lasso: { label: "Lasso select", description: "Draw a freehand area" },
+    polygon: { label: "Polygon", description: "Draw a closed polygon" },
+    line: { label: "Line", description: "Draw a polyline" },
+    triangle: { label: "Triangle", description: "Create a triangle quickly" },
+  },
 } satisfies SplitToolPickerDemoLabels
 
 function sourceLabel(source: SplitToolActionSource, labels: SplitToolPickerDemoLabels) {
   return source === "primary" ? labels.primarySource : labels.menuSource
 }
 
+function buildSelectTools(labels: SplitToolPickerDemoLabels): SplitToolItem[] {
+  return [
+    {
+      id: "point",
+      icon: IconPointer,
+      label: labels.tools.point.label,
+      hint: "V",
+      description: labels.tools.point.description,
+    },
+    {
+      id: "rect",
+      icon: IconMarquee2,
+      label: labels.tools.rect.label,
+      hint: "R",
+      description: labels.tools.rect.description,
+    },
+    {
+      id: "lasso",
+      icon: IconLasso,
+      label: labels.tools.lasso.label,
+      hint: "L",
+      description: labels.tools.lasso.description,
+    },
+  ]
+}
+
+function buildEditTools(labels: SplitToolPickerDemoLabels): SplitToolItem[] {
+  return [
+    {
+      id: "polygon",
+      icon: IconPolygon,
+      label: labels.tools.polygon.label,
+      hint: "P",
+      description: labels.tools.polygon.description,
+    },
+    {
+      id: "line",
+      icon: IconVectorBezier2,
+      label: labels.tools.line.label,
+      hint: "L",
+      description: labels.tools.line.description,
+    },
+    {
+      id: "triangle",
+      icon: IconVectorTriangle,
+      label: labels.tools.triangle.label,
+      hint: "T",
+      description: labels.tools.triangle.description,
+    },
+  ]
+}
+
 export function SplitToolPickerDemo({ labels }: { readonly labels: SplitToolPickerDemoLabels }) {
+  const selectTools = buildSelectTools(labels)
+  const editTools = buildEditTools(labels)
   const [selectTool, setSelectTool] = useState("point")
   const [editTool, setEditTool] = useState("polygon")
   const [lastAction, setLastAction] = useState(labels.idle)

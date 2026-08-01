@@ -1032,6 +1032,10 @@ function localized(path: string, zh: string, en: string): string {
   return path.startsWith("/en/") ? en : zh
 }
 
+function localizedCrsListLabel(path: string): string {
+  return localized(path, "坐标参考系列表", "Coordinate reference systems")
+}
+
 async function assertBlockInteraction(page: Page, block: string, path: string): Promise<void> {
   if (block === "app-top-bar") {
     const demo = page.locator('[data-demo="app-top-bar"]')
@@ -1057,9 +1061,24 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
 
   if (block === "crs-picker") {
     const demo = page.locator('[data-demo="crs-picker"]')
-    await demo.locator('[data-demo-action="crs-picker-switch-3857"]').click()
+    const controlled = demo
+      .locator("section")
+      .filter({ hasText: localized(path, "受控模式", "Controlled mode") })
+      .last()
+    const listbox = controlled.getByRole("listbox", {
+      name: localizedCrsListLabel(path),
+      exact: true,
+    })
+    await expect(listbox).toBeVisible()
+    await assertNoHorizontalOverflow(listbox, `${path} controlled CrsPicker list`)
+
+    const projectedOption = listbox.getByRole("option", { name: "EPSG:3857", exact: true })
+    await projectedOption.focus()
+    await expect(projectedOption).toBeFocused()
+    await page.keyboard.press("Enter")
     await expect(demo.locator('[data-demo-status="crs-picker"]')).toContainText("EPSG:3857")
-    await demo.locator('[data-demo-action="crs-picker-switch-4326"]').click()
+
+    await listbox.getByRole("option", { name: "EPSG:4326", exact: true }).click()
     await expect(demo.locator('[data-demo-status="crs-picker"]')).toContainText("EPSG:4326")
     await assertNoHorizontalOverflow(demo, `${path} crs picker`)
   }
@@ -1271,11 +1290,31 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
     await expect(demo.locator('[data-demo-status="map-coordinate-status"]')).toContainText(
       localized(path, "已更新 view", "View updated"),
     )
-    await demo.locator('[data-demo-action="map-coordinate-status-toggle-crs"]').click()
+    const statusTrigger = demo.getByRole("button", {
+      name: localized(path, "切换坐标参考系", "Switch coordinate reference system"),
+      exact: true,
+    })
+    const popover = page.locator('[data-slot="popover-content"]').last()
+    await openMenuWithKeyboard(page, statusTrigger, popover)
+    const picker = popover.locator('[data-slot="crs-picker"]')
+    await expect(picker).toBeVisible()
+    await assertNoHorizontalOverflow(picker, `${path} MapCoordinateStatus CRS picker`)
+    await picker.getByRole("option", { name: "EPSG:4326", exact: true }).focus()
+    await expect(picker.getByRole("option", { name: "EPSG:4326", exact: true })).toBeFocused()
+    await page.keyboard.press("Enter")
     await expect(demo.locator('[data-demo-status="map-coordinate-status"]')).toContainText(
       "EPSG:4326",
     )
     await expect(demo).toContainText("121.4737° E")
+
+    await statusTrigger.click()
+    await assertPortalFits(popover, `${path} MapCoordinateStatus CRS popover`)
+    await popover.getByRole("option", { name: "EPSG:3857", exact: true }).click()
+    await expect(demo.locator('[data-demo-status="map-coordinate-status"]')).toContainText(
+      "EPSG:3857",
+    )
+    await expect(demo).toContainText("13,522,425.02 m")
+
     await demo.locator('[data-demo-action="map-coordinate-status-copy"]').click()
     await expect(demo.locator('[data-demo-status="map-coordinate-status"]')).toContainText(
       localized(path, "已复制读数", "Readout copied"),
@@ -1325,7 +1364,10 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
     const demo = page.locator('[data-demo="split-tool-picker"]')
     const selectPicker = demo.locator('[data-demo-action="split-tool-picker-select"]')
     await activateByKeyboard(
-      selectPicker.getByRole("button", { name: "Point select", exact: true }),
+      selectPicker.getByRole("button", {
+        name: localized(path, "点选", "Point select"),
+        exact: true,
+      }),
     )
     await expect(demo.locator('[data-demo-status="split-tool-picker"]')).toContainText(
       localized(path, "主按钮", "Primary button"),
@@ -1336,12 +1378,12 @@ async function assertBlockInteraction(page: Page, block: string, path: string): 
       selectMenuTrigger,
       page.locator('[data-slot="popover-content"]').last(),
     )
-    await page.getByRole("option", { name: /Box select/ }).focus()
+    await page.getByRole("option", { name: localized(path, "框选", "Box select") }).focus()
     await page.keyboard.press("Enter")
     await expect(demo.locator('[data-demo-status="split-tool-picker"]')).toContainText(
       localized(path, "下拉菜单", "Menu"),
     )
-    await expect(demo).toContainText("Box select")
+    await expect(demo).toContainText(localized(path, "框选", "Box select"))
     await expect(
       demo.locator('[data-demo-action="split-tool-picker-disabled"]').getByRole("button").first(),
     ).toBeDisabled()

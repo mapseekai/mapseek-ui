@@ -8,6 +8,7 @@ import {
 } from "../layer-editor-group/overview"
 
 export type LayerStyleEditorDemoLabels = {
+  readonly heading: string
   readonly title: string
   readonly intro: string
   readonly ariaLabel: string
@@ -26,6 +27,7 @@ export type LayerStyleEditorDemoLabels = {
 }
 
 export const zhLayerStyleEditorLabels = {
+  heading: "完整样式编辑面板",
   title: "图层：'background'",
   intro: "统一右侧样式编辑器的 header、操作菜单、关闭按钮、底部 tabs 和内部分组。",
   ariaLabel: "图层编辑器",
@@ -44,6 +46,7 @@ export const zhLayerStyleEditorLabels = {
 } satisfies LayerStyleEditorDemoLabels
 
 export const enLayerStyleEditorLabels = {
+  heading: "Complete style editor panel",
   title: "Layer: 'background'",
   intro:
     "A complete right-side editor shell with header actions, close control, tabs, and grouped sections.",
@@ -86,9 +89,7 @@ export function LayerStyleEditorDemo({ labels }: { readonly labels: LayerStyleEd
   return (
     <div data-demo="layer-style-editor" className="space-y-3">
       <div>
-        <h3 className="m-0 font-mono text-xs text-muted-foreground uppercase">
-          Complete style editor panel
-        </h3>
+        <h3 className="m-0 font-mono text-xs text-muted-foreground uppercase">{labels.heading}</h3>
         <p className="mt-1 mb-0 max-w-2xl text-xs text-muted-foreground">{labels.intro}</p>
       </div>
       <div className="h-[560px] w-full max-w-[420px] overflow-hidden border border-border">

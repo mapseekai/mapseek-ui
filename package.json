@@ -43,6 +43,7 @@
     "@codemirror/view": "^6.39.11",
     "@fontsource-variable/geist": "^5.2.8",
     "@fontsource-variable/geist-mono": "^5.2.7",
+    "@playwright/test": "^1.62.1",
     "@lezer/highlight": "^1.2.3",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@tabler/icons-react": "^3.41.1",

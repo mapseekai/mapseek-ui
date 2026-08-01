@@ -1,6 +1,6 @@
 import Link from "@docusaurus/Link"
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
-import { useMemo, useState } from "react"
+import useGlobalData from "@docusaurus/useGlobalData"
+import { useState } from "react"
 import { getRegistryDocItems, type RegistryDocItem } from "../RegistryItem/registry-data"
 import styles from "./styles.module.css"
 
@@ -8,7 +8,21 @@ export type ComponentIndexProps = {
   readonly category: RegistryDocItem["category"]
   readonly searchLabel: string
   readonly emptyLabel: string
-  readonly documentedNames?: readonly string[]
+}
+
+type DocsGlobalData = {
+  readonly versions?: readonly {
+    readonly name: string
+    readonly docs?: readonly {
+      readonly path: string
+    }[]
+  }[]
+}
+
+type GlobalData = {
+  readonly "docusaurus-plugin-content-docs"?: {
+    readonly default?: DocsGlobalData
+  }
 }
 
 function normalize(value: string): string {
@@ -20,23 +34,35 @@ function matchesQuery(item: RegistryDocItem, query: string): boolean {
   return [item.title, item.name, item.description].some((value) => normalize(value).includes(query))
 }
 
-export function ComponentIndex({
-  category,
-  searchLabel,
-  emptyLabel,
-  documentedNames,
-}: ComponentIndexProps) {
-  const { i18n } = useDocusaurusContext()
-  const [query, setQuery] = useState("")
-  const routeBase = category === "block" ? "blocks" : "components"
-  const localePrefix = i18n.currentLocale === "en" ? "/en" : ""
-  const documented = useMemo(
-    () => (documentedNames ? new Set(documentedNames) : null),
-    [documentedNames],
+function routePatternForCategory(category: RegistryDocItem["category"]): RegExp {
+  return category === "block"
+    ? /^\/(?:en\/)?blocks\/([^/]+)$/u
+    : /^\/(?:en\/)?components\/([^/]+)$/u
+}
+
+function getRoutableRegistryNames(globalData: GlobalData, category: RegistryDocItem["category"]) {
+  const docsData = globalData["docusaurus-plugin-content-docs"]?.default
+  const current =
+    docsData?.versions?.find((version) => version.name === "current") ?? docsData?.versions?.[0]
+  const routePattern = routePatternForCategory(category)
+
+  return new Map(
+    (current?.docs ?? [])
+      .map((doc) => {
+        const match = routePattern.exec(doc.path)
+        return match ? [match[1], doc.path] : undefined
+      })
+      .filter((entry): entry is [string, string] => entry !== undefined),
   )
+}
+
+export function ComponentIndex({ category, searchLabel, emptyLabel }: ComponentIndexProps) {
+  const globalData = useGlobalData() as GlobalData
+  const [query, setQuery] = useState("")
+  const routableNames = getRoutableRegistryNames(globalData, category)
   const normalizedQuery = normalize(query)
   const items = getRegistryDocItems(category).filter(
-    (item) => (!documented || documented.has(item.name)) && matchesQuery(item, normalizedQuery),
+    (item) => routableNames.has(item.name) && matchesQuery(item, normalizedQuery),
   )
 
   return (
@@ -58,7 +84,7 @@ export function ComponentIndex({
               <Link
                 className={styles.card}
                 data-component-card={item.name}
-                to={`${localePrefix}/${routeBase}/${item.name}`}
+                to={routableNames.get(item.name) ?? "#"}
               >
                 <span className={styles.title}>{item.title}</span>
                 <span className={styles.description}>{item.description}</span>

@@ -421,14 +421,19 @@ async function assertLocalizedIndexFilter(
   if (hiddenCard) await expect(page.locator(`[data-component-card="${hiddenCard}"]`)).toBeHidden()
 }
 
-async function assertLocaleAlternate(page: Page, path: string): Promise<void> {
+async function assertLocaleDropdownPreservesPath(page: Page, path: string): Promise<void> {
   await page.goto(path)
-  const alternate = await page.locator('link[rel="alternate"][hreflang="en"]').getAttribute("href")
-  if (!alternate) throw new Error(`Missing English alternate for ${path}`)
-  const alternatePath = new URL(alternate).pathname
-  expect(alternatePath).toBe(`/en${path}`)
-  await page.goto(alternatePath)
+  const localeDropdown = page.getByRole("button", { name: "简体中文", exact: true })
+  await expect(localeDropdown).toBeVisible()
+  await localeDropdown.click()
+
+  const englishLink = page.getByRole("link", { name: "English", exact: true })
+  await expect(englishLink).toBeVisible()
+  await englishLink.click()
   await expect(page).toHaveURL(new RegExp(`/en${path.replaceAll("/", "\\/")}$`))
+  await expect(
+    page.getByRole("heading", { level: 1, name: "Install Mapseek UI", exact: true }),
+  ).toBeVisible()
 }
 
 async function runOnboardingCase(baseUrl: string, browserChannel?: string): Promise<void> {
@@ -470,7 +475,7 @@ async function runOnboardingCase(baseUrl: string, browserChannel?: string): Prom
       "LayerPanel",
       "layer-panel",
     )
-    await assertLocaleAlternate(page, "/getting-started/installation")
+    await assertLocaleDropdownPreservesPath(page, "/getting-started/installation")
   } finally {
     await browser.close()
   }

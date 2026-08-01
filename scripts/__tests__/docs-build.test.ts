@@ -98,6 +98,21 @@ it("renders manifest-derived component and block indexes in the static build", a
   expect(enBlocks).toContain("/en/blocks/layer-panel")
 })
 
+it("keeps index routing derived from docs metadata instead of MDX whitelists", async () => {
+  const files = [
+    "packages/docs/docs/components/index.mdx",
+    "packages/docs/docs/blocks/index.mdx",
+    "packages/docs/i18n/en/docusaurus-plugin-content-docs/current/components/index.mdx",
+    "packages/docs/i18n/en/docusaurus-plugin-content-docs/current/blocks/index.mdx",
+    "packages/docs/src/components/ComponentIndex/ComponentIndex.tsx",
+  ]
+  const sources = await Promise.all(files.map((file) => readFile(file, "utf8")))
+
+  for (const source of sources) {
+    expect(source).not.toContain("documentedNames")
+  }
+})
+
 it("keeps displayed example source as exact TSX source", async () => {
   const js = await readBuiltJs("packages/docs/build/assets")
 

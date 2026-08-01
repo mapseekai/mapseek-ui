@@ -11,7 +11,6 @@ export type CrsPickerDemoLabels = {
   readonly emptyLog: string
   readonly current: string
   readonly changed: string
-  readonly coreItems: readonly CrsItem[]
   readonly extraItems: readonly CrsItem[]
   readonly picker: CrsPickerLabels
 }
@@ -26,26 +25,6 @@ export const zhCrsPickerLabels = {
   emptyLog: "-",
   current: "当前",
   changed: "已切换",
-  coreItems: [
-    {
-      epsg: "EPSG:4326",
-      name: "WGS 84",
-      description: "全球通用 · 经纬度",
-      kind: "geographic",
-    },
-    {
-      epsg: "EPSG:4490",
-      name: "CGCS2000",
-      description: "国测 · 经纬度",
-      kind: "geographic",
-    },
-    {
-      epsg: "EPSG:3857",
-      name: "Web Mercator",
-      description: "切片底图 · 米",
-      kind: "projected",
-    },
-  ],
   extraItems: [
     {
       epsg: "EPSG:32650",
@@ -85,26 +64,6 @@ export const enCrsPickerLabels = {
   emptyLog: "-",
   current: "Current",
   changed: "Changed",
-  coreItems: [
-    {
-      epsg: "EPSG:4326",
-      name: "WGS 84",
-      description: "Global standard · longitude/latitude",
-      kind: "geographic",
-    },
-    {
-      epsg: "EPSG:4490",
-      name: "CGCS2000",
-      description: "China geodetic standard · longitude/latitude",
-      kind: "geographic",
-    },
-    {
-      epsg: "EPSG:3857",
-      name: "Web Mercator",
-      description: "Tile basemap · meters",
-      kind: "projected",
-    },
-  ],
   extraItems: [
     {
       epsg: "EPSG:32650",
@@ -137,7 +96,6 @@ export const enCrsPickerLabels = {
 export function CrsPickerDemo({ labels }: { readonly labels: CrsPickerDemoLabels }) {
   const [value, setValue] = useState("EPSG:4326")
   const [log, setLog] = useState<string[]>([])
-  const coreItems = labels.coreItems.map((item) => ({ ...item }))
   const extraItems = labels.extraItems.map((item) => ({ ...item }))
 
   const handleChange = (epsg: string) => {
@@ -153,7 +111,6 @@ export function CrsPickerDemo({ labels }: { readonly labels: CrsPickerDemoLabels
           <CrsPicker
             defaultValue="EPSG:4326"
             allowedEpsgs={["EPSG:4326", "EPSG:4490", "EPSG:3857"]}
-            extraItems={coreItems}
             labels={labels.picker}
           />
         </section>
@@ -166,12 +123,7 @@ export function CrsPickerDemo({ labels }: { readonly labels: CrsPickerDemoLabels
         <h3 className="m-0 font-mono text-xs text-muted-foreground uppercase">
           {labels.controlled}
         </h3>
-        <CrsPicker
-          value={value}
-          onChange={handleChange}
-          extraItems={coreItems}
-          labels={labels.picker}
-        />
+        <CrsPicker value={value} onChange={handleChange} labels={labels.picker} />
         <div className="flex flex-wrap gap-2">
           <button
             type="button"

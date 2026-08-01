@@ -33,11 +33,7 @@ ${serializeVariables(theme.cssVars.dark)}
 }
 `
 
-const outputPaths = [
-  "../showcase/src/theme.generated.css",
-  "../packages/docs/src/css/theme.generated.css",
-]
-
-await Promise.all(
-  outputPaths.map((outputPath) => writeFile(resolve(import.meta.dir, outputPath), stylesheet)),
+await writeFile(
+  resolve(import.meta.dir, "../packages/docs/src/css/theme.generated.css"),
+  stylesheet,
 )

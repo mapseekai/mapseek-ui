@@ -10,9 +10,7 @@
       "!test-results",
       "!**/*.test-d.ts",
       "!.codegraph",
-      "!.mapseek-vite-theme-*",
-      "!showcase",
-      "!showcase/src/theme.generated.css"
+      "!.mapseek-vite-theme-*"
     ]
   },
   "formatter": {

@@ -17,7 +17,7 @@
     "verify:items": "bun scripts/verify-items.ts",
     "verify:aggregate": "bun scripts/verify-aggregate.ts",
     "smoke:bun-command": "bun scripts/smoke-bun-command.ts",
-    "docs:theme": "bun scripts/generate-showcase-theme.ts",
+    "docs:theme": "bun scripts/generate-docs-theme.ts",
     "docs:dev": "bun run registry:build && bun run docs:theme && bun run --cwd packages/docs start",
     "docs:dev:en": "bun run registry:build && bun run docs:theme && bun run --cwd packages/docs start -- --locale en",
     "docs:build": "bun run registry:build && bun run docs:theme && bun run --cwd packages/docs build",

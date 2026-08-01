@@ -39,7 +39,7 @@ it("declares the Docusaurus docs workspace contract", async () => {
   expect(root.scripts["docs:build"]).toContain("bun run --cwd packages/docs build")
   expect(root.scripts["docs:dev"]).toContain("bun run --cwd packages/docs start")
   expect(root.scripts["docs:dev:en"]).toContain("bun run --cwd packages/docs start -- --locale en")
-  expect(root.scripts["docs:theme"]).toBe("bun scripts/generate-showcase-theme.ts")
+  expect(root.scripts["docs:theme"]).toBe("bun scripts/generate-docs-theme.ts")
   expect(root.scripts["docs:serve"]).toBe("bun run --cwd packages/docs serve")
   expectOrderedCommand(root.scripts["docs:build"], [
     "bun run registry:build",

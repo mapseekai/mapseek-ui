@@ -4,7 +4,7 @@
 
 分支：`zwishing/docs-site`
 
-已验证实现提交：`adc6ee2`（基于 Showcase 移除提交 `605db31`）
+最终实现提交：`b936f94`（包含本地化修复 `2e11b90`，基于 Showcase 移除提交 `605db31`）。本证据提交位于其后，仅更新验证记录与截图，不改变运行时代码。
 
 ## 结果
 
@@ -12,17 +12,18 @@
 
 ## 自动验证
 
-在 Showcase 移除后执行 `bun run docs:verify`，结果：
+在最终实现提交上执行 `bun run docs:verify`，结果：
 
-- `bun run lint`：通过，检查 396 个文件。
+- `bun run lint`：通过，检查 397 个文件。
 - `bun run typecheck`：通过根项目与 docs TypeScript 检查。
 - `bun run registry:validate`：通过。
 - `bun run docs:check-i18n`：通过，中英文页面成对且导航完整。
 - `bun run docs:check-examples`：通过，公开 registry 项均有嵌入示例。
 - `bun run docs:build`：通过，生成 `packages/docs/build` 与 `packages/docs/build/en`。
-- `bun test`：通过，71 个测试、742 个断言、0 失败。
+- `bun test`：通过，72 个测试、823 个断言、0 失败。
 - `bun run docs:visual`：通过 onboarding、pilots、primitive、block 四组浏览器检查；覆盖中英文、亮暗主题、桌面与移动端以及真实交互。
 - `bun run verify:items button layout layer-panel`：通过三次真实 shadcn 安装、TypeScript 与 Vite 构建。
+- `bun install --frozen-lockfile --lockfile-only`：在仅由 Git index 展开的干净目录中通过，Playwright 发布依赖可复现。
 
 移除用户可见的 Showcase 迁移文案后，再次执行 `docs:check-i18n`、`docs:check-examples`、`docs:build` 与 pilots 浏览器矩阵，全部通过。
 

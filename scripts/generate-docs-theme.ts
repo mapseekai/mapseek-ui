@@ -28,12 +28,13 @@ ${serializeVariables(theme.cssVars.theme)}
 ${serializeVariables(theme.cssVars.light)}
 }
 
-.dark {
+.dark,
+[data-theme="dark"] {
 ${serializeVariables(theme.cssVars.dark)}
 }
 `
 
 await writeFile(
-  resolve(import.meta.dir, "../packages/docs/src/css/theme.generated.css"),
+  resolve(import.meta.dirname, "../packages/docs/app/theme.generated.css"),
   stylesheet,
 )

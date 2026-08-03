@@ -1,0 +1,52 @@
+---
+title: "StatStrip"
+registryName: stat-strip
+category: block
+stability: stable
+showcase: stat-strip
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+StatStrip shows a small set of key metrics at the top of detail views, suited to dataset, raster, and service summaries.
+
+## Installation
+
+<RegistryInstall registryName="stat-strip" />
+
+## Import
+
+```tsx
+import {
+  StatStrip,
+  type StatItem,
+  type StatStripProps,
+} from "@/registry/blocks/stat-strip"
+```
+
+## Horizontal stat strip
+
+<ShowcaseDemo registryName="stat-strip" title="Horizontal stat strip" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={360} />
+
+## Usage
+
+Pass an `items` array with label and value plus optional unit, icon, badge, and mono. The wrapper owns responsive scrolling or wrapping.
+
+## Public Exports and Props
+
+Exports include `StatStrip`, `StatItem`, and `StatStripProps`. The component only receives `items`.
+
+## Loading, Empty, Error, and Status
+
+The component has no internal state; loading/empty/error should be replaced by skeleton, empty, or error summaries in the wrapper. The demo switches between two metric sets.
+
+## Accessibility
+
+Every item needs a text label. Icons and badges are supplementary and should not replace metric names.
+
+## Dependencies
+
+<RegistryDependencies registryName="stat-strip" />
+

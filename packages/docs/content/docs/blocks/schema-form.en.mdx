@@ -1,0 +1,54 @@
+---
+title: "SchemaForm"
+registryName: schema-form
+category: block
+stability: stable
+showcase: schema-form
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+SchemaForm is a schema-driven form body for number, text, select, and multiselect fields. The caller converts domain fields into those primitive types and owns values, validation, and submission.
+
+## Installation
+
+<RegistryInstall registryName="schema-form" />
+
+## Import
+
+```tsx
+import {
+  SchemaForm,
+  isSchemaFormValid,
+  seedSchemaFormValues,
+  type SchemaFormField,
+  type SchemaFormOption,
+} from "@/registry/blocks/schema-form"
+```
+
+## Schema-Driven Form
+
+<ShowcaseDemo registryName="schema-form" title="Schema-driven form" description="Shows number, text, select, multiselect, required validation, minimum selection count, empty option hints, and values output." minHeight={680} />
+
+## Usage
+
+Initialize values with `seedSchemaFormValues(fields)`, then pass `fields`, `values`, and `onChange` to `SchemaForm`. Submit buttons usually read `isSchemaFormValid(fields, values)` to decide whether the operation can run.
+
+## Public Exports and Props
+
+Exports include `SchemaForm`, `seedSchemaFormValues`, `isSchemaFormValid`, `SchemaFormField`, `SchemaFormOption`, and `SchemaFormProps`. Key props are `fields`, `values`, `onChange`, `idPrefix`, and `className`.
+
+## States and Validation
+
+The component stores no business state. Number fields support min/max, text supports placeholder, select uses defaults, and multiselect supports empty hints, required, and minimum count validation.
+
+## Accessibility
+
+Every field has a `Label` associated with its control. Required fields show an asterisk; callers should add error summaries or field-level text around submit actions instead of relying only on a disabled button.
+
+## Dependencies
+
+<RegistryDependencies registryName="schema-form" />
+

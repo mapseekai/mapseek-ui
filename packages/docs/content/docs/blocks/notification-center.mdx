@@ -1,0 +1,53 @@
+---
+title: "NotificationCenter"
+registryName: notification-center
+category: block
+stability: stable
+showcase: notification-center
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+NotificationCenter 是 header 中的通知下拉，展示处理任务、来源、流状态和清理动作。
+
+## 安装
+
+<RegistryInstall registryName="notification-center" />
+
+## 导入
+
+```tsx
+import {
+  NotificationCenter,
+  type NotificationCenterItem,
+  type NotificationCenterLabels,
+  type NotificationCenterProps,
+} from "@/registry/blocks/notification-center"
+```
+
+## 通知、加载、错误与空态
+
+<ShowcaseDemo registryName="notification-center" title="通知、加载、错误与空态" description="示例复用同一个 TSX 模块作为预览和源码，覆盖原示例的核心状态与交互。" minHeight={520} />
+
+## 用法
+
+传入受控 `items`、本地化 labels 和 `streamActive`。清空、单条清理和重试都通过回调交给调用方。
+
+## 公开导出与 Props
+
+导出 `NotificationCenter`、`NotificationCenterItem`、`NotificationCenterLabels`、`NotificationCenterStatusTone` 和 props 类型。状态字段包括 `isLoading`、`isError`、`streamActive`。
+
+## 加载、空态、错误与状态
+
+组件内置 loading skeleton、错误重试、空态和有数据 summary。示例按钮覆盖四条路径。
+
+## 无障碍
+
+触发器使用 `labels.trigger` 作为可访问名称；下拉内容继承 DropdownMenu 的键盘和焦点管理。
+
+## 依赖
+
+<RegistryDependencies registryName="notification-center" />
+

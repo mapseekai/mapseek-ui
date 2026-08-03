@@ -1,0 +1,128 @@
+import { defineCustom as custom, defineCategory, type ShowcaseEntry } from "./types"
+
+const block = defineCategory("block")
+
+export const blockShowcases = [
+  custom(
+    "loom-layer-panel",
+    "LoomLayerPanel 工程图层",
+    "block",
+    () => import("./LoomLayerPanelShowcase"),
+  ),
+  custom("loom-toolbox", "LoomToolbox 编辑工具箱", "block", () => import("./LoomToolboxShowcase")),
+  custom("loom-toolbar", "LoomToolbar 编辑工具条", "block", () => import("./LoomToolbarShowcase")),
+  block("add-field-form", "AddFieldForm 添加字段", () => import("./AddFieldFormShowcase")),
+  block("app-top-bar", "AppTopBar 应用顶栏", () => import("./AppTopBarShowcase")),
+  block("product-logo", "ProductLogo 产品 Logo", () => import("./ProductLogoShowcase")),
+  block("attr-inspector", "AttrInspector 属性面板", () => import("./AttrInspectorShowcase")),
+  block("attr-table", "AttrTable 属性表", () => import("./AttrTableShowcase")),
+  block("band-stat", "BandStat 波段统计", () => import("./BandStatShowcase")),
+  block("crs-picker", "CrsPicker 坐标参考系", () => import("./CrsPickerShowcase")),
+  block("form-inputs", "FormInputs 表单输入", () => import("./FormInputsShowcase")),
+  block("geojson-view", "GeoJSONView 要素 JSON", () => import("./GeoJSONViewShowcase")),
+  block("json-editor", "JsonEditor JSON 编辑", () => import("./JsonEditorShowcase")),
+  block("layer-panel", "LayerPanel 图层面板", () => import("./LayerPanelShowcase")),
+  block(
+    "layer-editor-group",
+    "LayerEditorGroup 图层编辑分组",
+    () => import("./LayerEditorGroupShowcase"),
+  ),
+  block(
+    "layer-style-editor",
+    "LayerStyleEditor 图层样式编辑器",
+    () => import("./LayerStyleEditorShowcase"),
+  ),
+  block("layout", "Layout 布局原子", () => import("./LayoutShowcase")),
+  block("linked-ref-list", "LinkedRefList 关联引用", () => import("./LinkedRefListShowcase")),
+  block("map-controls", "MapControls 地图控件", () => import("./MapControlsShowcase")),
+  block(
+    "map-coordinate-status",
+    "MapCoordinateStatus 坐标状态",
+    () => import("./MapCoordinateStatusShowcase"),
+  ),
+  block("map-switcher", "MapSwitcher 地图切换", () => import("./MapSwitcherShowcase")),
+  block(
+    "notification-center",
+    "NotificationCenter 通知中心",
+    () => import("./NotificationCenterShowcase"),
+  ),
+  block(
+    "number-range-input",
+    "NumberRangeInput 数字范围",
+    () => import("./NumberRangeInputShowcase"),
+  ),
+  block("pixel-probe", "PixelProbe 像元探测", () => import("./PixelProbeShowcase")),
+  block(
+    "processing-timeline",
+    "ProcessingTimeline 处理记录",
+    () => import("./ProcessingTimelineShowcase"),
+  ),
+  block(
+    "placeholder-glyph",
+    "PlaceholderGlyph 占位图标",
+    () => import("./PlaceholderGlyphShowcase"),
+  ),
+  block("raster-style-panel", "RasterStyle 栅格样式", () => import("./RasterStylePanelShowcase")),
+  block(
+    "resource-sidebar",
+    "ResourceSidebar 资源库侧栏",
+    () => import("./ResourceSidebarShowcase"),
+  ),
+  block("resource-grid", "ResourceGrid 资源库网格", () => import("./ResourceGridShowcase")),
+  block(
+    "resource-detail-drawer",
+    "ResourceDetailDrawer 资源详情抽屉",
+    () => import("./ResourceDetailDrawerShowcase"),
+  ),
+  block("schema-form", "SchemaForm 表单生成", () => import("./SchemaFormShowcase")),
+  block(
+    "service-endpoint-row",
+    "ServiceEndpointRow 服务地址",
+    () => import("./ServiceEndpointRowShowcase"),
+  ),
+  block("service-status", "ServiceStatus 服务状态", () => import("./ServiceStatusShowcase")),
+  block("split-tool-picker", "SplitTool 工具拆分选择", () => import("./SplitToolPickerShowcase")),
+  block("stat-strip", "StatStrip 统计条", () => import("./StatStripShowcase")),
+  block("style-color-input", "StyleColorInput 颜色输入", () => import("./StyleColorInputShowcase")),
+  block(
+    "style-editor-modal",
+    "StyleEditorModal 样式编辑器弹窗",
+    () => import("./StyleEditorModalShowcase"),
+  ),
+  block(
+    "style-editor-panel",
+    "StyleEditorPanel 样式编辑器面板",
+    () => import("./StyleEditorPanelShowcase"),
+  ),
+  block(
+    "style-filter-editor",
+    "StyleFilterEditor 过滤器编辑器",
+    () => import("./StyleFilterEditorShowcase"),
+  ),
+  block(
+    "style-function-editor",
+    "StyleFunctionEditor 样式函数编辑器",
+    () => import("./StyleFunctionEditorShowcase"),
+  ),
+  block(
+    "style-source-picker-dialog",
+    "StyleSourcePickerDialog 添加源弹窗",
+    () => import("./StyleSourcePickerDialogShowcase"),
+  ),
+  block("storage-meter", "StorageMeter 存储用量", () => import("./StorageMeterShowcase")),
+  block(
+    "toggle-config-popover",
+    "ToggleConfig 配置开关",
+    () => import("./ToggleConfigPopoverShowcase"),
+  ),
+  block("filter-panel", "FilterPanel 过滤面板", () => import("./FilterPanelShowcase")),
+  block("loading-screen", "LoadingScreen 加载界面", () => import("./LoadingScreenShowcase")),
+  block("resource-status", "ResourceStatus 资源状态", () => import("./ResourceStatusShowcase")),
+  block("style-panel", "StylePanel 样式面板", () => import("./StylePanelShowcase")),
+  custom(
+    "custom-colormap",
+    "CustomColormap 配色编辑",
+    "block",
+    () => import("./CustomColormapShowcase"),
+  ),
+] satisfies readonly ShowcaseEntry[]

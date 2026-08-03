@@ -1,0 +1,54 @@
+---
+title: "AddFieldForm"
+registryName: add-field-form
+category: block
+stability: stable
+showcase: add-field-form
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+AddFieldForm is the controlled body for adding an attribute field. It handles field name, type, enum values, default value, nullable, and description inputs; dialog chrome, footer submission, schema writes, and validation policy stay with the caller.
+
+## Installation
+
+<RegistryInstall registryName="add-field-form" />
+
+## Import
+
+```tsx
+import {
+  AddFieldForm,
+  EMPTY_ADD_FIELD,
+  type AddFieldFormLabels,
+  type AddFieldValue,
+  type FieldTypeOption,
+} from "@/registry/blocks/add-field-form"
+```
+
+## Controlled Field Form
+
+<ShowcaseDemo registryName="add-field-form" title="Controlled field form" description="Shows type buttons, conditional enum values, nullable checkbox, default placeholder changes, and live value output." minHeight={620} />
+
+## Usage
+
+Initialize from `EMPTY_ADD_FIELD`, pass the allowed `fieldTypes`, and store the complete draft in `onChange`. Submit actions usually live in an outer Dialog or Drawer and check `value.name`, duplicate keys, and enum formatting.
+
+## Public Exports and Props
+
+Exports include `AddFieldForm`, `EMPTY_ADD_FIELD`, `AddFieldFormProps`, `AddFieldFormLabels`, `AddFieldValue`, and `FieldTypeOption`. Key props are `value`, `onChange`, `fieldTypes`, `labels`, and `className`; `FieldTypeOption` can provide an icon, default placeholder, and `hasOptions`.
+
+## States and Validation
+
+The block does not submit, show errors, or deduplicate names by itself. It keeps every field editable and reports changes to the caller. The demo status shows how an outer shell can turn a draft into submit availability.
+
+## Accessibility
+
+Fields use readable labels and native inputs. Type choices are buttons; nullable is a checkbox paired with a label. Outer submit UI should expose error text, dialog title, description, and disabled submit state to keyboard and screen reader users.
+
+## Dependencies
+
+<RegistryDependencies registryName="add-field-form" />
+

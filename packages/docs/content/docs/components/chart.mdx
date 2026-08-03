@@ -1,0 +1,44 @@
+---
+title: "Chart"
+registryName: chart
+category: primitive
+stability: stable
+showcase: chart
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Chart 提供 Mapseek UI 对 Recharts 的容器、主题变量、Tooltip 和 Legend 封装。它适合展示要素数量、服务指标和处理进度统计。
+
+## 安装
+
+<RegistryInstall registryName="chart" />
+
+## 导入
+
+```tsx
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/registry/ui/chart"
+```
+
+## 月度统计
+
+<ShowcaseDemo registryName="chart" demo="overview" title="月度统计" description="展示柱状图、主题色变量和 tooltip 内容。" minHeight={360} />
+
+## 导出
+
+`ChartContainer` 提供上下文与 CSS 变量，`ChartTooltip` 和 `ChartLegend` 直接复用 Recharts primitive，`ChartTooltipContent` 与 `ChartLegendContent` 提供 Mapseek UI 样式。
+
+## 状态与行为
+
+`ChartConfig` 将数据 key 映射到 label、icon 和颜色。容器生成 `--color-*` 变量，并支持按 light/dark theme 输出不同颜色。
+
+## 无障碍
+
+优先在 Recharts 图表上启用 `accessibilityLayer`，并在页面文案或表格中提供关键数值。不要只用颜色区分序列。
+
+## 依赖
+
+<RegistryDependencies registryName="chart" />
+

@@ -1,0 +1,44 @@
+---
+title: "Checkbox"
+registryName: checkbox
+category: primitive
+stability: stable
+showcase: checkbox
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Checkbox handles boolean selection, batch selection, and optional settings. It keeps Base UI keyboard and focus semantics while using Mapseek square, border-first state styling.
+
+## Installation
+
+<RegistryInstall registryName="checkbox" />
+
+## Import
+
+```tsx
+import { Checkbox } from "@/registry/ui/checkbox"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="checkbox" demo="overview" title="States and controlled selection" description="Covers unchecked, checked, invalid, disabled, and controlled toggling to show every visible state." minHeight={340} />
+
+## Exports
+
+`checkbox.tsx` exports `Checkbox`. The component inherits Base UI Checkbox root props, including `checked/onCheckedChange`, `defaultChecked`, `disabled`, and `aria-invalid`.
+
+## States
+
+Use `checked/onCheckedChange` for controlled flows and `defaultChecked` for static defaults. Disabled removes interaction and lowers opacity; invalid uses `aria-invalid` for destructive border and ring styles.
+
+## Accessibility
+
+Pair every checkbox with `Label` or `aria-label`. Do not communicate selection or errors with color alone; place error text near the field or render it with `FieldError`.
+
+## Dependencies
+
+<RegistryDependencies registryName="checkbox" />
+

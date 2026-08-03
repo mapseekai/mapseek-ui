@@ -1,0 +1,44 @@
+---
+title: "Collapsible"
+registryName: collapsible
+category: primitive
+stability: stable
+showcase: collapsible
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Collapsible 是轻量的单区块展开容器。它适合数据集详情、可选设置和辅助说明，比 Accordion 更适合独立的一块内容。
+
+## 安装
+
+<RegistryInstall registryName="collapsible" />
+
+## 导入
+
+```tsx
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/registry/ui/collapsible"
+```
+
+## 受控展开
+
+<ShowcaseDemo registryName="collapsible" demo="overview" title="受控展开" description="展示受控 open/onOpenChange、按钮触发和展开内容。" minHeight={220} />
+
+## 导出
+
+`Collapsible`、`CollapsibleTrigger` 和 `CollapsibleContent` 分别对应 Radix Collapsible root、trigger 和 content。
+
+## 状态与行为
+
+使用 `open/onOpenChange` 可以让外部按钮文案和业务状态同步。`CollapsibleTrigger asChild` 允许复用现有 Button 样式。
+
+## 无障碍
+
+触发器应清楚说明会展开什么内容。展开内容如果包含关键状态，应在收起状态附近保留摘要，避免用户必须展开才能理解当前状态。
+
+## 依赖
+
+<RegistryDependencies registryName="collapsible" />
+

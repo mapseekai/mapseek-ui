@@ -1,0 +1,60 @@
+---
+title: "Button"
+registryName: button
+category: primitive
+stability: stable
+showcase: button
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Button 是 Mapseek UI 的基础操作触发器，用于提交表单、执行地图查询、确认设置或打开后续流程。它作为源码安装到项目中，样式和行为由你的应用直接拥有。
+
+## 安装
+
+<RegistryInstall registryName="button" />
+
+## 导入
+
+```tsx
+import { Button } from "@/registry/ui/button"
+```
+
+如果你的项目使用 shadcn 目标路径，也可以从安装后的 `@ui/button.tsx` 所在别名导入。
+
+## 基础用法
+
+<ShowcaseDemo registryName="button" demo="basic" title="基础用法" description="默认 Button 是主要操作；禁用态会移除指针交互并降低不透明度。" minHeight={180} />
+
+## 变体
+
+<ShowcaseDemo registryName="button" demo="variants" title="变体" description="六种变体覆盖从主动作到内联链接的全部层级；同一区域只放一个 primary。" minHeight={120} />
+
+## 尺寸
+
+<ShowcaseDemo registryName="button" demo="sizes" title="尺寸" description="xs/sm/default/lg 对应 24/28/32/36px 控件高度；同一工具栏保持单一高度。" minHeight={120} />
+
+## API
+
+`Button` 导出 `Button` 组件和 `buttonVariants` 样式函数。组件继承 Base UI `Button` 的 props，并额外接受 `variant` 与 `size` 变体参数。
+
+```tsx
+import { Button, buttonVariants } from "@/registry/ui/button"
+```
+
+`Button` 基于 `@base-ui/react/button`，所以会保留原生按钮语义、键盘激活、焦点行为和常用按钮属性。`disabled` 会传递到 Base UI，并由样式层应用 `pointer-events-none` 与 `opacity-50`。
+
+## Button 与 IconButton
+
+使用 `Button` 承载有文字的明确命令，例如“保存”“运行查询”或“删除图层”。只包含图标的工具按钮应使用 `IconButton`，并提供可访问名称；`Button` 中的 `icon`、`icon-xs`、`icon-sm`、`icon-lg` 尺寸只适合在你确实需要按钮语义和图标尺寸变体时使用。
+
+## 无障碍
+
+按钮文本应描述执行结果，不要只写“确定”或“点击”。危险操作使用 `destructive` 变体，并在流程层提供确认或撤销机会。禁用按钮需要由相邻内容说明原因；不要只依赖禁用态传达业务规则。
+
+## 依赖
+
+<RegistryDependencies registryName="button" />
+

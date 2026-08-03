@@ -1,0 +1,128 @@
+---
+title: "Dialog"
+registryName: dialog
+category: primitive
+stability: stable
+showcase: dialog
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+export const basicLabels = {
+  uncontrolledTrigger: "Open dialog",
+  uncontrolledTitle: "Layer properties",
+  uncontrolledDescription: "Edit the current layer metadata.",
+  uncontrolledBody: "DialogBody is the body region for copy, forms, or local settings.",
+  cancel: "Cancel",
+  confirm: "Confirm",
+  controlledTrigger: "Open controlled",
+  controlledTitle: "Controlled dialog",
+  controlledBody: "open and onOpenChange are owned by external state while Dialog keeps focus management and Escape close.",
+  controlledClose: "Close",
+  controlledStateLabel: "Controlled state",
+  controlledStateOpen: "Open",
+  controlledStateClosed: "Closed",
+}
+
+export const confirmationLabels = {
+  trigger: "Unsaved changes",
+  title: "Unsaved changes",
+  description: "Save the current project changes? This flow keeps cancel, discard, and save-and-continue outcomes.",
+  cancel: "Cancel",
+  discard: "Discard changes",
+  save: "Save and continue",
+  statusLabel: "Last choice",
+  idleStatus: "No choice yet",
+  canceledStatus: "Canceled",
+  discardedStatus: "Discarded changes",
+  savedStatus: "Saved and continued",
+}
+
+export const longContentLabels = {
+  trigger: "Open long-content dialog",
+  title: "Field calculator",
+  description: "Long content stays in the portal, with an independently scrolling body that is not clipped by the demo container.",
+  badge: "land_use",
+  targetFieldLabel: "Target field",
+  targetFieldValue: "area_m2",
+  expressionLabel: "Expression",
+  expressionValue: "$area / 10000",
+  noteLabel: "Note",
+  noteValue: "Calculate hectare values from the current geometry area and write them back to the target field.",
+  sections: [
+    {
+      title: "Input check",
+      body: "Confirm that the target field is writable and that the expression only references fields from the current layer.",
+    },
+    {
+      title: "Impact",
+      body: "The operation updates 13 rows in the current filtered result; unselected layers are not changed.",
+    },
+    {
+      title: "Rollback",
+      body: "The current field snapshot is recorded before applying the operation, then restored if the operation fails.",
+    },
+    {
+      title: "Audit record",
+      body: "The expression, operator, and update time are written to the processing log for later tracing.",
+    },
+  ],
+  footerStatus: "Will update 13 rows · area_m2",
+  cancel: "Cancel",
+  apply: "Apply",
+}
+
+
+Dialog is for short flows, confirmations, and local forms. It renders through a portal at the document root, so it is not clipped by demo containers, scrolling panels, or `overflow`, while keeping focus trapping, Escape close, and focus return to the trigger.
+
+## Installation
+
+<RegistryInstall registryName="dialog" />
+
+## Import
+
+```tsx
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/registry/ui/dialog"
+```
+
+## Basic and Controlled
+
+<ShowcaseDemo registryName="dialog" demo="basic" title="Basic and controlled" description="DialogTrigger opens the popup; controlled mode delegates state to open/onOpenChange." minHeight={220} />
+
+<ShowcaseDemo registryName="dialog" demo="confirmation" title="Confirmation flow" description="Cancel, save, and discard close the dialog and return focus to the trigger." minHeight={180} />
+
+<ShowcaseDemo registryName="dialog" demo="long-content" title="Long content" description="The independently scrolling body keeps the dialog inside the viewport on narrow screens." minHeight={180} />
+
+## Structure
+
+`DialogContent` is the overlay container. It owns the portal, backdrop, max width, 16px padding, and section gap. Short content can use `title` and `description`; complex headings use `DialogHeader`, `DialogTitle`, and `DialogDescription`.
+
+`DialogBody` contains the main content, and long content needs a body-level scroll boundary. `DialogFooter` stacks vertically on narrow screens and aligns actions to the end from `sm` upward. Business examples should not duplicate padding on the header or footer.
+
+## Accessible Title
+
+Every Dialog needs a readable title. Prefer `DialogContent title` or `DialogTitle`; the close button already includes screen-reader text. Do not make the title only decorative or rely on placeholder text.
+
+## Dialog vs Sheet
+
+Use Dialog for short confirmations, a few fields, and tasks that must block the current flow. Use Sheet for long forms, detail reading, batch editing, and content that needs frequent scrolling, because it preserves more context and gives the user a steadier scroll area.
+
+## Accessibility
+
+Trigger buttons should clearly name what they open. Close, cancel, save, and dangerous actions should be real `button` elements or `DialogClose`. Do not hide the main explanation inside the Dialog, and do not use color as the only state signal.
+
+## Dependencies
+
+<RegistryDependencies registryName="dialog" />
+

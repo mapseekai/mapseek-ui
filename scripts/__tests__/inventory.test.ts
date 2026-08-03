@@ -3,19 +3,50 @@ import { describe, expect, it } from "vitest"
 import { loadCatalog } from "../registry-model"
 
 const foundationalPrimitives = [
-  "accordion", "avatar", "badge", "button", "card", "collapsible", "dialog",
-  "empty", "icon-button", "label", "separator", "skeleton", "tooltip",
+  "accordion",
+  "avatar",
+  "badge",
+  "button",
+  "copy-button",
+  "card",
+  "collapsible",
+  "dialog",
+  "empty",
+  "icon-button",
+  "label",
+  "separator",
+  "skeleton",
+  "tooltip",
 ] as const
 
 const inputAndSelectionPrimitives = [
-  "checkbox", "combobox", "command", "field", "input-group", "input",
-  "pagination", "popover", "progress", "select", "slider", "switch",
-  "tabs", "textarea", "toggle-group", "toggle",
+  "checkbox",
+  "combobox",
+  "command",
+  "field",
+  "input-group",
+  "input",
+  "pagination",
+  "popover",
+  "progress",
+  "select",
+  "slider",
+  "switch",
+  "tabs",
+  "textarea",
+  "toggle-group",
+  "toggle",
 ] as const
 
 const overlayDataAndFeedbackPrimitives = [
-  "chart", "confirm-dialog", "context-menu", "dropdown-menu", "json-viewer",
-  "sheet", "sonner", "table",
+  "chart",
+  "confirm-dialog",
+  "context-menu",
+  "dropdown-menu",
+  "json-viewer",
+  "sheet",
+  "sonner",
+  "table",
 ] as const
 
 const overlayDataAndFeedbackDependencies = {
@@ -70,7 +101,7 @@ const inputAndSelectionNpmDependencies = {
   combobox: ["@base-ui/react", "@tabler/icons-react"],
   command: ["@tabler/icons-react", "cmdk"],
   field: ["class-variance-authority"],
-  "input-group": ["class-variance-authority"],
+  "input-group": ["@base-ui/react", "class-variance-authority"],
   input: ["@base-ui/react"],
   pagination: ["@tabler/icons-react"],
   popover: ["@base-ui/react"],
@@ -85,9 +116,19 @@ const inputAndSelectionNpmDependencies = {
 } as const
 
 const applicationShellStatusAndResourceBlocks = [
-  "app-top-bar", "layout", "loading-screen", "product-logo", "placeholder-glyph",
-  "notification-center", "processing-timeline", "service-status", "service-endpoint-row",
-  "resource-status", "resource-grid", "resource-sidebar", "resource-detail-drawer",
+  "app-top-bar",
+  "layout",
+  "loading-screen",
+  "product-logo",
+  "placeholder-glyph",
+  "notification-center",
+  "processing-timeline",
+  "service-status",
+  "service-endpoint-row",
+  "resource-status",
+  "resource-grid",
+  "resource-sidebar",
+  "resource-detail-drawer",
   "linked-ref-list",
 ] as const
 
@@ -97,14 +138,36 @@ const applicationShellStatusAndResourceDependencies = {
   "loading-screen": ["@mapseek/utils", "@mapseek/labels"],
   "product-logo": ["@mapseek/utils"],
   "placeholder-glyph": ["@mapseek/utils"],
-  "notification-center": ["@mapseek/button", "@mapseek/dropdown-menu", "@mapseek/empty", "@mapseek/icon-button", "@mapseek/skeleton", "@mapseek/utils"],
+  "notification-center": [
+    "@mapseek/button",
+    "@mapseek/dropdown-menu",
+    "@mapseek/empty",
+    "@mapseek/icon-button",
+    "@mapseek/skeleton",
+    "@mapseek/utils",
+  ],
   "processing-timeline": ["@mapseek/button", "@mapseek/utils"],
   "service-status": ["@mapseek/switch", "@mapseek/utils", "@mapseek/labels"],
   "service-endpoint-row": ["@mapseek/icon-button", "@mapseek/tooltip"],
   "resource-status": ["@mapseek/utils"],
-  "resource-grid": ["@mapseek/badge", "@mapseek/checkbox", "@mapseek/utils", "@mapseek/placeholder-glyph", "@mapseek/labels"],
+  "resource-grid": [
+    "@mapseek/badge",
+    "@mapseek/checkbox",
+    "@mapseek/utils",
+    "@mapseek/placeholder-glyph",
+    "@mapseek/labels",
+  ],
   "resource-sidebar": ["@mapseek/button", "@mapseek/tooltip", "@mapseek/utils"],
-  "resource-detail-drawer": ["@mapseek/button", "@mapseek/checkbox", "@mapseek/sheet", "@mapseek/svg-data-uri", "@mapseek/textarea", "@mapseek/utils", "@mapseek/placeholder-glyph", "@mapseek/resource-grid"],
+  "resource-detail-drawer": [
+    "@mapseek/button",
+    "@mapseek/checkbox",
+    "@mapseek/sheet",
+    "@mapseek/svg-data-uri",
+    "@mapseek/textarea",
+    "@mapseek/utils",
+    "@mapseek/placeholder-glyph",
+    "@mapseek/resource-grid",
+  ],
   "linked-ref-list": ["@mapseek/icon-button", "@mapseek/tooltip", "@mapseek/utils"],
 } as const
 
@@ -186,8 +249,12 @@ describe("application shell, status, and resource block inventory", () => {
       expect(item, `missing ${name}`).toBeDefined()
       expect(item?.type).toBe("registry:block")
       expect(item?.files.length).toBeGreaterThan(0)
-      expect(item?.files.every((file) => file.target?.startsWith(`@components/blocks/${name}/`))).toBe(true)
-      expect(item?.registryDependencies).toEqual(applicationShellStatusAndResourceDependencies[name])
+      expect(
+        item?.files.every((file) => file.target?.startsWith(`@components/blocks/${name}/`)),
+      ).toBe(true)
+      expect(item?.registryDependencies).toEqual(
+        applicationShellStatusAndResourceDependencies[name],
+      )
     }
   })
 })

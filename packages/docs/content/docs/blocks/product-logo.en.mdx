@@ -1,0 +1,48 @@
+---
+title: "ProductLogo"
+registryName: product-logo
+category: block
+stability: stable
+showcase: product-logo
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ProductLogo is the mark lockup for Mapseek product entry points, with icon-only or icon-plus-name modes.
+
+## Installation
+
+<RegistryInstall registryName="product-logo" />
+
+## Import
+
+```tsx
+import { ProductLogo, type ProductLogoProps } from "@/registry/blocks/product-logo"
+```
+
+## Product marks and text toggle
+
+<ShowcaseDemo registryName="product-logo" title="Product marks and text toggle" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={520} />
+
+## Usage
+
+Pass `src` and `alt`, control text with `showText`, and use `label` when the displayed name differs from alt text.
+
+## Public Exports and Props
+
+Exports include `ProductLogo` and `ProductLogoProps`. Key props are `src`, `alt`, `size`, `showText`, `label`, dimensions, and className overrides.
+
+## Loading, Empty, Error, and Status
+
+The component has no loading state; image failure, product switching, and navigation state are handled by the caller.
+
+## Accessibility
+
+`alt` provides image alternative text; for decorative marks, pass an empty alt and name the outer link.
+
+## Dependencies
+
+<RegistryDependencies registryName="product-logo" />
+

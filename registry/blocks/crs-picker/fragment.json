@@ -1,0 +1,38 @@
+{
+  "name": "crs-picker",
+  "type": "registry:block",
+  "registryDependencies": ["@mapseek/utils", "@mapseek/labels"],
+  "files": [
+    {
+      "path": "crs-picker/CrsPicker.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/crs-picker/CrsPicker.tsx"
+    },
+    {
+      "path": "crs-picker/built-in-crs.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/crs-picker/built-in-crs.ts"
+    },
+    {
+      "path": "crs-picker/defaults.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/crs-picker/defaults.ts"
+    },
+    {
+      "path": "crs-picker/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/crs-picker/index.ts"
+    },
+    {
+      "path": "crs-picker/labels.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/crs-picker/labels.ts"
+    },
+    {
+      "path": "crs-picker/types.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/crs-picker/types.ts"
+    }
+  ],
+  "dependencies": ["@tabler/icons-react"]
+}

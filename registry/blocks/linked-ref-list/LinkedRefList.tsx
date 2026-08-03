@@ -1,6 +1,6 @@
-import { useState } from "react"
-import type { ReactNode } from "react"
 import { IconExternalLink, IconLink } from "@tabler/icons-react"
+import type { ReactNode } from "react"
+import { useState } from "react"
 
 import { IconButton } from "@/components/ui/icon-button"
 import { Tooltip } from "@/components/ui/tooltip"
@@ -47,7 +47,10 @@ export function LinkedRefList({ groups, kindIcons, openLabel }: LinkedRefListPro
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-3 border border-border bg-background">
+      <div
+        className="grid border border-border bg-background"
+        style={{ gridTemplateColumns: `repeat(${groups.length}, minmax(0, 1fr))` }}
+      >
         {groups.map((group, i) => (
           <SummaryCard
             key={group.key}
@@ -110,7 +113,7 @@ function SummaryCard({
       type="button"
       onClick={onSelect}
       className={cn(
-        "flex flex-col gap-2 border-r border-b-2 border-border px-4 py-3 text-left transition-colors last:border-r-0",
+        "flex min-w-0 flex-col gap-2 border-r border-b-2 border-border px-4 py-3 text-left transition-colors last:border-r-0",
         selected
           ? "border-b-primary bg-[oklch(0.627_0.194_149_/_0.06)]"
           : "border-b-transparent bg-background hover:bg-muted/20",
@@ -144,13 +147,13 @@ function ItemRow({
   openLabel?: string
 }) {
   return (
-    <li className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0">
+    <li className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border px-3 py-3 last:border-b-0 sm:flex-nowrap sm:gap-3 sm:px-4">
       <span
         className={cn("flex size-9 shrink-0 items-center justify-center border", KIND_BOX[kind])}
       >
         {icon}
       </span>
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 basis-[calc(100%-2.75rem)] sm:flex-1 sm:basis-auto">
         <div className="text-sm font-medium text-foreground">{item.name}</div>
         {item.subtitle || item.id ? (
           <div className="truncate text-[11px] text-muted-foreground">
@@ -161,7 +164,9 @@ function ItemRow({
         ) : null}
       </div>
       {item.time ? (
-        <span className="mono tnum shrink-0 text-[11px] text-muted-foreground">{item.time}</span>
+        <span className="mono tnum ml-11 shrink-0 text-[11px] text-muted-foreground sm:ml-0">
+          {item.time}
+        </span>
       ) : null}
       {item.status ? <StatusPill status={item.status} /> : null}
       <span className="flex shrink-0 items-center gap-1">

@@ -1,0 +1,44 @@
+---
+title: "Combobox"
+registryName: combobox
+category: primitive
+stability: stable
+showcase: combobox
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Combobox is a searchable single-value selector for formats, coordinate systems, or resources. It composes input-group, a portal list, empty state, clear button, and trigger button.
+
+## Installation
+
+<RegistryInstall registryName="combobox" />
+
+## Import
+
+```tsx
+import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/registry/ui/combobox"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="combobox" demo="overview" title="Searchable selection" description="Shows format picker, CRS picker, filtering, clear, trigger, and empty state." minHeight={300} />
+
+## Exports
+
+`combobox.tsx` exports `Combobox`, `ComboboxInput`, `ComboboxContent`, `ComboboxList`, `ComboboxItem`, `ComboboxEmpty`, `ComboboxGroup`, `ComboboxLabel`, `ComboboxValue`, `ComboboxTrigger`, `ComboboxClear`, and chips components.
+
+## States
+
+Use `value/onValueChange` to control the input and selected value. Render `ComboboxEmpty` when filtering returns no options. `showTrigger` renders the dropdown button, `showClear` renders the clear button, and `disabled` passes to the input and buttons.
+
+## Accessibility
+
+Give the input a clear `aria-label` or visible label. Items need stable `value` props; keyboard users should be able to use typing, arrow keys, Enter, and Escape.
+
+## Dependencies
+
+<RegistryDependencies registryName="combobox" />
+

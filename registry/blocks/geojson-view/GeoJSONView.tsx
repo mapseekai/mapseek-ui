@@ -1,0 +1,159 @@
+import type { ReactNode } from "react"
+import { JsonViewer } from "@/components/ui/json-viewer"
+import { resolveLabels } from "@/lib/mapseek-labels"
+import { cn } from "@/lib/utils"
+import { DEFAULT_GEOJSON_VIEW_LABELS } from "./defaults"
+import type { GeoJSONViewLabels } from "./labels"
+
+export interface GeoJSONViewProps {
+  /** Pre-formatted JSON (see `stringifyGeoJSON`); null/empty shows `emptyLabel`. */
+  json: string | null
+  emptyLabel: string
+  title?: string
+  expandAllLabel?: string
+  collapseAllLabel?: string
+  copyFeedbackDurationMs?: number
+  labels?: Partial<GeoJSONViewLabels>
+  className?: string
+}
+
+/**
+ * Read-only JSON viewer. Parses the pre-formatted `json` and renders it as an
+ * interactive collapsible tree (`JsonViewer`). Falls back to a line-numbered
+ * `<pre>` when `json` is empty, fails to parse, or decodes to a primitive.
+ * Pure display — copy/download and size counters live in the consumer's chrome,
+ * built from the same `stringifyGeoJSON` output to avoid stringifying twice.
+ */
+export function GeoJSONView({
+  json,
+  emptyLabel,
+  title = "GeoJSON",
+  expandAllLabel,
+  collapseAllLabel,
+  labels: labelsProp,
+  copyFeedbackDurationMs = 3000,
+  className,
+}: GeoJSONViewProps) {
+  const labels = resolveLabels(DEFAULT_GEOJSON_VIEW_LABELS, labelsProp)
+  const resolvedExpandAllLabel = expandAllLabel ?? labels.expandAll
+  const resolvedCollapseAllLabel = collapseAllLabel ?? labels.collapseAll
+  if (!json) {
+    return (
+      <ViewShell title={title} className={className}>
+        <PreView lines={null} emptyLabel={emptyLabel} />
+      </ViewShell>
+    )
+  }
+
+  let data: unknown
+  try {
+    data = JSON.parse(json)
+  } catch {
+    return (
+      <ViewShell title={title} className={className}>
+        <PreView lines={json.split("\n")} emptyLabel={emptyLabel} />
+      </ViewShell>
+    )
+  }
+
+  if (typeof data !== "object" || data === null) {
+    return (
+      <ViewShell title={title} className={className}>
+        <PreView lines={json.split("\n")} emptyLabel={emptyLabel} />
+      </ViewShell>
+    )
+  }
+
+  return (
+    <div
+      className={cn(
+        "flex h-[360px] max-h-full min-h-0 flex-col border border-border bg-card",
+        className,
+      )}
+    >
+      <JsonViewer
+        data={data as Record<string, unknown>}
+        title={title}
+        expandAllLabel={resolvedExpandAllLabel}
+        collapseAllLabel={resolvedCollapseAllLabel}
+        copyFeedbackDurationMs={copyFeedbackDurationMs}
+        showLineNumbers
+        className="min-h-0 flex-1 overflow-hidden"
+      />
+    </div>
+  )
+}
+
+function ViewShell({
+  title,
+  className,
+  children,
+}: {
+  title: string
+  className?: string
+  children: ReactNode
+}) {
+  return (
+    <div
+      className={cn(
+        "flex h-[360px] max-h-full min-h-0 flex-col border border-border bg-card",
+        className,
+      )}
+    >
+      <div className="flex h-8 shrink-0 items-center border-b border-border px-3">
+        <span className="font-mono text-[11px] leading-none font-semibold tracking-[0.06em] text-muted-foreground uppercase">
+          {title}
+        </span>
+      </div>
+      {children}
+    </div>
+  )
+}
+
+/** Line-numbered read-only fallback (empty / invalid-JSON / primitive). */
+function PreView({
+  lines,
+  emptyLabel,
+  className,
+}: {
+  lines: string[] | null
+  emptyLabel: string
+  labels?: Partial<GeoJSONViewLabels>
+  className?: string
+}) {
+  const lineRows = lines === null ? null : getLineRows(lines)
+
+  return (
+    <pre
+      className={cn(
+        "m-0 min-h-0 flex-1 overflow-auto bg-muted/50 px-3.5 py-3 font-mono text-[11px] leading-[1.6] font-medium text-foreground [tab-size:2]",
+        className,
+      )}
+    >
+      {lines === null ? (
+        <div className="grid grid-cols-[32px_1fr] gap-x-3">
+          <span className="text-right text-muted-foreground tabular-nums select-none">1</span>
+          <span className="text-muted-foreground">{emptyLabel}</span>
+        </div>
+      ) : (
+        lineRows?.map((row) => (
+          <div key={row.key} className="grid grid-cols-[32px_1fr] gap-x-3">
+            <span className="text-right text-muted-foreground tabular-nums select-none">
+              {row.number}
+            </span>
+            <span>{row.line}</span>
+          </div>
+        ))
+      )}
+    </pre>
+  )
+}
+
+function getLineRows(lines: string[]) {
+  const counts = new Map<string, number>()
+  return lines.map((line, i) => {
+    const occurrence = counts.get(line) ?? 0
+    counts.set(line, occurrence + 1)
+    return { key: `${line}:${occurrence}`, line, number: i + 1 }
+  })
+}

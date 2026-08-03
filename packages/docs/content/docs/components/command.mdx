@@ -1,0 +1,44 @@
+---
+title: "Command"
+registryName: command
+category: primitive
+stability: stable
+showcase: command
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Command 用于命令面板、局部动作搜索和空状态搜索结果。它基于 cmdk，并复用 Mapseek 的 input-group、分组、分隔线和快捷键样式。
+
+## 安装
+
+<RegistryInstall registryName="command" />
+
+## 导入
+
+```tsx
+import { Command, CommandInput, CommandItem, CommandList } from "@/registry/ui/command"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="command" demo="overview" title="命令面板" description="覆盖分组、separator、disabled item、shortcut 和 empty state，展示命令列表结构。" minHeight={360} />
+
+## 导出
+
+`command.tsx` 导出 `Command`、`CommandDialog`、`CommandInput`、`CommandList`、`CommandEmpty`、`CommandGroup`、`CommandSeparator`、`CommandItem` 和 `CommandShortcut`。
+
+## 状态
+
+`CommandInput` 驱动 cmdk 过滤；没有结果时显示 `CommandEmpty`。`CommandItem disabled` 表示当前不可执行，checked item 会显示内置 check 图标。
+
+## 无障碍
+
+命令文字应描述结果，不要只写动词。弹窗模式使用 `CommandDialog` 时，确保触发器拥有可访问名称，并验证 Escape 后焦点返回触发器。
+
+## 依赖
+
+<RegistryDependencies registryName="command" />
+

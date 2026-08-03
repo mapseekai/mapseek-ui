@@ -1,3 +1,5 @@
+"use client"
+
 import { Component, type ReactNode } from "react"
 
 type DemoErrorBoundaryProps = {
@@ -7,13 +9,18 @@ type DemoErrorBoundaryProps = {
 
 type DemoErrorBoundaryState = {
   readonly failed: boolean
+  readonly message?: string
 }
 
 export class DemoErrorBoundary extends Component<DemoErrorBoundaryProps, DemoErrorBoundaryState> {
   state: DemoErrorBoundaryState = { failed: false }
 
-  static getDerivedStateFromError(): DemoErrorBoundaryState {
-    return { failed: true }
+  static getDerivedStateFromError(error: unknown): DemoErrorBoundaryState {
+    return { failed: true, message: error instanceof Error ? error.message : String(error) }
+  }
+
+  override componentDidCatch(error: unknown): void {
+    console.error("[DemoErrorBoundary]", error)
   }
 
   render() {

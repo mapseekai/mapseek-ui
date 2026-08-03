@@ -37,7 +37,7 @@ describe("docs coverage", () => {
     expect(enDocs).toEqual(registryItems)
   })
 
-  it("keeps registry docs metadata aligned to the required example manifest", async () => {
+  it("keeps registry docs metadata aligned to the Showcase catalog", async () => {
     const { zh, en } = await collectLocalizedDocs("packages/docs")
 
     for (const [registryName, required] of requiredRegistryDocs) {
@@ -46,8 +46,8 @@ describe("docs coverage", () => {
 
       expect(zhDoc?.metadata.category).toBe(required.category)
       expect(enDoc?.metadata.category).toBe(required.category)
-      expect(zhDoc?.metadata.examples).toEqual(required.examples)
-      expect(enDoc?.metadata.examples).toEqual(required.examples)
+      expect(zhDoc?.metadata.showcase).toBe(registryName)
+      expect(enDoc?.metadata.showcase).toBe(registryName)
     }
   })
 })

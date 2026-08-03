@@ -1,0 +1,53 @@
+---
+title: "ResourceGrid"
+registryName: resource-grid
+category: block
+stability: stable
+showcase: resource-grid
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ResourceGrid is the resource-library main area, rendering different card densities for icon, sprite, and font tabs.
+
+## Installation
+
+<RegistryInstall registryName="resource-grid" />
+
+## Import
+
+```tsx
+import {
+  ResourceGrid,
+  type ResourceGridItem,
+  type ResourceGridProps,
+  type ResourceTab,
+} from "@/registry/blocks/resource-grid"
+```
+
+## Resource cards, selection, and empty state
+
+<ShowcaseDemo registryName="resource-grid" title="Resource cards, selection, and empty state" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={620} />
+
+## Usage
+
+Pass the current `tab`, matching `items`, and open/context-menu callbacks. Icon mode can receive `selectedIconIds` and `onIconSelect` for bulk selection.
+
+## Public Exports and Props
+
+Exports include `ResourceGrid`, `ResourceGridItem`, the three item types, `ResourceStatus`, `ResourceTab`, labels, and props.
+
+## Loading, Empty, Error, and Status
+
+Empty state is injected through the `empty` slot; loading and errors are switched by the wrapper. The demo covers tabs, selection, open, context menu, and empty state.
+
+## Accessibility
+
+Cards are buttons, and icon checkboxes should provide `iconSelectionLabel`. Card names truncate, so full names should be available in detail views.
+
+## Dependencies
+
+<RegistryDependencies registryName="resource-grid" />
+

@@ -1,0 +1,57 @@
+---
+title: "Layout"
+registryName: layout
+category: block
+stability: stable
+showcase: layout
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Layout is a small set of editor layout primitives: Block, Collapser, Fieldset, and ScrollContainer. They handle property-editor spacing, label columns, collapse icons, and scroll boundaries without owning map business state.
+
+## Installation
+
+<RegistryInstall registryName="layout" />
+
+## Import
+
+```tsx
+import {
+  Block,
+  Collapser,
+  Fieldset,
+  ScrollContainer,
+  type BlockProps,
+  type CollapserProps,
+  type FieldsetProps,
+  type ScrollContainerProps,
+} from "@/registry/blocks/layout"
+```
+
+## Editor Layout Primitives
+
+<ShowcaseDemo registryName="layout" title="Editor layout primitives" description="Shows Block layout variants, controlled Collapser button, and ScrollContainer overflow behavior." minHeight={460} />
+
+## Usage
+
+Use `Fieldset` to wrap a group of properties, `Block` to align label, action, and content columns, `Collapser` to show collapse direction, and `ScrollContainer` to give fixed-height regions vertical scrolling. They can be mixed with registry Input, Select, Slider, or business forms.
+
+## Public Exports and Props
+
+Exports include `Block`, `Collapser`, `Fieldset`, `ScrollContainer`, and their prop types. `Block` supports `inline`, `wideMode`, `label`, and `action`; `Collapser` receives `isCollapsed`; `Fieldset` receives `label`; `ScrollContainer` receives standard container props and `className`.
+
+## Controlled State
+
+These primitives do not store business state. In the demo, collapsed state is kept by the outer button and passed to `Collapser`. Real editors should keep field values, collapsed group state, and scroll position at the caller level that owns them.
+
+## Accessibility
+
+`Block` labels can be text or nodes; form controls still need an associated label or accessible name. `Collapser` is only an icon, so the button that contains it needs clear text or `aria-label`. Scroll regions need explicit height so keyboard focus does not move into invisible content.
+
+## Dependencies
+
+<RegistryDependencies registryName="layout" />
+

@@ -1,0 +1,44 @@
+---
+title: "Table"
+registryName: table
+category: primitive
+stability: stable
+showcase: table
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Table displays structured row-and-column data such as feature attributes, service status, and batch results. It provides the scroll container, header, body, rows, cells, and caption.
+
+## Installation
+
+<RegistryInstall registryName="table" />
+
+## Import
+
+```tsx
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/registry/ui/table"
+```
+
+## Data Table
+
+<ShowcaseDemo registryName="table" demo="overview" title="Data table" description="Shows feature rows, header, monospace ID, and horizontal scroll container." minHeight={280} />
+
+## Exports
+
+`Table` creates the bordered horizontal scroll container. `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, and `TableCaption` map to native table elements.
+
+## States and Behavior
+
+Rows support hover background and respond to `data-state="selected"` and `aria-expanded`. Callers can adjust the scroll wrapper through `containerClassName`.
+
+## Accessibility
+
+Use real table semantics rather than div grids for tabular data. Complex tables need a caption or nearby heading, and column headers should describe the values accurately.
+
+## Dependencies
+
+<RegistryDependencies registryName="table" />
+

@@ -1,0 +1,91 @@
+.install {
+  margin-block: 1rem 2rem;
+  border: 1px solid var(--mapseek-border);
+  background: var(--card);
+}
+
+.managerTabs {
+  display: flex;
+  padding-inline: 0.35rem;
+  border-bottom: 1px solid var(--mapseek-border);
+}
+
+.managerTab {
+  margin-bottom: -1px;
+  padding: 0.45rem 0.65rem;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: none;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.managerTab:hover {
+  color: var(--foreground);
+}
+
+.managerTab[data-active="true"] {
+  border-bottom-color: var(--primary);
+  color: var(--primary);
+}
+
+.commandRow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.4rem 0.5rem 0.75rem;
+}
+
+.commandRow code {
+  min-width: 0;
+  flex: 1;
+  overflow-x: auto;
+  border: 0;
+  white-space: nowrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  color: var(--foreground);
+}
+
+.dependencies {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-block: 1rem 2rem;
+}
+
+.dependencyGroup {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--mapseek-border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.dependencyGroup h3 {
+  margin: 0 0 0.75rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+.dependencyGroup p,
+.dependencyGroup ul {
+  margin: 0;
+}
+
+.dependencyGroup ul {
+  padding-left: 1.15rem;
+}
+
+.dependencyGroup li + li {
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 640px) {
+  .dependencies {
+    grid-template-columns: 1fr;
+  }
+}

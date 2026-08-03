@@ -146,7 +146,7 @@ function SummaryCell({ label, value }: { label: string; value: number }) {
 
 function LoadingState({ label }: { label: string }) {
   return (
-    <div className="space-y-3 p-3" aria-label={label}>
+    <div className="space-y-3 p-3" role="status" aria-label={label}>
       {[0, 1, 2].map((i) => (
         <div key={i} className="grid grid-cols-[3px_24px_minmax(0,1fr)] gap-2">
           <Skeleton className="h-12 w-[3px]" />

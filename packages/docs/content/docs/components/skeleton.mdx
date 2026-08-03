@@ -1,0 +1,44 @@
+---
+title: "Skeleton"
+registryName: skeleton
+category: primitive
+stability: stable
+showcase: skeleton
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Skeleton 是加载占位块，用于内容结构已知但数据尚未到达的状态。它适合文本行、卡片内容和列表占位。
+
+## 安装
+
+<RegistryInstall registryName="skeleton" />
+
+## 导入
+
+```tsx
+import { Skeleton } from "@/registry/ui/skeleton"
+```
+
+## 加载占位
+
+<ShowcaseDemo registryName="skeleton" demo="overview" title="加载占位" description="展示文字行骨架和卡片骨架。" minHeight={280} />
+
+## 导出
+
+`Skeleton` 是一个带 `data-slot="skeleton"` 的 `div`，继承标准 `div` props。尺寸由调用方通过 className 控制。
+
+## 状态与行为
+
+默认使用 `animate-pulse` 与 `bg-muted`。占位尺寸应接近最终内容，避免加载完成后布局跳动。
+
+## 无障碍
+
+Skeleton 本身不应朗读为内容。长时间加载需要在父级区域提供 `aria-busy` 或状态文本，避免屏幕阅读器用户无法知道正在发生什么。
+
+## 依赖
+
+<RegistryDependencies registryName="skeleton" />
+

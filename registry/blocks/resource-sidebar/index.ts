@@ -1,7 +1,7 @@
 export { ResourceSidebar } from "./ResourceSidebar"
 export type {
-  ResourceSidebarProps,
   ResourceSidebarCategory,
   ResourceSidebarLabels,
+  ResourceSidebarProps,
   ResourceTab,
 } from "./types"

@@ -1,5 +1,5 @@
-import * as React from "react"
 import { IconAlertTriangle, IconTrash } from "@tabler/icons-react"
+import * as React from "react"
 import { cn } from "@/registry/lib/utils"
 import { Button } from "@/registry/ui/button"
 import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/registry/ui/dialog"

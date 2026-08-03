@@ -1,14 +1,14 @@
 "use client"
 
-import { useTheme } from "next-themes"
-import { Toaster as Sonner, type ToasterProps } from "sonner"
 import {
+  IconAlertOctagon,
+  IconAlertTriangle,
   IconCircleCheck,
   IconInfoCircle,
-  IconAlertTriangle,
-  IconAlertOctagon,
   IconLoader,
 } from "@tabler/icons-react"
+import { useTheme } from "next-themes"
+import { Toaster as Sonner, type ToasterProps } from "sonner"
 
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme = "system" } = useTheme()
@@ -26,7 +26,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       className="toaster group"
       icons={{
         success: <IconCircleCheck className="size-3.5 text-primary" stroke={1.75} />,
-        info: <IconInfoCircle className="size-3.5 text-[var(--cat-2)]" stroke={1.75} />,
+        info: <IconInfoCircle className="size-3.5 text-(--cat-2)" stroke={1.75} />,
         warning: <IconAlertTriangle className="size-3.5 text-warning" stroke={1.75} />,
         error: <IconAlertOctagon className="size-3.5 text-destructive" stroke={1.75} />,
         loading: (
@@ -78,5 +78,5 @@ const Toaster = ({ ...props }: ToasterProps) => {
   )
 }
 
-export { Toaster }
 export { toast } from "sonner"
+export { Toaster }

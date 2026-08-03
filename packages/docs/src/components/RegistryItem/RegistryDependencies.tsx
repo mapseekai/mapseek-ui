@@ -1,5 +1,8 @@
-import { useLocaleLabels } from "../../examples/use-locale-labels"
+"use client"
+
 import { getRegistryDocItem } from "./registry-data"
+import styles from "./styles.module.css"
+import { useLocaleLabels } from "./use-locale-labels"
 
 export type RegistryDependenciesLabels = {
   readonly registryDependencies: string
@@ -55,11 +58,15 @@ export function RegistryDependencies({ registryName, labels }: RegistryDependenc
   const item = getRegistryDocItem(registryName)
 
   return (
-    <div>
-      <h3>{dependencyLabels.registryDependencies}</h3>
-      <DependencyList values={item.registryDependencies} noneLabel={dependencyLabels.none} />
-      <h3>{dependencyLabels.packageDependencies}</h3>
-      <DependencyList values={item.dependencies} noneLabel={dependencyLabels.none} />
+    <div className={styles.dependencies}>
+      <section className={styles.dependencyGroup}>
+        <h3>{dependencyLabels.registryDependencies}</h3>
+        <DependencyList values={item.registryDependencies} noneLabel={dependencyLabels.none} />
+      </section>
+      <section className={styles.dependencyGroup}>
+        <h3>{dependencyLabels.packageDependencies}</h3>
+        <DependencyList values={item.dependencies} noneLabel={dependencyLabels.none} />
+      </section>
     </div>
   )
 }

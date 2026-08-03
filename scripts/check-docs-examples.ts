@@ -1,5 +1,6 @@
-import { access, readdir } from "node:fs/promises"
-import { extname, join, relative } from "node:path"
+import { readFile } from "node:fs/promises"
+import { join } from "node:path"
+import { pathToFileURL } from "node:url"
 import { collectLocalizedDocs } from "./check-docs-i18n"
 import type { ParsedDoc } from "./docs-check-utils"
 import { requiredRegistryDocs } from "./docs-required-registry-docs"
@@ -21,45 +22,20 @@ function addIssue(issues: ValidationIssue[], seen: Set<string>, issue: Validatio
   issues.push(issue)
 }
 
-async function fileExists(path: string): Promise<boolean> {
-  try {
-    await access(path)
-    return true
-  } catch {
-    return false
-  }
-}
-
-async function collectExampleIds(root: string): Promise<readonly string[]> {
-  type DirectoryEntry = {
-    readonly name: string
-    isDirectory(): boolean
-    isFile(): boolean
-  }
-
-  async function walk(directory: string): Promise<readonly string[]> {
-    let entries: readonly DirectoryEntry[]
-    try {
-      entries = await readdir(directory, { withFileTypes: true })
-    } catch {
-      return []
-    }
-    const ids = await Promise.all(
-      entries.map(async (entry) => {
-        const path = join(directory, entry.name)
-        if (entry.isDirectory()) return walk(path)
-        if (entry.isFile() && extname(entry.name) === ".tsx")
-          return [relative(root, path).replace(/\.tsx$/u, "")]
-        return []
-      }),
-    )
-    return ids.flat()
-  }
-  return walk(root)
-}
-
 function isGuideDoc(doc: ParsedDoc): boolean {
   return doc.metadata.registryName === "theme"
+}
+
+async function collectShowcaseNames(root: string): Promise<ReadonlySet<string>> {
+  try {
+    const source = await readFile(
+      join(root, "src/components/ShowcaseDemo/source-catalog.generated.ts"),
+      "utf8",
+    )
+    return new Set([...source.matchAll(/^ {2}"([^"]+)":/gmu)].map((match) => match[1]))
+  } catch {
+    return new Set()
+  }
 }
 
 export async function validateExampleCoverage(
@@ -69,9 +45,9 @@ export async function validateExampleCoverage(
   const issues: ValidationIssue[] = []
   const seenIssues = new Set<string>()
   const { zh, en } = await collectLocalizedDocs(root)
+  const showcaseNames = await collectShowcaseNames(root)
   const componentCatalog = catalog.filter((item) => item.type !== "registry:theme")
   const registryNames = new Set(catalog.map((item) => item.name))
-  const exampleOwners = new Map<string, Set<string>>()
 
   for (const item of componentCatalog.filter((item) => requiredRegistryDocs.has(item.name))) {
     const zhDocs = docsForRegistryName(zh, item.name)
@@ -82,55 +58,36 @@ export async function validateExampleCoverage(
       addIssue(issues, seenIssues, { code: "registry-doc-count", item: item.name, detail: "en" })
     for (const doc of [...zhDocs, ...enDocs]) {
       const requiredDoc = requiredRegistryDocs.get(item.name)
-      if (!requiredDoc) continue
-      if (doc.metadata.category !== requiredDoc.category)
+      if (requiredDoc && doc.metadata.category !== requiredDoc.category)
         addIssue(issues, seenIssues, {
           code: "metadata-mismatch",
-          item: doc.metadata.id,
+          item: doc.relativePath,
           detail: "category",
         })
-      for (const example of requiredDoc.examples) {
-        if (!doc.metadata.examples.includes(example))
-          addIssue(issues, seenIssues, {
-            code: "missing-required-example",
-            item: doc.metadata.id,
-            detail: example,
-          })
-      }
     }
   }
 
   for (const doc of [...zh.values(), ...en.values()]) {
     if (isGuideDoc(doc)) continue
-    const { id, registryName, examples } = doc.metadata
+    const { registryName, showcase } = doc.metadata
     if (!registryNames.has(registryName))
       addIssue(issues, seenIssues, {
         code: "unknown-registry-name",
-        item: id,
+        item: doc.relativePath,
         detail: registryName,
       })
-    if (examples.length === 0)
-      addIssue(issues, seenIssues, { code: "missing-examples", item: id, detail: "examples" })
-    for (const example of examples) {
-      const owners = exampleOwners.get(example) ?? new Set<string>()
-      owners.add(id)
-      exampleOwners.set(example, owners)
-      if (!(await fileExists(join(root, "src/examples", `${example}.tsx`))))
-        addIssue(issues, seenIssues, { code: "missing-example", item: id, detail: example })
-    }
-  }
-
-  for (const [example, owners] of exampleOwners) {
-    if (owners.size !== 1)
+    if (showcase !== registryName)
       addIssue(issues, seenIssues, {
-        code: "example-owner-count",
-        item: example,
-        detail: [...owners].sort().join(","),
+        code: "metadata-mismatch",
+        item: doc.relativePath,
+        detail: "showcase",
       })
-  }
-  for (const example of await collectExampleIds(join(root, "src/examples"))) {
-    if (!exampleOwners.has(example))
-      addIssue(issues, seenIssues, { code: "example-owner-count", item: example, detail: "0" })
+    if (!showcaseNames.has(registryName))
+      addIssue(issues, seenIssues, {
+        code: "missing-showcase",
+        item: doc.relativePath,
+        detail: registryName,
+      })
   }
 
   return issues
@@ -144,4 +101,4 @@ async function main(): Promise<void> {
   if (issues.length > 0) process.exitCode = 1
 }
 
-if (import.meta.main) await main()
+if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) await main()

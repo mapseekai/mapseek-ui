@@ -16,7 +16,7 @@
       "@/lib/mapseek-labels": ["./registry/lib/labels.ts"],
       "@/lib/svg-data-uri": ["./registry/lib/svg-data-uri.ts"],
       "@/*": ["./*"],
-      "@workspace/ui/*": ["./src/*"],
+      "@registry/*": ["./registry/*"],
       "@mapseek/*": ["./registry/ui/*", "./registry/lib/*", "./registry/blocks/*"]
     }
   },

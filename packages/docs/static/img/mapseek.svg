@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
-  <title id="title">Mapseek UI</title>
-  <rect width="64" height="64" rx="12" fill="#0f172a"/>
-  <path d="M14 18h36v28H14z" fill="#dbeafe"/>
-  <path d="M22 18v28M34 18v28M14 28h36M14 38h36" stroke="#60a5fa" stroke-width="2"/>
-  <path d="M19 43 29 31l8 6 9-14" fill="none" stroke="#16a34a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>

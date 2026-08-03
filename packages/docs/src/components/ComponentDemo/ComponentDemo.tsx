@@ -1,6 +1,10 @@
-import BrowserOnly from "@docusaurus/BrowserOnly"
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
-import { type ReactNode, useState } from "react"
+"use client"
+
+import { Button } from "@registry/ui/button"
+import { CopyButton } from "@registry/ui/copy-button"
+import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock"
+import { useParams } from "next/navigation"
+import { type ReactNode, useEffect, useState } from "react"
 import { DemoErrorBoundary } from "./DemoErrorBoundary"
 import styles from "./styles.module.css"
 
@@ -19,14 +23,22 @@ export function ComponentDemo({
   children,
   minHeight = 160,
 }: ComponentDemoProps) {
-  const { i18n } = useDocusaurusContext()
+  const params = useParams()
+  const segs = (params.slug as string[] | undefined) ?? []
+  const locale = segs[0] === "en" ? "en" : "zh-CN"
+  const [mounted, setMounted] = useState(false)
   const [revision, setRevision] = useState(0)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   const [sourceVisible, setSourceVisible] = useState(false)
   const [copyStatus, setCopyStatus] = useState<"copied" | "failed" | "idle">("idle")
   const labels =
-    i18n.currentLocale === "zh-CN"
+    locale === "zh-CN"
       ? {
           copy: "复制源码",
+          copyDone: "已复制",
           copyFailed: "源码复制失败",
           copied: "源码已复制",
           error: "示例无法渲染。",
@@ -38,6 +50,7 @@ export function ComponentDemo({
         }
       : {
           copy: "Copy source",
+          copyDone: "Copied",
           copyFailed: "Source copy failed",
           copied: "Source copied",
           error: "The example could not be rendered.",
@@ -48,15 +61,6 @@ export function ComponentDemo({
           showSource: "Show source",
         }
 
-  const copySource = async () => {
-    try {
-      await navigator.clipboard.writeText(source)
-      setCopyStatus("copied")
-    } catch {
-      setCopyStatus("failed")
-    }
-  }
-
   return (
     <section className={styles.demo} aria-label={title}>
       <header className={styles.header}>
@@ -65,55 +69,68 @@ export function ComponentDemo({
           {description ? <p className={styles.description}>{description}</p> : null}
         </div>
         <div className={styles.actions}>
-          <button
+          <Button
             className={styles.action}
+            size="default"
+            variant="outline"
             type="button"
             aria-expanded={sourceVisible}
             data-demo-action="source"
             onClick={() => setSourceVisible((visible) => !visible)}
           >
             {sourceVisible ? labels.hideSource : labels.showSource}
-          </button>
-          <button
+          </Button>
+          <CopyButton
             className={styles.action}
-            type="button"
+            content={source}
+            copiedLabel={labels.copyDone}
             data-demo-action="copy"
-            onClick={copySource}
-          >
-            {labels.copy}
-          </button>
-          <button
+            label={labels.copy}
+            onCopiedChange={(copied) => setCopyStatus(copied ? "copied" : "idle")}
+            onCopyError={() => setCopyStatus("failed")}
+            textSize="default"
+            variant="text"
+          />
+          <Button
             className={styles.action}
+            size="default"
+            variant="outline"
             type="button"
             data-demo-action="reset"
             onClick={() => setRevision((value) => value + 1)}
           >
             {labels.reset}
-          </button>
+          </Button>
         </div>
       </header>
 
-      <div className={styles.preview} style={{ minHeight }}>
-        <BrowserOnly fallback={<p className={styles.status}>{labels.loading}</p>}>
-          {() => (
-            <DemoErrorBoundary
-              key={revision}
-              fallback={
-                <p className={styles.error} role="alert">
-                  {labels.error}
-                </p>
-              }
-            >
-              <div key={revision}>{children}</div>
-            </DemoErrorBoundary>
-          )}
-        </BrowserOnly>
+      <div className={styles.preview} data-showcase-root style={{ minHeight }}>
+        {mounted ? (
+          <DemoErrorBoundary
+            key={revision}
+            fallback={
+              <p className={styles.error} role="alert">
+                {labels.error}
+              </p>
+            }
+          >
+            <div key={revision}>{children}</div>
+          </DemoErrorBoundary>
+        ) : (
+          <p className={styles.status}>{labels.loading}</p>
+        )}
       </div>
 
       {sourceVisible ? (
-        <pre className={styles.source}>
-          <code>{source}</code>
-        </pre>
+        <DynamicCodeBlock
+          code={source}
+          lang="tsx"
+          codeblock={{
+            allowCopy: false,
+            className: styles.source,
+            viewportProps: { className: styles.sourceViewport },
+          }}
+        />
       ) : null}
 
       <p

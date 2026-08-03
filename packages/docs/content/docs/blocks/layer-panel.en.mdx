@@ -1,0 +1,54 @@
+---
+title: "LayerPanel"
+registryName: layer-panel
+category: block
+stability: stable
+showcase: layer-panel
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+LayerPanel is a controlled layer panel for map projects. It owns the header, list, row selection, visibility buttons, row actions, empty state, and pluggable sections; the caller owns layer data, ordering, deletion, locating, attribute-table behavior, and grouping.
+
+## Installation
+
+<RegistryInstall registryName="layer-panel" />
+
+## Import
+
+```tsx
+import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
+```
+
+## Basic Controlled Panel
+
+<ShowcaseDemo registryName="layer-panel" demo="basic" title="Basic controlled panel" description="Shows visibility toggles, controlled selection, and style sections." minHeight={280} />
+
+<ShowcaseDemo registryName="layer-panel" demo="groups" title="Group state" description="The caller controls group collapse, rename, menu, and visibility state." minHeight={300} />
+
+## Controlled State
+
+`LayerPanel` does not store business data. Pass `layers`, `selectedId`, and handlers, then update project state from `onSelectChange`, `onVisibleChange`, `onReorder`, `onRemove`, `onLocate`, and `onOpenTable`. `collapsed` can be controlled, or `defaultCollapsed` can let the panel keep its own collapsed state.
+
+## Layer and Group Models
+
+`LayerData` requires at least `id`, `name`, `visible`, and `geometryType`. `featureCount`, `crsLabel`, and `flags` are display enhancements. Groups are not part of the registry API; if a project has groups, rename behavior, or group menus, keep that group model in the caller and pass the visible layers to `LayerPanel.Item`.
+
+## Required Handlers
+
+A read-only panel can pass only `layers` and `selectedId`. Provide `onVisibleChange` when visibility buttons are shown; provide `onReorder` when drag sorting is enabled; deletion, locating, and attribute-table buttons are controlled by `onRemove`, `onLocate`, and `onOpenTable`. When a handler is missing, the matching operation is not rendered.
+
+## Accessibility Labels
+
+Use `labels` to localize geometry names, add-layer, feature count, locate, attribute table, and delete text. Rows use the layer name as their accessible name; visibility, locate, table, and delete controls are native `button` elements. Caller-owned group buttons, menus, and rename inputs need their own `aria-label` or readable text.
+
+## Scrolling and Responsive Constraints
+
+Give the panel an explicit height or a parent scroll boundary. The list scrolls inside the panel and hides horizontal overflow. The docs examples use `w-full` with `max-w-*`, so they fit mobile previews; long layer names are constrained by row-level `truncate`.
+
+## Dependencies
+
+<RegistryDependencies registryName="layer-panel" />
+

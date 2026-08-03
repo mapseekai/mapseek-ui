@@ -1,24 +1,31 @@
-import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { IconX } from "@tabler/icons-react"
+import type * as React from "react"
 import { cn } from "@/registry/lib/utils"
+import { Button } from "@/registry/ui/button"
 
-const Dialog = DialogPrimitive.Root
+function Dialog({ ...props }: DialogPrimitive.Root.Props) {
+  return <DialogPrimitive.Root data-slot="dialog" {...props} />
+}
 
-const DialogTrigger = DialogPrimitive.Trigger
+function DialogTrigger({ ...props }: DialogPrimitive.Trigger.Props) {
+  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
+}
 
-const DialogPortal = DialogPrimitive.Portal
+function DialogPortal({ ...props }: DialogPrimitive.Portal.Props) {
+  return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
+}
 
-const DialogClose = DialogPrimitive.Close
+function DialogClose({ ...props }: DialogPrimitive.Close.Props) {
+  return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
+}
 
-function DialogBackdrop({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Backdrop>) {
+function DialogOverlay({ className, ...props }: DialogPrimitive.Backdrop.Props) {
   return (
     <DialogPrimitive.Backdrop
+      data-slot="dialog-overlay"
       className={cn(
-        "fixed inset-0 z-[1060] bg-black/40 transition-opacity duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+        "fixed inset-0 isolate z-50 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
         className,
       )}
       {...props}
@@ -26,123 +33,115 @@ function DialogBackdrop({
   )
 }
 
-type DialogContentProps = Omit<React.ComponentProps<typeof DialogPrimitive.Popup>, "title"> & {
+const DialogBackdrop = DialogOverlay
+
+type DialogContentProps = Omit<DialogPrimitive.Popup.Props, "title"> & {
   width?: number | string
   title?: React.ReactNode
   description?: React.ReactNode
   hideClose?: boolean
+  showCloseButton?: boolean
 }
 
 function DialogContent({
   className,
-  width = 480,
+  width,
   title,
   description,
   hideClose,
   children,
+  showCloseButton = !hideClose,
+  style,
   ...props
 }: DialogContentProps) {
   return (
     <DialogPortal>
-      <DialogBackdrop />
+      <DialogOverlay />
       <DialogPrimitive.Popup
+        data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-[1060] -translate-x-1/2 -translate-y-1/2 border border-border bg-card shadow-lg outline-none",
-          "transition-opacity duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+          "fixed top-1/2 start-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] gap-4 -translate-x-1/2 rtl:translate-x-1/2 -translate-y-1/2 rounded-none bg-popover p-4 text-xs/relaxed text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          width && "sm:max-w-none",
           className,
         )}
-        style={{ width }}
+        style={{ width, ...style }}
         {...props}
       >
-        {(title || !hideClose) && (
-          <div className="flex min-h-9 items-center justify-between border-b border-border px-4 py-2">
-            {title ? (
-              <DialogPrimitive.Title className="m-0 inline-flex items-center text-sm leading-none font-semibold tracking-[-0.01em]">
-                {title}
-              </DialogPrimitive.Title>
-            ) : (
-              <span />
-            )}
-            {!hideClose && (
-              <DialogPrimitive.Close
-                className="grid h-8 w-8 cursor-pointer place-items-center text-muted-foreground hover:bg-muted hover:text-foreground"
-                aria-label="关闭"
-              >
-                <IconX size={14} />
-              </DialogPrimitive.Close>
-            )}
-          </div>
-        )}
-        {description && (
-          <DialogPrimitive.Description className="px-4 pt-3 text-xs text-muted-foreground">
-            {description}
-          </DialogPrimitive.Description>
+        {title && (
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            {description && <DialogDescription>{description}</DialogDescription>}
+          </DialogHeader>
         )}
         {children}
+        {showCloseButton && (
+          <DialogPrimitive.Close
+            data-slot="dialog-close"
+            render={<Button variant="ghost" className="absolute top-2 end-4" size="icon-sm" />}
+          >
+            <IconX />
+            <span className="sr-only">Close</span>
+          </DialogPrimitive.Close>
+        )}
       </DialogPrimitive.Popup>
     </DialogPortal>
   )
 }
 
 function DialogBody({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("p-4", className)} {...props} />
+  return <div className={className} {...props} />
 }
 
-function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      className={cn(
-        "flex min-h-9 items-center justify-end gap-2 border-t border-border bg-muted/40 px-4 py-2",
-        className,
-      )}
-      {...props}
-    />
-  )
-}
-
-/**
- * Compound parts for callers that prefer the shadcn-style header
- * pattern over DialogContent's `title=` / `description=` props.
- *
- * Use them inside `<DialogContent hideClose>` so the wrapper does NOT
- * also render its built-in header strip — otherwise you'll get two
- * stacked titles.
- *
- *   <DialogContent hideClose>
- *     <DialogHeader>
- *       <DialogTitle>X</DialogTitle>
- *       <DialogDescription>Y</DialogDescription>
- *     </DialogHeader>
- *     <DialogBody>…</DialogBody>
- *     <DialogFooter>…</DialogFooter>
- *   </DialogContent>
- */
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-1 border-b border-border px-4 py-3", className)}
+      className={cn("flex flex-col gap-1 text-start", className)}
       {...props}
     />
   )
 }
 
-function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
+function DialogFooter({
+  className,
+  showCloseButton = false,
+  children,
+  ...props
+}: React.ComponentProps<"div"> & {
+  showCloseButton?: boolean
+}) {
+  return (
+    <div
+      data-slot="dialog-footer"
+      className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
+      {...props}
+    >
+      {children}
+      {showCloseButton && (
+        <DialogPrimitive.Close render={<Button variant="outline" />}>Close</DialogPrimitive.Close>
+      )}
+    </div>
+  )
+}
+
+function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
   return (
     <DialogPrimitive.Title
-      className={cn("text-sm font-semibold tracking-[-0.01em]", className)}
+      data-slot="dialog-title"
+      className={cn("font-heading text-sm font-medium", className)}
       {...props}
     />
   )
 }
 
-function DialogDescription({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Description>) {
+function DialogDescription({ className, ...props }: DialogPrimitive.Description.Props) {
   return (
     <DialogPrimitive.Description
-      className={cn("text-xs text-muted-foreground", className)}
+      data-slot="dialog-description"
+      className={cn(
+        "text-xs/relaxed text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
+        className,
+      )}
       {...props}
     />
   )
@@ -150,14 +149,15 @@ function DialogDescription({
 
 export {
   Dialog,
-  DialogTrigger,
-  DialogClose,
-  DialogPortal,
   DialogBackdrop,
-  DialogContent,
   DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogOverlay,
+  DialogPortal,
   DialogTitle,
-  DialogDescription,
+  DialogTrigger,
 }

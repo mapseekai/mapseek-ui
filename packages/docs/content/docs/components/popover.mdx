@@ -1,0 +1,48 @@
+---
+title: "Popover"
+registryName: popover
+category: primitive
+stability: stable
+showcase: popover
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Popover 用于可操作或可阅读的浮层内容，例如图层元数据、局部设置和短说明。
+
+## 安装
+
+<RegistryInstall registryName="popover" />
+
+## 导入
+
+```tsx
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/registry/ui/popover"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="popover" demo="overview" title="局部浮层" description="覆盖基础内容、方向、对齐和受控关闭，portal 内容保持在视口内。" minHeight={440} />
+
+## 导出
+
+`popover.tsx` 导出 `Popover`、`PopoverTrigger`、`PopoverContent`、`PopoverHeader`、`PopoverTitle` 和 `PopoverDescription`。
+
+## 状态
+
+非受控模式由触发器管理开关；受控模式使用 `open/onOpenChange`。用 `side`、`align` 和 offset 控制位置。
+
+## 无障碍
+
+触发器必须有明确名称。可操作内容应放入 Popover 而不是 Tooltip；Escape 关闭后焦点应返回触发器。
+
+## 依赖
+
+<RegistryDependencies registryName="popover" />
+

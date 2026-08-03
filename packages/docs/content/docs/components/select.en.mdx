@@ -1,0 +1,44 @@
+---
+title: "Select"
+registryName: select
+category: primitive
+stability: stable
+showcase: select
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Select is a finite single-value picker for CRS, formats, and modes. It is built on Base UI Select and maps item labels back into the trigger value.
+
+## Installation
+
+<RegistryInstall registryName="select" />
+
+## Import
+
+```tsx
+import { Select } from "@/registry/ui/select"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="select" demo="overview" title="Select states" description="Covers controlled selection, preselected value, small size, and disabled and shows four visible groups." minHeight={440} />
+
+## Exports
+
+`select.tsx` exports `Select` and exposes options through `Select.Item`. The root supports `value/onValueChange`, `defaultValue`, `placeholder`, `disabled`, and `size`.
+
+## States
+
+Use `value/onValueChange` for controlled state and `defaultValue` for static defaults. `size="sm"` provides a 28px trigger; `disabled` prevents opening the list.
+
+## Accessibility
+
+Selects without visible labels need `aria-label`. Keyboard users should be able to open with Enter/Space, move with arrow keys, choose with Enter, and close with Escape.
+
+## Dependencies
+
+<RegistryDependencies registryName="select" />
+

@@ -1,0 +1,53 @@
+---
+title: "CrsPicker"
+registryName: crs-picker
+category: block
+stability: stable
+showcase: crs-picker
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+CrsPicker is a coordinate reference system picker. It combines built-in EPSG entries, search, grouping, and controlled selection for map products; coordinate transforms, projection support checks, and map-engine reloads stay with the caller.
+
+## Installation
+
+<RegistryInstall registryName="crs-picker" />
+
+## Import
+
+```tsx
+import {
+  CrsPicker,
+  type CrsItem,
+  type CrsPickerLabels,
+  type CrsPickerProps,
+} from "@/registry/blocks/crs-picker"
+```
+
+## Controlled CRS Selection
+
+<ShowcaseDemo registryName="crs-picker" title="Controlled CRS selection" description="Shows the allowedEpsgs subset, custom extraItems, EPSG override, and controlled onChange log." minHeight={560} />
+
+## Usage
+
+When `allowedEpsgs` is omitted, all built-in entries are shown. Pass `allowedEpsgs` to restrict the choices to what the map engine supports; pass `extraItems` to add project-specific CRS entries or override built-in names. Use `value` plus `onChange` for controlled mode, or `defaultValue` for uncontrolled mode.
+
+## Public Exports and Props
+
+Exports include `CrsPicker`, `buildCrsList`, `DEFAULT_CRS_ITEMS`, `DEFAULT_CRS_PICKER_LABELS`, `CrsItem`, `CrsKind`, `CrsPickerProps`, and `CrsPickerLabels`. Key props are `value`, `defaultValue`, `onChange`, `allowedEpsgs`, `extraItems`, `labels`, and `className`.
+
+## Controlled State
+
+The component can keep its own initial selection or be fully controlled by the caller. The demo's external buttons call the same `handleChange` function to simulate CRS changes from map state, URL parameters, or project configuration outside the picker.
+
+## Accessibility
+
+The trigger and search input use label text, the list is named by `labels.listLabel`, and empty results use `labels.noResults`. When localizing `labels`, keep EPSG codes intact and make the geographic/projected group names readable.
+
+## Dependencies
+
+<RegistryDependencies registryName="crs-picker" />
+

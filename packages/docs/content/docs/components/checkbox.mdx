@@ -1,0 +1,44 @@
+---
+title: "Checkbox"
+registryName: checkbox
+category: primitive
+stability: stable
+showcase: checkbox
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Checkbox 用于布尔选择、批量选择和可选设置。它保留 Base UI 的键盘与焦点语义，并使用 Mapseek 的方角、边框优先状态样式。
+
+## 安装
+
+<RegistryInstall registryName="checkbox" />
+
+## 导入
+
+```tsx
+import { Checkbox } from "@/registry/ui/checkbox"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="checkbox" demo="overview" title="状态与受控选择" description="覆盖 unchecked、checked、invalid、disabled 与受控切换，和原示例的可见状态保持一致。" minHeight={340} />
+
+## 导出
+
+`checkbox.tsx` 导出 `Checkbox`。组件继承 Base UI Checkbox root props，可使用 `checked/onCheckedChange`、`defaultChecked`、`disabled` 和 `aria-invalid`。
+
+## 状态
+
+受控流程使用 `checked/onCheckedChange`；静态默认值使用 `defaultChecked`。禁用态移除交互并降低透明度，错误态通过 `aria-invalid` 增加 destructive 边框和 ring。
+
+## 无障碍
+
+为每个 checkbox 绑定 `Label` 或 `aria-label`。不要只用颜色表达选择或错误；错误说明应靠近字段或由 `FieldError` 呈现。
+
+## 依赖
+
+<RegistryDependencies registryName="checkbox" />
+

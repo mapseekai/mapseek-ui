@@ -1,5 +1,5 @@
-import * as React from "react"
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
+import * as React from "react"
 
 import { cn } from "@/registry/lib/utils"
 
@@ -101,4 +101,4 @@ function TooltipContent({
   )
 }
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger }

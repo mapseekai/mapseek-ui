@@ -1,0 +1,34 @@
+{
+  "name": "storage-meter",
+  "type": "registry:block",
+  "registryDependencies": [
+    "@mapseek/button",
+    "@mapseek/popover",
+    "@mapseek/progress",
+    "@mapseek/tooltip",
+    "@mapseek/utils"
+  ],
+  "files": [
+    {
+      "path": "storage-meter/StorageMeter.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/storage-meter/StorageMeter.tsx"
+    },
+    {
+      "path": "storage-meter/format-bytes.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/storage-meter/format-bytes.ts"
+    },
+    {
+      "path": "storage-meter/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/storage-meter/index.ts"
+    },
+    {
+      "path": "storage-meter/types.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/storage-meter/types.ts"
+    }
+  ],
+  "dependencies": ["@tabler/icons-react"]
+}

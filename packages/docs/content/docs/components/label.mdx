@@ -1,0 +1,44 @@
+---
+title: "Label"
+registryName: label
+category: primitive
+stability: stable
+showcase: label
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Label 为表单控件提供可点击、可读的名称。它使用紧凑等宽排版，并通过 peer 或 group disabled 状态降低可用性样式。
+
+## 安装
+
+<RegistryInstall registryName="label" />
+
+## 导入
+
+```tsx
+import { Label } from "@/registry/ui/label"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="label" demo="overview" title="标签组合" description="覆盖基础 label、必填标注和 disabled peer 状态，展示 label/input 配对。" minHeight={300} />
+
+## 导出
+
+`label.tsx` 导出 `Label`。组件继承原生 `label` props，最常用的是 `htmlFor`。
+
+## 状态
+
+使用 `htmlFor` 绑定控件 id。必填标记是内容层责任；禁用控件可通过 peer 或 field group 影响 label 样式。
+
+## 无障碍
+
+label 文本应说明输入含义，而不是说明输入类型。必填、错误和帮助文本应以可读文本呈现，不要只用颜色或符号。
+
+## 依赖
+
+<RegistryDependencies registryName="label" />
+

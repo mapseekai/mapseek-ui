@@ -1,7 +1,6 @@
 import { IconLoader2 } from "@tabler/icons-react"
-
-import { cn } from "@/lib/utils"
 import { resolveLabels } from "@/lib/mapseek-labels"
+import { cn } from "@/lib/utils"
 import { DEFAULT_LOADING_SCREEN_LABELS } from "./defaults"
 import type { LoadingScreenLabels } from "./labels"
 

@@ -1,0 +1,51 @@
+---
+title: "ToggleConfigPopover"
+registryName: toggle-config-popover
+category: block
+stability: stable
+showcase: toggle-config-popover
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ToggleConfigPopover 将一个开关按钮和设置 popover 组合在同一工具栏单元中，适合地图吸附、测量和编辑配置。
+
+## 安装
+
+<RegistryInstall registryName="toggle-config-popover" />
+
+## 导入
+
+```tsx
+import {
+  ToggleConfigPopover,
+  type ToggleConfigPopoverProps,
+} from "@/registry/blocks/toggle-config-popover"
+```
+
+## 开关与配置
+
+<ShowcaseDemo registryName="toggle-config-popover" title="开关与配置" description="示例覆盖 switch 状态、popover 设置、slider、checkbox 和禁用联动。" minHeight={420} />
+
+## 用法
+
+调用方控制 `checked` 和 `onCheckedChange`，将阈值、目标对象等配置放入 children。`open` 可受控，也可使用内部 popover 状态。
+
+## 公开导出与 Props
+
+导出 `ToggleConfigPopover`、`ToggleConfigPopoverProps` 和 labels 类型。图标使用 Tabler icon 组件传入。
+
+## 加载、空态、错误与状态
+
+组件不处理异步保存；禁用时会禁用主开关和设置触发器。配置表单内部的 loading、错误和保存状态由 children 所在业务层渲染。
+
+## 无障碍
+
+主按钮使用 `role="switch"` 和 `aria-checked`。提供 `toggleLabel`、`triggerLabel`、`switchLabel` 和 tooltip，让图标按钮具备可读名称。
+
+## 依赖
+
+<RegistryDependencies registryName="toggle-config-popover" />
+

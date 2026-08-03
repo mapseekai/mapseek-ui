@@ -1,0 +1,44 @@
+---
+title: "JsonViewer"
+registryName: json-viewer
+category: primitive
+stability: stable
+showcase: json-viewer
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+JsonViewer 用于在文档、调试面板和数据详情中阅读结构化 JSON。它支持折叠节点、展开全部、收起全部、复制和可选缩进色。
+
+## 安装
+
+<RegistryInstall registryName="json-viewer" />
+
+## 导入
+
+```tsx
+import { JsonViewer } from "@/registry/ui/json-viewer"
+```
+
+## GeoJSON 预览
+
+<ShowcaseDemo registryName="json-viewer" demo="overview" title="GeoJSON 预览" description="展示标题、默认展开和缩进颜色，并覆盖展开、收起与复制交互。" minHeight={360} />
+
+## 导出
+
+`json-viewer.tsx` 导出 `JsonViewer`。它接受 `data`、`title`、`defaultExpanded`、`showLineNumbers`、`showColorIndent`、`collapseOn` 和复制反馈相关 props。
+
+## 状态与行为
+
+`defaultExpanded` 可以是布尔值或展开层级数字。对象和数组节点可点击折叠，工具栏按钮可以全量展开、收起到根节点或复制格式化 JSON。
+
+## 无障碍
+
+为 JSON 区域提供清晰标题。复制按钮需要可读文案；结构很深时，页面附近应说明数据来源和关键字段，避免用户只能从树中推断含义。
+
+## 依赖
+
+<RegistryDependencies registryName="json-viewer" />
+

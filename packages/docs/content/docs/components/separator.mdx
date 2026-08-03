@@ -1,0 +1,44 @@
+---
+title: "Separator"
+registryName: separator
+category: primitive
+stability: stable
+showcase: separator
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Separator 是轻量的内容分隔线，用于区分工具栏、元数据、菜单分组或面板中的视觉区域。
+
+## 安装
+
+<RegistryInstall registryName="separator" />
+
+## 导入
+
+```tsx
+import { Separator } from "@/registry/ui/separator"
+```
+
+## 方向
+
+<ShowcaseDemo registryName="separator" demo="overview" title="方向" description="展示水平和垂直方向。" minHeight={230} />
+
+## 导出
+
+`Separator` 继承 Base UI Separator props，并默认渲染水平分隔线。`orientation="vertical"` 会改用垂直尺寸与自拉伸样式。
+
+## 状态与行为
+
+Separator 没有交互状态。它只表达视觉分组，不应替代标题、标签或可访问结构。
+
+## 无障碍
+
+需要语义分隔时保留 separator 语义；纯装饰分隔线应避免成为键盘焦点。不要用分隔线作为唯一的信息层级。
+
+## 依赖
+
+<RegistryDependencies registryName="separator" />
+

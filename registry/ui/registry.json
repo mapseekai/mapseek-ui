@@ -9,7 +9,13 @@
       "categories": ["display"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "@tabler/icons-react"],
-      "files": [{ "path": "accordion.tsx", "type": "registry:ui", "target": "@ui/accordion.tsx" }]
+      "files": [
+        {
+          "path": "accordion.tsx",
+          "type": "registry:ui",
+          "target": "@ui/accordion.tsx"
+        }
+      ]
     },
     {
       "name": "avatar",
@@ -19,7 +25,13 @@
       "categories": ["display"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "avatar.tsx", "type": "registry:ui", "target": "@ui/avatar.tsx" }]
+      "files": [
+        {
+          "path": "avatar.tsx",
+          "type": "registry:ui",
+          "target": "@ui/avatar.tsx"
+        }
+      ]
     },
     {
       "name": "badge",
@@ -29,7 +41,13 @@
       "categories": ["display"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "class-variance-authority"],
-      "files": [{ "path": "badge.tsx", "type": "registry:ui", "target": "@ui/badge.tsx" }]
+      "files": [
+        {
+          "path": "badge.tsx",
+          "type": "registry:ui",
+          "target": "@ui/badge.tsx"
+        }
+      ]
     },
     {
       "name": "button",
@@ -39,7 +57,29 @@
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "class-variance-authority"],
-      "files": [{ "path": "button.tsx", "type": "registry:ui", "target": "@ui/button.tsx" }]
+      "files": [
+        {
+          "path": "button.tsx",
+          "type": "registry:ui",
+          "target": "@ui/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "copy-button",
+      "type": "registry:ui",
+      "title": "Copy Button",
+      "description": "Clipboard action with temporary copied feedback.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/icon-button"],
+      "dependencies": ["@tabler/icons-react"],
+      "files": [
+        {
+          "path": "copy-button.tsx",
+          "type": "registry:ui",
+          "target": "@ui/copy-button.tsx"
+        }
+      ]
     },
     {
       "name": "card",
@@ -48,7 +88,13 @@
       "description": "Grouped content container.",
       "categories": ["layout"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
-      "files": [{ "path": "card.tsx", "type": "registry:ui", "target": "@ui/card.tsx" }]
+      "files": [
+        {
+          "path": "card.tsx",
+          "type": "registry:ui",
+          "target": "@ui/card.tsx"
+        }
+      ]
     },
     {
       "name": "collapsible",
@@ -58,7 +104,13 @@
       "categories": ["layout"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@radix-ui/react-collapsible"],
-      "files": [{ "path": "collapsible.tsx", "type": "registry:ui", "target": "@ui/collapsible.tsx" }]
+      "files": [
+        {
+          "path": "collapsible.tsx",
+          "type": "registry:ui",
+          "target": "@ui/collapsible.tsx"
+        }
+      ]
     },
     {
       "name": "dialog",
@@ -66,9 +118,15 @@
       "title": "Dialog",
       "description": "Modal dialog surface.",
       "categories": ["overlay"],
-      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "@tabler/icons-react"],
-      "files": [{ "path": "dialog.tsx", "type": "registry:ui", "target": "@ui/dialog.tsx" }]
+      "files": [
+        {
+          "path": "dialog.tsx",
+          "type": "registry:ui",
+          "target": "@ui/dialog.tsx"
+        }
+      ]
     },
     {
       "name": "empty",
@@ -77,7 +135,13 @@
       "description": "Empty state content.",
       "categories": ["display"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
-      "files": [{ "path": "empty.tsx", "type": "registry:ui", "target": "@ui/empty.tsx" }]
+      "files": [
+        {
+          "path": "empty.tsx",
+          "type": "registry:ui",
+          "target": "@ui/empty.tsx"
+        }
+      ]
     },
     {
       "name": "icon-button",
@@ -86,7 +150,13 @@
       "description": "Icon-only action button.",
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
-      "files": [{ "path": "icon-button.tsx", "type": "registry:ui", "target": "@ui/icon-button.tsx" }]
+      "files": [
+        {
+          "path": "icon-button.tsx",
+          "type": "registry:ui",
+          "target": "@ui/icon-button.tsx"
+        }
+      ]
     },
     {
       "name": "label",
@@ -95,7 +165,13 @@
       "description": "Form field label.",
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
-      "files": [{ "path": "label.tsx", "type": "registry:ui", "target": "@ui/label.tsx" }]
+      "files": [
+        {
+          "path": "label.tsx",
+          "type": "registry:ui",
+          "target": "@ui/label.tsx"
+        }
+      ]
     },
     {
       "name": "separator",
@@ -105,7 +181,13 @@
       "categories": ["layout"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "separator.tsx", "type": "registry:ui", "target": "@ui/separator.tsx" }]
+      "files": [
+        {
+          "path": "separator.tsx",
+          "type": "registry:ui",
+          "target": "@ui/separator.tsx"
+        }
+      ]
     },
     {
       "name": "skeleton",
@@ -114,7 +196,13 @@
       "description": "Loading placeholder content.",
       "categories": ["feedback"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
-      "files": [{ "path": "skeleton.tsx", "type": "registry:ui", "target": "@ui/skeleton.tsx" }]
+      "files": [
+        {
+          "path": "skeleton.tsx",
+          "type": "registry:ui",
+          "target": "@ui/skeleton.tsx"
+        }
+      ]
     },
     {
       "name": "tooltip",
@@ -124,7 +212,13 @@
       "categories": ["overlay"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "tooltip.tsx", "type": "registry:ui", "target": "@ui/tooltip.tsx" }]
+      "files": [
+        {
+          "path": "tooltip.tsx",
+          "type": "registry:ui",
+          "target": "@ui/tooltip.tsx"
+        }
+      ]
     },
     {
       "name": "checkbox",
@@ -134,7 +228,13 @@
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "@tabler/icons-react"],
-      "files": [{ "path": "checkbox.tsx", "type": "registry:ui", "target": "@ui/checkbox.tsx" }]
+      "files": [
+        {
+          "path": "checkbox.tsx",
+          "type": "registry:ui",
+          "target": "@ui/checkbox.tsx"
+        }
+      ]
     },
     {
       "name": "combobox",
@@ -144,7 +244,13 @@
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/input-group", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "@tabler/icons-react"],
-      "files": [{ "path": "combobox.tsx", "type": "registry:ui", "target": "@ui/combobox.tsx" }]
+      "files": [
+        {
+          "path": "combobox.tsx",
+          "type": "registry:ui",
+          "target": "@ui/combobox.tsx"
+        }
+      ]
     },
     {
       "name": "command",
@@ -152,9 +258,20 @@
       "title": "Command",
       "description": "Command palette interface.",
       "categories": ["input"],
-      "registryDependencies": ["@mapseek/theme", "@mapseek/dialog", "@mapseek/input-group", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/theme",
+        "@mapseek/dialog",
+        "@mapseek/input-group",
+        "@mapseek/utils"
+      ],
       "dependencies": ["@tabler/icons-react", "cmdk"],
-      "files": [{ "path": "command.tsx", "type": "registry:ui", "target": "@ui/command.tsx" }]
+      "files": [
+        {
+          "path": "command.tsx",
+          "type": "registry:ui",
+          "target": "@ui/command.tsx"
+        }
+      ]
     },
     {
       "name": "field",
@@ -162,9 +279,20 @@
       "title": "Field",
       "description": "Composed form field layout.",
       "categories": ["input"],
-      "registryDependencies": ["@mapseek/theme", "@mapseek/label", "@mapseek/separator", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/theme",
+        "@mapseek/label",
+        "@mapseek/separator",
+        "@mapseek/utils"
+      ],
       "dependencies": ["class-variance-authority"],
-      "files": [{ "path": "field.tsx", "type": "registry:ui", "target": "@ui/field.tsx" }]
+      "files": [
+        {
+          "path": "field.tsx",
+          "type": "registry:ui",
+          "target": "@ui/field.tsx"
+        }
+      ]
     },
     {
       "name": "input-group",
@@ -172,9 +300,21 @@
       "title": "Input Group",
       "description": "Input with composed controls.",
       "categories": ["input"],
-      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/input", "@mapseek/textarea", "@mapseek/utils"],
-      "dependencies": ["class-variance-authority"],
-      "files": [{ "path": "input-group.tsx", "type": "registry:ui", "target": "@ui/input-group.tsx" }]
+      "registryDependencies": [
+        "@mapseek/theme",
+        "@mapseek/button",
+        "@mapseek/input",
+        "@mapseek/textarea",
+        "@mapseek/utils"
+      ],
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "files": [
+        {
+          "path": "input-group.tsx",
+          "type": "registry:ui",
+          "target": "@ui/input-group.tsx"
+        }
+      ]
     },
     {
       "name": "input",
@@ -184,7 +324,13 @@
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "input.tsx", "type": "registry:ui", "target": "@ui/input.tsx" }]
+      "files": [
+        {
+          "path": "input.tsx",
+          "type": "registry:ui",
+          "target": "@ui/input.tsx"
+        }
+      ]
     },
     {
       "name": "pagination",
@@ -194,7 +340,13 @@
       "categories": ["navigation"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/utils"],
       "dependencies": ["@tabler/icons-react"],
-      "files": [{ "path": "pagination.tsx", "type": "registry:ui", "target": "@ui/pagination.tsx" }]
+      "files": [
+        {
+          "path": "pagination.tsx",
+          "type": "registry:ui",
+          "target": "@ui/pagination.tsx"
+        }
+      ]
     },
     {
       "name": "popover",
@@ -204,7 +356,13 @@
       "categories": ["overlay"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "popover.tsx", "type": "registry:ui", "target": "@ui/popover.tsx" }]
+      "files": [
+        {
+          "path": "popover.tsx",
+          "type": "registry:ui",
+          "target": "@ui/popover.tsx"
+        }
+      ]
     },
     {
       "name": "progress",
@@ -214,7 +372,13 @@
       "categories": ["feedback"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "progress.tsx", "type": "registry:ui", "target": "@ui/progress.tsx" }]
+      "files": [
+        {
+          "path": "progress.tsx",
+          "type": "registry:ui",
+          "target": "@ui/progress.tsx"
+        }
+      ]
     },
     {
       "name": "select",
@@ -224,7 +388,13 @@
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
-      "files": [{ "path": "select.tsx", "type": "registry:ui", "target": "@ui/select.tsx" }]
+      "files": [
+        {
+          "path": "select.tsx",
+          "type": "registry:ui",
+          "target": "@ui/select.tsx"
+        }
+      ]
     },
     {
       "name": "slider",
@@ -234,7 +404,13 @@
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "slider.tsx", "type": "registry:ui", "target": "@ui/slider.tsx" }]
+      "files": [
+        {
+          "path": "slider.tsx",
+          "type": "registry:ui",
+          "target": "@ui/slider.tsx"
+        }
+      ]
     },
     {
       "name": "switch",
@@ -244,7 +420,13 @@
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],
-      "files": [{ "path": "switch.tsx", "type": "registry:ui", "target": "@ui/switch.tsx" }]
+      "files": [
+        {
+          "path": "switch.tsx",
+          "type": "registry:ui",
+          "target": "@ui/switch.tsx"
+        }
+      ]
     },
     {
       "name": "tabs",
@@ -254,7 +436,13 @@
       "categories": ["navigation"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "class-variance-authority"],
-      "files": [{ "path": "tabs.tsx", "type": "registry:ui", "target": "@ui/tabs.tsx" }]
+      "files": [
+        {
+          "path": "tabs.tsx",
+          "type": "registry:ui",
+          "target": "@ui/tabs.tsx"
+        }
+      ]
     },
     {
       "name": "textarea",
@@ -263,7 +451,13 @@
       "description": "Multi-line text input.",
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
-      "files": [{ "path": "textarea.tsx", "type": "registry:ui", "target": "@ui/textarea.tsx" }]
+      "files": [
+        {
+          "path": "textarea.tsx",
+          "type": "registry:ui",
+          "target": "@ui/textarea.tsx"
+        }
+      ]
     },
     {
       "name": "toggle-group",
@@ -273,7 +467,13 @@
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/toggle", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "class-variance-authority"],
-      "files": [{ "path": "toggle-group.tsx", "type": "registry:ui", "target": "@ui/toggle-group.tsx" }]
+      "files": [
+        {
+          "path": "toggle-group.tsx",
+          "type": "registry:ui",
+          "target": "@ui/toggle-group.tsx"
+        }
+      ]
     },
     {
       "name": "toggle",
@@ -283,7 +483,13 @@
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "class-variance-authority"],
-      "files": [{ "path": "toggle.tsx", "type": "registry:ui", "target": "@ui/toggle.tsx" }]
+      "files": [
+        {
+          "path": "toggle.tsx",
+          "type": "registry:ui",
+          "target": "@ui/toggle.tsx"
+        }
+      ]
     },
     {
       "name": "chart",
@@ -293,7 +499,13 @@
       "categories": ["display"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["recharts"],
-      "files": [{ "path": "chart.tsx", "type": "registry:ui", "target": "@ui/chart.tsx" }]
+      "files": [
+        {
+          "path": "chart.tsx",
+          "type": "registry:ui",
+          "target": "@ui/chart.tsx"
+        }
+      ]
     },
     {
       "name": "confirm-dialog",
@@ -301,9 +513,20 @@
       "title": "Confirm Dialog",
       "description": "Promise-based confirmation dialog.",
       "categories": ["overlay"],
-      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/dialog", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/theme",
+        "@mapseek/button",
+        "@mapseek/dialog",
+        "@mapseek/utils"
+      ],
       "dependencies": ["@tabler/icons-react"],
-      "files": [{ "path": "confirm-dialog.tsx", "type": "registry:ui", "target": "@ui/confirm-dialog.tsx" }]
+      "files": [
+        {
+          "path": "confirm-dialog.tsx",
+          "type": "registry:ui",
+          "target": "@ui/confirm-dialog.tsx"
+        }
+      ]
     },
     {
       "name": "context-menu",
@@ -313,7 +536,13 @@
       "categories": ["overlay"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "@tabler/icons-react"],
-      "files": [{ "path": "context-menu.tsx", "type": "registry:ui", "target": "@ui/context-menu.tsx" }]
+      "files": [
+        {
+          "path": "context-menu.tsx",
+          "type": "registry:ui",
+          "target": "@ui/context-menu.tsx"
+        }
+      ]
     },
     {
       "name": "dropdown-menu",
@@ -323,7 +552,13 @@
       "categories": ["overlay"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "@tabler/icons-react"],
-      "files": [{ "path": "dropdown-menu.tsx", "type": "registry:ui", "target": "@ui/dropdown-menu.tsx" }]
+      "files": [
+        {
+          "path": "dropdown-menu.tsx",
+          "type": "registry:ui",
+          "target": "@ui/dropdown-menu.tsx"
+        }
+      ]
     },
     {
       "name": "json-viewer",
@@ -331,9 +566,20 @@
       "title": "JSON Viewer",
       "description": "Interactive JSON data viewer.",
       "categories": ["data"],
-      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/collapsible", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/theme",
+        "@mapseek/button",
+        "@mapseek/collapsible",
+        "@mapseek/utils"
+      ],
       "dependencies": ["@tabler/icons-react"],
-      "files": [{ "path": "json-viewer.tsx", "type": "registry:ui", "target": "@ui/json-viewer.tsx" }]
+      "files": [
+        {
+          "path": "json-viewer.tsx",
+          "type": "registry:ui",
+          "target": "@ui/json-viewer.tsx"
+        }
+      ]
     },
     {
       "name": "sheet",
@@ -343,7 +589,13 @@
       "categories": ["overlay"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
-      "files": [{ "path": "sheet.tsx", "type": "registry:ui", "target": "@ui/sheet.tsx" }]
+      "files": [
+        {
+          "path": "sheet.tsx",
+          "type": "registry:ui",
+          "target": "@ui/sheet.tsx"
+        }
+      ]
     },
     {
       "name": "sonner",
@@ -353,7 +605,13 @@
       "categories": ["feedback"],
       "registryDependencies": ["@mapseek/theme"],
       "dependencies": ["@tabler/icons-react", "next-themes", "sonner"],
-      "files": [{ "path": "sonner.tsx", "type": "registry:ui", "target": "@ui/sonner.tsx" }]
+      "files": [
+        {
+          "path": "sonner.tsx",
+          "type": "registry:ui",
+          "target": "@ui/sonner.tsx"
+        }
+      ]
     },
     {
       "name": "table",
@@ -362,7 +620,13 @@
       "description": "Structured data table.",
       "categories": ["data"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
-      "files": [{ "path": "table.tsx", "type": "registry:ui", "target": "@ui/table.tsx" }]
+      "files": [
+        {
+          "path": "table.tsx",
+          "type": "registry:ui",
+          "target": "@ui/table.tsx"
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,53 @@
+---
+title: "ProcessingTimeline"
+registryName: processing-timeline
+category: block
+stability: stable
+showcase: processing-timeline
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ProcessingTimeline renders long-running upload, ingest, and publish steps with progress bars, retry markers, event cards, and error log actions.
+
+## Installation
+
+<RegistryInstall registryName="processing-timeline" />
+
+## Import
+
+```tsx
+import {
+  ProcessingTimeline,
+  type ProcessingTimelineLabels,
+  type TimelineEvent,
+  type TimelineStep,
+} from "@/registry/blocks/processing-timeline"
+```
+
+## Processing timeline and log copy
+
+<ShowcaseDemo registryName="processing-timeline" title="Processing timeline and log copy" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={720} />
+
+## Usage
+
+Pass ordered `TimelineStep[]`. Each step can be done, active, pending, or failed, with optional percent progress, messages, and events.
+
+## Public Exports and Props
+
+Exports include `ProcessingTimeline`, `TimelineStep`, `TimelineEvent`, `ProcessingTimelineLabels`, and props. `onCopyLog` fires only when an error event includes a log.
+
+## Loading, Empty, Error, and Status
+
+Progress, failure, and retry state all come from props; the demo covers active percent progress and a completed history with an error retry.
+
+## Accessibility
+
+Steps render as an ordered list, and percent progress uses `role="progressbar"` with aria values.
+
+## Dependencies
+
+<RegistryDependencies registryName="processing-timeline" />
+

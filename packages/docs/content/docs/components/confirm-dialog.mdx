@@ -1,0 +1,44 @@
+---
+title: "Confirm Dialog"
+registryName: confirm-dialog
+category: primitive
+stability: stable
+showcase: confirm-dialog
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Confirm Dialog 提供 promise 式确认流程，适合保存、导出和危险删除等需要等待用户明确选择的操作。
+
+## 安装
+
+<RegistryInstall registryName="confirm-dialog" />
+
+## 导入
+
+```tsx
+import { ConfirmProvider, useConfirm } from "@/registry/ui/confirm-dialog"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="confirm-dialog" demo="overview" title="确认流程" description="覆盖 destructive、default、默认取消文案和结果状态，展示确认删除、保存和导出流程。" minHeight={360} />
+
+## 导出
+
+`confirm-dialog.tsx` 导出 `ConfirmProvider` 与 `useConfirm`。`useConfirm` 接收 `title`、`description`、`confirmText`、`cancelText` 和 `variant`，并返回 `Promise<boolean>`。
+
+## 状态
+
+`variant="destructive"` 用于不可撤销操作，并显示 destructive 图标与按钮。默认确认适合保存和导出；取消会解析为 `false`。
+
+## 无障碍
+
+在应用根部放置 `ConfirmProvider`。触发按钮必须说明操作对象；确认弹窗需要清晰标题、结果型按钮文案、Escape 关闭和触发器焦点返回。
+
+## 依赖
+
+<RegistryDependencies registryName="confirm-dialog" />
+

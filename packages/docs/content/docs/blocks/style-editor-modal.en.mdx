@@ -1,0 +1,52 @@
+---
+title: "StyleEditorModal"
+registryName: style-editor-modal
+category: block
+stability: stable
+showcase: style-editor-modal
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+StyleEditorModal provides a shared dialog shell for style-editing tasks with section, alert, tile, source-card, and action primitives.
+
+## Installation
+
+<RegistryInstall registryName="style-editor-modal" />
+
+## Import
+
+```tsx
+import {
+  StyleEditorModal,
+  StyleEditorModalActions,
+  type StyleEditorModalProps,
+} from "@/registry/blocks/style-editor-modal"
+```
+
+## Dialog, Alert, and Save Flow
+
+<ShowcaseDemo registryName="style-editor-modal" title="Dialog, alert, and save flow" description="The demo covers portal rendering, alert dismissal, template selection, save, and cancel state." minHeight={520} />
+
+## Usage
+
+Control `open` and `onOpenChange` from the caller, and compose modal content with the exported parts. Keep short save flows in the modal; use a side panel or drawer for long property editing.
+
+## Public Exports and Props
+
+Exports include `StyleEditorModal`, `StyleEditorModalSection`, `StyleEditorModalAlert`, `StyleEditorModalTile`, `StyleEditorModalSourceCard`, `StyleEditorModalActions`, and their props.
+
+## Loading, Empty, Error, and Status
+
+Use `StyleEditorModalAlert` for errors. Save, cancel, and template selection state belongs to the product layer. In the demo, save and cancel both close the dialog and update status text.
+
+## Accessibility
+
+Pass a readable `title`, and make trigger and close actions legible. Portal content should stay within the viewport, and Escape or button close should return focus to the trigger context.
+
+## Dependencies
+
+<RegistryDependencies registryName="style-editor-modal" />
+

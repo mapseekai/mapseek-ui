@@ -1,0 +1,53 @@
+---
+title: "GeoJSONView"
+registryName: geojson-view
+category: block
+stability: stable
+showcase: geojson-view
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+GeoJSONView is a read-only GeoJSON viewer. The caller passes a pre-formatted JSON string; successful parses render a collapsible JSON tree, while empty values, parse failures, and primitives fall back to a line-numbered `<pre>`.
+
+## Installation
+
+<RegistryInstall registryName="geojson-view" />
+
+## Import
+
+```tsx
+import {
+  GeoJSONView,
+  stringifyGeoJSON,
+  type GeoJSONViewLabels,
+  type GeoJSONViewProps,
+} from "@/registry/blocks/geojson-view"
+```
+
+## GeoJSON Tree and Fallback
+
+<ShowcaseDemo registryName="geojson-view" title="GeoJSON tree and fallback" description="Shows the collapsible tree, no-selection empty state, parse-failure fallback, and stringifyGeoJSON input path." minHeight={560} />
+
+## Usage
+
+Use `stringifyGeoJSON(data)` in the caller and pass the result to `json`. Pass `null` when nothing is selected, and localize the fallback with `emptyLabel`.
+
+## Public Exports and Props
+
+Exports include `GeoJSONView`, `stringifyGeoJSON`, `GeoJSONViewProps`, and `GeoJSONViewLabels`. Key props are `json`, `emptyLabel`, `title`, `expandAllLabel`, `collapseAllLabel`, `copyFeedbackDurationMs`, `labels`, and `className`.
+
+## States, Empty, and Error
+
+The component is display-only and stores no selected feature. `null` or an empty string shows the empty state; invalid JSON preserves the raw text with line numbers so the user can locate the problem.
+
+## Accessibility
+
+The tree view inherits JsonViewer expand, collapse, and copy behavior. Localize the title and expand/collapse text; never leave an empty selection as a blank panel.
+
+## Dependencies
+
+<RegistryDependencies registryName="geojson-view" />
+

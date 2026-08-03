@@ -1,0 +1,44 @@
+---
+title: "ToggleGroup"
+registryName: toggle-group
+category: primitive
+stability: stable
+showcase: toggle-group
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ToggleGroup combines ToggleGroupItem controls into single-select or multi-select groups for alignment, text style, map tool modes, and related options.
+
+## Installation
+
+<RegistryInstall registryName="toggle-group" />
+
+## Import
+
+```tsx
+import { ToggleGroup, ToggleGroupItem } from "@/registry/ui/toggle-group"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="toggle-group" demo="overview" title="Toggle group states" description="Covers controlled single select, multi select, disabled item, and state readout and shows alignment/styles groups." minHeight={340} />
+
+## Exports
+
+`toggle-group.tsx` exports `ToggleGroup` and `ToggleGroupItem`. The root supports `value/onValueChange`, `variant`, `size`, `spacing`, and `orientation`.
+
+## States
+
+`value` is a string array, which can represent single or multiple selections. `spacing=0` can form a continuous outline group; disabled items ignore pointer and keyboard activation.
+
+## Accessibility
+
+Each item should name the option. Keyboard users should be able to move within the group and toggle with Enter/Space; state readout should not rely on background color alone.
+
+## Dependencies
+
+<RegistryDependencies registryName="toggle-group" />
+

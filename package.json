@@ -3,33 +3,30 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit && tsc -p packages/docs/tsconfig.json --noEmit",
     "lint": "biome check .",
+    "design:lint": "designmd lint DESIGN.md",
     "format": "biome format --write .",
-    "registry:validate": "bun scripts/validate-registry.ts",
-    "registry:build": "bun scripts/build-registry.ts",
-    "registry:serve": "bun scripts/registry-server.ts",
-    "verify:items": "bun scripts/verify-items.ts",
-    "verify:aggregate": "bun scripts/verify-aggregate.ts",
-    "smoke:bun-command": "bun scripts/smoke-bun-command.ts",
-    "docs:theme": "bun scripts/generate-docs-theme.ts",
-    "docs:dev": "bun run registry:build && bun run docs:theme && bun run --cwd packages/docs start",
-    "docs:dev:en": "bun run registry:build && bun run docs:theme && bun run --cwd packages/docs start -- --locale en",
-    "docs:build": "bun run registry:build && bun run docs:theme && bun run --cwd packages/docs build",
-    "docs:serve": "bun run --cwd packages/docs serve",
-    "docs:check-i18n": "bun scripts/check-docs-i18n.ts",
-    "docs:check-examples": "bun scripts/check-docs-examples.ts",
-    "docs:visual": "bun scripts/run-docs-visual.ts",
-    "docs:verify": "bun run lint && bun run typecheck && bun run registry:validate && bun run docs:check-i18n && bun run docs:check-examples && bun run docs:build && bun test && bun run docs:visual && bun run verify:items button layout layer-panel"
+    "registry:validate": "tsx scripts/validate-registry.ts",
+    "registry:build": "tsx scripts/build-registry.ts",
+    "registry:serve": "tsx scripts/registry-server.ts",
+    "verify:items": "tsx scripts/verify-items.ts",
+    "verify:aggregate": "tsx scripts/verify-aggregate.ts",
+    "smoke:dlx-command": "tsx scripts/smoke-dlx-command.ts",
+    "docs:theme": "tsx scripts/generate-docs-theme.ts",
+    "docs:sources": "tsx scripts/generate-showcase-sources.ts",
+    "docs:dev": "pnpm run registry:build && pnpm run docs:theme && pnpm run docs:sources && pnpm --filter @mapseek/docs dev",
+    "docs:build": "pnpm run registry:build && pnpm run docs:theme && pnpm run docs:sources && pnpm --filter @mapseek/docs build",
+    "docs:check-i18n": "tsx scripts/check-docs-i18n.ts",
+    "docs:check-examples": "tsx scripts/check-docs-examples.ts",
+    "docs:visual": "tsx scripts/run-docs-visual.ts",
+    "docs:verify": "pnpm run lint && pnpm run typecheck && pnpm run registry:validate && pnpm run docs:check-i18n && pnpm run docs:check-examples && pnpm run docs:build && pnpm test && pnpm run docs:visual && pnpm run verify:items button layout layer-panel"
   },
-  "packageManager": "bun@1.3.5",
+  "packageManager": "pnpm@10.14.0",
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19"
   },
   "devDependencies": {
     "@base-ui/react": "^1.5.0",
@@ -43,8 +40,9 @@
     "@codemirror/view": "^6.39.11",
     "@fontsource-variable/geist": "^5.2.8",
     "@fontsource-variable/geist-mono": "^5.2.7",
-    "@playwright/test": "^1.62.1",
+    "@google/design.md": "0.4.0",
     "@lezer/highlight": "^1.2.3",
+    "@playwright/test": "^1.62.1",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@tabler/icons-react": "^3.41.1",
     "@tailwindcss/vite": "^4.3.3",
@@ -71,8 +69,9 @@
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.1.18",
     "tw-animate-css": "^1.4.0",
+    "tsx": "^4.20.3",
     "typescript": "5.9.3",
-    "vite": "^7.3.2",
+    "vite": "^8.0.0",
     "vitest": "^4.1.4"
   }
 }

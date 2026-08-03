@@ -1,0 +1,50 @@
+---
+title: "Registry"
+registryName: theme
+category: primitive
+stability: stable
+showcase: none
+---
+
+
+The Mapseek UI docs site and shadcn registry are published by the same static build. Component pages, guides, and `/r/<name>.json` registry files come from the same domain for easier mirroring, internal deployment, and version pinning.
+
+## Same-Domain Paths
+
+Every installable item has same-domain JSON:
+
+```text
+/r/button.json
+/r/layer-panel.json
+/r/theme.json
+```
+
+Use this registry template in `components.json`:
+
+```json
+{
+  "registries": {
+    "@mapseek": "https://mapseek-ui.local/r/{name}.json"
+  }
+}
+```
+
+shadcn resolves `@mapseek/button` to `https://mapseek-ui.local/r/button.json` and `@mapseek/layer-panel` to `https://mapseek-ui.local/r/layer-panel.json`.
+
+## Local and Internal Deployments
+
+When the docs site is deployed on an internal domain, replace only the host in `components.json`. Keep `/r/{name}.json`; no hosted search service or separate registry service is required.
+
+## Inspect JSON
+
+Open registry files directly in the browser:
+
+- [Button registry JSON](/r/button.json)
+- [LayerPanel registry JSON](/r/layer-panel.json)
+- [Theme registry JSON](/r/theme.json)
+
+## Next
+
+- [Installation](/en/getting-started/installation)
+- [Components](/en/components)
+- [Blocks](/en/blocks)

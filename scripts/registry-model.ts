@@ -5,17 +5,104 @@ import ts from "typescript"
 export type RegistryItem = {
   readonly name: string
   readonly type: string
-  readonly files: ReadonlyArray<{ readonly path: string; readonly type: string; readonly target?: string }>
+  readonly files: ReadonlyArray<{
+    readonly path: string
+    readonly type: string
+    readonly target?: string
+  }>
   readonly registryDependencies?: readonly string[]
   readonly dependencies?: readonly string[]
 }
-export type ValidationIssue = { readonly code: string; readonly item?: string; readonly detail: string }
+export type ValidationIssue = {
+  readonly code: string
+  readonly item?: string
+  readonly detail: string
+}
 
 export const BASE_COMPONENTS = [
-  "accordion", "avatar", "badge", "button", "card", "chart", "checkbox", "collapsible", "combobox", "command", "confirm-dialog", "context-menu", "dialog", "dropdown-menu", "empty", "field", "icon-button", "input", "input-group", "json-viewer", "label", "pagination", "popover", "progress", "select", "separator", "sheet", "skeleton", "slider", "sonner", "switch", "table", "tabs", "textarea", "toggle", "toggle-group", "tooltip",
+  "accordion",
+  "avatar",
+  "badge",
+  "button",
+  "card",
+  "chart",
+  "checkbox",
+  "collapsible",
+  "combobox",
+  "command",
+  "confirm-dialog",
+  "context-menu",
+  "dialog",
+  "dropdown-menu",
+  "empty",
+  "field",
+  "icon-button",
+  "input",
+  "input-group",
+  "json-viewer",
+  "label",
+  "pagination",
+  "popover",
+  "progress",
+  "select",
+  "separator",
+  "sheet",
+  "skeleton",
+  "slider",
+  "sonner",
+  "switch",
+  "table",
+  "tabs",
+  "textarea",
+  "toggle",
+  "toggle-group",
+  "tooltip",
 ] as const
 export const BLOCKS = [
-  "add-field-form", "app-top-bar", "attr-inspector", "attr-table", "band-stat", "crs-picker", "filter-panel", "form-inputs", "geojson-view", "json-editor", "layer-editor-group", "layer-panel", "layer-style-editor", "layout", "linked-ref-list", "loading-screen", "map-controls", "map-coordinate-status", "map-switcher", "notification-center", "number-range-input", "pixel-probe", "placeholder-glyph", "processing-timeline", "product-logo", "raster-style-panel", "resource-detail-drawer", "resource-grid", "resource-sidebar", "resource-status", "schema-form", "service-endpoint-row", "service-status", "split-tool-picker", "stat-strip", "storage-meter", "style-color-input", "style-editor-modal", "style-editor-panel", "style-filter-editor", "style-function-editor", "style-panel", "style-source-picker-dialog", "toggle-config-popover",
+  "add-field-form",
+  "app-top-bar",
+  "attr-inspector",
+  "attr-table",
+  "band-stat",
+  "crs-picker",
+  "filter-panel",
+  "form-inputs",
+  "geojson-view",
+  "json-editor",
+  "layer-editor-group",
+  "layer-panel",
+  "layer-style-editor",
+  "layout",
+  "linked-ref-list",
+  "loading-screen",
+  "map-controls",
+  "map-coordinate-status",
+  "map-switcher",
+  "notification-center",
+  "number-range-input",
+  "pixel-probe",
+  "placeholder-glyph",
+  "processing-timeline",
+  "product-logo",
+  "raster-style-panel",
+  "resource-detail-drawer",
+  "resource-grid",
+  "resource-sidebar",
+  "resource-status",
+  "schema-form",
+  "service-endpoint-row",
+  "service-status",
+  "split-tool-picker",
+  "stat-strip",
+  "storage-meter",
+  "style-color-input",
+  "style-editor-modal",
+  "style-editor-panel",
+  "style-filter-editor",
+  "style-function-editor",
+  "style-panel",
+  "style-source-picker-dialog",
+  "toggle-config-popover",
 ] as const
 
 async function readJson(path: string): Promise<unknown> {
@@ -23,10 +110,21 @@ async function readJson(path: string): Promise<unknown> {
 }
 
 async function loadManifest(repoRoot: string, manifestPath: string): Promise<RegistryItem[]> {
-  const manifest = await readJson(join(repoRoot, manifestPath)) as { include?: string[]; items?: RegistryItem[] }
-  const included = await Promise.all((manifest.include ?? []).map((include) => loadManifest(repoRoot, include)))
+  const manifest = (await readJson(join(repoRoot, manifestPath))) as {
+    include?: string[]
+    items?: RegistryItem[]
+  }
+  const included = await Promise.all(
+    (manifest.include ?? []).map((include) => loadManifest(repoRoot, include)),
+  )
   const directory = dirname(manifestPath)
-  const items = (manifest.items ?? []).map((item) => ({ ...item, files: item.files.map((file) => ({ ...file, path: isAbsolute(file.path) ? file.path : join(directory, file.path) })) }))
+  const items = (manifest.items ?? []).map((item) => ({
+    ...item,
+    files: item.files.map((file) => ({
+      ...file,
+      path: isAbsolute(file.path) ? file.path : join(directory, file.path),
+    })),
+  }))
   return [...items, ...included.flat()]
 }
 
@@ -43,8 +141,19 @@ function imports(source: string, fileName: string): readonly string[] {
   const program = ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true)
   const found: string[] = []
   const visit = (node: ts.Node): void => {
-    if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) found.push(node.moduleSpecifier.text)
-    if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword && node.arguments[0] && ts.isStringLiteral(node.arguments[0])) found.push(node.arguments[0].text)
+    if (
+      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+      node.moduleSpecifier &&
+      ts.isStringLiteral(node.moduleSpecifier)
+    )
+      found.push(node.moduleSpecifier.text)
+    if (
+      ts.isCallExpression(node) &&
+      node.expression.kind === ts.SyntaxKind.ImportKeyword &&
+      node.arguments[0] &&
+      ts.isStringLiteral(node.arguments[0])
+    )
+      found.push(node.arguments[0].text)
     ts.forEachChild(node, visit)
   }
   visit(program)
@@ -69,13 +178,17 @@ function insideRoot(repoRoot: string, path: string): boolean {
   return remainder !== "" && !remainder.startsWith("..") && !isAbsolute(remainder)
 }
 
-export async function validateCatalog(repoRoot: string, items: readonly RegistryItem[]): Promise<readonly ValidationIssue[]> {
+export async function validateCatalog(
+  repoRoot: string,
+  items: readonly RegistryItem[],
+): Promise<readonly ValidationIssue[]> {
   const issues: ValidationIssue[] = []
   const byName = new Map<string, RegistryItem>()
   const targets = new Map<string, string>()
   const realRepoRoot = await realpath(repoRoot)
   for (const item of items) {
-    if (byName.has(item.name)) issues.push({ code: "duplicate-name", item: item.name, detail: item.name })
+    if (byName.has(item.name))
+      issues.push({ code: "duplicate-name", item: item.name, detail: item.name })
     else byName.set(item.name, item)
   }
   for (const item of items) {
@@ -102,21 +215,38 @@ export async function validateCatalog(repoRoot: string, items: readonly Registry
         continue
       }
       const source = await readFile(resolvedSourcePath, "utf8")
-      if (file.path.startsWith("registry/blocks/") && !/(?:^|\/)(?:labels|defaults)\.ts$/.test(file.path) && hasHanString(source, resolvedSourcePath)) issues.push({ code: "unlocalized-string", item: item.name, detail: file.path })
+      if (
+        file.path.startsWith("registry/blocks/") &&
+        !/(?:^|\/)(?:labels|defaults)\.ts$/.test(file.path) &&
+        hasHanString(source, resolvedSourcePath)
+      )
+        issues.push({ code: "unlocalized-string", item: item.name, detail: file.path })
       for (const specifier of imports(source, resolvedSourcePath)) {
         if (specifier.startsWith("@workspace/ui")) {
           issues.push({ code: "forbidden-import", item: item.name, detail: specifier })
           continue
         }
-        if (specifier.startsWith(".") || specifier.startsWith("@/") || specifier.startsWith("node:")) continue
+        if (
+          specifier.startsWith(".") ||
+          specifier.startsWith("@/") ||
+          specifier.startsWith("node:")
+        )
+          continue
         const dependency = packageRoot(specifier)
         if (dependency.startsWith("@mapseek/")) {
-          if (!(item.registryDependencies ?? []).includes(dependency)) issues.push({ code: "missing-registry-dependency", item: item.name, detail: dependency })
-        } else if (dependency !== "react" && !(item.dependencies ?? []).includes(dependency)) issues.push({ code: "undeclared-dependency", item: item.name, detail: dependency })
+          if (!(item.registryDependencies ?? []).includes(dependency))
+            issues.push({
+              code: "missing-registry-dependency",
+              item: item.name,
+              detail: dependency,
+            })
+        } else if (dependency !== "react" && !(item.dependencies ?? []).includes(dependency))
+          issues.push({ code: "undeclared-dependency", item: item.name, detail: dependency })
       }
     }
     for (const dependency of item.registryDependencies ?? []) {
-      if (!byName.has(dependency.slice("@mapseek/".length))) issues.push({ code: "missing-registry-dependency", item: item.name, detail: dependency })
+      if (!byName.has(dependency.slice("@mapseek/".length)))
+        issues.push({ code: "missing-registry-dependency", item: item.name, detail: dependency })
     }
   }
   const states = new Map<string, "unvisited" | "visiting" | "visited">()
@@ -128,7 +258,8 @@ export async function validateCatalog(repoRoot: string, items: readonly Registry
     }
     if (state === "visited") return
     states.set(name, "visiting")
-    for (const dependency of byName.get(name)?.registryDependencies ?? []) visit(dependency.slice("@mapseek/".length), [...stack, name])
+    for (const dependency of byName.get(name)?.registryDependencies ?? [])
+      visit(dependency.slice("@mapseek/".length), [...stack, name])
     states.set(name, "visited")
   }
   for (const name of byName.keys()) visit(name, [])
@@ -138,16 +269,28 @@ export async function validateCatalog(repoRoot: string, items: readonly Registry
 export async function assertValidCatalog(repoRoot: string): Promise<readonly RegistryItem[]> {
   const items = await loadCatalog(repoRoot)
   const issues = await validateCatalog(repoRoot, items)
-  if (issues.length > 0) throw new Error(issues.map((issue) => `${issue.code}: ${issue.item ?? "catalog"}: ${issue.detail}`).join("\n"))
+  if (issues.length > 0)
+    throw new Error(
+      issues
+        .map((issue) => `${issue.code}: ${issue.item ?? "catalog"}: ${issue.detail}`)
+        .join("\n"),
+    )
   return items
 }
 
 export async function assertGeneratedOutputMatchesCatalog(repoRoot: string): Promise<void> {
-  const output = await readJson(join(repoRoot, "public/r/registry.json")) as { items?: Array<{ name?: string }> } | Array<{ name?: string }>
-  const generatedItems = Array.isArray(output) ? output : output.items ?? []
-  const generated = new Set(generatedItems.map((item) => item.name).filter((name): name is string => typeof name === "string"))
+  const output = (await readJson(join(repoRoot, "public/r/registry.json"))) as
+    | { items?: Array<{ name?: string }> }
+    | Array<{ name?: string }>
+  const generatedItems = Array.isArray(output) ? output : (output.items ?? [])
+  const generated = new Set(
+    generatedItems
+      .map((item) => item.name)
+      .filter((name): name is string => typeof name === "string"),
+  )
   const catalog = new Set((await loadCatalog(repoRoot)).map((item) => item.name))
   const stale = [...generated].filter((name) => !catalog.has(name))
   const missing = [...catalog].filter((name) => !generated.has(name))
-  if (stale.length || missing.length) throw new Error(`stale generated output: ${[...stale, ...missing].join(", ")}`)
+  if (stale.length || missing.length)
+    throw new Error(`stale generated output: ${[...stale, ...missing].join(", ")}`)
 }

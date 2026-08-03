@@ -1,0 +1,44 @@
+---
+title: "Tooltip"
+registryName: tooltip
+category: primitive
+stability: stable
+showcase: tooltip
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Tooltip 用于补充简短说明，例如图标按钮名称、危险动作提示和工具栏辅助信息。
+
+## 安装
+
+<RegistryInstall registryName="tooltip" />
+
+## 导入
+
+```tsx
+import { Tooltip, TooltipProvider } from "@/registry/ui/tooltip"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="tooltip" demo="overview" title="提示状态" description="覆盖 hover/focus 触发、四个方向、disabled 和图标工具栏提示。" minHeight={560} />
+
+## 导出
+
+`tooltip.tsx` 导出 `TooltipProvider`、`Tooltip`、`TooltipTrigger` 和 `TooltipContent`。常规用法可直接向 `Tooltip` 传入 `content`。
+
+## 状态
+
+`side` 控制方向，`delay` 可覆盖 provider 延迟，`disabled` 会直接渲染 children 而不创建浮层。`asChild` 可复用已有可聚焦触发元素。
+
+## 无障碍
+
+Tooltip 只能补充短文本，不能承载关键任务信息或可操作内容。图标按钮仍需要 `aria-label`；Tooltip 不应成为唯一可读名称。
+
+## 依赖
+
+<RegistryDependencies registryName="tooltip" />
+

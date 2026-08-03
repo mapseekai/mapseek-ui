@@ -1,4 +1,5 @@
-import { access, realpath, stat } from "node:fs/promises"
+import { access, readFile, realpath, stat } from "node:fs/promises"
+import { createServer } from "node:http"
 import { extname, resolve, sep } from "node:path"
 import { type Browser, chromium, expect, type Locator, type Page } from "@playwright/test"
 
@@ -17,6 +18,7 @@ type CliOptions = {
   readonly baseUrl?: string
   readonly browserChannel?: string
   readonly category?: DocsVisualCategory
+  readonly only?: readonly string[]
   readonly caseName: DocsVisualCase
   readonly port: number
 }
@@ -36,6 +38,7 @@ function readCliOptions(): CliOptions {
   const browserChannel = readOption("--browser-channel")
   const category = readOption("--category")
   const caseName = readOption("--case") ?? "smoke"
+  const only = readOption("--only")?.split(",").filter(Boolean)
   const port = Number(readOption("--port") ?? process.env.DOCS_VISUAL_PORT ?? "4175")
 
   if (
@@ -56,7 +59,7 @@ function readCliOptions(): CliOptions {
     throw new Error(`Unsupported docs visual QA port: ${port}`)
   }
 
-  return { baseUrl, browserChannel, category, caseName, port }
+  return { baseUrl, browserChannel, category, only, caseName, port }
 }
 
 function contentType(path: string): string {
@@ -106,27 +109,35 @@ async function resolveStaticFile(buildRoot: string, pathname: string): Promise<s
 async function startStaticPreview(
   requestedPort: number,
 ): Promise<{ readonly baseUrl: string; stop(): void }> {
-  const buildRoot = resolve(import.meta.dirname, "../packages/docs/build")
+  const buildRoot = resolve(import.meta.dirname, "../packages/docs/out")
   await access(resolve(buildRoot, "index.html"))
 
   for (let offset = 0; offset < 20; offset += 1) {
     const port =
       requestedPort + offset === 4174 ? requestedPort + offset + 1 : requestedPort + offset
     try {
-      const server = Bun.serve({
-        hostname: "127.0.0.1",
-        port,
-        async fetch(request) {
-          const file = await resolveStaticFile(buildRoot, new URL(request.url).pathname)
-          if (!file) return new Response("Not found", { status: 404 })
-          return new Response(Bun.file(file), {
-            headers: { "content-type": contentType(extname(file)) },
-          })
-        },
+      const server = createServer((request, response) => {
+        void (async () => {
+          const file = await resolveStaticFile(
+            buildRoot,
+            new URL(request.url ?? "/", "http://127.0.0.1").pathname,
+          )
+          if (!file) {
+            response.writeHead(404).end("Not found")
+            return
+          }
+          response
+            .writeHead(200, { "content-type": contentType(extname(file)) })
+            .end(await readFile(file))
+        })()
+      })
+      await new Promise<void>((resolve, reject) => {
+        server.once("error", reject)
+        server.listen(port, "127.0.0.1", resolve)
       })
       const baseUrl = `http://127.0.0.1:${port}`
       await assertPreviewIsAvailable(baseUrl)
-      return { baseUrl, stop: () => server.stop(true) }
+      return { baseUrl, stop: () => void server.close() }
     } catch {}
   }
 
@@ -151,7 +162,12 @@ async function runSmokeCase(baseUrl: string, browserChannel?: string) {
   const browser = await launchBrowser(browserChannel)
 
   try {
-    const page = await browser.newPage({ baseURL: baseUrl })
+    const page = await (
+      await browser.newContext({
+        baseURL: baseUrl,
+        permissions: ["clipboard-read", "clipboard-write"],
+      })
+    ).newPage()
 
     await page.goto("/components/_smoke")
     await expect(page.getByRole("heading", { level: 1, name: "Smoke", exact: true })).toBeVisible()
@@ -166,12 +182,12 @@ async function runSmokeCase(baseUrl: string, browserChannel?: string) {
     await page.locator('[data-demo-action="reset"]').click()
     await expect(page.locator('[data-reset-revision="1"]')).toHaveText(/\S/)
 
-    const themeToggle = page.locator('button[class*="toggleButton"]').first()
+    const themeToggle = page.locator("[data-theme-toggle]").first()
     await expect(themeToggle).toBeVisible()
     await themeToggle.click()
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark")
+    await expect(page.locator("html")).toHaveClass(/(^|\s)dark(\s|$)/)
     await themeToggle.click()
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "light")
+    await expect(page.locator("html")).toHaveClass(/(^|\s)light(\s|$)/)
   } finally {
     await browser.close()
   }
@@ -183,7 +199,12 @@ async function runButtonCase(baseUrl: string, browserChannel?: string) {
   const browser = await launchBrowser(browserChannel)
 
   try {
-    const page = await browser.newPage({ baseURL: baseUrl })
+    const page = await (
+      await browser.newContext({
+        baseURL: baseUrl,
+        permissions: ["clipboard-read", "clipboard-write"],
+      })
+    ).newPage()
 
     await page.goto("/components/button")
     await assertButtonPilot(page, "/components/button")
@@ -195,6 +216,7 @@ async function runButtonCase(baseUrl: string, browserChannel?: string) {
 async function assertButtonPilot(page: Page, path: string): Promise<void> {
   await expect(page.getByRole("heading", { level: 1, name: "Button", exact: true })).toBeVisible()
   await assertLocalizedSentinelLabels(page, path, sharedWidgetSentinels)
+  await assertInstallWidget(page, path)
 
   const basicPreview = page.locator('[data-demo="button-basic"]')
   const variantsPreview = page.locator('[data-demo="button-variants"]')
@@ -235,19 +257,17 @@ async function assertButtonPilot(page: Page, path: string): Promise<void> {
 }
 
 async function setDocsTheme(page: Page, theme: DocsTheme): Promise<void> {
-  const currentTheme = await page.locator("html").getAttribute("data-theme")
-  if (currentTheme !== theme) {
-    const themeToggle = page.locator('button[class*="toggleButton"]').first()
-    if (await themeToggle.isVisible()) {
-      await themeToggle.click()
-    } else {
-      await page.evaluate((nextTheme) => {
-        document.documentElement.setAttribute("data-theme", nextTheme)
-        localStorage.setItem("theme", nextTheme)
-      }, theme)
-    }
-  }
-  await expect(page.locator("html")).toHaveAttribute("data-theme", theme)
+  // Late hydration (next-themes mount) can re-apply the stored theme once and
+  // clobber the class we set; re-apply inside a poll until the class settles.
+  await expect(async () => {
+    await page.evaluate((nextTheme) => {
+      document.documentElement.classList.remove("light", "dark")
+      document.documentElement.classList.add(nextTheme)
+      localStorage.setItem("theme", nextTheme)
+    }, theme)
+    const current = await page.locator("html").getAttribute("class")
+    expect(current ?? "").toMatch(new RegExp(`(^|\\s)${theme}(\\s|$)`))
+  }).toPass({ timeout: 5000 })
 }
 
 async function assertDialogPortalIsVisible(page: Page): Promise<void> {
@@ -299,7 +319,13 @@ async function runDialogCase(baseUrl: string, browserChannel?: string) {
   const browser = await launchBrowser(browserChannel)
 
   try {
-    const page = await browser.newPage({ baseURL: baseUrl, viewport: { width: 1280, height: 720 } })
+    const page = await (
+      await browser.newContext({
+        baseURL: baseUrl,
+        viewport: { width: 1280, height: 720 },
+        permissions: ["clipboard-read", "clipboard-write"],
+      })
+    ).newPage()
 
     for (const path of ["/components/dialog", "/en/components/dialog"] as const) {
       for (const theme of ["light", "dark"] as const) {
@@ -351,36 +377,82 @@ async function assertDialogPilot(page: Page, path: string): Promise<void> {
 }
 
 async function assertNoHorizontalOverflow(locator: Locator, label: string): Promise<void> {
-  const overflow = await locator.evaluate((element) => ({
-    clientWidth: element.clientWidth,
-    scrollWidth: element.scrollWidth,
-  }))
-  if (overflow.scrollWidth > overflow.clientWidth + 1) {
-    throw new Error(`${label} has horizontal overflow: ${JSON.stringify(overflow)}`)
+  let lastSample: { clientWidth: number; scrollWidth: number } | undefined
+  try {
+    await expect
+      .poll(
+        async () => {
+          lastSample = await locator.evaluate((element) => ({
+            clientWidth: element.clientWidth,
+            scrollWidth: element.scrollWidth,
+          }))
+          return lastSample.scrollWidth <= lastSample.clientWidth + 1
+        },
+        { timeout: 5000 },
+      )
+      .toBe(true)
+  } catch {
+    const offenders = await locator.evaluate((root) => {
+      const bounds = root.getBoundingClientRect()
+      const hits: string[] = []
+      for (const el of root.querySelectorAll("*")) {
+        const r = el.getBoundingClientRect()
+        if (r.right > bounds.right + 1) {
+          let clipped = false
+          let guard = el.parentElement
+          while (guard && guard !== root) {
+            const overflowX = getComputedStyle(guard).overflowX
+            if (overflowX !== "visible") {
+              clipped = true
+              break
+            }
+            guard = guard.parentElement
+          }
+          if (!clipped)
+            hits.push(
+              `${el.tagName}.${(typeof el.className === "string" ? el.className : "").slice(0, 60)} right=${Math.round(r.right)} text=${(el.textContent ?? "").slice(0, 24)}`,
+            )
+          if (hits.length >= 4) break
+        }
+      }
+      return hits
+    })
+    throw new Error(
+      `${label} has horizontal overflow: ${JSON.stringify(lastSample)} offenders=${JSON.stringify(offenders)}`,
+    )
   }
 }
 
 async function assertWithinViewport(locator: Locator, label: string): Promise<void> {
   const page = locator.page()
-  await expect
-    .poll(
-      async () => {
-        const viewport = page.viewportSize()
-        const box = await locator.boundingBox()
-        if (!viewport || !box) return { fits: false, viewport, box }
-        return {
-          fits:
-            box.x >= -1 &&
-            box.y >= -1 &&
-            box.x + box.width <= viewport.width + 1 &&
-            box.y + box.height <= viewport.height + 1,
-          viewport,
-          box,
-        }
-      },
-      { message: `${label} stays within the viewport` },
-    )
-    .toMatchObject({ fits: true })
+  let lastSample: unknown
+  try {
+    await expect
+      .poll(
+        async () => {
+          const viewport = page.viewportSize()
+          const box = await locator.boundingBox()
+          if (!viewport || !box) return { fits: false, viewport, box }
+          const sample = {
+            fits:
+              box.x >= -1 &&
+              box.y >= -1 &&
+              box.x + box.width <= viewport.width + 1 &&
+              box.y + box.height <= viewport.height + 1,
+            viewport,
+            box,
+          }
+          lastSample = sample
+          return sample
+        },
+        { message: `${label} stays within the viewport` },
+      )
+      .toMatchObject({ fits: true })
+  } catch (error) {
+    throw new Error(`${label} viewport fit failed: ${JSON.stringify(lastSample)}`, {
+      cause: error,
+    })
+  }
 }
 
 async function activateByKeyboard(locator: Locator): Promise<void> {
@@ -390,7 +462,9 @@ async function activateByKeyboard(locator: Locator): Promise<void> {
 
 async function assertLayerPanelDemoFits(root: Locator, label: string): Promise<void> {
   await assertNoHorizontalOverflow(root, `${label} demo`)
-  await assertWithinViewport(root.locator('[data-slot="layer-panel"]'), `${label} panel`)
+  const panel = root.locator('[data-slot="layer-panel"]')
+  await panel.evaluate((element) => element.scrollIntoView({ block: "center" }))
+  await assertWithinViewport(panel, `${label} panel`)
 }
 
 async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
@@ -475,7 +549,13 @@ async function runPilotsCase(baseUrl: string, browserChannel?: string): Promise<
 
   try {
     for (const viewport of Object.values(viewports)) {
-      const page = await browser.newPage({ baseURL: baseUrl, viewport })
+      const page = await (
+        await browser.newContext({
+          baseURL: baseUrl,
+          permissions: ["clipboard-read", "clipboard-write"],
+          viewport,
+        })
+      ).newPage()
       try {
         for (const path of ["/components/button", "/en/components/button"] as const) {
           for (const theme of ["light", "dark"] as const) {
@@ -534,7 +614,7 @@ async function assertLocaleDropdownPreservesPath(page: Page, path: string): Prom
   const englishLink = page.getByRole("link", { name: "English", exact: true })
   await expect(englishLink).toBeVisible()
   await englishLink.click()
-  await expect(page).toHaveURL(new RegExp(`/en${path.replaceAll("/", "\\/")}$`))
+  await expect(page).toHaveURL(new RegExp(`/en${path.replaceAll("/", "\\/")}\\/?$`))
   await expect(
     page.getByRole("heading", { level: 1, name: "Install Mapseek UI", exact: true }),
   ).toBeVisible()
@@ -546,7 +626,13 @@ async function runOnboardingCase(baseUrl: string, browserChannel?: string): Prom
   const browser = await launchBrowser(browserChannel)
 
   try {
-    const page = await browser.newPage({ baseURL: baseUrl, viewport: { width: 1280, height: 720 } })
+    const page = await (
+      await browser.newContext({
+        baseURL: baseUrl,
+        viewport: { width: 1280, height: 720 },
+        permissions: ["clipboard-read", "clipboard-write"],
+      })
+    ).newPage()
 
     await page.goto("/")
     await page.getByRole("link", { name: "安装", exact: true }).click()
@@ -556,11 +642,11 @@ async function runOnboardingCase(baseUrl: string, browserChannel?: string): Prom
     const article = page.getByRole("article")
     await expect(article.getByRole("link", { name: "主题", exact: true })).toHaveAttribute(
       "href",
-      "/getting-started/theming",
+      /^\/getting-started\/theming\/?$/,
     )
     await expect(article.getByRole("link", { name: "Registry", exact: true })).toHaveAttribute(
       "href",
-      "/getting-started/registry",
+      /^\/getting-started\/registry\/?$/,
     )
 
     await assertLocalizedIndexFilter(page, "/components", "搜索组件", "Button", "button", "dialog")
@@ -925,6 +1011,9 @@ async function assertBlockDemoPreviewAndSource(page: Page, block: BlockPage): Pr
 
 async function assertPortalFits(locator: Locator, label: string): Promise<void> {
   await expect(locator).toBeVisible()
+  // A portal anchors to its trigger; when prior steps scrolled the trigger out
+  // of view the portal is out of view too. Re-center before measuring.
+  await locator.evaluate((element) => element.scrollIntoView({ block: "center" }))
   await assertWithinViewport(locator, label)
 
   const isInsideDemo = await locator.evaluate(
@@ -1303,10 +1392,29 @@ function localized(path: string, zh: string, en: string): string {
 }
 
 const registryWidgetSentinels = [
-  { zh: "复制安装命令", en: "Copy install command" },
   { zh: "Registry 依赖", en: "Registry dependencies" },
   { zh: "包依赖", en: "Package dependencies" },
 ] as const
+
+async function assertInstallWidget(page: Page, path: string): Promise<void> {
+  const article = page.getByRole("article")
+  const isEnglish = path.startsWith("/en/")
+  const copyName = isEnglish ? "Copy install command" : "复制安装命令"
+  const otherCopyName = isEnglish ? "复制安装命令" : "Copy install command"
+
+  await expect(article.getByRole("button", { name: copyName, exact: true })).toBeVisible()
+  await expect(article.getByRole("button", { name: otherCopyName, exact: true })).toHaveCount(0)
+
+  const install = article.locator("[data-install-widget]").first()
+  const command = install.locator("code").first()
+  await expect(command).toContainText("npx shadcn@4.8.0 add @mapseek/")
+  await install.getByRole("tab", { name: "pnpm", exact: true }).click()
+  await expect(command).toContainText("pnpm dlx shadcn@4.8.0 add @mapseek/")
+  await install.getByRole("tab", { name: "bun", exact: true }).click()
+  await expect(command).toContainText("bunx shadcn@4.8.0 add @mapseek/")
+  await install.getByRole("tab", { name: "npm", exact: true }).click()
+  await expect(command).toContainText("npx shadcn@4.8.0 add @mapseek/")
+}
 
 const sharedWidgetSentinels = [
   ...registryWidgetSentinels,
@@ -1920,7 +2028,9 @@ export async function assertBlockInteraction(
 
   if (block === "resource-sidebar") {
     const demo = page.locator('[data-demo="resource-sidebar"]')
-    await demo.getByRole("button", { name: localized(path, "字体", "Fonts") }).click()
+    await demo
+      .getByRole("button", { name: new RegExp(`^${localized(path, "字体", "Fonts")}`) })
+      .click()
     await expect(demo.locator('[data-demo-status="resource-sidebar"]')).toContainText("font")
     await expect(demo).toContainText(localized(path, "拉丁", "Latin"))
     await demo.getByRole("button", { name: localized(path, "拉丁", "Latin") }).click()
@@ -2195,7 +2305,11 @@ export async function assertBlockInteraction(
   }
 }
 
-async function runPrimitiveCategoryCase(baseUrl: string, browserChannel?: string): Promise<void> {
+async function runPrimitiveCategoryCase(
+  baseUrl: string,
+  browserChannel?: string,
+  only?: readonly string[],
+): Promise<void> {
   await assertPreviewIsAvailable(baseUrl)
 
   const browser = await launchBrowser(browserChannel)
@@ -2206,15 +2320,24 @@ async function runPrimitiveCategoryCase(baseUrl: string, browserChannel?: string
 
   try {
     for (const viewport of Object.values(viewports)) {
-      const page = await browser.newPage({ baseURL: baseUrl, viewport })
+      const page = await (
+        await browser.newContext({
+          baseURL: baseUrl,
+          permissions: ["clipboard-read", "clipboard-write"],
+          viewport,
+        })
+      ).newPage()
       try {
-        for (const primitive of primitivePages) {
+        for (const primitive of only
+          ? primitivePages.filter((name) => only.includes(name))
+          : primitivePages) {
           for (const path of [`/components/${primitive}`, `/en/components/${primitive}`] as const) {
             for (const theme of ["light", "dark"] as const) {
               await page.goto(path)
               await setDocsTheme(page, theme)
               await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
               await assertLocalizedSentinelLabels(page, path, registryWidgetSentinels)
+              await assertInstallWidget(page, path)
               await assertDemoPreviewAndSource(page, primitive)
               await assertPrimitiveInteraction(page, primitive, path)
             }
@@ -2229,7 +2352,11 @@ async function runPrimitiveCategoryCase(baseUrl: string, browserChannel?: string
   }
 }
 
-async function runBlockCategoryCase(baseUrl: string, browserChannel?: string): Promise<void> {
+async function runBlockCategoryCase(
+  baseUrl: string,
+  browserChannel?: string,
+  only?: readonly string[],
+): Promise<void> {
   await assertPreviewIsAvailable(baseUrl)
 
   const browser = await launchBrowser(browserChannel)
@@ -2240,9 +2367,17 @@ async function runBlockCategoryCase(baseUrl: string, browserChannel?: string): P
 
   try {
     for (const viewport of Object.values(viewports)) {
-      const page = await browser.newPage({ baseURL: baseUrl, viewport })
+      const page = await (
+        await browser.newContext({
+          baseURL: baseUrl,
+          permissions: ["clipboard-read", "clipboard-write"],
+          viewport,
+        })
+      ).newPage()
       try {
-        for (const block of blockPages) {
+        for (const block of only
+          ? blockPages.filter((entry) => only.includes(entry.name))
+          : blockPages) {
           for (const path of [`/blocks/${block.name}`, `/en/blocks/${block.name}`] as const) {
             for (const theme of ["light", "dark"] as const) {
               await page.goto(path)
@@ -2271,11 +2406,11 @@ async function main() {
 
   try {
     if (options.category === "primitive") {
-      await runPrimitiveCategoryCase(baseUrl, options.browserChannel)
+      await runPrimitiveCategoryCase(baseUrl, options.browserChannel, options.only)
       return
     }
     if (options.category === "block") {
-      await runBlockCategoryCase(baseUrl, options.browserChannel)
+      await runBlockCategoryCase(baseUrl, options.browserChannel, options.only)
       return
     }
 

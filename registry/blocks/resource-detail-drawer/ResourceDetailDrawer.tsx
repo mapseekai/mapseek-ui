@@ -1,5 +1,6 @@
-import { type CSSProperties, useState } from "react"
 import { IconCopy, IconDownload, IconPencil, IconScissors } from "@tabler/icons-react"
+import { type CSSProperties, useState } from "react"
+import { PlaceholderGlyph } from "@/components/blocks/placeholder-glyph"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -11,9 +12,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Textarea } from "@/components/ui/textarea"
-import { PlaceholderGlyph } from "@/components/blocks/placeholder-glyph"
-import { cn } from "@/lib/utils"
 import { svgDataUri } from "@/lib/svg-data-uri"
+import { cn } from "@/lib/utils"
 import type { FontDetail, IconDetail, ResourceDetailDrawerProps, SpriteDetail } from "./types"
 
 const CHECKER: CSSProperties = {
@@ -41,7 +41,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 
 function KVRow({ k, v }: { k: string; v: string }) {
   return (
-    <div className="flex justify-between gap-2 py-[5px] text-[11.5px]">
+    <div className="flex justify-between gap-2 py-[5px] text-[12px]">
       <span className="text-muted-foreground">{k}</span>
       <span className="max-w-[180px] truncate text-right font-mono text-[11px] text-foreground">
         {v}
@@ -74,7 +74,7 @@ export function ResourceDetailDrawer({
       >
         <SheetHeader className="pr-12">
           <SheetTitle className="truncate text-[15px]">{detail.title}</SheetTitle>
-          <SheetDescription className="truncate font-mono text-[11.5px]">
+          <SheetDescription className="truncate font-mono text-[12px]">
             {detail.subtitle}
           </SheetDescription>
         </SheetHeader>
@@ -125,10 +125,10 @@ function IconBody({
       <div className="border-b border-border px-4 py-3.5">
         <SectionTitle>{detail.tagsTitle}</SectionTitle>
         <div className="flex flex-wrap gap-1">
-          {detail.tags.map((t, i) => (
+          {detail.tags.map((t) => (
             <span
-              key={i}
-              className="border border-border bg-muted px-1.5 py-0.5 font-mono text-[10.5px] font-medium text-muted-foreground"
+              key={t}
+              className="border border-border bg-muted px-1.5 py-0.5 font-mono text-[11px] font-medium text-muted-foreground"
             >
               {t}
             </span>
@@ -153,7 +153,7 @@ function IconBody({
               ) : (
                 <PlaceholderGlyph size={s} seed={detail.seed} />
               )}
-              <span className="font-mono text-[9px] font-medium text-muted-foreground uppercase">
+              <span className="font-mono text-[10px] font-medium text-muted-foreground uppercase">
                 {s}px
               </span>
             </div>
@@ -201,8 +201,8 @@ function SpriteBody({
               gridTemplateColumns: `repeat(${detail.cols}, 36px)`,
             }}
           >
-            {detail.previewSeeds.slice(0, 32).map((seed, i) => (
-              <div key={i} className="grid size-9 place-items-center">
+            {detail.previewSeeds.slice(0, 32).map((seed) => (
+              <div key={seed} className="grid size-9 place-items-center">
                 <PlaceholderGlyph size={22} seed={seed} />
               </div>
             ))}
@@ -213,15 +213,13 @@ function SpriteBody({
         <div className="border-b border-border px-4 py-3.5">
           <SectionTitle>{detail.sourceTitle}</SectionTitle>
           <div className="flex flex-col gap-1.5">
-            {detail.sources.map((s, i) => (
+            {detail.sources.map((s) => (
               <div
-                key={i}
+                key={`${s.label}:${s.tag}`}
                 className="flex items-center gap-2 border border-border px-2.5 py-1.5 text-xs"
               >
                 <span>{s.label}</span>
-                <span className="ml-auto font-mono text-[10.5px] text-muted-foreground">
-                  {s.tag}
-                </span>
+                <span className="ml-auto font-mono text-[11px] text-muted-foreground">{s.tag}</span>
               </div>
             ))}
           </div>
@@ -236,10 +234,13 @@ function SpriteBody({
       <div className="border-b border-border px-4 py-3.5">
         <SectionTitle>{detail.filesTitle}</SectionTitle>
         <div className="flex flex-col gap-1.5">
-          {detail.files.map((f, i) => (
-            <div key={i} className="flex items-center gap-2 border border-border px-2.5 py-1.5">
+          {detail.files.map((f) => (
+            <div
+              key={`${f.name}:${f.desc}`}
+              className="flex items-center gap-2 border border-border px-2.5 py-1.5"
+            >
               <div className="min-w-0 flex-1">
-                <div className="font-mono text-[11.5px]">{f.name}</div>
+                <div className="font-mono text-[12px]">{f.name}</div>
                 <div className="text-[10px] text-muted-foreground">{f.desc}</div>
               </div>
             </div>
@@ -345,22 +346,25 @@ function FontBody({
           <div className="flex flex-col gap-1.5">
             {slicing.charsets.map((c) => {
               const isSel = selected.includes(c.id)
+              const checkboxId = `slice-charset-${c.id}`
               return (
                 <label
                   key={c.id}
+                  htmlFor={checkboxId}
                   className={cn(
                     "flex cursor-pointer items-center gap-2 border border-border px-2 py-1.5",
                     isSel ? "bg-primary/5" : "bg-background",
                   )}
                 >
                   <Checkbox
+                    id={checkboxId}
                     checked={isSel}
                     onCheckedChange={() =>
                       setSelected((s) => (isSel ? s.filter((x) => x !== c.id) : [...s, c.id]))
                     }
                   />
                   <div className="min-w-0 flex-1">
-                    <div className="text-[11.5px] font-medium">{c.name}</div>
+                    <div className="text-[12px] font-medium">{c.name}</div>
                     <div className="font-mono text-[10px] text-muted-foreground">
                       {c.range} · {c.glyphs.toLocaleString()}
                     </div>
@@ -382,7 +386,7 @@ function FontBody({
           />
           <div className="mt-3 border border-border bg-muted p-2.5">
             <KVRow k={slicing.rawSizeLabel} v={slicing.rawSizeValue} />
-            <div className="flex justify-between gap-2 py-[5px] text-[11.5px]">
+            <div className="flex justify-between gap-2 py-[5px] text-[12px]">
               <span className="text-muted-foreground">{slicing.estimateLabel}</span>
               <span className="font-mono text-[11px] text-primary">~{estMb} MB</span>
             </div>

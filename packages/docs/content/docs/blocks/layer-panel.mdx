@@ -1,0 +1,54 @@
+---
+title: "LayerPanel"
+registryName: layer-panel
+category: block
+stability: stable
+showcase: layer-panel
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+LayerPanel 是用于地图工程的受控图层面板。它负责标题、列表、行选择、可见性、行操作、空状态和可插拔 section；图层数据、排序、删除、定位、属性表和分组行为由调用方状态拥有。
+
+## 安装
+
+<RegistryInstall registryName="layer-panel" />
+
+## 导入
+
+```tsx
+import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
+```
+
+## 基础受控面板
+
+<ShowcaseDemo registryName="layer-panel" demo="basic" title="基础受控面板" description="示例保留可见性切换、受控选中和样式 section。" minHeight={280} />
+
+<ShowcaseDemo registryName="layer-panel" demo="groups" title="分组状态" description="分组折叠、重命名、菜单和可见性状态由调用方控制。" minHeight={300} />
+
+## 受控状态
+
+`LayerPanel` 不保存业务数据。调用方传入 `layers`、`selectedId` 和处理器，并在 `onSelectChange`、`onVisibleChange`、`onReorder`、`onRemove`、`onLocate`、`onOpenTable` 中更新自己的工程状态。`collapsed` 可以受控，也可以通过 `defaultCollapsed` 让面板自己维护折叠状态。
+
+## 图层与分组模型
+
+`LayerData` 至少需要 `id`、`name`、`visible` 和 `geometryType`。`featureCount`、`crsLabel` 和 `flags` 是展示增强字段。分组不是 registry API；如果工程有分组、重命名或分组菜单，把 group model 保留在调用方，再把过滤后的图层传给 `LayerPanel.Item`。
+
+## 必需处理器
+
+只读面板可以只提供 `layers` 和 `selectedId`。如果显示可见性按钮，必须提供 `onVisibleChange`；如果允许拖拽排序，必须提供 `onReorder`；删除、定位和属性表按钮分别由 `onRemove`、`onLocate` 和 `onOpenTable` 控制。处理器缺失时对应操作不会渲染。
+
+## 无障碍标签
+
+通过 `labels` 覆盖 geometry、添加图层、要素、定位、属性表和删除文案。图层行使用图层名作为可访问名称；可见性、定位、属性表和删除是原生 `button`。调用方添加的分组按钮、菜单和重命名输入也需要自己的 `aria-label` 或可读文本。
+
+## 滚动与响应式
+
+给面板设置明确高度或父级滚动边界，列表会在面板内部滚动，并隐藏横向溢出。文档示例使用 `w-full` 和 `max-w-*`，因此在移动宽度下不会撑破 preview；长名称依靠行内 `truncate` 收敛。
+
+## 依赖
+
+<RegistryDependencies registryName="layer-panel" />
+

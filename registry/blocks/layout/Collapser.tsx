@@ -1,5 +1,5 @@
-import React from "react"
 import { IconCaretDownFilled, IconCaretUpFilled } from "@tabler/icons-react"
+import type React from "react"
 import { cn } from "@/lib/utils"
 
 export type CollapserProps = {

@@ -1,0 +1,44 @@
+---
+title: "Command"
+registryName: command
+category: primitive
+stability: stable
+showcase: command
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Command powers command palettes, local action search, and empty search results. It is based on cmdk and reuses Mapseek input-group, grouping, separator, and shortcut styles.
+
+## Installation
+
+<RegistryInstall registryName="command" />
+
+## Import
+
+```tsx
+import { Command, CommandInput, CommandItem, CommandList } from "@/registry/ui/command"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="command" demo="overview" title="Command palette" description="Covers groups, separator, disabled item, shortcut, and empty state and shows command list structure." minHeight={360} />
+
+## Exports
+
+`command.tsx` exports `Command`, `CommandDialog`, `CommandInput`, `CommandList`, `CommandEmpty`, `CommandGroup`, `CommandSeparator`, `CommandItem`, and `CommandShortcut`.
+
+## States
+
+`CommandInput` drives cmdk filtering; `CommandEmpty` renders when no result remains. `CommandItem disabled` marks unavailable actions, and checked items show the built-in check icon.
+
+## Accessibility
+
+Command text should describe the result, not just the verb. With `CommandDialog`, make sure the trigger has an accessible name and Escape returns focus to that trigger.
+
+## Dependencies
+
+<RegistryDependencies registryName="command" />
+

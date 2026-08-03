@@ -1,0 +1,44 @@
+---
+title: "Slider"
+registryName: slider
+category: primitive
+stability: stable
+showcase: slider
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Slider 用于连续或步进数值，例如图层透明度、阈值和样式强度。它保留 Base UI 的键盘和指针拖动行为。
+
+## 安装
+
+<RegistryInstall registryName="slider" />
+
+## 导入
+
+```tsx
+import { Slider } from "@/registry/ui/slider"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="slider" demo="overview" title="滑块状态" description="覆盖受控 50%、低值 10% 和 disabled 70%，展示 visible states。" minHeight={320} />
+
+## 导出
+
+`slider.tsx` 导出 `Slider`。组件继承 Base UI Slider root props，支持 `value/onValueChange`、`defaultValue`、`min`、`max`、`step` 和 `disabled`。
+
+## 状态
+
+受控滑块使用数组值；单 thumb 常见形态是 `[50]`。禁用态降低 control 透明度并禁止 thumb 交互。
+
+## 无障碍
+
+为 slider 提供 `aria-label` 或可见 label。键盘用户可用方向键、Home/End 或 Page 键调整值；页面应展示当前值或单位。
+
+## 依赖
+
+<RegistryDependencies registryName="slider" />
+

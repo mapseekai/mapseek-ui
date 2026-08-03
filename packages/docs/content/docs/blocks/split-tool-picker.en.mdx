@@ -1,0 +1,54 @@
+---
+title: "SplitToolPicker"
+registryName: split-tool-picker
+category: block
+stability: stable
+showcase: split-tool-picker
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+SplitToolPicker is a split tool button: the primary button runs the current tool, and the dropdown menu switches tools. It fits selection, drawing, measurement, and similar map tool groups; active tool state, tool actions, and toolbar layout stay with the caller.
+
+## Installation
+
+<RegistryInstall registryName="split-tool-picker" />
+
+## Import
+
+```tsx
+import {
+  SplitToolPicker,
+  type SplitToolActionSource,
+  type SplitToolItem,
+  type SplitToolPickerLabels,
+  type SplitToolPickerProps,
+} from "@/registry/blocks/split-tool-picker"
+```
+
+## Split Tool Button
+
+<ShowcaseDemo registryName="split-tool-picker" title="Split tool button" description="Shows selection group, drawing group, primary action, menu action, current state, and disabled state." minHeight={420} />
+
+## Usage
+
+Provide each tool with `id`, a Tabler `icon`, and `label`, plus optional `hint` and `description`. In controlled mode, pass `value` and `onValueChange`. `onAction` receives the tool id and source, where source is `primary` or `menu`, so callers can distinguish immediate execution from menu selection.
+
+## Public Exports and Props
+
+Exports include `SplitToolPicker`, `SplitToolPickerProps`, `SplitToolPickerLabels`, `SplitToolItem`, and `SplitToolActionSource`. Key props are `items`, `value`, `defaultValue`, `onValueChange`, `onAction`, `active`, `disabled`, `label`, `labels`, `className`, and `contentClassName`.
+
+## Controlled State
+
+The component can keep the current tool from `defaultValue`, or be fully controlled with `value`. The example stores selection and drawing tool values separately, then writes tool group, tool label, and trigger source into an outer log from `onAction`.
+
+## Accessibility
+
+The primary button uses the current tool label as `aria-label` and reports active state through `aria-pressed`. The menu trigger combines the tool group label with menu copy for its accessible name. Menu items use `role="option"` and `aria-selected`; tool hints should not be the only label.
+
+## Dependencies
+
+<RegistryDependencies registryName="split-tool-picker" />
+

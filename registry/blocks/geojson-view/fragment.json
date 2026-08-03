@@ -1,0 +1,32 @@
+{
+  "name": "geojson-view",
+  "type": "registry:block",
+  "registryDependencies": ["@mapseek/json-viewer", "@mapseek/utils", "@mapseek/labels"],
+  "files": [
+    {
+      "path": "geojson-view/GeoJSONView.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/geojson-view/GeoJSONView.tsx"
+    },
+    {
+      "path": "geojson-view/defaults.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/geojson-view/defaults.ts"
+    },
+    {
+      "path": "geojson-view/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/geojson-view/index.ts"
+    },
+    {
+      "path": "geojson-view/labels.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/geojson-view/labels.ts"
+    },
+    {
+      "path": "geojson-view/stringify.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/geojson-view/stringify.ts"
+    }
+  ]
+}

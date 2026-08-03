@@ -1,22 +1,45 @@
 {
   "compilerOptions": {
-    "baseUrl": "../..",
-    "jsx": "react-jsx",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "paths": {
-      "@/components/blocks/*": ["registry/blocks/*"],
-      "@/components/ui/*": ["registry/ui/*"],
-      "@/lib/mapseek-labels": ["registry/lib/labels.ts"],
-      "@/lib/svg-data-uri": ["registry/lib/svg-data-uri.ts"],
-      "@/lib/utils": ["registry/lib/utils.ts"],
-      "@/registry/*": ["registry/*"],
-      "@registry/*": ["registry/*"]
-    },
-    "skipLibCheck": true,
-    "strict": true,
     "target": "ES2022",
-    "types": ["node", "react", "@docusaurus/module-type-aliases"]
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/ui/*": ["../../registry/ui/*"],
+      "@/components/blocks/*": ["../../registry/blocks/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/utils": ["../../registry/lib/utils.ts"],
+      "@/lib/mapseek-labels": ["../../registry/lib/labels.ts"],
+      "@/lib/svg-data-uri": ["../../registry/lib/svg-data-uri.ts"],
+      "@/registry/*": ["../../registry/*"],
+      "@registry/*": ["../../registry/*"],
+      "@showcase/*": ["../../showcase/src/*"],
+      "@/*": ["./*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowJs": true
   },
-  "include": ["docusaurus.config.ts", "sidebars.ts", "src", "docs"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".source",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }

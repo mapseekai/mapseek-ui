@@ -1,0 +1,54 @@
+---
+title: "ResourceSidebar"
+registryName: resource-sidebar
+category: block
+stability: stable
+showcase: resource-sidebar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ResourceSidebar is the resource-library left rail for resource type, categories, counts, rename, and remove entry points.
+
+## Installation
+
+<RegistryInstall registryName="resource-sidebar" />
+
+## Import
+
+```tsx
+import {
+  ResourceSidebar,
+  type ResourceSidebarCategory,
+  type ResourceSidebarLabels,
+  type ResourceSidebarProps,
+  type ResourceTab,
+} from "@/registry/blocks/resource-sidebar"
+```
+
+## Resource type and category sidebar
+
+<ShowcaseDemo registryName="resource-sidebar" title="Resource type and category sidebar" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={620} />
+
+## Usage
+
+Drive the rail with controlled `tab` and `activeCat`, passing categories and the allItems label for the current tab.
+
+## Public Exports and Props
+
+Exports include `ResourceSidebar`, `ResourceSidebarCategory`, `ResourceSidebarLabels`, `ResourceSidebarProps`, and `ResourceTab`.
+
+## Loading, Empty, Error, and Status
+
+Tab, category selection, and category actions are caller-controlled. The demo covers type switching, category selection, create, rename, and remove states.
+
+## Accessibility
+
+Types and categories are buttons; rename and remove actions expose names through Tooltip/title.
+
+## Dependencies
+
+<RegistryDependencies registryName="resource-sidebar" />
+

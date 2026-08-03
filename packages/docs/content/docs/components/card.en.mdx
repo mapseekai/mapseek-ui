@@ -1,0 +1,44 @@
+---
+title: "Card"
+registryName: card
+category: primitive
+stability: stable
+showcase: card
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Card organizes a title, description, content, and actions into one clearly bounded content unit. Use it for dataset summaries, export jobs, and layer details, not nested page-level containers.
+
+## Installation
+
+<RegistryInstall registryName="card" />
+
+## Import
+
+```tsx
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/registry/ui/card"
+```
+
+## Content Structure
+
+<ShowcaseDemo registryName="card" demo="overview" title="Content structure" description="Shows basic card, content with footer, and action slot." minHeight={380} />
+
+## Exports
+
+`Card` is the root; `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, and `CardFooter` define common regions. `CardBody` is an alias for `CardContent`.
+
+## States and Behavior
+
+`size="sm"` tightens spacing. `CardAction` aligns to the right side of the header grid, and `CardFooter` adds the top border for action groups.
+
+## Accessibility
+
+Card has no interaction semantics by itself. If the whole card is clickable, use a link or button for the interaction and keep title, description, and target clear.
+
+## Dependencies
+
+<RegistryDependencies registryName="card" />
+

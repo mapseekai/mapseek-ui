@@ -1,0 +1,44 @@
+---
+title: "Badge"
+registryName: badge
+category: primitive
+stability: stable
+showcase: badge
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Badge 是紧凑的状态、分类和元数据标记。它适合数据发布状态、CRS、格式和错误级别，不应替代可点击按钮或完整提示。
+
+## 安装
+
+<RegistryInstall registryName="badge" />
+
+## 导入
+
+```tsx
+import { Badge, badgeVariants } from "@/registry/ui/badge"
+```
+
+## 变体与状态
+
+<ShowcaseDemo registryName="badge" demo="overview" title="变体与状态" description="展示六种变体和 GIS 场景状态。" minHeight={250} />
+
+## 导出
+
+`Badge` 导出组件，`badgeVariants` 导出 class-variance-authority 样式函数。组件默认渲染 `span`，可通过 Base UI `render` 机制更换宿主元素。
+
+## 状态与行为
+
+`variant` 支持 `default`、`secondary`、`destructive`、`outline`、`ghost` 和 `link`。如果 Badge 被渲染为链接，hover 样式会通过 `[a]` 选择器保持一致。
+
+## 无障碍
+
+状态文本必须自解释，例如使用 “Error” 而不是只显示红色。可点击的 Badge 应渲染为链接或按钮，并提供明确目的。
+
+## 依赖
+
+<RegistryDependencies registryName="badge" />
+

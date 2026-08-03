@@ -1,0 +1,54 @@
+---
+title: "PixelProbe"
+registryName: pixel-probe
+category: block
+stability: stable
+showcase: pixel-probe
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+PixelProbe 是只读栅格像元探测面板，适合展示 TiTiler `/point` 或类似查询结果。它负责 header、字段行、类型 badge、锁定标记、复制按钮、关闭按钮和像元步进 footer；查询、复制内容和关闭状态由调用方处理。
+
+## 安装
+
+<RegistryInstall registryName="pixel-probe" />
+
+## 导入
+
+```tsx
+import {
+  PixelProbe,
+  type PixelField,
+  type PixelFieldType,
+  type PixelProbeLabels,
+  type PixelProbeProps,
+} from "@/registry/blocks/pixel-probe"
+```
+
+## 栅格像元探测
+
+<ShowcaseDemo registryName="pixel-probe" title="栅格像元探测" description="示例展示字段类型、band 锁、复制 JSON、关闭和 prev / next 像元步进。" minHeight={680} />
+
+## 用法
+
+把查询结果转换成 `PixelField[]`，每行提供 `key`、`type` 和 `value`，可选 `unit` 与 `locked`。传入 `count` 和 `index` 展示点数量与当前点。`onCopy`、`onClose`、`onPrev` 和 `onNext` 都是调用方处理器。
+
+## 公开导出与 Props
+
+导出 `PixelProbe`、`PixelProbeProps`、`PixelProbeLabels`、`PixelField` 和 `PixelFieldType`。关键 props 是 `fields`、`count`、`index`、`labels`、`onCopy`、`onClose`、`onPrev`、`onNext` 和 `className`。
+
+## 受控状态
+
+面板没有内部查询状态。示例把当前像元 index 和关闭状态保存在外层，并在复制、关闭、上一个、下一个回调中更新状态文本。真实应用通常会在 `onNext` 和 `onPrev` 中重新请求像元数据。
+
+## 无障碍
+
+复制和关闭按钮使用 `labels.copy` 与 `labels.close`。prev / next 按钮通过 Tooltip 提供可读说明。字段值以可选择文本呈现；单位和锁定标记应作为辅助信息，不要替代字段名。
+
+## 依赖
+
+<RegistryDependencies registryName="pixel-probe" />
+

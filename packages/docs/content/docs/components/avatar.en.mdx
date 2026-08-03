@@ -1,0 +1,44 @@
+---
+title: "Avatar"
+registryName: avatar
+category: primitive
+stability: stable
+showcase: avatar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Avatar displays a user, team member, or system actor. It provides the circular root, fallback, status badge, and grouped avatars for collaboration, audit logs, and member lists.
+
+## Installation
+
+<RegistryInstall registryName="avatar" />
+
+## Import
+
+```tsx
+import { Avatar, AvatarBadge, AvatarFallback, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/registry/ui/avatar"
+```
+
+## Identity Display
+
+<ShowcaseDemo registryName="avatar" demo="overview" title="Identity display" description="Shows fallback initials and sizes, with badge and group exports shown too." minHeight={300} />
+
+## Exports
+
+`Avatar` is the root, `AvatarImage` renders the image, `AvatarFallback` renders initials, `AvatarBadge` renders the corner marker, and `AvatarGroup` plus `AvatarGroupCount` compose groups.
+
+## States and Behavior
+
+`size` supports `sm`, `default`, and `lg`. Base UI fallback is shown when an image is unavailable, and the badge size follows the root size.
+
+## Accessibility
+
+When an image identifies a person, give `AvatarImage` useful `alt` text. Decorative grouped avatars can hide image alt text, but nearby content still needs names or context.
+
+## Dependencies
+
+<RegistryDependencies registryName="avatar" />
+

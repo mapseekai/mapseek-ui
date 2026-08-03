@@ -1,0 +1,52 @@
+---
+title: "LayerEditorGroup"
+registryName: layer-editor-group
+category: block
+stability: stable
+showcase: layer-editor-group
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+LayerEditorGroup is the sticky section container used inside style editors. It owns Accordion grouping, icon titles, sticky headers, and scroll structure; each section's form, JSON view, filters, and business state are supplied by the caller.
+
+## Installation
+
+<RegistryInstall registryName="layer-editor-group" />
+
+## Import
+
+```tsx
+import {
+  LayerEditorGroup,
+  type LayerEditorGroupProps,
+  type LayerEditorGroupSection,
+} from "@/registry/blocks/layer-editor-group"
+```
+
+## Sticky Section Editor
+
+<ShowcaseDemo registryName="layer-editor-group" title="Sticky section editor" description="Shows layer, paint, layout, filter, and JSON sections." minHeight={520} />
+
+## Usage
+
+Build a `sections` array where each section has a stable `id`, title, optional icon, and `children`. Put height and scroll boundaries on the outer container so sticky headers stack inside the block. Section content can be any React node.
+
+## Public Exports and Props
+
+Exports include `LayerEditorGroup`, `LayerEditorGroupProps`, and `LayerEditorGroupSection`. Key props are `sections`, `defaultOpenIds`, `headerHeight`, `stickyOffset`, `className`, `itemClassName`, `headerClassName`, `triggerClassName`, and `contentClassName`.
+
+## Controlled State
+
+This block does not own field values. Put controlled inputs, JSON viewers, or filter editors inside section children and handle changes in the caller. `defaultOpenIds` only sets the initial open sections; if route-level persistence is required, store that state outside and rebuild the section structure.
+
+## Accessibility
+
+Each section title becomes readable text for the Accordion trigger. Icons are visual aids and do not replace titles. Complex children should still use readable labels, native inputs, and explicit button text; long content should sit inside an outer area with a scroll boundary.
+
+## Dependencies
+
+<RegistryDependencies registryName="layer-editor-group" />
+

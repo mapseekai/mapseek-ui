@@ -16,13 +16,11 @@ async function writeFixture(path: string, content: string): Promise<void> {
 function doc(overrides: readonly string[] = []): string {
   return [
     "---",
-    "id: button",
-    "slug: /components/button",
+    "title: Button",
     "registryName: button",
     "category: primitive",
     "stability: stable",
-    "examples:",
-    "  - button/basic",
+    "showcase: button",
     ...overrides,
     "---",
     "# Button",
@@ -35,16 +33,13 @@ beforeEach(async () => {
 
 afterEach(async () => rm(fixtureRoot, { recursive: true, force: true }))
 
-it("parses scalar and list documentation metadata", () => {
-  const source = doc(["  - button/variants"])
-
-  expect(parseDocSource(source)).toEqual({
-    id: "button",
-    slug: "/components/button",
+it("parses documentation metadata with its Showcase mapping", () => {
+  expect(parseDocSource(doc())).toEqual({
+    title: "Button",
     registryName: "button",
     category: "primitive",
     stability: "stable",
-    examples: ["button/basic", "button/variants"],
+    showcase: "button",
   })
 })
 
@@ -54,19 +49,19 @@ describe("parseDocSource", () => {
   })
 
   it("rejects duplicate metadata fields", () => {
-    expect(() => parseDocSource(doc(["id: duplicate"]))).toThrow("duplicate field: id")
+    expect(() => parseDocSource(doc(["title: Duplicate"]))).toThrow("duplicate field: title")
   })
 
-  it("rejects non-absolute slugs", () => {
-    expect(() => parseDocSource(doc().replace("/components/button", "components/button"))).toThrow(
-      "slug must be absolute",
+  it("requires a title", () => {
+    expect(() => parseDocSource(doc().replace("title: Button\n", ""))).toThrow(
+      "missing field: title",
     )
   })
 
-  it("rejects examples written as a scalar", () => {
-    expect(() =>
-      parseDocSource(doc().replace("examples:\n  - button/basic", "examples: basic")),
-    ).toThrow("examples must be a list")
+  it("requires Showcase metadata", () => {
+    expect(() => parseDocSource(doc().replace("showcase: button\n", ""))).toThrow(
+      "missing field: showcase",
+    )
   })
 
   it("rejects unknown category and stability values", () => {
@@ -79,17 +74,26 @@ describe("parseDocSource", () => {
   })
 })
 
-it("collects markdown docs by metadata id", async () => {
+it("collects markdown docs by locale-independent relative path", async () => {
   await writeFixture("components/button.mdx", doc())
-  await writeFixture("components/button.txt", doc(["id: ignored"]))
+  await writeFixture(
+    "components/button.en.mdx",
+    doc().replace("title: Button", "title: Button (en)"),
+  )
+  await writeFixture("components/button.txt", doc().replace("title: Button", "title: Ignored"))
 
-  const docs = await collectDocs(fixtureRoot)
+  const zhDocs = await collectDocs(fixtureRoot)
+  const enDocs = await collectDocs(fixtureRoot, "en")
 
-  expect(docs.get("button")).toMatchObject({
+  expect(zhDocs.get("components/button")).toMatchObject({
     relativePath: "components/button.mdx",
-    metadata: { id: "button" },
+    metadata: { title: "Button" },
   })
-  expect(docs.has("ignored")).toBe(false)
+  expect(enDocs.get("components/button")).toMatchObject({
+    relativePath: "components/button.en.mdx",
+    metadata: { title: "Button (en)" },
+  })
+  expect(zhDocs.has("components/ignored")).toBe(false)
 })
 
 it("keeps Task9A primitive coverage in the shared required docs manifest", () => {
@@ -109,8 +113,8 @@ it("keeps Task9A primitive coverage in the shared required docs manifest", () =>
       "table",
     ]),
   )
-  expect(requiredRegistryDocs.get("accordion")?.examples).toEqual(["accordion/overview"])
-  expect(requiredRegistryDocs.get("table")?.examples).toEqual(["table/overview"])
+  expect(requiredRegistryDocs.get("accordion")?.category).toBe("primitive")
+  expect(requiredRegistryDocs.get("table")?.category).toBe("primitive")
 })
 
 it("keeps Task9B form and input primitive coverage in the shared required docs manifest", () => {
@@ -132,8 +136,8 @@ it("keeps Task9B form and input primitive coverage in the shared required docs m
       "toggle-group",
     ]),
   )
-  expect(requiredRegistryDocs.get("checkbox")?.examples).toEqual(["checkbox/overview"])
-  expect(requiredRegistryDocs.get("toggle-group")?.examples).toEqual(["toggle-group/overview"])
+  expect(requiredRegistryDocs.get("checkbox")?.category).toBe("primitive")
+  expect(requiredRegistryDocs.get("toggle-group")?.category).toBe("primitive")
 })
 
 it("keeps Task9C navigation feedback and overlay primitive coverage in the shared required docs manifest", () => {
@@ -150,8 +154,8 @@ it("keeps Task9C navigation feedback and overlay primitive coverage in the share
       "tooltip",
     ]),
   )
-  expect(requiredRegistryDocs.get("confirm-dialog")?.examples).toEqual(["confirm-dialog/overview"])
-  expect(requiredRegistryDocs.get("tooltip")?.examples).toEqual(["tooltip/overview"])
+  expect(requiredRegistryDocs.get("confirm-dialog")?.category).toBe("primitive")
+  expect(requiredRegistryDocs.get("tooltip")?.category).toBe("primitive")
 })
 
 it("keeps Task10D style block coverage in the shared required docs manifest", () => {
@@ -168,10 +172,6 @@ it("keeps Task10D style block coverage in the shared required docs manifest", ()
       "toggle-config-popover",
     ]),
   )
-  expect(requiredRegistryDocs.get("raster-style-panel")?.examples).toEqual([
-    "raster-style-panel/overview",
-  ])
-  expect(requiredRegistryDocs.get("toggle-config-popover")?.examples).toEqual([
-    "toggle-config-popover/overview",
-  ])
+  expect(requiredRegistryDocs.get("raster-style-panel")?.category).toBe("block")
+  expect(requiredRegistryDocs.get("toggle-config-popover")?.category).toBe("block")
 })

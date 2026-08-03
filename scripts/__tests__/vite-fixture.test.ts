@@ -9,16 +9,24 @@ const fixturePackages = [
 
 describe("Vite React fixtures", () => {
   it("typechecks the app project that includes installed sources", async () => {
-    const packages = await Promise.all(fixturePackages.map(async (path) => JSON.parse(await readFile(path, "utf8")) as {
-      scripts?: Record<string, string>
-      dependencies?: Record<string, string>
-      devDependencies?: Record<string, string>
-    }))
+    const packages = await Promise.all(
+      fixturePackages.map(
+        async (path) =>
+          JSON.parse(await readFile(path, "utf8")) as {
+            scripts?: Record<string, string>
+            dependencies?: Record<string, string>
+            devDependencies?: Record<string, string>
+          },
+      ),
+    )
 
     for (const packageJson of packages) {
       expect(packageJson.scripts?.typecheck).toBe("tsc --noEmit -p tsconfig.app.json")
       expect(packageJson.dependencies?.typescript).toBe("^5.9.3")
-      expect(packageJson.devDependencies).toMatchObject({ "@types/react": "latest", "@types/react-dom": "latest" })
+      expect(packageJson.devDependencies).toMatchObject({
+        "@types/react": "latest",
+        "@types/react-dom": "latest",
+      })
     }
   })
 })

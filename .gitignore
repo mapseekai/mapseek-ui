@@ -1,7 +1,13 @@
 node_modules/
-dist/
+dist/*
+!dist/showcase/
+!dist/showcase/**
 packages/docs/.docusaurus/
 packages/docs/build/
+packages/docs/.next/
+packages/docs/.source/
+packages/docs/out/
+packages/docs/tsconfig.tsbuildinfo
 test-results/
 .superpowers/
 .env

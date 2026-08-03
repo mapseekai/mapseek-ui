@@ -1,0 +1,44 @@
+---
+title: "Collapsible"
+registryName: collapsible
+category: primitive
+stability: stable
+showcase: collapsible
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Collapsible is a lightweight single-section disclosure container. It is suited to dataset details, optional settings, and supporting notes, while Accordion is better for a list of related sections.
+
+## Installation
+
+<RegistryInstall registryName="collapsible" />
+
+## Import
+
+```tsx
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/registry/ui/collapsible"
+```
+
+## Controlled Disclosure
+
+<ShowcaseDemo registryName="collapsible" demo="overview" title="Controlled disclosure" description="Shows controlled open/onOpenChange flow, button trigger, and expanded content." minHeight={220} />
+
+## Exports
+
+`Collapsible`, `CollapsibleTrigger`, and `CollapsibleContent` map to Radix Collapsible root, trigger, and content.
+
+## States and Behavior
+
+Use `open/onOpenChange` when external button text and business state need to stay synchronized. `CollapsibleTrigger asChild` lets you reuse existing Button styling.
+
+## Accessibility
+
+The trigger should describe what it expands. If expanded content contains critical state, keep a summary near the trigger so users do not need to open it to understand the current state.
+
+## Dependencies
+
+<RegistryDependencies registryName="collapsible" />
+

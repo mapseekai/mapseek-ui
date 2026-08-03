@@ -2,12 +2,11 @@ import { readdir, readFile } from "node:fs/promises"
 import { extname, join, relative } from "node:path"
 
 export type DocMetadata = {
-  readonly id: string
-  readonly slug: string
+  readonly title: string
   readonly registryName: string
   readonly category: "primitive" | "block"
   readonly stability: "stable" | "experimental" | "deprecated"
-  readonly examples: readonly string[]
+  readonly showcase: string
 }
 
 export type ParsedDoc = {
@@ -17,22 +16,21 @@ export type ParsedDoc = {
 }
 
 type MutableDocMetadata = {
-  id?: string
-  slug?: string
+  title?: string
   registryName?: string
   category?: "primitive" | "block"
   stability?: "stable" | "experimental" | "deprecated"
-  examples?: string[]
+  showcase?: string
 }
 
 const categories = new Set(["primitive", "block"])
 const stabilities = new Set(["stable", "experimental", "deprecated"])
-const requiredFields = ["id", "slug", "registryName", "category", "stability", "examples"] as const
+const requiredFields = ["title", "registryName", "category", "stability", "showcase"] as const
 
 function assignScalar(metadata: MutableDocMetadata, key: string, value: string): void {
-  if (key === "id") metadata.id = value
-  else if (key === "slug") metadata.slug = value
+  if (key === "title") metadata.title = value.replace(/^"|"$/g, "")
   else if (key === "registryName") metadata.registryName = value
+  else if (key === "showcase") metadata.showcase = value
   else if (key === "category") {
     if (!categories.has(value)) throw new Error(`unknown category: ${value}`)
     metadata.category = value as MutableDocMetadata["category"]
@@ -53,30 +51,10 @@ export function parseDocSource(source: string): DocMetadata {
   for (let index = 1; index < end; index++) {
     const line = lines[index]
     if (line.trim() === "") continue
-    if (line === "examples:") {
-      if (seen.has("examples")) throw new Error("duplicate field: examples")
-      seen.add("examples")
-      const examples: string[] = []
-      while (lines[index + 1]?.startsWith("  - ")) {
-        index++
-        examples.push(lines[index].slice("  - ".length))
-      }
-      metadata.examples = examples
-      continue
-    }
     const separator = line.indexOf(":")
     if (separator === -1) throw new Error(`invalid frontmatter line: ${line}`)
     const key = line.slice(0, separator)
     const value = line.slice(separator + 1).trim()
-    if (key === "examples") {
-      if (value === "[]") {
-        if (seen.has(key)) throw new Error(`duplicate field: ${key}`)
-        seen.add(key)
-        metadata.examples = []
-        continue
-      }
-      throw new Error("examples must be a list")
-    }
     if (seen.has(key)) throw new Error(`duplicate field: ${key}`)
     seen.add(key)
     assignScalar(metadata, key, value)
@@ -85,17 +63,13 @@ export function parseDocSource(source: string): DocMetadata {
   for (const field of requiredFields) {
     if (!seen.has(field)) throw new Error(`missing field: ${field}`)
   }
-  const slug = metadata.slug ?? ""
-  if (!slug.startsWith("/")) throw new Error("slug must be absolute")
-  const examples = metadata.examples ?? []
 
   return {
-    id: metadata.id ?? "",
-    slug,
+    title: metadata.title ?? "",
     registryName: metadata.registryName ?? "",
     category: metadata.category ?? "primitive",
     stability: metadata.stability ?? "stable",
-    examples,
+    showcase: metadata.showcase ?? "",
   }
 }
 
@@ -120,15 +94,24 @@ async function collectDocPaths(root: string): Promise<readonly string[]> {
   return paths.flat()
 }
 
-export async function collectDocs(root: string): Promise<ReadonlyMap<string, ParsedDoc>> {
+const englishSuffix = /\.en\.(md|mdx)$/u
+
+/** Collect docs keyed by locale-independent relative path (without extension). */
+export async function collectDocs(
+  root: string,
+  locale: "zh" | "en" = "zh",
+): Promise<ReadonlyMap<string, ParsedDoc>> {
   const docs = new Map<string, ParsedDoc>()
   for (const path of await collectDocPaths(root)) {
-    const parsed = {
+    const isEnglish = englishSuffix.test(path)
+    if (locale === "en" ? !isEnglish : isEnglish) continue
+    const rel = relative(root, path)
+    const key = rel.replace(englishSuffix, "").replace(/\.(md|mdx)$/u, "")
+    docs.set(key, {
       path,
-      relativePath: relative(root, path),
+      relativePath: rel,
       metadata: parseDocSource(await readFile(path, "utf8")),
-    }
-    docs.set(parsed.metadata.id, parsed)
+    })
   }
   return docs
 }

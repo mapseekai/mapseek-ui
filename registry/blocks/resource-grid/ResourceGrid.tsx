@@ -1,12 +1,11 @@
 import { IconCircleFilled, IconScissors } from "@tabler/icons-react"
 import type { CSSProperties } from "react"
+import { PlaceholderGlyph } from "@/components/blocks/placeholder-glyph"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
-import { cn } from "@/lib/utils"
-import { PlaceholderGlyph } from "@/components/blocks/placeholder-glyph"
 import { resolveLabels } from "@/lib/mapseek-labels"
+import { cn } from "@/lib/utils"
 import { DEFAULT_RESOURCE_GRID_LABELS } from "./defaults"
-import type { ResourceGridLabels } from "./labels"
 import type {
   FontFamilyKind,
   ResourceFontItem,
@@ -89,16 +88,14 @@ export function ResourceGrid({
               data-testid="resource-icon-card"
               data-selected={selected}
               className={cn(
-                "group relative isolate flex aspect-square cursor-pointer flex-col items-center justify-center gap-1.5 bg-background p-2.5 ring-inset transition-colors hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
+                "group relative isolate aspect-square bg-background ring-inset transition-colors hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
                 selected
                   ? "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-primary/5 ring-1 ring-primary"
                   : "hover:bg-muted",
               )}
-              onClick={() => onOpen("icon", it.id)}
-              onContextMenu={(e) => onContextMenu(e, "icon", it.id)}
             >
               {selectable && (
-                <span className="absolute top-2 left-2 z-10" onClick={(e) => e.stopPropagation()}>
+                <span className="absolute top-2 left-2 z-10">
                   <Checkbox
                     checked={selected}
                     aria-label={iconSelectionLabel?.(it) ?? it.name}
@@ -107,19 +104,27 @@ export function ResourceGrid({
                       selected ? "opacity-100" : "opacity-0",
                     )}
                     onClick={(e) => e.stopPropagation()}
+                    onKeyDown={(e) => e.stopPropagation()}
                     onCheckedChange={(checked) => onIconSelect?.(it.id, checked === true)}
                   />
                 </span>
               )}
-              {renderIconPreview?.(it) ?? <PlaceholderGlyph size={28} seed={it.seed} />}
-              <div className="w-full truncate text-center text-[10.5px] font-medium text-foreground">
-                {it.name}
-              </div>
-              {it.categoryLabel && (
-                <div className="font-mono text-[9.5px] tracking-[0.04em] text-muted-foreground uppercase">
-                  {it.categoryLabel}
+              <button
+                type="button"
+                className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1.5 border-0 bg-transparent p-2.5 text-center [font:inherit]"
+                onClick={() => onOpen("icon", it.id)}
+                onContextMenu={(e) => onContextMenu(e, "icon", it.id)}
+              >
+                {renderIconPreview?.(it) ?? <PlaceholderGlyph size={28} seed={it.seed} />}
+                <div className="w-full truncate text-center text-[11px] font-medium text-foreground">
+                  {it.name}
                 </div>
-              )}
+                {it.categoryLabel && (
+                  <div className="font-mono text-[9.5px] tracking-[0.04em] text-muted-foreground uppercase">
+                    {it.categoryLabel}
+                  </div>
+                )}
+              </button>
             </div>
           )
         })}
@@ -139,15 +144,15 @@ export function ResourceGrid({
             thumb={
               renderSpritePreview?.(s) ?? (
                 <div className="grid grid-cols-4 border border-border" style={CHECKER}>
-                  {s.previewSeeds.slice(0, 8).map((seed, i) => (
-                    <div key={i} className="grid size-7 place-items-center">
+                  {s.previewSeeds.slice(0, 8).map((seed) => (
+                    <div key={seed} className="grid size-7 place-items-center">
                       <PlaceholderGlyph size={16} seed={seed} />
                     </div>
                   ))}
                 </div>
               )
             }
-            title={<span className="font-mono text-[12.5px] font-medium">{s.name}</span>}
+            title={<span className="font-mono text-[13px] font-medium">{s.name}</span>}
             status={s.status}
             meta={s.metaParts}
           />
@@ -195,8 +200,9 @@ function ResourceCard({
   onContextMenu: (e: React.MouseEvent) => void
 }) {
   return (
-    <div
-      className="flex cursor-pointer flex-col border border-border bg-background transition-all hover:border-primary"
+    <button
+      type="button"
+      className="flex cursor-pointer flex-col border border-border bg-background text-left transition-all hover:border-primary"
       onClick={onOpen}
       onContextMenu={onContextMenu}
     >
@@ -216,13 +222,13 @@ function ResourceCard({
         </div>
         <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
           {meta.map((part, i) => (
-            <span key={i} className="flex items-center gap-1.5">
+            <span key={part} className="flex items-center gap-1.5">
               {i > 0 && <span className="opacity-50">·</span>}
               {part}
             </span>
           ))}
         </div>
       </div>
-    </div>
+    </button>
   )
 }

@@ -1,13 +1,13 @@
+export { DEFAULT_RESOURCE_GRID_LABELS } from "./defaults"
+export type { ResourceGridLabels } from "./labels"
 export { ResourceGrid } from "./ResourceGrid"
 export type {
-  ResourceTab,
   FontFamilyKind,
-  ResourceStatus,
-  ResourceIconItem,
-  ResourceSpriteItem,
   ResourceFontItem,
   ResourceGridItem,
   ResourceGridProps,
+  ResourceIconItem,
+  ResourceSpriteItem,
+  ResourceStatus,
+  ResourceTab,
 } from "./types"
-export { DEFAULT_RESOURCE_GRID_LABELS } from "./defaults"
-export type { ResourceGridLabels } from "./labels"

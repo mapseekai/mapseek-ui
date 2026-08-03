@@ -1,0 +1,57 @@
+---
+title: "Layout"
+registryName: layout
+category: block
+stability: stable
+showcase: layout
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Layout 是样式编辑器使用的一组布局原子，包括 Block、Collapser、Fieldset 和 ScrollContainer。它们只处理编辑器表单的间距、标签列、折叠图标和滚动边界，不包含地图业务状态。
+
+## 安装
+
+<RegistryInstall registryName="layout" />
+
+## 导入
+
+```tsx
+import {
+  Block,
+  Collapser,
+  Fieldset,
+  ScrollContainer,
+  type BlockProps,
+  type CollapserProps,
+  type FieldsetProps,
+  type ScrollContainerProps,
+} from "@/registry/blocks/layout"
+```
+
+## 编辑器布局原子
+
+<ShowcaseDemo registryName="layout" title="编辑器布局原子" description="示例展示 Block 三种布局、Collapser 受控折叠按钮和 ScrollContainer 溢出滚动。" minHeight={460} />
+
+## 用法
+
+用 `Fieldset` 包裹一组属性，用 `Block` 对齐 label、action 和内容，用 `Collapser` 显示折叠方向，用 `ScrollContainer` 给固定高度区域提供纵向滚动。它们可以和 registry 的 Input、Select、Slider 或业务表单混用。
+
+## 公开导出与 Props
+
+导出 `Block`、`Collapser`、`Fieldset`、`ScrollContainer` 以及对应 props 类型。`Block` 支持 `inline`、`wideMode`、`label` 和 `action`；`Collapser` 接收 `isCollapsed`；`Fieldset` 接收 `label`；`ScrollContainer` 接收标准容器属性和 `className`。
+
+## 受控状态
+
+这些原子不保存业务状态。示例中折叠状态保存在外层按钮里，再传给 `Collapser`。真实编辑器应把字段值、折叠组状态和滚动位置分别放在拥有它们的调用方层级。
+
+## 无障碍
+
+`Block` 的 `label` 可以是文本或节点；传入表单控件时仍应使用可关联的 label 或可访问名称。`Collapser` 只是图标，放在按钮中时按钮需要清晰文本或 `aria-label`。滚动区域高度要明确，避免键盘焦点进入不可见内容。
+
+## 依赖
+
+<RegistryDependencies registryName="layout" />
+

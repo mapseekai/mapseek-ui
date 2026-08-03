@@ -1,4 +1,5 @@
 import { join } from "node:path"
+import { pathToFileURL } from "node:url"
 import { collectDocs, type ParsedDoc } from "./docs-check-utils"
 import type { ValidationIssue } from "./registry-model"
 
@@ -7,7 +8,7 @@ export type LocalizedDocs = {
   readonly en: ReadonlyMap<string, ParsedDoc>
 }
 
-const parityFields = ["id", "slug", "registryName", "category", "stability", "examples"] as const
+const parityFields = ["registryName", "category", "stability", "showcase"] as const
 
 function sameValue(left: unknown, right: unknown): boolean {
   if (Array.isArray(left) && Array.isArray(right))
@@ -16,9 +17,10 @@ function sameValue(left: unknown, right: unknown): boolean {
 }
 
 export async function collectLocalizedDocs(root: string): Promise<LocalizedDocs> {
+  const contentRoot = join(root, "content/docs")
   return {
-    zh: await collectDocs(join(root, "docs")),
-    en: await collectDocs(join(root, "i18n/en/docusaurus-plugin-content-docs/current")),
+    zh: await collectDocs(contentRoot, "zh"),
+    en: await collectDocs(contentRoot, "en"),
   }
 }
 
@@ -52,4 +54,4 @@ async function main(): Promise<void> {
   if (issues.length > 0) process.exitCode = 1
 }
 
-if (import.meta.main) await main()
+if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) await main()

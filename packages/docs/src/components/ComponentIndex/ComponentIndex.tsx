@@ -1,5 +1,7 @@
-import Link from "@docusaurus/Link"
-import useGlobalData from "@docusaurus/useGlobalData"
+"use client"
+
+import Link from "next/link"
+import { useParams } from "next/navigation"
 import { useState } from "react"
 import { getRegistryDocItems, type RegistryDocItem } from "../RegistryItem/registry-data"
 import styles from "./styles.module.css"
@@ -8,21 +10,6 @@ export type ComponentIndexProps = {
   readonly category: RegistryDocItem["category"]
   readonly searchLabel: string
   readonly emptyLabel: string
-}
-
-type DocsGlobalData = {
-  readonly versions?: readonly {
-    readonly name: string
-    readonly docs?: readonly {
-      readonly path: string
-    }[]
-  }[]
-}
-
-type GlobalData = {
-  readonly "docusaurus-plugin-content-docs"?: {
-    readonly default?: DocsGlobalData
-  }
 }
 
 function normalize(value: string): string {
@@ -34,36 +21,19 @@ function matchesQuery(item: RegistryDocItem, query: string): boolean {
   return [item.title, item.name, item.description].some((value) => normalize(value).includes(query))
 }
 
-function routePatternForCategory(category: RegistryDocItem["category"]): RegExp {
-  return category === "block"
-    ? /^\/(?:en\/)?blocks\/([^/]+)$/u
-    : /^\/(?:en\/)?components\/([^/]+)$/u
-}
-
-function getRoutableRegistryNames(globalData: GlobalData, category: RegistryDocItem["category"]) {
-  const docsData = globalData["docusaurus-plugin-content-docs"]?.default
-  const current =
-    docsData?.versions?.find((version) => version.name === "current") ?? docsData?.versions?.[0]
-  const routePattern = routePatternForCategory(category)
-
-  return new Map(
-    (current?.docs ?? [])
-      .map((doc) => {
-        const match = routePattern.exec(doc.path)
-        return match ? [match[1], doc.path] : undefined
-      })
-      .filter((entry): entry is [string, string] => entry !== undefined),
-  )
+function hrefForItem(category: RegistryDocItem["category"], name: string, locale: "en" | "zh-CN") {
+  const prefix = locale === "en" ? "/en" : ""
+  const section = category === "block" ? "blocks" : "components"
+  return `${prefix}/${section}/${name}`
 }
 
 export function ComponentIndex({ category, searchLabel, emptyLabel }: ComponentIndexProps) {
-  const globalData = useGlobalData() as GlobalData
+  const params = useParams()
+  const segs = (params.slug as string[] | undefined) ?? []
+  const locale = segs[0] === "en" ? "en" : "zh-CN"
   const [query, setQuery] = useState("")
-  const routableNames = getRoutableRegistryNames(globalData, category)
   const normalizedQuery = normalize(query)
-  const items = getRegistryDocItems(category).filter(
-    (item) => routableNames.has(item.name) && matchesQuery(item, normalizedQuery),
-  )
+  const items = getRegistryDocItems(category).filter((item) => matchesQuery(item, normalizedQuery))
 
   return (
     <section className={styles.index} data-component-index={category}>
@@ -84,7 +54,7 @@ export function ComponentIndex({ category, searchLabel, emptyLabel }: ComponentI
               <Link
                 className={styles.card}
                 data-component-card={item.name}
-                to={routableNames.get(item.name) ?? "#"}
+                href={hrefForItem(category, item.name, locale)}
               >
                 <span className={styles.title}>{item.title}</span>
                 <span className={styles.description}>{item.description}</span>

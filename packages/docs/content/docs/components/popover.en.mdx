@@ -1,0 +1,48 @@
+---
+title: "Popover"
+registryName: popover
+category: primitive
+stability: stable
+showcase: popover
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Popover renders actionable or readable floating content such as layer metadata, local settings, and short contextual details.
+
+## Installation
+
+<RegistryInstall registryName="popover" />
+
+## Import
+
+```tsx
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/registry/ui/popover"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="popover" demo="overview" title="Contextual floating content" description="Covers basic content, side, alignment, and controlled close while keeping portal content inside the viewport." minHeight={440} />
+
+## Exports
+
+`popover.tsx` exports `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverHeader`, `PopoverTitle`, and `PopoverDescription`.
+
+## States
+
+Uncontrolled mode lets the trigger manage open state; controlled mode uses `open/onOpenChange`. Use `side`, `align`, and offsets for placement.
+
+## Accessibility
+
+Triggers need clear names. Put actionable content in Popover rather than Tooltip; Escape close should return focus to the trigger.
+
+## Dependencies
+
+<RegistryDependencies registryName="popover" />
+

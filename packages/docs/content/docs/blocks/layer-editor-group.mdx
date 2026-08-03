@@ -1,0 +1,52 @@
+---
+title: "LayerEditorGroup"
+registryName: layer-editor-group
+category: block
+stability: stable
+showcase: layer-editor-group
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+LayerEditorGroup 是样式编辑器中的 sticky 分组容器。它负责 Accordion 分组、图标标题、sticky header 和滚动结构；每个分组里的表单、JSON、过滤器和业务状态都由调用方传入。
+
+## 安装
+
+<RegistryInstall registryName="layer-editor-group" />
+
+## 导入
+
+```tsx
+import {
+  LayerEditorGroup,
+  type LayerEditorGroupProps,
+  type LayerEditorGroupSection,
+} from "@/registry/blocks/layer-editor-group"
+```
+
+## Sticky 分组编辑器
+
+<ShowcaseDemo registryName="layer-editor-group" title="Sticky 分组编辑器" description="示例展示图层、绘制属性、布局属性、过滤器和 JSON 五个分组。" minHeight={520} />
+
+## 用法
+
+构造 `sections` 数组，每个 section 提供稳定 `id`、标题、可选图标和 `children`。把高度和滚动边界放在外层容器上，让 sticky header 在组件内部按顺序堆叠。分组内容可以是任何 React 节点。
+
+## 公开导出与 Props
+
+导出 `LayerEditorGroup`、`LayerEditorGroupProps` 和 `LayerEditorGroupSection`。关键 props 是 `sections`、`defaultOpenIds`、`headerHeight`、`stickyOffset`、`className`、`itemClassName`、`headerClassName`、`triggerClassName` 和 `contentClassName`。
+
+## 受控状态
+
+这个组件不拥有字段值。调用方在 section children 内放置受控输入、JSON 查看器或过滤器编辑器，并自行处理变更。`defaultOpenIds` 只设置初始展开项；如果需要跨路由记忆展开状态，应在外层保存并重建 section 结构。
+
+## 无障碍
+
+每个 section 标题会成为 Accordion trigger 的可读文本。图标只是视觉辅助，不替代标题。传入复杂 children 时继续使用可读 label、原生输入和明确按钮文案；长内容应放在有滚动边界的外层区域。
+
+## 依赖
+
+<RegistryDependencies registryName="layer-editor-group" />
+

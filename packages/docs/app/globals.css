@@ -1,0 +1,153 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "./theme.generated.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@source "../../../../registry/**/*.{ts,tsx}";
+@source "../../../../showcase/src/showcases/**/*.{ts,tsx}";
+@source "../src/**/*.{ts,tsx}";
+@source "../content/**/*.{md,mdx}";
+
+/* Map Mapseek tokens onto the fumadocs-ui chrome palette */
+@theme inline {
+  --color-fd-background: var(--background);
+  --color-fd-foreground: var(--foreground);
+  --color-fd-muted: var(--muted);
+  --color-fd-muted-foreground: var(--muted-foreground);
+  --color-fd-popover: var(--popover);
+  --color-fd-popover-foreground: var(--popover-foreground);
+  --color-fd-card: var(--card);
+  --color-fd-card-foreground: var(--card-foreground);
+  --color-fd-border: var(--border);
+  --color-fd-primary: var(--primary);
+  --color-fd-primary-foreground: var(--primary-foreground);
+  --color-fd-secondary: var(--secondary);
+  --color-fd-secondary-foreground: var(--secondary-foreground);
+  --color-fd-accent: var(--accent);
+  --color-fd-accent-foreground: var(--accent-foreground);
+  --color-fd-ring: var(--ring);
+}
+
+@layer base {
+  [data-showcase-root] *,
+  [data-showcase-root] *::before,
+  [data-showcase-root] *::after,
+  [data-slot],
+  [data-slot]::before,
+  [data-slot]::after,
+  [data-slot] *,
+  [data-slot] *::before,
+  [data-slot] *::after {
+    border: 0 solid;
+    border-color: var(--border);
+    outline-color: color-mix(in oklch, var(--ring) 50%, transparent);
+  }
+
+  [data-showcase-root] button,
+  [data-showcase-root] input,
+  [data-showcase-root] textarea,
+  [data-showcase-root] select,
+  [data-slot]:where(button, input, textarea, select),
+  [data-slot] :where(button, input, textarea, select) {
+    margin: 0;
+    border: 0 solid;
+    padding: 0;
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+  }
+
+  [data-showcase-root] button,
+  [data-showcase-root] input:where([type="button"], [type="reset"], [type="submit"]),
+  [data-slot]:where(button, input[type="button"], input[type="reset"], input[type="submit"]),
+  [data-slot] :where(button, input[type="button"], input[type="reset"], input[type="submit"]) {
+    appearance: button;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    letter-spacing: 0;
+  }
+}
+
+[data-showcase-root] :where(ol, ul, menu),
+[data-slot]:where(ol, ul, menu),
+[data-slot] :where(ol, ul, menu) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-showcase-root] :where(h1, h2, h3, h4, h5, h6, p),
+[data-slot]:where(h1, h2, h3, h4, h5, h6, p),
+[data-slot] :where(h1, h2, h3, h4, h5, h6, p) {
+  margin: 0;
+}
+
+/* Long unbreakable component names must wrap instead of overflowing mobile. */
+article :is(h1, h2) {
+  overflow-wrap: anywhere;
+}
+
+/* Keep every documentation command block flat and consistently outlined. */
+article figure.shiki {
+  border-width: 1px;
+  box-shadow: none;
+}
+
+article figure.shiki button[data-checked] {
+  color: var(--primary);
+}
+
+article > div[class~="@container"] > a {
+  border-width: 1px;
+}
+
+article > div[class~="@container"] > a:is(:hover, :focus-visible) {
+  border-color: var(--primary);
+}
+
+[data-showcase-root] table,
+[data-slot]:where(table),
+[data-slot] table {
+  display: table;
+  margin: 0;
+  overflow: visible;
+  border-collapse: collapse;
+  border-color: inherit;
+  text-indent: 0;
+}
+
+[data-showcase-root] [data-slot="table-container"] > [data-slot="table"] {
+  border: 0;
+}
+
+[data-showcase-root] pre,
+[data-slot]:where(pre),
+[data-slot] pre {
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+[data-slot="pagination-link"] {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dark {
+  color-scheme: dark;
+}

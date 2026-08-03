@@ -1,3 +1,4 @@
+import { spawn } from "node:child_process"
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { dirname, join } from "node:path"
@@ -8,21 +9,9 @@ import type { RegistryItem } from "../registry-model"
 let fixtureRoot: string
 
 const catalog: readonly RegistryItem[] = [
-  {
-    name: "button",
-    type: "registry:ui",
-    files: [],
-  },
-  {
-    name: "theme",
-    type: "registry:theme",
-    files: [],
-  },
+  { name: "button", type: "registry:ui", files: [] },
+  { name: "theme", type: "registry:theme", files: [] },
 ]
-
-const buttonExamples = ["button/basic", "button/variants", "button/sizes"] as const
-const dialogExamples = ["dialog/basic", "dialog/confirmation", "dialog/long-content"] as const
-const layerPanelExamples = ["layer-panel/basic", "layer-panel/groups"] as const
 
 async function writeFixture(path: string, content: string): Promise<void> {
   const target = join(fixtureRoot, path)
@@ -30,134 +19,83 @@ async function writeFixture(path: string, content: string): Promise<void> {
   await writeFile(target, content)
 }
 
-async function runCli(
-  repoRoot: string,
-  docsRoot: string,
-): Promise<{
-  readonly exitCode: number
-  readonly stdout: string
-}> {
-  const process = Bun.spawn(["bun", "scripts/check-docs-examples.ts", repoRoot, docsRoot], {
-    cwd: join(import.meta.dir, "../.."),
-    stdout: "pipe",
-    stderr: "pipe",
-  })
-  const [stdout, stderr, exitCode] = await Promise.all([
-    new Response(process.stdout).text(),
-    new Response(process.stderr).text(),
-    process.exited,
-  ])
-  expect(stderr).toBe("")
-  return { exitCode, stdout }
-}
-
-function doc(examples: readonly string[] = buttonExamples, registryName = "button"): string {
+function doc(showcase = "button", registryName = "button"): string {
   return [
     "---",
-    "id: button",
-    "slug: /components/button",
+    "title: Button",
     `registryName: ${registryName}`,
     "category: primitive",
     "stability: stable",
-    "examples:",
-    ...examples.map((example) => `  - ${example}`),
+    `showcase: ${showcase}`,
     "---",
     "# Button",
   ].join("\n")
 }
 
-function guideDoc(id = "intro"): string {
+function guideDoc(): string {
   return [
     "---",
-    `id: ${id}`,
-    "slug: /",
+    "title: Intro",
     "registryName: theme",
     "category: primitive",
     "stability: stable",
-    "examples: []",
+    "showcase: none",
     "---",
     "# Intro",
   ].join("\n")
 }
 
-function dialogDoc(examples: readonly string[] = dialogExamples): string {
-  return [
-    "---",
-    "id: dialog",
-    "slug: /components/dialog",
-    "registryName: dialog",
-    "category: primitive",
-    "stability: stable",
-    "examples:",
-    ...examples.map((example) => `  - ${example}`),
-    "---",
-    "# Dialog",
-  ].join("\n")
-}
-
-function layerPanelDoc(examples: readonly string[] = layerPanelExamples): string {
-  return [
-    "---",
-    "id: layer-panel",
-    "slug: /blocks/layer-panel",
-    "registryName: layer-panel",
-    "category: block",
-    "stability: stable",
-    "examples:",
-    ...examples.map((example) => `  - ${example}`),
-    "---",
-    "# LayerPanel",
-  ].join("\n")
-}
-
 async function writeLocalizedDocs(source = doc()): Promise<void> {
-  await writeFixture("docs/components/button.mdx", source)
-  await writeFixture("i18n/en/docusaurus-plugin-content-docs/current/components/button.mdx", source)
+  await writeFixture("content/docs/components/button.mdx", source)
+  await writeFixture("content/docs/components/button.en.mdx", source)
+}
+
+async function writeShowcaseCatalog(names: readonly string[]): Promise<void> {
+  const entries = names.map((name) => `  "${name}": ButtonShowcaseSource,`).join("\n")
+  await writeFixture(
+    "src/components/ShowcaseDemo/source-catalog.generated.ts",
+    `export const showcaseSources = {\n${entries}\n}\n`,
+  )
 }
 
 beforeEach(async () => {
-  fixtureRoot = await mkdtemp(join(tmpdir(), "mapseek-docs-examples-"))
+  fixtureRoot = await mkdtemp(join(tmpdir(), "mapseek-docs-showcase-"))
 })
 
 afterEach(async () => rm(fixtureRoot, { recursive: true, force: true }))
 
-it("accepts localized docs with an existing example and valid registry item", async () => {
+it("accepts bilingual docs mapped to an existing Showcase", async () => {
   await writeLocalizedDocs()
-  await writeFixture("src/examples/button/basic.tsx", "export function ButtonBasicDemo() {}")
-  await writeFixture("src/examples/button/variants.tsx", "export function ButtonVariantsDemo() {}")
-  await writeFixture("src/examples/button/sizes.tsx", "export function ButtonSizesDemo() {}")
+  await writeShowcaseCatalog(["button"])
 
   expect(await validateExampleCoverage(fixtureRoot, catalog)).toEqual([])
 })
 
-it("reports declared examples without source files", async () => {
+it("reports components missing from the Showcase source catalog", async () => {
   await writeLocalizedDocs()
 
   expect(await validateExampleCoverage(fixtureRoot, catalog)).toContainEqual({
-    code: "missing-example",
-    item: "button",
-    detail: "button/basic",
+    code: "missing-showcase",
+    item: "components/button.mdx",
+    detail: "button",
   })
 })
 
-it("reports examples declared only by the English page without source files", async () => {
-  await writeFixture("docs/components/button.mdx", doc(["button/basic"]))
-  await writeFixture(
-    "i18n/en/docusaurus-plugin-content-docs/current/components/button.mdx",
-    doc(["button/missing-english"]),
-  )
-  await writeFixture("src/examples/button/basic.tsx", "export function BasicButtonDemo() {}")
+it("reports docs whose Showcase metadata does not match the registry name", async () => {
+  await writeLocalizedDocs(doc("other"))
+  await writeShowcaseCatalog(["button"])
 
   expect(await validateExampleCoverage(fixtureRoot, catalog)).toContainEqual({
-    code: "missing-example",
-    item: "button",
-    detail: "button/missing-english",
+    code: "metadata-mismatch",
+    item: "components/button.mdx",
+    detail: "showcase",
   })
 })
 
-it("reports missing localized docs for required migrated registry items", async () => {
-  await writeFixture("docs/intro.mdx", guideDoc())
-  await writeFixture("i18n/en/docusaurus-plugin-content-docs/current/intro.mdx", guideDoc())
+it("reports missing localized docs for published registry items", async () => {
+  await writeFixture("content/docs/intro.mdx", guideDoc())
+  await writeFixture("content/docs/intro.en.mdx", guideDoc())
+  await writeShowcaseCatalog(["button"])
 
   expect(await validateExampleCoverage(fixtureRoot, catalog)).toContainEqual({
     code: "registry-doc-count",
@@ -166,107 +104,28 @@ it("reports missing localized docs for required migrated registry items", async 
   })
 })
 
-it("reports Button pages that omit a required pilot example id", async () => {
-  await writeLocalizedDocs(doc(["button/basic", "button/variants"]))
-  await writeFixture("src/examples/button/basic.tsx", "export function ButtonBasicDemo() {}")
-  await writeFixture("src/examples/button/variants.tsx", "export function ButtonVariantsDemo() {}")
-
-  expect(await validateExampleCoverage(fixtureRoot, catalog)).toContainEqual({
-    code: "missing-required-example",
-    item: "button",
-    detail: "button/sizes",
-  })
-})
-
-it("reports Dialog pages that omit a required portal pilot example id", async () => {
-  const dialogCatalog: readonly RegistryItem[] = [
-    {
-      name: "dialog",
-      type: "registry:ui",
-      files: [],
-    },
-  ]
-  await writeFixture(
-    "docs/components/dialog.mdx",
-    dialogDoc(["dialog/basic", "dialog/confirmation"]),
-  )
-  await writeFixture(
-    "i18n/en/docusaurus-plugin-content-docs/current/components/dialog.mdx",
-    dialogDoc(["dialog/basic", "dialog/confirmation"]),
-  )
-  await writeFixture("src/examples/dialog/basic.tsx", "export function DialogBasicDemo() {}")
-  await writeFixture(
-    "src/examples/dialog/confirmation.tsx",
-    "export function DialogConfirmationDemo() {}",
-  )
-
-  expect(await validateExampleCoverage(fixtureRoot, dialogCatalog)).toContainEqual({
-    code: "missing-required-example",
-    item: "dialog",
-    detail: "dialog/long-content",
-  })
-})
-
-it("reports LayerPanel pages that omit a required complex-block pilot example id", async () => {
-  const layerPanelCatalog: readonly RegistryItem[] = [
-    {
-      name: "layer-panel",
-      type: "registry:block",
-      files: [],
-    },
-  ]
-  await writeFixture("docs/blocks/layer-panel.mdx", layerPanelDoc(["layer-panel/basic"]))
-  await writeFixture(
-    "i18n/en/docusaurus-plugin-content-docs/current/blocks/layer-panel.mdx",
-    layerPanelDoc(["layer-panel/basic"]),
-  )
-  await writeFixture(
-    "src/examples/layer-panel/basic.tsx",
-    "export function LayerPanelBasicDemo() {}",
-  )
-
-  expect(await validateExampleCoverage(fixtureRoot, layerPanelCatalog)).toContainEqual({
-    code: "missing-required-example",
-    item: "layer-panel",
-    detail: "layer-panel/groups",
-  })
-})
-
-it("reports pages without examples and unknown registry names", async () => {
-  await writeLocalizedDocs(doc([], "missing"))
-
-  const issues = await validateExampleCoverage(fixtureRoot, catalog)
-
-  expect(issues).toContainEqual({
-    code: "missing-examples",
-    item: "button",
-    detail: "examples",
-  })
-  expect(issues).toContainEqual({
-    code: "unknown-registry-name",
-    item: "button",
-    detail: "missing",
-  })
-})
-
-it("allows localized guide pages without component examples", async () => {
+it("allows guide pages to declare that they have no Showcase", async () => {
   await writeLocalizedDocs()
-  await writeFixture("docs/intro.mdx", guideDoc())
-  await writeFixture("i18n/en/docusaurus-plugin-content-docs/current/intro.mdx", guideDoc())
-  await writeFixture("docs/getting-started/install.mdx", guideDoc("getting-started-install"))
-  await writeFixture(
-    "i18n/en/docusaurus-plugin-content-docs/current/getting-started/install.mdx",
-    guideDoc("getting-started-install"),
-  )
-  await writeFixture("src/examples/button/basic.tsx", "export function ButtonBasicDemo() {}")
-  await writeFixture("src/examples/button/variants.tsx", "export function ButtonVariantsDemo() {}")
-  await writeFixture("src/examples/button/sizes.tsx", "export function ButtonSizesDemo() {}")
+  await writeFixture("content/docs/intro.mdx", guideDoc())
+  await writeFixture("content/docs/intro.en.mdx", guideDoc())
+  await writeShowcaseCatalog(["button"])
 
   expect(await validateExampleCoverage(fixtureRoot, catalog)).toEqual([])
 })
 
-it("prints one issue per line and exits non-zero from the CLI", async () => {
-  const repoRoot = await mkdtemp(join(tmpdir(), "mapseek-docs-examples-repo-"))
+it("reports unknown registry names independently of Showcase coverage", async () => {
+  await writeLocalizedDocs(doc("missing", "missing"))
+  await writeShowcaseCatalog(["button"])
+
+  expect(await validateExampleCoverage(fixtureRoot, catalog)).toContainEqual({
+    code: "unknown-registry-name",
+    item: "components/button.mdx",
+    detail: "missing",
+  })
+})
+
+it("prints Showcase coverage failures and exits non-zero from the CLI", async () => {
+  const repoRoot = await mkdtemp(join(tmpdir(), "mapseek-docs-showcase-repo-"))
   try {
     await writeLocalizedDocs()
     await mkdir(join(repoRoot, "registry/ui"), { recursive: true })
@@ -279,13 +138,34 @@ it("prints one issue per line and exits non-zero from the CLI", async () => {
       JSON.stringify({ items: [{ name: "button", type: "registry:ui", files: [] }] }),
     )
 
-    const result = await runCli(repoRoot, fixtureRoot)
+    const child = spawn("tsx", ["scripts/check-docs-examples.ts", repoRoot, fixtureRoot], {
+      cwd: join(import.meta.dirname, "../.."),
+      stdio: ["ignore", "pipe", "pipe"],
+    })
+    const output = await new Promise<{ stdout: string; stderr: string; exitCode: number }>(
+      (resolve, reject) => {
+        let stdout = ""
+        let stderr = ""
+        child.stdout.setEncoding("utf8").on("data", (chunk) => (stdout += chunk))
+        child.stderr.setEncoding("utf8").on("data", (chunk) => (stderr += chunk))
+        child.once("error", reject)
+        child.once("exit", (exitCode) => resolve({ stdout, stderr, exitCode: exitCode ?? 1 }))
+      },
+    )
 
-    expect(result.exitCode).toBe(1)
-    expect(result.stdout.trim().split("\n")).toEqual([
-      JSON.stringify({ code: "missing-example", item: "button", detail: "button/basic" }),
-      JSON.stringify({ code: "missing-example", item: "button", detail: "button/variants" }),
-      JSON.stringify({ code: "missing-example", item: "button", detail: "button/sizes" }),
+    expect(output.stderr).toBe("")
+    expect(output.exitCode).toBe(1)
+    expect(output.stdout.trim().split("\n")).toEqual([
+      JSON.stringify({
+        code: "missing-showcase",
+        item: "components/button.mdx",
+        detail: "button",
+      }),
+      JSON.stringify({
+        code: "missing-showcase",
+        item: "components/button.en.mdx",
+        detail: "button",
+      }),
     ])
   } finally {
     await rm(repoRoot, { recursive: true, force: true })

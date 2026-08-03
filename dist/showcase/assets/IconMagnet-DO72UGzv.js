@@ -1,0 +1,1 @@
+import{t as e}from"./createReactComponent-5gFygJ4K.js";var t=e(`outline`,`magnet`,`Magnet`,[[`path`,{d:`M4 13v-8a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v8a2 2 0 0 0 6 0v-8a2 2 0 0 1 2 -2h1a2 2 0 0 1 2 2v8a8 8 0 0 1 -16 0`,key:`svg-0`}],[`path`,{d:`M4 8l5 0`,key:`svg-1`}],[`path`,{d:`M15 8l4 0`,key:`svg-2`}]]);export{t};

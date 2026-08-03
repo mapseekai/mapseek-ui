@@ -1,9 +1,9 @@
-import React, { useMemo } from "react"
+import { IconCheck, IconChevronRight, IconCopy } from "@tabler/icons-react"
 import type { JSX } from "react"
+import React, { useMemo } from "react"
 import { cn } from "@/registry/lib/utils"
 import { Button } from "@/registry/ui/button"
 import { Collapsible, CollapsibleContent } from "@/registry/ui/collapsible"
-import { IconCheck, IconChevronRight, IconCopy } from "@tabler/icons-react"
 
 interface JsonViewerProps {
   data: Record<string, unknown>
@@ -65,11 +65,9 @@ const isPlainObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value)
 
 const calculateLineCount = (data: unknown, expandedPaths: Set<string>, path = "root"): number => {
-  const dataType = getDataType(data)
-
-  if (dataType === "object") {
+  if (isPlainObject(data)) {
     if (!expandedPaths.has(path)) return 1
-    const entries = Object.entries(data as Record<string, unknown>)
+    const entries = Object.entries(data)
     if (entries.length === 0) return 2
     return (
       2 +
@@ -80,13 +78,12 @@ const calculateLineCount = (data: unknown, expandedPaths: Set<string>, path = "r
     )
   }
 
-  if (dataType === "array") {
+  if (Array.isArray(data)) {
     if (!expandedPaths.has(path)) return 1
-    const items = data as unknown[]
-    if (items.length === 0) return 2
+    if (data.length === 0) return 2
     return (
       2 +
-      items.reduce<number>(
+      data.reduce<number>(
         (acc, item, index) => acc + calculateLineCount(item, expandedPaths, `${path}[${index}]`),
         0,
       )
@@ -108,16 +105,18 @@ const generateAllPaths = (
   if (Array.isArray(data)) {
     paths.add(currentPath)
     data.forEach((item, index) => {
-      generateAllPaths(item, maxLevel, currentLevel + 1, `${currentPath}[${index}]`).forEach((p) =>
-        paths.add(p),
+      generateAllPaths(item, maxLevel, currentLevel + 1, `${currentPath}[${index}]`).forEach(
+        (p) => {
+          paths.add(p)
+        },
       )
     })
   } else if (isPlainObject(data)) {
     paths.add(currentPath)
     Object.entries(data).forEach(([key, value]) => {
-      generateAllPaths(value, maxLevel, currentLevel + 1, `${currentPath}.${key}`).forEach((p) =>
-        paths.add(p),
-      )
+      generateAllPaths(value, maxLevel, currentLevel + 1, `${currentPath}.${key}`).forEach((p) => {
+        paths.add(p)
+      })
     })
   }
   return paths
@@ -250,7 +249,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
               <LineNumbers lineCount={lineCount} />
             </div>
           )}
-          <code>
+          <code className="min-w-0 flex-1 rounded-none">
             <JsonNode
               data={data}
               path="root"
@@ -269,9 +268,9 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
 const LineNumbers: React.FC<{ lineCount: number }> = ({ lineCount }) => {
   return (
     <div className="mr-4 flex flex-col border-r border-border pr-4 text-right text-muted-foreground select-none">
-      {Array.from({ length: lineCount }, (_, i) => (
-        <div key={i} className="h-6 text-xs leading-6 tabular-nums opacity-50">
-          {i + 1}
+      {Array.from({ length: lineCount }, (_, i) => i + 1).map((lineNumber) => (
+        <div key={lineNumber} className="h-6 text-xs leading-6 tabular-nums opacity-50">
+          {lineNumber}
         </div>
       ))}
     </div>
@@ -304,10 +303,10 @@ const JsonNode: React.FC<JsonNodeProps> = ({
   const dataType = getDataType(data)
 
   let element: JSX.Element
-  if (dataType === "array") {
+  if (Array.isArray(data)) {
     element = (
       <JsonArray
-        data={data as unknown[]}
+        data={data}
         level={level}
         path={path}
         expandedPaths={expandedPaths}
@@ -318,10 +317,10 @@ const JsonNode: React.FC<JsonNodeProps> = ({
         collapseOn={collapseOn}
       />
     )
-  } else if (dataType === "object") {
+  } else if (isPlainObject(data)) {
     element = (
       <JsonObject
-        data={data as Record<string, unknown>}
+        data={data}
         level={level}
         path={path}
         expandedPaths={expandedPaths}
@@ -363,53 +362,57 @@ const CollapseTrigger: React.FC<{
   showComma?: boolean
   collapseOn?: "click" | "doubleClick"
   onToggle: () => void
-}> = ({ objectKey, isOpen, bracket, closeBracket, count, showComma, collapseOn, onToggle }) => (
-  <div
-    className={cn(
-      "group -ml-1 inline-flex h-6 w-full cursor-pointer items-center rounded-sm px-1 text-left leading-6 select-none",
-      isOpen && "hover:bg-muted-foreground/20",
-    )}
-    onDoubleClick={collapseOn === "doubleClick" ? onToggle : undefined}
-    onClick={collapseOn === "doubleClick" ? undefined : onToggle}
-  >
-    {objectKey && (
-      <span
-        className={cn(
-          "group inline-flex items-center text-purple-600 dark:text-purple-400",
-          bracket === "{" && "font-medium",
-        )}
-      >
-        {`'${objectKey}'`}
-        <span className="mx-1 text-muted-foreground">: </span>
-      </span>
-    )}
-    <Button
-      variant="ghost"
-      size="icon"
-      onClick={(e) => {
-        e.stopPropagation()
-        onToggle()
-      }}
-      className="h-4 w-4 p-0 text-muted-foreground hover:bg-transparent hover:text-foreground"
+}> = ({ objectKey, isOpen, bracket, closeBracket, count, showComma, collapseOn, onToggle }) => {
+  const handleKeyDown: React.KeyboardEventHandler<HTMLButtonElement> = (event) => {
+    if (collapseOn !== "doubleClick" || (event.key !== "Enter" && event.key !== " ")) {
+      return
+    }
+    event.preventDefault()
+    onToggle()
+  }
+
+  return (
+    <button
+      type="button"
+      className={cn(
+        "group -ml-1 inline-flex h-6 w-full cursor-pointer appearance-none items-center rounded-sm border-0 bg-transparent px-1 text-left font-[inherit] leading-6 select-none",
+        isOpen && "hover:bg-muted-foreground/20",
+      )}
+      onDoubleClick={collapseOn === "doubleClick" ? onToggle : undefined}
+      onClick={collapseOn === "doubleClick" ? undefined : onToggle}
+      onKeyDown={handleKeyDown}
     >
-      <IconChevronRight
-        size={14}
-        stroke={1.5}
-        className={cn("shrink-0 transition-transform", isOpen && "rotate-90")}
-      />
-    </Button>
-    <span className="text-muted-foreground">{bracket}</span>
-    {!isOpen && (
-      <>
-        <span className="text-muted-foreground">...</span>
-        <span className="text-muted-foreground">
-          {closeBracket} ({count} {count === 1 ? "item" : "items"})
+      {objectKey && (
+        <span
+          className={cn(
+            "group inline-flex items-center text-purple-600 dark:text-purple-400",
+            bracket === "{" && "font-medium",
+          )}
+        >
+          {`'${objectKey}'`}
+          <span className="mx-1 text-muted-foreground">: </span>
         </span>
-        {showComma && <span className="text-muted-foreground">,</span>}
-      </>
-    )}
-  </div>
-)
+      )}
+      <span className="inline-flex h-4 w-4 items-center justify-center p-0 text-muted-foreground group-hover:text-foreground">
+        <IconChevronRight
+          size={14}
+          stroke={1.5}
+          className={cn("shrink-0 transition-transform", isOpen && "rotate-90")}
+        />
+      </span>
+      <span className="text-muted-foreground">{bracket}</span>
+      {!isOpen && (
+        <>
+          <span className="text-muted-foreground">...</span>
+          <span className="text-muted-foreground">
+            {closeBracket} ({count} {count === 1 ? "item" : "items"})
+          </span>
+          {showComma && <span className="text-muted-foreground">,</span>}
+        </>
+      )}
+    </button>
+  )
+}
 
 const indentClass = (level: number, showColorIndent?: boolean): string =>
   cn(
@@ -444,7 +447,7 @@ const JsonObject: React.FC<{
   const isOpen = expandedPaths.has(path)
 
   return (
-    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)} asChild>
+    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)}>
       <div>
         <CollapseTrigger
           objectKey={objectKey}
@@ -541,7 +544,7 @@ const JsonArray: React.FC<{
   const isOpen = expandedPaths.has(path)
 
   return (
-    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)} asChild>
+    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)}>
       <div>
         <CollapseTrigger
           objectKey={objectKey}
@@ -563,7 +566,7 @@ const JsonArray: React.FC<{
 
               return (
                 <div
-                  key={index}
+                  key={childPath}
                   className={cn(
                     "group rounded-md",
                     !isChildCollapsible && "flex min-h-6 items-start",

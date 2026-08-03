@@ -1,9 +1,15 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest"
-import { mkdtemp, mkdir, rm, symlink, writeFile } from "node:fs/promises"
+import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { dirname, join } from "node:path"
+import { afterEach, beforeEach, describe, expect, it } from "vitest"
 import type { RegistryItem } from "../registry-model"
-import { assertGeneratedOutputMatchesCatalog, BASE_COMPONENTS, BLOCKS, loadCatalog, validateCatalog } from "../registry-model"
+import {
+  assertGeneratedOutputMatchesCatalog,
+  BASE_COMPONENTS,
+  BLOCKS,
+  loadCatalog,
+  validateCatalog,
+} from "../registry-model"
 import { assertCompleteInventory } from "../validate-registry"
 
 let fixtureRoot: string
@@ -35,18 +41,38 @@ async function codes(items: readonly RegistryItem[]) {
 }
 
 it("normalizes nested manifest file paths for validation", async () => {
-  await writeFixture("registry/ui/registry.json", JSON.stringify({ items: [{ name: "demo", type: "registry:ui", files: [{ path: "demo.tsx", type: "registry:ui" }] }] }))
-  await expect(loadCatalog(fixtureRoot)).resolves.toEqual([{
-    name: "demo",
-    type: "registry:ui",
-    files: [{ path: "registry/ui/demo.tsx", type: "registry:ui" }],
-  }])
+  await writeFixture(
+    "registry/ui/registry.json",
+    JSON.stringify({
+      items: [
+        { name: "demo", type: "registry:ui", files: [{ path: "demo.tsx", type: "registry:ui" }] },
+      ],
+    }),
+  )
+  await expect(loadCatalog(fixtureRoot)).resolves.toEqual([
+    {
+      name: "demo",
+      type: "registry:ui",
+      files: [{ path: "registry/ui/demo.tsx", type: "registry:ui" }],
+    },
+  ])
 })
 
 it("preserves absolute nested paths so validation rejects them", async () => {
   await writeFixture("registry/ui/demo.tsx", "export {}")
-  await writeFixture("registry/ui/registry.json", JSON.stringify({ items: [{ name: "demo", type: "registry:ui", files: [{ path: "/demo.tsx", type: "registry:ui" }] }] }))
-  expect((await validateCatalog(fixtureRoot, await loadCatalog(fixtureRoot))).some((issue) => issue.code === "repository-escape")).toBe(true)
+  await writeFixture(
+    "registry/ui/registry.json",
+    JSON.stringify({
+      items: [
+        { name: "demo", type: "registry:ui", files: [{ path: "/demo.tsx", type: "registry:ui" }] },
+      ],
+    }),
+  )
+  expect(
+    (await validateCatalog(fixtureRoot, await loadCatalog(fixtureRoot))).some(
+      (issue) => issue.code === "repository-escape",
+    ),
+  ).toBe(true)
 })
 
 describe("validateCatalog", () => {
@@ -59,21 +85,35 @@ describe("validateCatalog", () => {
   })
 
   it("rejects a missing namespaced dependency", async () => {
-    const issues = await validateCatalog(fixtureRoot, [item("demo", { registryDependencies: ["@mapseek/missing"] })])
-    expect(issues).toContainEqual({ code: "missing-registry-dependency", item: "demo", detail: "@mapseek/missing" })
+    const issues = await validateCatalog(fixtureRoot, [
+      item("demo", { registryDependencies: ["@mapseek/missing"] }),
+    ])
+    expect(issues).toContainEqual({
+      code: "missing-registry-dependency",
+      item: "demo",
+      detail: "@mapseek/missing",
+    })
   })
 
   it("accepts a forward registry dependency", async () => {
     await writeFixture("registry/ui/a.tsx", "export {}")
     await writeFixture("registry/ui/b.tsx", "export {}")
-    const issues = await validateCatalog(fixtureRoot, [item("a", { registryDependencies: ["@mapseek/b"] }), item("b")])
+    const issues = await validateCatalog(fixtureRoot, [
+      item("a", { registryDependencies: ["@mapseek/b"] }),
+      item("b"),
+    ])
     expect(issues.some((issue) => issue.code === "missing-registry-dependency")).toBe(false)
   })
 
   it("rejects dependency cycles", async () => {
     await writeFixture("registry/ui/a.tsx", "export {}")
     await writeFixture("registry/ui/b.tsx", "export {}")
-    expect(await codes([item("a", { registryDependencies: ["@mapseek/b"] }), item("b", { registryDependencies: ["@mapseek/a"] })])).toContain("dependency-cycle")
+    expect(
+      await codes([
+        item("a", { registryDependencies: ["@mapseek/b"] }),
+        item("b", { registryDependencies: ["@mapseek/a"] }),
+      ]),
+    ).toContain("dependency-cycle")
   })
 
   it("rejects undeclared bare imports", async () => {
@@ -82,7 +122,10 @@ describe("validateCatalog", () => {
   })
 
   it("accepts React as a host-provided dependency", async () => {
-    await writeFixture("registry/ui/demo.tsx", 'import * as React from "react"\nexport type Props = React.ComponentProps<"div">')
+    await writeFixture(
+      "registry/ui/demo.tsx",
+      'import * as React from "react"\nexport type Props = React.ComponentProps<"div">',
+    )
     expect(await codes([item("demo")])).not.toContain("undeclared-dependency")
   })
 
@@ -93,7 +136,14 @@ describe("validateCatalog", () => {
 
   it("rejects Han strings in ordinary Registry block source", async () => {
     await writeFixture("registry/blocks/demo.tsx", 'export const label = "关闭"')
-    expect(await codes([item("demo", { type: "registry:block", files: [{ path: "registry/blocks/demo.tsx", type: "registry:block" }] })])).toContain("unlocalized-string")
+    expect(
+      await codes([
+        item("demo", {
+          type: "registry:block",
+          files: [{ path: "registry/blocks/demo.tsx", type: "registry:block" }],
+        }),
+      ]),
+    ).toContain("unlocalized-string")
   })
 
   it("rejects workspace imports", async () => {
@@ -103,7 +153,9 @@ describe("validateCatalog", () => {
 
   it("rejects repository escapes", async () => {
     await writeFixture("registry/ui/demo.tsx", "export {}")
-    expect(await codes([item("demo", { files: [{ path: "../escape.ts", type: "registry:ui" }] })])).toContain("repository-escape")
+    expect(
+      await codes([item("demo", { files: [{ path: "../escape.ts", type: "registry:ui" }] })]),
+    ).toContain("repository-escape")
   })
 
   it("rejects source symlinks outside the repository", async () => {
@@ -123,13 +175,23 @@ describe("validateCatalog", () => {
   it("rejects target collisions", async () => {
     await writeFixture("registry/ui/a.tsx", "export {}")
     await writeFixture("registry/ui/b.tsx", "export {}")
-    expect(await codes([item("a"), item("b", { files: [{ path: "registry/ui/b.tsx", type: "registry:ui", target: "@ui/a.tsx" }] })])).toContain("target-collision")
+    expect(
+      await codes([
+        item("a"),
+        item("b", {
+          files: [{ path: "registry/ui/b.tsx", type: "registry:ui", target: "@ui/a.tsx" }],
+        }),
+      ]),
+    ).toContain("target-collision")
   })
 })
 
 describe("assertCompleteInventory", () => {
   it("rejects a base component with a block type", () => {
-    const catalog = [...BASE_COMPONENTS.map((name) => ({ name, type: "registry:ui", files: [] })), ...BLOCKS.map((name) => ({ name, type: "registry:block", files: [] }))]
+    const catalog = [
+      ...BASE_COMPONENTS.map((name) => ({ name, type: "registry:ui", files: [] })),
+      ...BLOCKS.map((name) => ({ name, type: "registry:block", files: [] })),
+    ]
     const button = catalog.find((entry) => entry.name === "button")
     if (!button) throw new Error("button is missing from the approved inventory")
     button.type = "registry:block"
@@ -137,7 +199,10 @@ describe("assertCompleteInventory", () => {
   })
 
   it("rejects a block with a UI type", () => {
-    const catalog = [...BASE_COMPONENTS.map((name) => ({ name, type: "registry:ui", files: [] })), ...BLOCKS.map((name) => ({ name, type: "registry:block", files: [] }))]
+    const catalog = [
+      ...BASE_COMPONENTS.map((name) => ({ name, type: "registry:ui", files: [] })),
+      ...BLOCKS.map((name) => ({ name, type: "registry:block", files: [] })),
+    ]
     const schemaForm = catalog.find((entry) => entry.name === "schema-form")
     if (!schemaForm) throw new Error("schema-form is missing from the approved inventory")
     schemaForm.type = "registry:ui"

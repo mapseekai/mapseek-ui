@@ -1,0 +1,53 @@
+---
+title: "LoadingScreen"
+registryName: loading-screen
+category: block
+stability: stable
+showcase: loading-screen
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+LoadingScreen 是全屏或容器内的加载占位，用于地图初始化、资源列表刷新和长任务等待。
+
+## 安装
+
+<RegistryInstall registryName="loading-screen" />
+
+## 导入
+
+```tsx
+import {
+  LoadingScreen,
+  DEFAULT_LOADING_SCREEN_LABELS,
+  type LoadingScreenLabels,
+  type LoadingScreenProps,
+} from "@/registry/blocks/loading-screen"
+```
+
+## 局部加载屏
+
+<ShowcaseDemo registryName="loading-screen" title="局部加载屏" description="示例复用同一个 TSX 模块作为预览和源码，覆盖原示例的核心状态与交互。" minHeight={420} />
+
+## 用法
+
+传 `text` 覆盖主文案，传 `description` 显示第二行；`fullscreen` 决定是否使用视口尺寸。
+
+## 公开导出与 Props
+
+导出 `LoadingScreen`、`LoadingScreenProps`、`LoadingScreenLabels` 和 `DEFAULT_LOADING_SCREEN_LABELS`。关键 props 是 `text`、`description`、`fullscreen`、`labels` 和 `className`。
+
+## 加载、空态、错误与状态
+
+这是 loading 分支组件；空态和错误应切换为对应 Empty 或错误面板，而不是继续显示 spinner。
+
+## 无障碍
+
+根节点使用 `role="status"` 和 `aria-live="polite"`，适合非阻塞状态更新。
+
+## 依赖
+
+<RegistryDependencies registryName="loading-screen" />
+

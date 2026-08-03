@@ -75,6 +75,15 @@ it("typechecks docs against real registry source aliases", async () => {
   })
 })
 
+it("scans the real registry and showcase sources for Tailwind utilities", async () => {
+  const globals = await readFile("packages/docs/app/globals.css", "utf8")
+
+  expect(globals).toContain('@source "../../../registry/**/*.{ts,tsx}";')
+  expect(globals).toContain('@source "../../../showcase/src/showcases/**/*.{ts,tsx}";')
+  expect(globals).not.toContain('@source "../../../../registry/')
+  expect(globals).not.toContain('@source "../../../../showcase/')
+})
+
 it("publishes installable registry artifacts and compiled theme utilities", async () => {
   await expect(access("public/r/button.json")).resolves.toBeUndefined()
 

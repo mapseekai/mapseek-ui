@@ -9,8 +9,8 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@source "../../../../registry/**/*.{ts,tsx}";
-@source "../../../../showcase/src/showcases/**/*.{ts,tsx}";
+@source "../../../registry/**/*.{ts,tsx}";
+@source "../../../showcase/src/showcases/**/*.{ts,tsx}";
 @source "../src/**/*.{ts,tsx}";
 @source "../content/**/*.{md,mdx}";
 

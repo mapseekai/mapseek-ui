@@ -1,3 +1,4 @@
+import { readFile } from "node:fs/promises"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 import { loadCatalog } from "../registry-model"
@@ -205,6 +206,23 @@ describe("input and selection primitive inventory", () => {
         ...inputAndSelectionDependencies[name],
       ])
       expect(item?.dependencies ?? []).toEqual(inputAndSelectionNpmDependencies[name])
+    }
+  })
+})
+
+describe("orientation-dependent primitive styles", () => {
+  it("uses the generated shadcn orientation variants", async () => {
+    const files = ["separator", "slider", "tabs", "toggle-group"]
+
+    for (const file of files) {
+      const source = await readFile(`${repoRoot}/registry/ui/${file}.tsx`, "utf8")
+
+      expect(source, `${file} must use shadcn orientation variants`).not.toContain(
+        "data-[orientation=",
+      )
+      expect(source, `${file} must include an orientation variant`).toMatch(
+        /(?:group-)?data-(?:horizontal|vertical)/,
+      )
     }
   })
 })

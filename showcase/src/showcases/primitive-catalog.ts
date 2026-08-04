@@ -8,6 +8,7 @@ export const primitiveShowcases = [
   primitive("badge", "Badge 徽标", () => import("./BadgeShowcase")),
   primitive("button", "Button 按钮", () => import("./ButtonShowcase")),
   primitive("copy-button", "Copy Button 复制按钮", () => import("./CopyButtonShowcase")),
+  primitive("calendar", "Calendar 日历", () => import("./CalendarShowcase")),
   primitive("card", "Card 卡片", () => import("./CardShowcase")),
   primitive("checkbox", "Checkbox 复选框", () => import("./CheckboxShowcase")),
   primitive("combobox", "Combobox 组合框", () => import("./ComboboxShowcase")),

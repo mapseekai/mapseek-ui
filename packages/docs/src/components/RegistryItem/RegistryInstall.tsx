@@ -86,6 +86,7 @@ export function RegistryInstall({ registryName, labels }: RegistryInstallProps) 
       <div className={styles.commandRow}>
         <code>{command}</code>
         <CopyButton
+          className={styles.copyButton}
           content={command}
           copiedLabel={installLabels.commandCopied}
           duration={1500}

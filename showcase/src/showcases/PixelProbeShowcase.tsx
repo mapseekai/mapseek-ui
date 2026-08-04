@@ -1,4 +1,4 @@
-import { type PixelField, PixelProbe, type PixelProbeLabels } from "@registry/blocks/pixel-probe"
+import { type PixelField, PixelProbe } from "@registry/blocks/pixel-probe"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -84,7 +84,7 @@ export function PixelProbeDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex w-full max-w-3xl flex-col gap-2">
       <button
         type="button"
         data-demo-action="pixel-probe-clear-selection"
@@ -100,13 +100,13 @@ export function PixelProbeDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         {empty ? (
           <div
             data-demo-empty="pixel-probe"
-            className="absolute top-4 right-4 w-[340px] border border-border bg-card p-3 font-mono text-xs text-muted-foreground shadow-[var(--shadow-map-float)]"
+            className="absolute top-4 right-4 w-[340px] border border-border bg-card p-3 font-mono text-xs text-muted-foreground"
           >
             {demoLabels.empty}
           </div>
         ) : (
           <PixelProbe
-            className="absolute top-4 right-4 max-h-[calc(100%-32px)] w-[340px] shadow-[var(--shadow-map-float)]"
+            className="absolute top-4 right-4 max-h-[calc(100%-32px)] w-[340px]"
             fields={demoLabels.fields.map((field) => ({ ...field }))}
             count={1}
             index={point}
@@ -133,7 +133,10 @@ export function PixelProbeDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           />
         )}
       </div>
-      <span data-demo-status="pixel-probe" className="font-mono text-xs text-muted-foreground">
+      <span
+        data-demo-status="pixel-probe"
+        className="self-end font-mono text-xs text-muted-foreground"
+      >
         {status}
       </span>
     </div>

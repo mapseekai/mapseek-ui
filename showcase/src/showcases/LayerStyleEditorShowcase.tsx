@@ -1,3 +1,4 @@
+import { JsonEditor } from "@registry/blocks/json-editor"
 import { LayerStyleEditor, type LayerStyleEditorTab } from "@registry/blocks/layer-style-editor"
 import { useState } from "react"
 import { buildLayerEditorSections } from "./layer-editor-sections"
@@ -41,10 +42,33 @@ const labels = {
   },
 }
 
+const initialStyleJson = {
+  id: "background",
+  type: "background",
+  paint: {
+    "background-color": "rgb(242,243,240)",
+  },
+}
+
 export function LayerStyleEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
   const [status, setStatus] = useState<string>(demoLabels.intro)
-  const sections = buildLayerEditorSections(locale)
+  const [styleJson, setStyleJson] = useState<unknown>(initialStyleJson)
+  const sections = buildLayerEditorSections(locale).map((section) =>
+    section.id === "json"
+      ? {
+          ...section,
+          children: (
+            <JsonEditor
+              value={styleJson}
+              onChange={setStyleJson}
+              ariaLabel={`${demoLabels.title} ${demoLabels.tabJson}`}
+              className="h-[360px] border-0"
+            />
+          ),
+        }
+      : section,
+  )
   const tabs: LayerStyleEditorTab[] = [
     {
       id: "style",

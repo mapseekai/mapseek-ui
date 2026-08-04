@@ -103,7 +103,7 @@
       "description": "Expandable content container.",
       "categories": ["layout"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
-      "dependencies": ["@radix-ui/react-collapsible"],
+      "dependencies": ["@base-ui/react"],
       "files": [
         {
           "path": "collapsible.tsx",
@@ -217,6 +217,22 @@
           "path": "tooltip.tsx",
           "type": "registry:ui",
           "target": "@ui/tooltip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "Date field calendar built on react-day-picker.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react", "date-fns", "react-day-picker"],
+      "files": [
+        {
+          "path": "calendar.tsx",
+          "type": "registry:ui",
+          "target": "@ui/calendar.tsx"
         }
       ]
     },

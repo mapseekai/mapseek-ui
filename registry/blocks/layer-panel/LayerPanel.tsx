@@ -134,8 +134,9 @@ function LayerPanelRoot({
         data-slot="layer-panel"
         data-collapsed={collapsed ? "true" : undefined}
         className={cn(
-          "flex max-h-full flex-col overflow-hidden border border-border bg-card text-[13px]",
+          "relative flex max-h-full flex-col overflow-hidden border border-border bg-card text-[13px]",
           className,
+          collapsed && "h-8",
         )}
       >
         {children}
@@ -522,7 +523,10 @@ function LayerPanelEmpty({
   return (
     <div
       data-slot="layer-panel-empty"
-      className={cn("flex flex-col items-center gap-2.5 px-3 py-8 text-center", className)}
+      className={cn(
+        "absolute inset-x-0 bottom-0 top-8 flex flex-col items-center justify-center gap-2.5 px-3 text-center",
+        className,
+      )}
     >
       {children}
     </div>

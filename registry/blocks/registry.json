@@ -52,7 +52,9 @@
       "type": "registry:block",
       "registryDependencies": [
         "@mapseek/button",
+        "@mapseek/calendar",
         "@mapseek/input",
+        "@mapseek/popover",
         "@mapseek/select",
         "@mapseek/tooltip",
         "@mapseek/utils"

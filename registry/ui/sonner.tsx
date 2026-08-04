@@ -1,10 +1,10 @@
 "use client"
 
 import {
-  IconAlertOctagon,
-  IconAlertTriangle,
-  IconCircleCheck,
-  IconInfoCircle,
+  IconAlertOctagonFilled,
+  IconAlertTriangleFilled,
+  IconCircleCheckFilled,
+  IconInfoCircleFilled,
   IconLoader,
 } from "@tabler/icons-react"
 import { useTheme } from "next-themes"
@@ -15,8 +15,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
   // Mapseek toast design (see design/mapseek/DESIGN.md):
   //   - Sharp corners (border-radius: 0)
-  //   - Hairline border carries the type signal; bg stays popover (no fills)
-  //   - Tabler 14px icons, colored to match the type
+  //   - Borderless popover surface with a subtle floating shadow
+  //   - Filled Tabler 16px icons, colored to match the type
   //   - Geist UI font inherits from <html>; description uses font-mono for
   //     codes / IDs is the caller's responsibility (toast.success(msg, { description }))
   return (
@@ -25,10 +25,10 @@ const Toaster = ({ ...props }: ToasterProps) => {
       position="top-center"
       className="toaster group"
       icons={{
-        success: <IconCircleCheck className="size-3.5 text-primary" stroke={1.75} />,
-        info: <IconInfoCircle className="size-3.5 text-(--cat-2)" stroke={1.75} />,
-        warning: <IconAlertTriangle className="size-3.5 text-warning" stroke={1.75} />,
-        error: <IconAlertOctagon className="size-3.5 text-destructive" stroke={1.75} />,
+        success: <IconCircleCheckFilled className="size-4 text-primary" />,
+        info: <IconInfoCircleFilled className="size-4 text-(--cat-2)" />,
+        warning: <IconAlertTriangleFilled className="size-4 text-warning" />,
+        error: <IconAlertOctagonFilled className="size-4 text-destructive" />,
         loading: (
           <IconLoader className="size-3.5 animate-spin text-muted-foreground" stroke={1.75} />
         ),
@@ -37,24 +37,18 @@ const Toaster = ({ ...props }: ToasterProps) => {
         {
           // Square corners — non-negotiable per design system.
           "--border-radius": "0px",
-          // Default surface = popover + 1px hairline.
+          // Borderless popover surface; elevation comes from the shadow.
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
-          "--normal-border": "var(--border)",
-          // Per-type: keep bg/text the same as default, push the signal into
-          // the border + icon so toasts stay calm and on-brand.
+          // Per-type: keep surfaces calm and carry the signal with the icon.
           "--success-bg": "var(--popover)",
           "--success-text": "var(--popover-foreground)",
-          "--success-border": "color-mix(in oklch, var(--primary) 60%, var(--border))",
           "--error-bg": "var(--popover)",
           "--error-text": "var(--popover-foreground)",
-          "--error-border": "color-mix(in oklch, var(--destructive) 60%, var(--border))",
           "--warning-bg": "var(--popover)",
           "--warning-text": "var(--popover-foreground)",
-          "--warning-border": "color-mix(in oklch, var(--warning) 60%, var(--border))",
           "--info-bg": "var(--popover)",
           "--info-text": "var(--popover-foreground)",
-          "--info-border": "color-mix(in oklch, var(--cat-2) 60%, var(--border))",
           // Subtle float shadow — toasts overlay live map chrome.
           "--shadow": "var(--shadow-map-float, 0 4px 14px -4px oklch(0 0 0 / 0.10))",
         } as React.CSSProperties
@@ -62,7 +56,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         classNames: {
           toast:
-            "!rounded-none !border !font-sans !text-xs !shadow-[var(--shadow-map-float,0_4px_14px_-4px_oklch(0_0_0_/_0.10))]",
+            "!h-auto !min-h-0 !w-fit !min-w-0 !max-w-[calc(100vw-2rem)] !rounded-none !border-0 !px-3 !py-2.5 !font-sans !text-xs !shadow-[var(--shadow-map-float,0_4px_14px_-4px_oklch(0_0_0_/_0.10))] data-[x-position=center]:inset-x-0! data-[x-position=center]:mx-auto!",
           title: "!text-[13px] !font-medium !leading-tight",
           description: "!text-[11px] !leading-snug !text-muted-foreground",
           actionButton:

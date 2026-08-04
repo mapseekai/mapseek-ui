@@ -1,6 +1,5 @@
 import {
   AddFieldForm,
-  type AddFieldFormLabels,
   type AddFieldValue,
   EMPTY_ADD_FIELD,
   type FieldTypeOption,
@@ -111,7 +110,7 @@ export function AddFieldFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           >
             {isValid ? demoLabels.valid : demoLabels.invalid}
           </span>
-          <pre className="max-h-[300px] min-w-0 overflow-auto border border-border bg-muted/30 p-2 font-mono text-[11px] leading-[1.5]">
+          <pre className="m-0 max-h-[300px] min-w-0 overflow-auto border border-border bg-muted/30 p-2 font-mono !text-[10px] !leading-4">
             {JSON.stringify(value, null, 2)}
           </pre>
         </div>

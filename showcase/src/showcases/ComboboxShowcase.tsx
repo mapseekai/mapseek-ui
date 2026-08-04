@@ -63,7 +63,7 @@ export function ComboboxOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
     ? crsList.filter((crs) => crs.label.toLowerCase().includes(normalizedCrs))
     : crsList
   return (
-    <div className="grid max-w-full gap-8">
+    <div className="mx-auto grid w-full max-w-xs gap-8">
       <section className="min-w-0 space-y-3" data-demo="combobox-format">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.searchableFormat}

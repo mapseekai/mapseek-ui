@@ -92,7 +92,7 @@ export function JsonEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           </div>
         </div>
       </div>
-      <pre className="max-h-[180px] overflow-auto border border-border bg-muted/30 p-2 font-mono text-[11px]">
+      <pre className="m-0 max-h-[180px] min-w-0 max-w-full !overflow-auto border border-border bg-muted/30 p-2 font-mono !text-[10px] !leading-4">
         {JSON.stringify(value, null, 2)}
       </pre>
     </div>

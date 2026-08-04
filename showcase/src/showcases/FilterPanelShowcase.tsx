@@ -51,9 +51,11 @@ export function FilterPanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {demoLabels.statusPrefix}: {value.mode}
         </span>
       </div>
-      <pre className="max-h-[180px] overflow-auto border border-border bg-muted/30 p-2 font-mono text-[11px]">
-        {JSON.stringify(value, null, 2)}
-      </pre>
+      <div className="not-prose max-h-40 w-full min-w-0 overflow-auto border border-border bg-muted/30">
+        <pre className="m-0 min-w-max p-2 font-mono !text-[10px] !leading-4">
+          {JSON.stringify(value, null, 2)}
+        </pre>
+      </div>
     </div>
   )
 }

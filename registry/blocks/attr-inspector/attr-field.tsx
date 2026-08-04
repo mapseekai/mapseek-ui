@@ -1,5 +1,9 @@
-import { IconLock } from "@tabler/icons-react"
+import { IconCalendar, IconLock } from "@tabler/icons-react"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Select } from "@/components/ui/select"
 import { Tooltip } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
@@ -39,6 +43,67 @@ function formatReadValue(kind: AttrFieldKind, value: unknown): string {
     return value.replace(/\//g, "-").slice(0, 10)
   }
   return String(value)
+}
+
+function parseDateValue(value: string): Date | undefined {
+  const [year, month, day] = value.split("-").map(Number)
+  if (!year || !month || !day) return undefined
+
+  const date = new Date(year, month - 1, day)
+  return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
+    ? date
+    : undefined
+}
+
+function formatDateValue(date: Date): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, "0")
+  const day = String(date.getDate()).padStart(2, "0")
+  return `${year}-${month}-${day}`
+}
+
+function DateEditField({
+  name,
+  value,
+  onChange,
+}: {
+  name: string
+  value: string
+  onChange: (key: string, value: unknown) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const selectedDate = parseDateValue(value)
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            aria-label={name}
+            className={cn(inputBase, "justify-between font-mono font-normal")}
+          >
+            <span>{value || "—"}</span>
+            <IconCalendar data-icon="inline-end" />
+          </Button>
+        }
+      />
+      <PopoverContent align="start" className="w-auto p-0">
+        <Calendar
+          mode="single"
+          required
+          selected={selectedDate}
+          defaultMonth={selectedDate}
+          onSelect={(date) => {
+            onChange(name, formatDateValue(date))
+            setOpen(false)
+          }}
+        />
+      </PopoverContent>
+    </Popover>
+  )
 }
 
 function FieldHeader({
@@ -152,12 +217,7 @@ export function EditField({
           ))}
         </Select>
       ) : kind === "date" ? (
-        <Input
-          type="date"
-          className={cn(inputBase, "font-mono")}
-          value={dateValue}
-          onChange={(e) => onChange(name, e.target.value)}
-        />
+        <DateEditField name={name} value={dateValue} onChange={onChange} />
       ) : kind === "number" ? (
         <div className="group relative">
           <Input

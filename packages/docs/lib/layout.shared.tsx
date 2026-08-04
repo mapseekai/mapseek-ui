@@ -1,4 +1,5 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared"
+import Image from "next/image"
 
 import { LocaleSwitcher } from "@/src/components/LocaleSwitcher"
 
@@ -7,7 +8,7 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (
         <>
-          <img src="/img/mapseek.png" alt="Mapseek UI" width={24} height={24} />
+          <Image src="/img/mapseek.png" alt="Mapseek UI" width={24} height={24} />
           Mapseek UI
         </>
       ),

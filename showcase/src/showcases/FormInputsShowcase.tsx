@@ -143,7 +143,7 @@ export function FormInputsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           />
         </Row>
       </div>
-      <pre className="overflow-auto border border-border bg-muted/30 p-2 font-mono text-[11px]">
+      <pre className="m-0 border border-border bg-muted/30 p-2 font-mono !text-[10px] !leading-4 !overflow-auto">
         {JSON.stringify(
           { text, multi, num, range, checked, selected, visibility, font, fontStack },
           null,

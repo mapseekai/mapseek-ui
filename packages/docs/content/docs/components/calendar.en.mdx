@@ -1,0 +1,43 @@
+---
+title: "Calendar"
+registryName: calendar
+category: primitive
+stability: stable
+showcase: calendar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Calendar is built on react-day-picker for single-date selection, date-range selection, and popover date pickers. It keeps react-day-picker keyboard navigation and aria semantics while using Mapseek square, border-first state styling.
+
+## Installation
+
+<RegistryInstall registryName="calendar" />
+
+## Import
+
+```tsx
+import { Calendar } from "@/registry/ui/calendar"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="calendar" demo="overview" title="Single, range, and popover selection" description="Covers controlled single-date selection, date-range selection, and a Popover-based date picker with Chinese and English locale formatting." minHeight={420} />
+
+## Exports
+
+`calendar.tsx` exports `Calendar` and `CalendarDayButton`. `Calendar` inherits react-day-picker `DayPicker` props and supports `mode="single" | "multiple" | "range"`, `selected/onSelect`, `disabled`, `locale`, and every other configuration.
+
+## State
+
+Selection state is maintained through react-day-picker controlled mode: `mode="single"` uses `Date | undefined`, while `mode="range"` uses `DateRange`. Pass a locale from `react-day-picker/locale` (such as `zhCN`) through the `locale` prop to localize month and weekday labels.
+
+## Accessibility
+
+Calendar ships with roving-tabindex keyboard navigation: arrow keys move the focused day, Enter/Space selects. When composed with Popover, the trigger button should show a readable date label instead of relying on placeholder styling to express selection.
+
+## Dependencies
+
+<RegistryDependencies registryName="calendar" />

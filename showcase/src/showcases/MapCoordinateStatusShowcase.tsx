@@ -1,7 +1,4 @@
-import {
-  MapCoordinateStatus,
-  type MapCoordinateStatusLabels,
-} from "@registry/blocks/map-coordinate-status"
+import { MapCoordinateStatus } from "@registry/blocks/map-coordinate-status"
 import { Button } from "@registry/ui/button"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
@@ -69,7 +66,7 @@ export function MapCoordinateStatusDemo({ locale = "zh-CN" }: LocalizedDemoProps
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full max-w-xl flex-col gap-4">
       <div className="relative h-[160px] overflow-hidden border border-border bg-muted">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-[size:32px_32px] opacity-50" />
         <span className="absolute top-3 left-3 font-mono text-[10px] text-muted-foreground">

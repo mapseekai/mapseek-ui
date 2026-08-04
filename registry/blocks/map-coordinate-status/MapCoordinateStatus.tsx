@@ -131,7 +131,7 @@ export function MapCoordinateStatus({
     <div
       data-slot="map-coordinate-status"
       className={cn(
-        "flex h-auto max-w-full flex-wrap items-stretch border border-border bg-card font-mono text-[11px] font-medium text-foreground shadow-[var(--shadow-map-float)] sm:h-7 sm:flex-nowrap",
+        "flex h-auto max-w-full flex-wrap items-stretch border border-border bg-card font-mono text-[11px] font-medium text-foreground sm:h-7 sm:flex-nowrap",
         className,
       )}
     >

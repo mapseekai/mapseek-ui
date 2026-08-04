@@ -1,4 +1,5 @@
 import { type LayerData, LayerPanel } from "@registry/blocks/layer-panel"
+import { Slider } from "@registry/ui/slider"
 import { IconFilter, IconPaint } from "@tabler/icons-react"
 import { useMemo, useState } from "react"
 import type { LocalizedDemoProps } from "./types"
@@ -180,17 +181,19 @@ export function LayerPanelBasicDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
               <LayerPanel.Section id="style" icon={IconPaint} label={demoLabels.style} defaultOpen>
                 <div className="space-y-1 text-[11px] leading-5 text-muted-foreground">
                   <p className="m-0 font-medium text-foreground">{layer.styleSummary}</p>
-                  <label className="flex items-center justify-between gap-3">
+                  <div className="flex items-center justify-between gap-3">
                     <span>{demoLabels.styleOpacity}</span>
-                    <input
-                      data-demo="layer-panel-opacity"
-                      className="w-28 accent-primary"
-                      type="range"
-                      min="0"
-                      max="100"
-                      defaultValue={layer.geometryType === "raster" ? 82 : 72}
-                    />
-                  </label>
+                    <div className="w-28">
+                      <Slider
+                        data-demo="layer-panel-opacity"
+                        aria-label={`${layer.name} ${demoLabels.styleOpacity}`}
+                        min={0}
+                        max={100}
+                        step={1}
+                        defaultValue={[layer.geometryType === "raster" ? 82 : 72]}
+                      />
+                    </div>
+                  </div>
                 </div>
               </LayerPanel.Section>
 

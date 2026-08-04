@@ -1,4 +1,4 @@
-import { access, readdir, readFile } from "node:fs/promises"
+import { access, readdir, readFile, readlink } from "node:fs/promises"
 import { join } from "node:path"
 import { expect, it } from "vitest"
 import { requiredRegistryDocs } from "../docs-required-registry-docs"
@@ -86,10 +86,16 @@ it("scans the real registry and showcase sources for Tailwind utilities", async 
 
 it("publishes installable registry artifacts and compiled theme utilities", async () => {
   await expect(access("public/r/button.json")).resolves.toBeUndefined()
+  await expect(access("packages/docs/public/r/button.json")).resolves.toBeUndefined()
+  await expect(access("packages/docs/out/r/button.json")).resolves.toBeUndefined()
 
   const css = await readBuiltCss()
 
   expect(css).toContain("--primary:")
+})
+
+it("serves the generated registry from the docs public directory", async () => {
+  await expect(readlink("packages/docs/public/r")).resolves.toBe("../../../public/r")
 })
 
 it("renders manifest-derived component and block indexes in the static build", async () => {
@@ -101,7 +107,7 @@ it("renders manifest-derived component and block indexes in the static build", a
   expect(components).toContain("搜索组件")
   expect(components).toContain("Button")
   expect(components).toContain("/components/button")
-  expect(blocks).toContain("搜索业务组件")
+  expect(blocks).toContain("搜索区块")
   expect(blocks).toContain("Layer Panel")
   expect(blocks).toContain("/blocks/layer-panel")
   expect(enComponents).toContain("Search components")
@@ -209,6 +215,12 @@ it("maps the docs shell to the generated Mapseek UI tokens", async () => {
     /\.card:hover,\s*\.card:focus-visible\s*\{[^}]*border-color:\s*var\(--primary\);/su,
   )
   expect(componentCss.join("\n")).toMatch(
+    /\.searchInput\s*\{[^}]*height:\s*2rem;[^}]*padding:\s*0 0\.75rem;/su,
+  )
+  expect(componentCss.join("\n")).toMatch(
+    /\.card:hover,\s*\.card:focus-visible\s*\{[^}]*background-color:\s*color-mix\(in oklab, var\(--accent\) 80%, transparent\);[^}]*color:\s*var\(--accent-foreground\);/su,
+  )
+  expect(componentCss.join("\n")).toMatch(
     /\.actions\s*\{[^}]*flex:\s*none;[^}]*flex-wrap:\s*nowrap;/su,
   )
   expect(componentDemoSource).toContain('from "fumadocs-ui/components/dynamic-codeblock"')
@@ -219,6 +231,13 @@ it("maps the docs shell to the generated Mapseek UI tokens", async () => {
   expect(componentDemoSource).toContain('size="default"')
   expect(componentDemoSource).toContain('variant="outline"')
   expect(registryInstallSource).toContain('import { CopyButton } from "@registry/ui/copy-button"')
+  expect(registryInstallSource).toContain("className={styles.copyButton}")
+  expect(componentCss.join("\n")).toMatch(
+    /\.copyButton\s*\{[^}]*width:\s*1\.5rem;[^}]*height:\s*1\.5rem;[^}]*flex:\s*none;/su,
+  )
+  expect(componentCss.join("\n")).toMatch(
+    /\.copyButton svg\s*\{[^}]*width:\s*1rem;[^}]*height:\s*1rem;/su,
+  )
   expect(registryInstallSource).toContain("<CopyButton")
   expect(registryInstallSource).not.toContain("@tabler/icons-react")
   expect(componentCss.join("\n")).toMatch(/\.commandRow code\s*\{[^}]*border:\s*0;/su)
@@ -262,6 +281,9 @@ it("uses direct demo descriptions and readable showcase section headings", async
 
   const dialogShowcase = await readFile("showcase/src/showcases/DialogShowcase.tsx", "utf8")
   expect(dialogShowcase).toContain('<div className="flex flex-col items-start gap-3">')
+
+  const avatarShowcase = await readFile("showcase/src/showcases/AvatarShowcase.tsx", "utf8")
+  expect(avatarShowcase).toContain('<div className="w-full space-y-8">')
 
   const emptyShowcase = await readFile("showcase/src/showcases/EmptyShowcase.tsx", "utf8")
   expect(emptyShowcase).toContain('<div className="grid w-full max-w-xl gap-5">')

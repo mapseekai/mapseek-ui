@@ -145,7 +145,7 @@ export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
     <section className="grid gap-3 lg:grid-cols-[380px_1fr]">
       <div className="border border-border bg-card">
         <div className="flex items-center justify-between border-b border-border px-3 py-2">
-          <h3 className="m-0 text-sm font-semibold">{demoLabels.title}</h3>
+          <h3 className="m-0 text-xs font-semibold">{demoLabels.title}</h3>
           <span
             data-demo-status="raster-style-panel-validity"
             className="font-mono text-[11px] text-muted-foreground"
@@ -203,7 +203,7 @@ export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         </p>
         <div className="min-w-0 border border-border bg-background p-2">
           <p className="m-0 mb-2 text-xs font-medium text-muted-foreground">{demoLabels.summary}</p>
-          <pre className="m-0 max-h-64 overflow-auto text-[11px]">
+          <pre className="m-0 max-h-64 overflow-auto font-mono !text-[10px] !leading-4">
             {JSON.stringify(value, null, 2)}
           </pre>
         </div>

@@ -82,7 +82,7 @@ export function IconButtonOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.danger}
         </h4>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           <IconButton danger aria-label={demoLabels.deleteLayer} title={demoLabels.deleteLayer}>
             <IconTrash {...iconProps} />
           </IconButton>

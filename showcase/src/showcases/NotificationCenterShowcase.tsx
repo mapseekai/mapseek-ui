@@ -1,7 +1,6 @@
 import {
   NotificationCenter,
   type NotificationCenterItem,
-  type NotificationCenterLabels,
 } from "@registry/blocks/notification-center"
 import { Button } from "@registry/ui/button"
 import { useState } from "react"

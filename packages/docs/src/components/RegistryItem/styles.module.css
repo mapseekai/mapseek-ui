@@ -50,6 +50,17 @@
   color: var(--foreground);
 }
 
+.copyButton {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+}
+
+.copyButton svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 .dependencies {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

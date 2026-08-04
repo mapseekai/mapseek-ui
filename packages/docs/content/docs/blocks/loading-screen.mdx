@@ -24,6 +24,7 @@ import {
   DEFAULT_LOADING_SCREEN_LABELS,
   type LoadingScreenLabels,
   type LoadingScreenProps,
+  type LoadingScreenVariant,
 } from "@/registry/blocks/loading-screen"
 ```
 
@@ -33,11 +34,11 @@ import {
 
 ## 用法
 
-传 `text` 覆盖主文案，传 `description` 显示第二行；`fullscreen` 决定是否使用视口尺寸。
+传 `text` 覆盖主文案，传 `description` 显示第二行；`fullscreen` 决定是否使用视口尺寸。`variant` 支持 `spinner`、`refresh` 和 `pulse`，分别适合初始化、资源刷新和等待服务场景。
 
 ## 公开导出与 Props
 
-导出 `LoadingScreen`、`LoadingScreenProps`、`LoadingScreenLabels` 和 `DEFAULT_LOADING_SCREEN_LABELS`。关键 props 是 `text`、`description`、`fullscreen`、`labels` 和 `className`。
+导出 `LoadingScreen`、`LoadingScreenProps`、`LoadingScreenVariant`、`LoadingScreenLabels` 和 `DEFAULT_LOADING_SCREEN_LABELS`。关键 props 是 `text`、`description`、`variant`、`fullscreen`、`labels` 和 `className`。
 
 ## 加载、空态、错误与状态
 
@@ -50,4 +51,3 @@ import {
 ## 依赖
 
 <RegistryDependencies registryName="loading-screen" />
-

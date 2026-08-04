@@ -81,7 +81,7 @@ function FilterPanelModeToggle({ className }: { className?: string }) {
             variant="ghost"
             onClick={() => patch(value, onChange, { mode: m.id })}
             className={cn(
-              "h-6 flex-1 gap-1.5 rounded-none border border-border-strong px-2 text-[11px] font-medium leading-none shadow-[var(--shadow-xs)]",
+              "h-6 flex-1 gap-1.5 rounded-none border border-border-strong px-2 text-[11px] font-medium leading-none shadow-none",
               i > 0 && "-ml-px",
               isCur
                 ? "bg-selection-bg text-primary hover:text-primary"
@@ -158,7 +158,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 })}
               </div>
             )}
-            <div className="grid grid-cols-[64px_38px_1fr_20px] items-center gap-x-1">
+            <div className="grid grid-cols-[64px_auto_minmax(0,1fr)_20px] items-center gap-x-1">
               <Select
                 value={f.field}
                 onValueChange={(val) => updateRow(f.id, { field: val })}
@@ -173,7 +173,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
               <Select
                 value={f.op}
                 onValueChange={(val) => updateRow(f.id, { op: val })}
-                className={miniSelect}
+                className={cn(miniSelect, "w-max min-w-12 whitespace-nowrap")}
               >
                 {ops.map((o) => (
                   <Select.Item key={o} value={o}>
@@ -223,7 +223,7 @@ function FilterPanelSql({ keywords, className }: { keywords: string[]; className
         spellCheck={false}
         onChange={(e) => patch(value, onChange, { sql: e.target.value })}
         placeholder='code = "R2" AND area_m2 > 30000'
-        className="min-h-[70px] w-full resize-y rounded-none border-border-strong bg-muted p-2 font-mono text-[11px] font-medium leading-[1.5] text-foreground shadow-[var(--shadow-xs)]"
+        className="min-h-[70px] w-full resize-y rounded-none border-border-strong bg-muted p-2 font-mono text-[11px] font-medium leading-[1.5] text-foreground shadow-none"
       />
       <div className="mt-1 flex flex-wrap gap-[3px]">
         {keywords.map((kw) => (

@@ -1,0 +1,43 @@
+---
+title: "Calendar"
+registryName: calendar
+category: primitive
+stability: stable
+showcase: calendar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Calendar 基于 react-day-picker 构建，用于单日期选择、日期范围选择以及与 Popover 组合的弹出式日期选择。它保留 react-day-picker 的键盘导航与 aria 语义，并使用 Mapseek 的方角、边框优先状态样式。
+
+## 安装
+
+<RegistryInstall registryName="calendar" />
+
+## 导入
+
+```tsx
+import { Calendar } from "@/registry/ui/calendar"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="calendar" demo="overview" title="单选、范围与弹出选择" description="覆盖受控单选日期、日期范围选择以及与 Popover 组合的日期选择器，支持中文与英文区域格式。" minHeight={420} />
+
+## 导出
+
+`calendar.tsx` 导出 `Calendar` 与 `CalendarDayButton`。`Calendar` 继承 react-day-picker 的 `DayPicker` props，支持 `mode="single" | "multiple" | "range"`、`selected/onSelect`、`disabled`、`locale` 等全部配置。
+
+## 状态
+
+选择状态通过 react-day-picker 的受控模式维护：`mode="single"` 使用 `Date | undefined`，`mode="range"` 使用 `DateRange`。通过 `locale` 传入 `react-day-picker/locale` 中的区域（如 `zhCN`）切换月份与星期文案。
+
+## 无障碍
+
+Calendar 自带 roving tabindex 键盘导航：方向键移动焦点日期，Enter/Space 选择。与 Popover 组合时，触发按钮应使用可读日期文本，不要用占位颜色表达已选状态。
+
+## 依赖
+
+<RegistryDependencies registryName="calendar" />

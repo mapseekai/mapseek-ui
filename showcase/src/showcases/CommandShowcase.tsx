@@ -46,12 +46,12 @@ const labels = {
 export function CommandOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
   return (
-    <div className="grid gap-8">
+    <div className="mx-auto grid w-full max-w-md gap-8">
       <section className="space-y-3" data-demo="command-palette">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.commandPalette}
         </h4>
-        <div className="h-72 max-w-sm border border-border">
+        <div className="h-78 w-full border border-border">
           <Command>
             <CommandInput placeholder={demoLabels.typeCommand} />
             <CommandList>
@@ -77,7 +77,7 @@ export function CommandOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.emptyState}
         </h4>
-        <div className="h-32 max-w-sm border border-border">
+        <div className="h-32 w-full border border-border">
           <Command>
             <CommandInput placeholder={demoLabels.search} />
             <CommandList>

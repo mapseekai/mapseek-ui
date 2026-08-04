@@ -12,10 +12,10 @@ export function CollapsibleOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps
           <div className="text-sm font-medium">Dataset details</div>
           <div className="text-xs text-muted-foreground">EPSG:4326 · 2,847 features</div>
         </div>
-        <CollapsibleTrigger asChild>
-          <Button data-demo="collapsible-trigger" variant="outline" size="sm">
-            {open ? "Collapse" : "Expand"}
-          </Button>
+        <CollapsibleTrigger
+          render={<Button data-demo="collapsible-trigger" variant="outline" size="sm" />}
+        >
+          {open ? "Collapse" : "Expand"}
         </CollapsibleTrigger>
       </div>
       <CollapsibleContent

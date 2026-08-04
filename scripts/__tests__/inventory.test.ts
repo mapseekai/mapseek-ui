@@ -21,6 +21,7 @@ const foundationalPrimitives = [
 ] as const
 
 const inputAndSelectionPrimitives = [
+  "calendar",
   "checkbox",
   "combobox",
   "command",
@@ -79,6 +80,7 @@ const basePrimitives = [
 ] as const
 
 const inputAndSelectionDependencies = {
+  calendar: ["@mapseek/button", "@mapseek/utils"],
   checkbox: ["@mapseek/utils"],
   combobox: ["@mapseek/input-group", "@mapseek/utils"],
   command: ["@mapseek/dialog", "@mapseek/input-group", "@mapseek/utils"],
@@ -98,6 +100,7 @@ const inputAndSelectionDependencies = {
 } as const
 
 const inputAndSelectionNpmDependencies = {
+  calendar: ["@tabler/icons-react", "date-fns", "react-day-picker"],
   checkbox: ["@base-ui/react", "@tabler/icons-react"],
   combobox: ["@base-ui/react", "@tabler/icons-react"],
   command: ["@tabler/icons-react", "cmdk"],
@@ -187,6 +190,8 @@ describe("foundational primitive inventory", () => {
       expect(item?.files[0]?.target).toMatch(/^@ui\//)
       expect(item?.registryDependencies).toContain("@mapseek/theme")
     }
+
+    expect(itemsByName.get("collapsible")?.dependencies).toEqual(["@base-ui/react"])
   })
 })
 

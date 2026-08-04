@@ -10,7 +10,7 @@ import type { LocalizedDemoProps } from "./types"
 
 export function AvatarOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   return (
-    <div className="space-y-8">
+    <div className="w-full space-y-8">
       <section className="space-y-3">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           Fallback initials

@@ -97,7 +97,7 @@ function StatGrid({ stats }: { stats: RasterStat[] }) {
       {stats.map((s) => (
         <div key={s.label}>
           <div className="font-mono text-[10px] text-muted-foreground">{s.label}</div>
-          <div className="font-mono text-xs">
+          <div className="font-mono text-[11px]">
             {s.value}
             {s.unit}
           </div>

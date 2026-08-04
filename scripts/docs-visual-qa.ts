@@ -479,6 +479,16 @@ async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
   await basic.scrollIntoViewIfNeeded()
   await assertLayerPanelDemoFits(basic, `${path} basic LayerPanel`)
 
+  const basicPanel = basic.locator('[data-slot="layer-panel"]')
+  const panelToggle = basicPanel.getByRole("button", { name: "Toggle layer panel" })
+  await panelToggle.click()
+  await expect(basicPanel.locator('[data-slot="layer-panel-list"]')).toHaveCount(0)
+  await expect
+    .poll(() => basicPanel.evaluate((element) => element.getBoundingClientRect().height))
+    .toBeLessThanOrEqual(32)
+  await panelToggle.click()
+  await expect(basicPanel.locator('[data-slot="layer-panel-list"]')).toBeVisible()
+
   await activateByKeyboard(
     basic.locator('button[aria-label="Toggle visibility for Transit corridors"]'),
   )
@@ -682,6 +692,7 @@ const primitivePages = [
   "accordion",
   "avatar",
   "badge",
+  "calendar",
   "card",
   "chart",
   "checkbox",
@@ -734,6 +745,12 @@ const blockPages = [
     demo: "layer-editor-group",
     sourceFunction: "LayerEditorGroupDemo",
     importPath: "@registry/blocks/layer-editor-group",
+  },
+  {
+    name: "layer-panel",
+    demo: "layer-panel-basic",
+    sourceFunction: "LayerPanelBasicDemo",
+    importPath: "@registry/blocks/layer-panel",
   },
   {
     name: "layer-style-editor",
@@ -991,7 +1008,7 @@ async function assertDemoPreviewAndSource(page: Page, primitive: string): Promis
 
   const section = demo.locator("xpath=ancestor::section").first()
   await section.locator('[data-demo-action="source"]').click()
-  const source = section.locator("xpath=./pre/code")
+  const source = section.locator("css=figure pre code")
   await expect(source).toContainText(`export function ${titleFromName(primitive)}OverviewDemo`)
   await expect(source).toContainText(`@registry/ui/${primitive}`)
 }
@@ -1003,7 +1020,7 @@ async function assertBlockDemoPreviewAndSource(page: Page, block: BlockPage): Pr
 
   const section = demo.locator("xpath=ancestor::section").first()
   await section.locator('[data-demo-action="source"]').click()
-  const source = section.locator("xpath=./pre/code")
+  const source = section.locator("css=figure pre code")
   await expect(source).toContainText(`export function ${block.sourceFunction}`)
   await expect(source).toContainText(block.importPath)
   await section.locator('[data-demo-action="source"]').click()
@@ -1079,6 +1096,12 @@ export async function assertPrimitiveInteraction(
       })
       .click()
     await expect(single).toContainText(localized(path, "GeoJSON、TopoJSON", "GeoJSON, TopoJSON"))
+  }
+
+  if (primitive === "calendar") {
+    const single = page.locator('[data-demo="calendar-single"]')
+    await single.locator('td[role="gridcell"]:not([class*="outside"]) button').nth(14).click()
+    await expect(single).toContainText(localized(path, "15日", "15, "))
   }
 
   if (primitive === "checkbox") {
@@ -1632,6 +1655,24 @@ export async function assertBlockInteraction(
   if (block === "filter-panel") {
     const demo = page.locator('[data-demo="filter-panel"]')
     await expect(demo.locator('[data-demo-status="filter-mode"]')).toContainText("builder")
+    const operator = demo.getByRole("combobox").nth(1)
+    const conditionRow = operator.locator("..")
+    const valueInput = conditionRow.locator('[data-slot="input"]')
+    const initialWidths = await Promise.all([
+      conditionRow.evaluate((element) => element.getBoundingClientRect().width),
+      operator.evaluate((element) => element.getBoundingClientRect().width),
+      valueInput.evaluate((element) => element.getBoundingClientRect().width),
+    ])
+    await operator.click()
+    await page.getByRole("option", { name: "contains", exact: true }).click()
+    const selectedWidths = await Promise.all([
+      conditionRow.evaluate((element) => element.getBoundingClientRect().width),
+      operator.evaluate((element) => element.getBoundingClientRect().width),
+      valueInput.evaluate((element) => element.getBoundingClientRect().width),
+    ])
+    expect(Math.abs(selectedWidths[0] - initialWidths[0])).toBeLessThanOrEqual(1)
+    expect(selectedWidths[1]).toBeGreaterThan(initialWidths[1])
+    expect(selectedWidths[2]).toBeLessThan(initialWidths[2])
     await demo.getByRole("button", { name: "SQL", exact: true }).click()
     await expect(demo.locator('[data-demo-status="filter-mode"]')).toContainText("sql")
     await demo.locator("textarea").fill('code = "R2"')
@@ -1654,11 +1695,17 @@ export async function assertBlockInteraction(
 
   if (block === "geojson-view") {
     const demo = page.locator('[data-demo="geojson-view"]')
+    const emptyToggle = demo.getByRole("checkbox", {
+      name: localized(path, "模拟无选中", "Simulate no selection"),
+    })
+    const invalidToggle = demo.getByRole("checkbox", {
+      name: localized(path, "模拟解析失败", "Simulate parse failure"),
+    })
     await expect(demo).toContainText("Feature")
-    await demo.getByLabel(localized(path, "模拟无选中", "Simulate no selection")).check()
+    await emptyToggle.click()
     await expect(demo).toContainText(localized(path, "无选中要素", "No selected feature"))
-    await demo.getByLabel(localized(path, "模拟无选中", "Simulate no selection")).uncheck()
-    await demo.getByLabel(localized(path, "模拟解析失败", "Simulate parse failure")).check()
+    await emptyToggle.click()
+    await invalidToggle.click()
     await expect(demo).toContainText("{ invalid geojson")
   }
 
@@ -1696,6 +1743,14 @@ export async function assertBlockInteraction(
 
   if (block === "map-coordinate-status") {
     const demo = page.locator('[data-demo="map-coordinate-status"]')
+    const coordinateStatus = demo.locator('[data-slot="map-coordinate-status"]')
+    const mapPlaceholder = coordinateStatus.locator("..")
+    if ((page.viewportSize()?.width ?? 0) >= 768) {
+      await expect
+        .poll(() => mapPlaceholder.evaluate((element) => element.getBoundingClientRect().width))
+        .toBeGreaterThanOrEqual(560)
+    }
+    await assertNoHorizontalOverflow(coordinateStatus, `${path} MapCoordinateStatus readout`)
     await expect(demo).toContainText("EPSG:3857")
     await expect(demo).toContainText("13,522,425.02 m")
     await demo.locator('[data-demo-action="map-coordinate-status-update-view"]').click()
@@ -1752,7 +1807,27 @@ export async function assertBlockInteraction(
 
   if (block === "pixel-probe") {
     const demo = page.locator('[data-demo="pixel-probe"]')
-    await expect(demo.locator('[data-testid="pixel-probe"]')).toBeVisible()
+    const probe = demo.locator('[data-testid="pixel-probe"]')
+    const stage = probe.locator("..")
+    await expect(probe).toBeVisible()
+    await expect
+      .poll(() => probe.evaluate((element) => getComputedStyle(element).boxShadow))
+      .toBe("none")
+    if ((page.viewportSize()?.width ?? 0) >= 768) {
+      await expect
+        .poll(() => stage.evaluate((element) => element.getBoundingClientRect().width))
+        .toBeGreaterThanOrEqual(600)
+    }
+    await expect
+      .poll(async () => {
+        const [stageBox, statusBox] = await Promise.all([
+          stage.boundingBox(),
+          demo.locator('[data-demo-status="pixel-probe"]').boundingBox(),
+        ])
+        if (!stageBox || !statusBox) return Number.POSITIVE_INFINITY
+        return Math.abs(stageBox.x + stageBox.width - (statusBox.x + statusBox.width))
+      })
+      .toBeLessThanOrEqual(2)
     await demo.getByTitle(localized(path, "复制 JSON", "Copy JSON")).click()
     await expect(demo.locator('[data-demo-status="pixel-probe"]')).toContainText(
       localized(path, "已复制 JSON", "Copied JSON"),
@@ -1830,6 +1905,40 @@ export async function assertBlockInteraction(
     await expect(demo).toContainText(localized(path, "暂无图层", "No layers"))
   }
 
+  if (block === "layer-panel") {
+    const demo = page.locator('[data-demo="layer-panel-basic"]')
+    const panel = demo.locator('[data-slot="layer-panel"]').first()
+    const deleteButtons = panel.getByRole("button", { name: /^Remove / })
+    while ((await deleteButtons.count()) > 0) {
+      await deleteButtons.first().click()
+    }
+
+    const emptyTitle = panel.getByText(localized(path, "暂无图层", "No layers"), { exact: true })
+    await expect(emptyTitle).toBeVisible()
+    await expect
+      .poll(async () => {
+        return panel.evaluate(
+          (element, titleText) => {
+            const header = element.querySelector('[data-slot="layer-panel-header"]')
+            const title = [...element.querySelectorAll("div")].find(
+              (candidate) => candidate.textContent?.trim() === titleText,
+            )
+            if (!(header instanceof HTMLElement) || !(title instanceof HTMLElement)) {
+              return Number.POSITIVE_INFINITY
+            }
+            const panelBounds = element.getBoundingClientRect()
+            const headerBounds = header.getBoundingClientRect()
+            const titleBounds = title.getBoundingClientRect()
+            const bodyCenter = (headerBounds.bottom + panelBounds.bottom) / 2
+            const titleCenter = titleBounds.top + titleBounds.height / 2
+            return Math.abs(titleCenter - bodyCenter)
+          },
+          localized(path, "暂无图层", "No layers"),
+        )
+      })
+      .toBeLessThanOrEqual(24)
+  }
+
   if (block === "band-stat") {
     const demo = page.locator('[data-demo="band-stat"]')
     await expect(demo.locator('[data-demo-status="band-stat"]')).toContainText("B1")
@@ -1860,7 +1969,13 @@ export async function assertBlockInteraction(
 
   if (block === "loading-screen") {
     const demo = page.locator('[data-demo="loading-screen"]')
-    await expect(demo.getByRole("status")).toContainText(
+    await expect(demo.getByRole("status")).toHaveCount(3)
+    for (const variant of ["spinner", "refresh", "pulse"] as const) {
+      const loadingState = demo.locator(`[data-loading-variant="${variant}"]`)
+      await expect(loadingState).toBeVisible()
+      await expect(loadingState.locator('[data-slot="loading-screen-indicator"]')).toBeVisible()
+    }
+    await expect(demo).toContainText(
       localized(path, "正在初始化图层与样式", "Initializing layers and styles"),
     )
     await demo.locator('[data-demo-action="loading-screen-toggle"]').click()
@@ -1882,9 +1997,24 @@ export async function assertBlockInteraction(
     )
     const menu = page.locator('[data-slot="dropdown-menu-content"]').last()
     await expect(menu).toContainText("TOTAL")
-    await expect(menu).toContainText(
-      localized(path, "栅格 · 长江 NDVI 2026Q2", "Raster · Yangtze NDVI 2026Q2"),
+    const notificationRows = menu.locator("li")
+    await expect(notificationRows.first()).toContainText(
+      localized(path, "PMTiles · 边界瓦片", "PMTiles · boundary tiles"),
     )
+    const clearAllButton = menu.getByRole("button", {
+      name: localized(path, "全部清除", "Clear all"),
+      exact: true,
+    })
+    await expect(clearAllButton).toHaveClass(/text-destructive/)
+    const firstNotification = notificationRows.first()
+    await firstNotification.hover()
+    await expect(firstNotification).toHaveClass(/hover:bg-destructive/)
+    await expect(
+      firstNotification.getByRole("button", {
+        name: localized(path, "清除", "Clear"),
+        exact: true,
+      }),
+    ).toHaveClass(/text-destructive/)
     await page.keyboard.press("Escape")
     await expect(trigger).toBeFocused()
 
@@ -2153,12 +2283,13 @@ export async function assertBlockInteraction(
       name: localized(path, "打开: 按钮和输入框", "Open: Button and input"),
       exact: true,
     })
-    await openMenuWithKeyboard(page, trigger, page.locator('[data-slot="popover-content"]').last())
-    await page
-      .getByRole("button", { name: `${localized(path, "套用", "Apply")}: #2563eb`, exact: true })
-      .click()
-    await expect(demo.locator('[data-demo-status="style-color-input"]')).toContainText("#2563eb")
-    await page.getByRole("button", { name: localized(path, "关闭", "Close"), exact: true }).click()
+    const popover = page.locator('[data-slot="popover-content"]').last()
+    await openMenuWithKeyboard(page, trigger, popover)
+    await popover.getByRole("slider").first().press("ArrowRight")
+    await expect(demo.locator('[data-demo-status="style-color-input"]')).not.toContainText(
+      "#22c55e",
+    )
+    await page.keyboard.press("Escape")
     await expect(page.locator('[data-slot="popover-content"]')).toBeHidden()
   }
 

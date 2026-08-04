@@ -1,4 +1,6 @@
 import { GeoJSONView, stringifyGeoJSON } from "@registry/blocks/geojson-view"
+import { Checkbox } from "@registry/ui/checkbox"
+import { Label } from "@registry/ui/label"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -47,23 +49,19 @@ export function GeoJSONViewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
     <div className="flex w-full flex-col gap-4">
       <p className="m-0 text-xs text-muted-foreground">{demoLabels.intro}</p>
       <div className="flex flex-wrap items-center gap-4 text-xs">
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            checked={empty}
-            onChange={(event) => setEmpty(event.target.checked)}
-          />
-          {demoLabels.emptyToggle}
-        </label>
-        <label className="flex items-center gap-2">
-          <input
-            type="checkbox"
+        <div className="flex items-center gap-2">
+          <Checkbox id="docs-geojson-view-empty" checked={empty} onCheckedChange={setEmpty} />
+          <Label htmlFor="docs-geojson-view-empty">{demoLabels.emptyToggle}</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="docs-geojson-view-invalid"
             checked={invalid}
-            onChange={(event) => setInvalid(event.target.checked)}
+            onCheckedChange={setInvalid}
             disabled={empty}
           />
-          {demoLabels.invalidToggle}
-        </label>
+          <Label htmlFor="docs-geojson-view-invalid">{demoLabels.invalidToggle}</Label>
+        </div>
       </div>
       <div className="h-[360px] min-w-0">
         <GeoJSONView json={json} emptyLabel={demoLabels.empty} title={demoLabels.title} />

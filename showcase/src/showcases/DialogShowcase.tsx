@@ -294,7 +294,7 @@ export function DialogLongContentDemo({ locale = "zh-CN" }: LocalizedDemoProps) 
             </DialogTitle>
             <DialogDescription>{demoLabels.description}</DialogDescription>
           </DialogHeader>
-          <DialogBody className="min-h-0 overflow-y-auto pe-1">
+          <DialogBody className="min-h-0 overflow-y-auto px-1">
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="docs-dialog-target-field">{demoLabels.targetFieldLabel}</Label>

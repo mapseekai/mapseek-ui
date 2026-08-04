@@ -1,0 +1,34 @@
+---
+title: "LoomToolbar"
+registryName: loom-toolbar
+category: block
+stability: experimental
+showcase: loom-toolbar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+LoomToolbar is a controlled map-editing toolbar that composes editing state, tool groups, snapping, save, and undo/redo controls.
+
+## Installation
+
+<RegistryInstall registryName="loom-toolbar" />
+
+## Import
+
+```tsx
+import { LoomToolbar, type LoomToolbarGroup } from "@/components/blocks/loom-toolbar"
+```
+
+## Editing toolbar
+
+<ShowcaseDemo registryName="loom-toolbar" title="Editing toolbar" description="Group tools by business workflow and gate editing-only actions with editOnly." minHeight={560} />
+
+## Tool model
+
+Each tool provides an `id`, `label`, `icon`, and optional shortcut. Tools marked `editOnly` are disabled outside editing mode. The product owns persistence, history, and map interaction.
+
+## Dependencies
+
+<RegistryDependencies registryName="loom-toolbar" />

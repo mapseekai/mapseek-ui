@@ -1,5 +1,6 @@
 import type { Icon as TablerIcon } from "@tabler/icons-react"
 import { Tooltip } from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export interface SegmentedOption<T extends string> {
@@ -51,7 +52,9 @@ export function Segmented<T extends string>({
         const Icon = opt.icon
         const active = opt.value === value
         const btn = (
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             key={opt.value}
             type="button"
             onClick={() => onChange(opt.value)}
@@ -66,7 +69,7 @@ export function Segmented<T extends string>({
           >
             {Icon && <Icon size={11} stroke={1.75} />}
             {opt.label}
-          </button>
+          </Button>
         )
         return opt.tip ? (
           <Tooltip key={opt.value} content={opt.tip}>

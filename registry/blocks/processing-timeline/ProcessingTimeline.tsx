@@ -1,5 +1,6 @@
-import { IconCheck, IconCopy, IconRefresh, IconX } from "@tabler/icons-react"
+import { IconCheck, IconRefresh, IconX } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
+import { CopyButton } from "@/components/ui/copy-button"
 import { cn } from "@/lib/utils"
 import type { ProcessingTimelineProps, TimelineEvent, TimelineStep } from "./types"
 
@@ -158,10 +159,12 @@ function EventCard({
               <Button variant="ghost" size="xs">
                 {labels.log}
               </Button>
-              <Button variant="ghost" size="xs" onClick={() => onCopyLog?.(log)}>
-                <IconCopy />
-                {labels.copy}
-              </Button>
+              <CopyButton
+                content={log}
+                variant="ghost"
+                label={labels.copy}
+                onCopy={() => onCopyLog?.(log)}
+              />
             </div>
           )}
         </div>

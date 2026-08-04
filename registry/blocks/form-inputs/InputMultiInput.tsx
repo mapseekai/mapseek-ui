@@ -1,4 +1,5 @@
 import type React from "react"
+import { Radio, RadioGroup } from "@/components/ui/radio-group"
 import { cn } from "@/lib/utils"
 
 export type InputMultiInputProps = {
@@ -26,7 +27,15 @@ export const InputMultiInput: React.FC<InputMultiInputProps> = ({
   const selectedValue = value || (options.length > 0 ? options[0][0] : undefined)
 
   return (
-    <fieldset className="m-0 flex min-w-0 items-center border-none p-0" aria-label={ariaLabel}>
+    <RadioGroup
+      className="m-0 flex min-w-0 items-center border-none p-0"
+      aria-label={ariaLabel}
+      name={name}
+      value={selectedValue}
+      onValueChange={(next) => {
+        if (next !== selectedValue) onChange(next)
+      }}
+    >
       {options.map(([val, label]) => {
         const isSelected = val === selectedValue
         return (
@@ -39,20 +48,11 @@ export const InputMultiInput: React.FC<InputMultiInputProps> = ({
                 : "bg-background text-muted-foreground",
             )}
           >
-            <input
-              type="radio"
-              className="sr-only"
-              name={name}
-              value={val}
-              checked={isSelected}
-              onChange={() => {
-                if (!isSelected) onChange(val)
-              }}
-            />
+            <Radio value={val} className="sr-only" />
             {label}
           </label>
         )
       })}
-    </fieldset>
+    </RadioGroup>
   )
 }

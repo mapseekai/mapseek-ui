@@ -6,6 +6,7 @@ import {
   SchemaTable,
   useStaticRowSource,
 } from "@registry/blocks/attr-table"
+import { Checkbox } from "@registry/ui/checkbox"
 import { useMemo, useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -162,26 +163,23 @@ export function AttrTableDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <label className="flex items-center gap-1">
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={simulateLoading}
-                onChange={(event) => setSimulateLoading(event.target.checked)}
+                onCheckedChange={(checked) => setSimulateLoading(checked === true)}
               />
               {demoLabels.loading}
             </label>
             <label className="flex items-center gap-1">
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={simulateError}
-                onChange={(event) => setSimulateError(event.target.checked)}
+                onCheckedChange={(checked) => setSimulateError(checked === true)}
               />
               {demoLabels.error}
             </label>
             <label className="flex items-center gap-1">
-              <input
-                type="checkbox"
+              <Checkbox
                 checked={simulateEmpty}
-                onChange={(event) => setSimulateEmpty(event.target.checked)}
+                onCheckedChange={(checked) => setSimulateEmpty(checked === true)}
               />
               {demoLabels.empty}
             </label>

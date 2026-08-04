@@ -335,13 +335,15 @@ function FontBody({
         <div className="px-4 py-3.5">
           <div className="mb-2 flex items-center font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
             <span>{slicing.panelTitle}</span>
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               type="button"
               className="ml-auto cursor-pointer text-[10px] tracking-normal text-muted-foreground normal-case"
               onClick={() => setOpen(false)}
             >
               {slicing.collapseLabel}
-            </button>
+            </Button>
           </div>
           <div className="flex flex-col gap-1.5">
             {slicing.charsets.map((c) => {

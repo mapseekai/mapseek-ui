@@ -96,6 +96,10 @@ async function collectDocPaths(root: string): Promise<readonly string[]> {
 
 const englishSuffix = /\.en\.(md|mdx)$/u
 
+function toPortablePath(path: string): string {
+  return path.replaceAll("\\", "/")
+}
+
 /** Collect docs keyed by locale-independent relative path (without extension). */
 export async function collectDocs(
   root: string,
@@ -105,7 +109,7 @@ export async function collectDocs(
   for (const path of await collectDocPaths(root)) {
     const isEnglish = englishSuffix.test(path)
     if (locale === "en" ? !isEnglish : isEnglish) continue
-    const rel = relative(root, path)
+    const rel = toPortablePath(relative(root, path))
     const key = rel.replace(englishSuffix, "").replace(/\.(md|mdx)$/u, "")
     docs.set(key, {
       path,

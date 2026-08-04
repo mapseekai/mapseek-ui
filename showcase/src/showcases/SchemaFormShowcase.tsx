@@ -4,6 +4,7 @@ import {
   type SchemaFormField,
   seedSchemaFormValues,
 } from "@registry/blocks/schema-form"
+import { Checkbox } from "@registry/ui/checkbox"
 import { useMemo, useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -106,11 +107,10 @@ export function SchemaFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
       <p className="m-0 text-xs text-muted-foreground">{demoLabels.intro}</p>
       <div className="flex flex-wrap items-center gap-2">
         <label className="flex items-center gap-2 text-xs">
-          <input
-            type="checkbox"
+          <Checkbox
             checked={emptyOptions}
-            onChange={(event) => {
-              setEmptyOptions(event.target.checked)
+            onCheckedChange={(checked) => {
+              setEmptyOptions(checked === true)
               setValues(seedSchemaFormValues(fields))
             }}
           />
@@ -143,7 +143,7 @@ export function SchemaFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
       >
         {valid ? demoLabels.valid : demoLabels.invalid}
       </span>
-      <pre className="overflow-auto border border-border bg-muted/30 p-2 font-mono text-[11px]">
+      <pre className="overflow-auto border border-border bg-muted/30 p-2 font-mono text-[10px] leading-4">
         {JSON.stringify(values, null, 2)}
       </pre>
     </div>

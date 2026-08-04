@@ -16,6 +16,7 @@ import {
   useState,
 } from "react"
 import { Button } from "@/components/ui/button"
+import { ColorInput } from "@/components/ui/color-input"
 import { Input } from "@/components/ui/input"
 import { Select } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
@@ -402,7 +403,7 @@ export const ColorPickerEyeDropper = ({
       >
         <IconColorPicker size={16} stroke={1.5} />
       </Button>
-      <input
+      <ColorInput
         ref={inputRef}
         aria-hidden="true"
         className="sr-only"

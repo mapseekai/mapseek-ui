@@ -39,6 +39,7 @@ jobs:
       - name: Build static documentation
         env:
           NEXT_PUBLIC_BASE_PATH: /mapseek-ui
+          VITE_BASE_PATH: /mapseek-ui/showcase/
         run: pnpm run docs:build
 
       - name: Configure GitHub Pages

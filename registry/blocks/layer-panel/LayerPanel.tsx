@@ -16,6 +16,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react"
 import * as React from "react"
+import { Button } from "@/components/ui/button"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
 import { DEFAULT_LAYER_PANEL_LABELS } from "./defaults"
@@ -162,7 +163,9 @@ function LayerPanelHeader({
         className,
       )}
     >
-      <button
+      <Button
+        variant="ghost"
+        size="sm"
         type="button"
         aria-expanded={!collapsed}
         aria-label="Toggle layer panel"
@@ -248,7 +251,9 @@ function LayerPanelAddButton({
 }) {
   const { labels } = useLayerPanelContext()
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="sm"
       type="button"
       onClick={onClick}
       disabled={disabled}
@@ -261,7 +266,7 @@ function LayerPanelAddButton({
     >
       <IconPlus size={13} />
       {children ?? labels.addLayer}
-    </button>
+    </Button>
   )
 }
 
@@ -343,7 +348,9 @@ function LayerPanelItem({
           />
         )}
 
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           type="button"
           draggable={!!ctx.onReorder}
           onDragStart={handleDragStart}
@@ -355,7 +362,9 @@ function LayerPanelItem({
         />
 
         {ctx.onVisibleChange && (
-          <button
+          <Button
+            variant="ghost"
+            size="icon-xs"
             type="button"
             onClick={(e) => {
               e.stopPropagation()
@@ -368,7 +377,7 @@ function LayerPanelItem({
             )}
           >
             {layer.visible ? <IconEye size={15} /> : <IconEyeOff size={15} />}
-          </button>
+          </Button>
         )}
 
         <GeomIcon
@@ -405,7 +414,9 @@ function LayerPanelItem({
           )}
         >
           {ctx.onLocate && (
-            <button
+            <Button
+              variant="ghost"
+              size="icon-xs"
               type="button"
               onClick={() => ctx.onLocate?.(layer.id)}
               aria-label={ctx.labels.locate}
@@ -413,10 +424,12 @@ function LayerPanelItem({
               className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-card hover:text-foreground"
             >
               <IconCurrentLocation size={14} />
-            </button>
+            </Button>
           )}
           {ctx.onOpenTable && (
-            <button
+            <Button
+              variant="ghost"
+              size="icon-xs"
               type="button"
               onClick={() => ctx.onOpenTable?.(layer.id)}
               aria-label={ctx.labels.attributeTable}
@@ -424,7 +437,7 @@ function LayerPanelItem({
               className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-card hover:text-foreground"
             >
               <IconTable size={14} />
-            </button>
+            </Button>
           )}
           {ctx.onRemove && (
             <button
@@ -479,7 +492,9 @@ function LayerPanelSection({
       className={cn("relative border-b border-border", className)}
     >
       <span className="pointer-events-none absolute bottom-0 left-[21px] top-0 w-px bg-border" />
-      <button
+      <Button
+        variant="ghost"
+        size="sm"
         type="button"
         onClick={(e) => {
           e.stopPropagation()
@@ -497,7 +512,7 @@ function LayerPanelSection({
           className="text-muted-foreground transition-transform duration-[180ms]"
           style={{ transform: open ? "none" : "rotate(180deg)" }}
         />
-      </button>
+      </Button>
       <div
         style={{
           maxHeight: open ? 2000 : 0,

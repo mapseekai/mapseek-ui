@@ -696,6 +696,7 @@ const primitivePages = [
   "card",
   "chart",
   "checkbox",
+  "color-input",
   "collapsible",
   "combobox",
   "command",
@@ -712,6 +713,7 @@ const primitivePages = [
   "pagination",
   "popover",
   "progress",
+  "radio-group",
   "separator",
   "select",
   "sheet",
@@ -728,6 +730,30 @@ const primitivePages = [
 ] as const
 
 const blockPages = [
+  {
+    name: "custom-colormap",
+    demo: "custom-colormap",
+    sourceFunction: "CustomColormapDemo",
+    importPath: "@registry/blocks/custom-colormap",
+  },
+  {
+    name: "loom-layer-panel",
+    demo: "loom-layer-panel",
+    sourceFunction: "LoomLayerPanelDemo",
+    importPath: "@registry/blocks/loom-layer-panel",
+  },
+  {
+    name: "loom-toolbox",
+    demo: "loom-toolbox",
+    sourceFunction: "LoomToolboxDemo",
+    importPath: "@registry/blocks/loom-toolbox",
+  },
+  {
+    name: "loom-toolbar",
+    demo: "loom-toolbar",
+    sourceFunction: "LoomToolbarDemo",
+    importPath: "@registry/blocks/loom-toolbar",
+  },
   {
     name: "app-top-bar",
     demo: "app-top-bar",
@@ -1119,6 +1145,12 @@ export async function assertPrimitiveInteraction(
     ).toBeChecked()
   }
 
+  if (primitive === "color-input") {
+    const controlled = page.locator('[data-demo="color-input-controlled"]')
+    await controlled.getByLabel(localized(path, "图层颜色", "Layer color")).fill("#dc2626")
+    await expect(controlled.locator('[data-demo="color-input-value"]')).toContainText("#dc2626")
+  }
+
   if (primitive === "combobox") {
     const combobox = page.locator('[data-demo="combobox-format"]')
     await combobox.getByLabel(localized(path, "选择格式", "Select format")).fill("geo")
@@ -1282,6 +1314,14 @@ export async function assertPrimitiveInteraction(
     await page.getByText("EPSG:3857 - Web Mercator", { exact: true }).click()
     await expect(select.locator('[data-demo="select-value"]')).toHaveText(
       localized(path, "当前值：3857", "Value: 3857"),
+    )
+  }
+
+  if (primitive === "radio-group") {
+    const controlled = page.locator('[data-demo="radio-group-controlled"]')
+    await controlled.getByText(localized(path, "卫星", "Satellite"), { exact: true }).click()
+    await expect(controlled.locator('[data-demo="radio-group-value"]')).toContainText(
+      localized(path, "卫星", "Satellite"),
     )
   }
 

@@ -4,6 +4,7 @@ import { tmpdir } from "node:os"
 import { dirname, join } from "node:path"
 import { afterEach, beforeEach, expect, it } from "vitest"
 import { collectLocalizedDocs, validateDocParity } from "../check-docs-i18n"
+import { tsxCommand } from "../pnpm-command"
 
 let fixtureRoot: string
 
@@ -16,7 +17,8 @@ async function writeFixture(path: string, content: string): Promise<void> {
 async function runCli(
   path: string,
 ): Promise<{ readonly exitCode: number; readonly stdout: string }> {
-  const child = spawn("tsx", ["scripts/check-docs-i18n.ts", path], {
+  const [executable, ...args] = tsxCommand("scripts/check-docs-i18n.ts", path)
+  const child = spawn(executable, args, {
     cwd: join(import.meta.dirname, "../.."),
     stdio: ["ignore", "pipe", "pipe"],
   })

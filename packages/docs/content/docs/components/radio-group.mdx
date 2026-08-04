@@ -1,0 +1,38 @@
+---
+title: "Radio Group"
+registryName: radio-group
+category: primitive
+stability: stable
+showcase: radio-group
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Radio Group 用于从一组互斥选项中选择一个值，保留 Base UI 的键盘、焦点与表单语义，并提供 Mapseek 的选择状态样式。
+
+## 安装
+
+<RegistryInstall registryName="radio-group" />
+
+## 导入
+
+```tsx
+import { Radio, RadioGroup } from "@/registry/ui/radio-group"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="radio-group" demo="overview" title="受控单项选择" description="通过方向键或点击切换底图样式，并在下方同步显示当前选择。" minHeight={300} />
+
+## 导出
+
+`radio-group.tsx` 导出 `RadioGroup` 和 `Radio`。使用 `value/onValueChange` 控制选择，并为每个 `Radio` 提供唯一的 `value`。
+
+## 无障碍
+
+为 `RadioGroup` 提供组标签，并使用原生 `label` 或其他可访问名称标注每个选项。互斥选项应支持方向键导航。
+
+## 依赖
+
+<RegistryDependencies registryName="radio-group" />

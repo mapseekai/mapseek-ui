@@ -1,0 +1,38 @@
+---
+title: "Color Input"
+registryName: color-input
+category: primitive
+stability: stable
+showcase: color-input
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Color Input is a native color control with Mapseek borders, focus rings, and disabled styling for compact layer-style forms.
+
+## Installation
+
+<RegistryInstall registryName="color-input" />
+
+## Import
+
+```tsx
+import { ColorInput } from "@/registry/ui/color-input"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="color-input" demo="overview" title="Controlled value and disabled state" description="Changing the color immediately updates the displayed hexadecimal value and the demo also shows a non-interactive disabled state." minHeight={280} />
+
+## Exports
+
+`color-input.tsx` exports `ColorInput`. It inherits native `input[type=color]` attributes including `value/onChange`, `defaultValue`, `disabled`, and `aria-label`.
+
+## Accessibility
+
+Provide a readable `aria-label` or associated label. When users need to identify an exact color, display its text value as well instead of relying on the swatch alone.
+
+## Dependencies
+
+<RegistryDependencies registryName="color-input" />

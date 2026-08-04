@@ -2,6 +2,7 @@ import { IconCircleFilled, IconScissors } from "@tabler/icons-react"
 import type { CSSProperties } from "react"
 import { PlaceholderGlyph } from "@/components/blocks/placeholder-glyph"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
@@ -74,7 +75,7 @@ export function ResourceGrid({
       <div
         data-testid="resource-icon-grid"
         className={cn(
-          "grid grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-px border border-border bg-border",
+          "grid w-full min-w-0 grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-px border border-border bg-border",
           className,
         )}
       >
@@ -88,7 +89,7 @@ export function ResourceGrid({
               data-testid="resource-icon-card"
               data-selected={selected}
               className={cn(
-                "group relative isolate aspect-square bg-background ring-inset transition-colors hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
+                "group relative isolate aspect-square min-w-0 bg-background ring-inset transition-colors hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
                 selected
                   ? "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-primary/5 ring-1 ring-primary"
                   : "hover:bg-muted",
@@ -109,22 +110,24 @@ export function ResourceGrid({
                   />
                 </span>
               )}
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 type="button"
                 className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1.5 border-0 bg-transparent p-2.5 text-center [font:inherit]"
                 onClick={() => onOpen("icon", it.id)}
                 onContextMenu={(e) => onContextMenu(e, "icon", it.id)}
               >
                 {renderIconPreview?.(it) ?? <PlaceholderGlyph size={28} seed={it.seed} />}
-                <div className="w-full truncate text-center text-[11px] font-medium text-foreground">
+                <div className="w-full min-w-0 truncate whitespace-nowrap text-center text-[11px] font-medium text-foreground">
                   {it.name}
                 </div>
                 {it.categoryLabel && (
-                  <div className="font-mono text-[9.5px] tracking-[0.04em] text-muted-foreground uppercase">
+                  <div className="max-w-full truncate whitespace-nowrap font-mono text-[9.5px] tracking-[0.04em] text-muted-foreground uppercase">
                     {it.categoryLabel}
                   </div>
                 )}
-              </button>
+              </Button>
             </div>
           )
         })}
@@ -200,7 +203,9 @@ function ResourceCard({
   onContextMenu: (e: React.MouseEvent) => void
 }) {
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="sm"
       type="button"
       className="flex cursor-pointer flex-col border border-border bg-background text-left transition-all hover:border-primary"
       onClick={onOpen}
@@ -229,6 +234,6 @@ function ResourceCard({
           ))}
         </div>
       </div>
-    </button>
+    </Button>
   )
 }

@@ -1,5 +1,6 @@
 import { useId } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import type { AddFieldFormProps } from "./types"
@@ -48,7 +49,9 @@ export function AddFieldForm({
             const isCur = value.type === t.id
             const TypeIcon = t.icon
             return (
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 key={t.id}
                 type="button"
                 onClick={() => set({ type: t.id })}
@@ -61,7 +64,7 @@ export function AddFieldForm({
               >
                 <TypeIcon size={16} />
                 <span className="text-[11px] font-medium leading-none">{t.label}</span>
-              </button>
+              </Button>
             )
           })}
         </div>

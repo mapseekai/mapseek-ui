@@ -1,13 +1,19 @@
 import {
+  CUSTOM_COLORMAP_LABELS_EN,
+  CUSTOM_COLORMAP_LABELS_ZH_CN,
+  CustomColormap,
+} from "@registry/blocks/custom-colormap"
+import {
   buildColormapGradient,
-  type CustomColormap,
   CustomColormapEditor,
   type CustomColormapLabels,
+  type CustomColormap as CustomColormapValue,
   DEFAULT_CUSTOM_COLORMAP,
 } from "@registry/blocks/raster-style-panel"
 import { Button } from "@registry/ui/button"
 import { Dialog, DialogBody, DialogContent, DialogFooter } from "@registry/ui/dialog"
 import { useState } from "react"
+import type { LocalizedDemoProps } from "./types"
 
 const LABELS: CustomColormapLabels = {
   stops: "色停",
@@ -25,8 +31,8 @@ const LABELS: CustomColormapLabels = {
 
 export function CustomColormapShowcase() {
   const [open, setOpen] = useState(false)
-  const [committed, setCommitted] = useState<CustomColormap>(DEFAULT_CUSTOM_COLORMAP)
-  const [draft, setDraft] = useState<CustomColormap>(DEFAULT_CUSTOM_COLORMAP)
+  const [committed, setCommitted] = useState<CustomColormapValue>(DEFAULT_CUSTOM_COLORMAP)
+  const [draft, setDraft] = useState<CustomColormapValue>(DEFAULT_CUSTOM_COLORMAP)
 
   const openEditor = () => {
     setDraft(committed)
@@ -41,10 +47,7 @@ export function CustomColormapShowcase() {
       </p>
 
       <div className="flex items-center gap-3">
-        <span
-          className="h-6 w-64 border border-border"
-          style={{ background: buildColormapGradient(committed) }}
-        />
+        <span className="h-6 w-64" style={{ background: buildColormapGradient(committed) }} />
         <span className="font-mono text-[11px] text-muted-foreground">
           {committed.stops.length} stops · {committed.interpolation} · {committed.colorSpace}
         </span>
@@ -79,5 +82,30 @@ export function CustomColormapShowcase() {
         </DialogContent>
       </Dialog>
     </div>
+  )
+}
+
+export function CustomColormapDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+  const [open, setOpen] = useState(false)
+  const [committed, setCommitted] = useState<CustomColormapValue>(DEFAULT_CUSTOM_COLORMAP)
+  const [draft, setDraft] = useState<CustomColormapValue>(DEFAULT_CUSTOM_COLORMAP)
+  const labels = locale === "en" ? CUSTOM_COLORMAP_LABELS_EN : CUSTOM_COLORMAP_LABELS_ZH_CN
+
+  return (
+    <CustomColormap
+      value={committed}
+      draft={draft}
+      open={open}
+      labels={labels}
+      onOpenChange={(nextOpen) => {
+        if (nextOpen) setDraft(committed)
+        setOpen(nextOpen)
+      }}
+      onDraftChange={setDraft}
+      onApply={(nextValue) => {
+        setCommitted(nextValue)
+        setOpen(false)
+      }}
+    />
   )
 }

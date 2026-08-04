@@ -11,7 +11,11 @@ const repoRoot = fileURLToPath(new URL("..", import.meta.url))
 async function run(cwd: string, command: string[]): Promise<void> {
   const [executable, ...args] = command
   if (!executable) throw new Error("Missing command executable")
-  const child = spawn(executable, args, { cwd, stdio: "inherit" })
+  const child = spawn(executable, args, {
+    cwd,
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  })
   const exitCode = await new Promise<number | null>((resolve, reject) => {
     child.once("error", reject)
     child.once("exit", resolve)

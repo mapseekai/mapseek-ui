@@ -1,16 +1,11 @@
-import { defineCustom as custom, defineCategory, type ShowcaseEntry } from "./types"
+import { defineCategory, type ShowcaseEntry } from "./types"
 
 const block = defineCategory("block")
 
 export const blockShowcases = [
-  custom(
-    "loom-layer-panel",
-    "LoomLayerPanel 工程图层",
-    "block",
-    () => import("./LoomLayerPanelShowcase"),
-  ),
-  custom("loom-toolbox", "LoomToolbox 编辑工具箱", "block", () => import("./LoomToolboxShowcase")),
-  custom("loom-toolbar", "LoomToolbar 编辑工具条", "block", () => import("./LoomToolbarShowcase")),
+  block("loom-layer-panel", "LoomLayerPanel 工程图层", () => import("./LoomLayerPanelShowcase")),
+  block("loom-toolbox", "LoomToolbox 编辑工具箱", () => import("./LoomToolboxShowcase")),
+  block("loom-toolbar", "LoomToolbar 编辑工具条", () => import("./LoomToolbarShowcase")),
   block("add-field-form", "AddFieldForm 添加字段", () => import("./AddFieldFormShowcase")),
   block("app-top-bar", "AppTopBar 应用顶栏", () => import("./AppTopBarShowcase")),
   block("product-logo", "ProductLogo 产品 Logo", () => import("./ProductLogoShowcase")),
@@ -119,10 +114,5 @@ export const blockShowcases = [
   block("loading-screen", "LoadingScreen 加载界面", () => import("./LoadingScreenShowcase")),
   block("resource-status", "ResourceStatus 资源状态", () => import("./ResourceStatusShowcase")),
   block("style-panel", "StylePanel 样式面板", () => import("./StylePanelShowcase")),
-  custom(
-    "custom-colormap",
-    "CustomColormap 配色编辑",
-    "block",
-    () => import("./CustomColormapShowcase"),
-  ),
+  block("custom-colormap", "CustomColormap 配色编辑", () => import("./CustomColormapShowcase")),
 ] satisfies readonly ShowcaseEntry[]

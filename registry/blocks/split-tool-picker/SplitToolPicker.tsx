@@ -120,7 +120,9 @@ function SplitToolPicker({
               const Icon = item.icon
               const selected = item.id === selectedItem.id
               return (
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   key={item.id}
                   type="button"
                   role="option"
@@ -154,7 +156,7 @@ function SplitToolPicker({
                       {item.hint}
                     </span>
                   ) : null}
-                </button>
+                </Button>
               )
             })}
           </div>

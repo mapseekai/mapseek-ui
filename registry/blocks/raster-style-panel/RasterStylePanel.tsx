@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react"
 import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import { Select } from "@/components/ui/select"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
@@ -331,7 +332,9 @@ export function RasterStylePanel({
                     </div>
                   ))}
                   <div className="flex gap-1">
-                    <button
+                    <Button
+                      variant="outline"
+                      size="sm"
                       type="button"
                       onClick={() =>
                         setColormap({
@@ -350,9 +353,11 @@ export function RasterStylePanel({
                       }
                     >
                       Add stop
-                    </button>
+                    </Button>
                     {custom.entries.length > 1 ? (
-                      <button
+                      <Button
+                        variant="outline"
+                        size="sm"
                         type="button"
                         onClick={() =>
                           setColormap({
@@ -365,7 +370,7 @@ export function RasterStylePanel({
                         }
                       >
                         Remove stop
-                      </button>
+                      </Button>
                     ) : null}
                   </div>
                   <DraftInput

@@ -1,0 +1,34 @@
+---
+title: "CustomColormap"
+registryName: custom-colormap
+category: block
+stability: experimental
+showcase: custom-colormap
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+CustomColormap 将自定义色停编辑器封装为受控配色预览与编辑对话框，支持<span className="whitespace-nowrap">插值方式</span>、色彩空间和预设导入。
+
+## 安装
+
+<RegistryInstall registryName="custom-colormap" />
+
+## 导入
+
+```tsx
+import { CustomColormap, type CustomColormapValue } from "@/components/blocks/custom-colormap"
+```
+
+## 配色编辑
+
+<ShowcaseDemo registryName="custom-colormap" title="配色编辑" description="区分已应用 value 与编辑中的 draft，只有应用操作才提交新配色。" minHeight={240} />
+
+## 提交语义
+
+调用方维护 `value`、`draft` 和 `open`。打开编辑器时复制当前值到草稿；`onApply` 提交草稿并关闭对话框。
+
+## 依赖
+
+<RegistryDependencies registryName="custom-colormap" />

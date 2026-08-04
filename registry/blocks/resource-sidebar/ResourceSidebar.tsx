@@ -37,7 +37,7 @@ export function ResourceSidebar({
   className,
 }: ResourceSidebarProps) {
   const leafBase =
-    "relative flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-[13px] text-foreground [font:inherit] before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-muted"
+    "relative flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-xs text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-muted"
   const activeLeaf = "bg-primary/10 text-primary before:opacity-100"
 
   function leafClass(active: boolean, extra: string) {
@@ -58,7 +58,7 @@ export function ResourceSidebar({
       <div className="px-1.5 pt-0.5">
         <div
           className={cn(
-            "flex items-center gap-2 px-2.5 py-[7px] text-[13px] font-semibold",
+            "flex items-center gap-2 px-2.5 py-[7px] text-xs font-semibold",
             tab === "icon" || tab === "sprite"
               ? "text-primary [&_svg]:text-primary"
               : "text-foreground [&_svg]:text-muted-foreground",
@@ -120,7 +120,7 @@ export function ResourceSidebar({
             actions={
               c.isDefault ? undefined : (
                 <>
-                  <Tooltip content={labels.rename} side="right" delay={0}>
+                  <Tooltip content={labels.rename} side="top" delay={0}>
                     <Button
                       variant="ghost"
                       size="icon-xs"
@@ -135,7 +135,7 @@ export function ResourceSidebar({
                       <IconPencil size={11} stroke={ICON_STROKE} />
                     </Button>
                   </Tooltip>
-                  <Tooltip content={labels.remove} side="right" delay={0}>
+                  <Tooltip content={labels.remove} side="top" delay={0}>
                     <Button
                       variant="ghost"
                       size="icon-xs"
@@ -183,7 +183,7 @@ function TypeRow({
   onClick: () => void
 }) {
   return (
-    <button type="button" className={className} onClick={onClick}>
+    <Button type="button" variant="ghost" size="sm" className={className} onClick={onClick}>
       {icon}
       <span>{label}</span>
       <span
@@ -194,7 +194,7 @@ function TypeRow({
       >
         {count}
       </span>
-    </button>
+    </Button>
   )
 }
 
@@ -215,17 +215,19 @@ function CategoryRow({
 }) {
   return (
     <div className="group/cat relative h-[34px]">
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="sm"
         className={cn(
-          "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-[13px] text-foreground [font:inherit] hover:bg-muted",
+          "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-xs text-foreground hover:bg-muted",
           active && "bg-primary/10 font-medium text-primary",
         )}
         onClick={onClick}
       >
         {icon}
         <span className="min-w-0 flex-1 truncate">{label}</span>
-      </button>
+      </Button>
       <span
         className={cn(
           "pointer-events-none absolute inset-y-0 right-2 flex items-center font-mono text-[11px] text-muted-foreground",

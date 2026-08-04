@@ -1,0 +1,38 @@
+---
+title: "Radio Group"
+registryName: radio-group
+category: primitive
+stability: stable
+showcase: radio-group
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Radio Group selects one value from a mutually exclusive set while preserving Base UI keyboard, focus, and form semantics with Mapseek selection styling.
+
+## Installation
+
+<RegistryInstall registryName="radio-group" />
+
+## Import
+
+```tsx
+import { Radio, RadioGroup } from "@/registry/ui/radio-group"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="radio-group" demo="overview" title="Controlled single selection" description="Switch the basemap style with arrow keys or a click and see the current selection update below the group." minHeight={300} />
+
+## Exports
+
+`radio-group.tsx` exports `RadioGroup` and `Radio`. Control the group with `value/onValueChange` and give every `Radio` a unique `value`.
+
+## Accessibility
+
+Give `RadioGroup` an accessible group label and label each option with a native `label` or another accessible name. Mutually exclusive options should support arrow-key navigation.
+
+## Dependencies
+
+<RegistryDependencies registryName="radio-group" />

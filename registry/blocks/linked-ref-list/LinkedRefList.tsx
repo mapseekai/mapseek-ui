@@ -3,6 +3,7 @@ import type { ReactNode } from "react"
 import { useState } from "react"
 
 import { IconButton } from "@/components/ui/icon-button"
+import { Button } from "@/components/ui/button"
 import { Tooltip } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
@@ -109,7 +110,9 @@ function SummaryCard({
 }) {
   const unit = group.summaryLabel.replace(/^\s*\d[\d,]*\s*/, "")
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="sm"
       type="button"
       onClick={onSelect}
       className={cn(
@@ -131,7 +134,7 @@ function SummaryCard({
         <span className="mono text-xl font-medium">{group.count}</span>{" "}
         <span className="text-[11px] text-muted-foreground">{unit}</span>
       </span>
-    </button>
+    </Button>
   )
 }
 

@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import { COLORMAP_GRADIENTS, NAMED_COLORMAPS } from "./colormaps"
 import type { ColormapName } from "./types"
 
@@ -40,7 +41,9 @@ export function ColormapPicker({
       {visibleOptions.map((c) => {
         const active = c === value
         return (
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             key={c}
             type="button"
             onClick={() => {
@@ -65,7 +68,7 @@ export function ColormapPicker({
             >
               {c === "custom" ? customLabel : c}
             </span>
-          </button>
+          </Button>
         )
       })}
     </div>

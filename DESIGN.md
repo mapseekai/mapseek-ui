@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Mapseek UI
-description: Compact, precision-first interface rules for Mapseek geospatial and resource-management products.
+description: A compact, precision-first design system for geospatial analysis, map styling, data inspection, and resource-management tools.
 colors:
   primary: "oklch(0.6270 0.1940 149)"
   on-primary: "oklch(1 0 0)"
@@ -18,6 +18,7 @@ colors:
   border: "oklch(0.9200 0.0050 149)"
   border-strong: "oklch(0.8500 0.0080 149)"
   input: "oklch(0.9400 0.0050 149)"
+  input-surface: "transparent"
   ring: "oklch(0.6270 0.1940 149)"
   destructive: "oklch(0.6000 0.1800 25)"
   warning: "oklch(0.769 0.188 70.08)"
@@ -32,6 +33,7 @@ colors:
   dark-muted: "oklch(0.2400 0.0080 149)"
   dark-on-muted: "oklch(0.6500 0.0200 149)"
   dark-input: "oklch(1 0 0 / 15%)"
+  dark-input-surface: "oklch(1 0 0 / 4.5%)"
   dark-destructive: "oklch(0.7000 0.1800 25)"
 typography:
   headline-lg:
@@ -147,12 +149,15 @@ components:
     height: 36px
     padding: 10px
   input:
-    backgroundColor: "{colors.input}"
+    backgroundColor: "{colors.input-surface}"
     textColor: "{colors.on-background}"
     typography: "{typography.body-md}"
     rounded: "{rounded.none}"
     height: 32px
     padding: 10px
+  input-border:
+    backgroundColor: "{colors.input}"
+    height: 1px
   divider:
     backgroundColor: "{colors.border}"
     height: 1px
@@ -194,6 +199,8 @@ components:
     backgroundColor: "{colors.dark-primary}"
     textColor: "{colors.dark-on-primary}"
   dark-input:
+    backgroundColor: "{colors.dark-input-surface}"
+  dark-input-control:
     backgroundColor: "{colors.dark-input}"
   dark-destructive-action:
     textColor: "{colors.dark-destructive}"
@@ -201,185 +208,283 @@ components:
 
 # Mapseek UI Design Rules
 
+[Chinese version](./DESIGN.zh-CN.md)
+
 ## Overview
 
-Mapseek UI 是面向 GIS、数据管理、地图样式配置和资源管理场景的组件注册表。视觉基调是 **precision-first technical minimalism**：高信息密度、清晰边界、低装饰、快速扫描，并优先保证专业工具在长时间使用中的稳定感。
+Mapseek UI is a component registry for GIS analysis, map styling, data inspection, and resource-management products. Its visual language is **precision-first technical minimalism**: dense without feeling cramped, explicit about state, quiet around data, and optimized for long desktop sessions.
 
-### Source of truth
+The interface should resemble a calibrated professional instrument rather than a marketing site. Maps, rasters, charts, coordinates, schemas, and resource metadata are the visual content; chrome exists to organize and operate on that content. Green signals the current action or selection, hairlines establish structure, and a single monospaced voice keeps values easy to scan and compare.
 
-- **状态：** Active
-- **最后刷新：** 2026-07-31
-- **格式：** Google Labs `DESIGN.md` 0.4.0 所实现的 `alpha` 规范；YAML 令牌是机器可读的规范值，正文解释使用方式和设计理由。
-- **主要界面：** 地图控制与坐标状态、图层与样式编辑、数据属性表、资源库、服务状态、通知与处理进度。
-- **代码真值：** `registry/theme/registry.json` 定义完整运行时主题；`registry/ui/` 定义基础组件；`registry/blocks/` 定义领域组合组件；`components.json` 定义 shadcn 生成约束。
-- **证据范围：** `README.md`、`docs/provenance.md`、`components.json`、`registry/theme/registry.json`、`registry/ui/registry.json`、`registry/blocks/registry.json` 以及现有组件实现。
+**Key characteristics:**
 
-### Brand
+- Near-white and near-black neutral canvases with a restrained green action color.
+- Geist Mono Variable for interface copy, labels, identifiers, coordinates, and numeric data.
+- Zero-radius rectangular controls, panels, cards, menus, and dialogs.
+- Compact 24-36px control heights and a 4px spacing baseline.
+- One-pixel borders and surface shifts as the primary depth devices; shadows are reserved for floating layers.
+- Clear selected, loading, empty, error, and disabled states that never depend on color alone.
+- Desktop-first panel and data-grid layouts that remain operable on narrow viewports.
 
-- **个性：** 精确、克制、可靠、工程化、数据导向。
-- **信任信号：** 对齐稳定、状态明确、数值使用等宽数字、交互反馈可预测、深浅主题语义一致。
-- **官方标识：** `public/img/mapseek.png` 是 Mapseek 唯一 Logo 资产。导航、favicon、社交预览和产品标识统一使用原图，保持透明背景、完整纵横比与 `object-fit: contain`，不得重绘、改色、裁切或为子产品替换不同图形。
-- **避免：** 营销页式大留白、渐变装饰、玻璃拟态、随意阴影、胶囊化泛滥、无语义的强调色。
+### Source of Truth
 
-### Product goals
+- `registry/theme/registry.json` owns runtime colors, typography, radii, shadows, motion, and Tailwind mappings.
+- `registry/ui/` owns reusable primitives, variants, sizes, states, and accessibility behavior.
+- `registry/blocks/` composes primitives into geospatial and resource-management patterns.
+- `packages/docs/` and `showcase/` are the visual and interaction acceptance surfaces.
+- The YAML front matter is the normative contract for the tokens it lists. `registry/theme/registry.json` remains the source of truth for runtime extensions such as chart, category, sidebar, and derived opacity colors. The prose explains why and when to apply both sets.
 
-- 让用户在密集的图层、属性、样式和资源信息中快速定位、比较和操作。
-- 让注册表消费者通过复用令牌与基础组件获得一致结果，而不是复制局部样式。
-- 在紧凑桌面工作流中保持键盘、读屏、RTL 和深色模式可用性。
-- 非目标：不为展示性网站、内容阅读产品或触屏优先的消费级界面提供通用品牌模板。
+### Design Principles
 
-### Personas and jobs
-
-- **主要用户：** GIS 分析师、数据工程师、地图制作者、空间数据平台运维人员，以及集成 Mapseek registry 的前端开发者。
-- **核心任务：** 管理图层与数据集、检查属性、调整渲染样式、观察处理状态、管理图标/字体/雪碧图资源、复制服务端点。
-- **使用情境：** 桌面端为主，常见多面板并置、长时间使用、键鼠混合操作和高信息密度。
-
-### Information architecture
-
-- 基础层级固定为 **theme → UI primitive → domain block → product screen**。
-- 左侧栏承载资源或图层分类；主区域承载表格、网格、地图或编辑器；抽屉、弹窗和浮层只处理局部任务。
-- 页面内最重要的动作放在顶部工具栏或面板尾部；破坏性动作不得与主动作拥有相同视觉权重。
-
-### Design principles
-
-1. **Precision before decoration：** 边界、对齐和状态比装饰更重要。
-2. **Dense, not cramped：** 使用 24–36px 控件和 8–16px 容器间距，但保留清晰分组。
-3. **Semantic tokens only：** 组件消费 `primary`、`muted`、`border` 等语义令牌，不直接复制颜色常量。
-4. **Reuse before invention：** 先组合 `registry/ui/`；只有多个领域场景重复时才新增 block。
-5. **State is never color-only：** 选择、错误、进度和状态必须结合文字、图标、边框或结构变化。
+1. **Precision before decoration.** Alignment, boundaries, data legibility, and state clarity take precedence over visual effects.
+2. **Dense, not cramped.** Use compact controls and short gaps, but preserve consistent grouping and a readable scan path.
+3. **Data before chrome.** UI surfaces remain neutral so maps, charts, color ramps, and resource previews carry the visual emphasis.
+4. **Semantic tokens only.** Consume `primary`, `muted`, `border`, and other semantic roles instead of copying color literals into components.
+5. **Reuse before invention.** Compose existing primitives first; create a block only when a domain pattern repeats.
+6. **State is never color-only.** Pair color with text, icons, borders, progress, or structural change.
 
 ## Colors
 
-主色是绿色轴的 OKLCH 色板，用于主动作、选中状态、焦点和有限的关键强调。大面积界面保持近白/近黑中性色，让地图、图表、色带和数据本身成为主要视觉内容。
+The palette uses a green-axis OKLCH system surrounded by low-chroma neutrals. The green is functional, not decorative: it identifies the primary action, focus, selection, and limited progress emphasis. Large surfaces stay neutral so spatial and scientific data remain dominant.
 
-- **Primary：** 仅用于当前主动作、选中项、焦点环和关键进度；单一局部不应出现多个竞争主色按钮。浅色主题的主色实心表面统一使用 `on-primary` 白色前景，文字、`currentColor` SVG 与图标按钮必须继承该前景；深色主题继续使用独立的 `dark-on-primary`。
-- **Surface：** `background` 是应用底层，`surface` 对应 card/popover，`muted` 用于弱层级和 hover。
-- **Borders：** 默认边界使用 `border`；需要强调结构或输入边界时使用 `border-strong`，不要引入临时灰色。
-- **Status：** `destructive` 只表示危险或错误；危险按钮使用 10%/20% 色调背景加 destructive 前景，不使用实心 destructive 底。`warning` 与 `info` 必须配合文本/图标。图表和分类色继续以 `registry/theme/registry.json` 的 `chart-*`、`cat-*` 为唯一运行时来源。
-- **Dark mode：** 使用对应 `dark-*` 语义，不反转亮色值；浮层和卡片只比背景略亮，避免纯黑/纯白大面积反差。
-- **Selection：** 采用浅主色背景加主色边框/指示条；选择状态不得只靠 hover 表达。
+### Brand & Action
+
+- **Primary** (`{colors.primary}`): Current primary action, selected navigation item, focus ring, and key progress. Avoid multiple competing primary buttons within one local task.
+- **On Primary** (`{colors.on-primary}`): Foreground for solid primary surfaces in the light theme. Icons and `currentColor` SVGs inherit this value.
+- **Secondary / Accent** (`{colors.secondary}`, `{colors.accent}`): Low-emphasis actions, hover fills, grouped choices, and selected backgrounds where a solid primary surface would be too strong.
+- **Selection** (`{colors.selection}`): Persistent selection fill. Combine it with a primary border, indicator bar, checkmark, or selected semantics.
+
+### Surfaces & Text
+
+- **Background** (`{colors.background}`): Application floor and the default map-adjacent workspace.
+- **Surface** (`{colors.surface}`): Cards, popovers, dialogs, and discrete panels.
+- **Muted** (`{colors.muted}`): Table headers, secondary bands, subdued hover states, and empty-state scaffolding.
+- **On Background / On Surface** (`{colors.on-background}`, `{colors.on-surface}`): Primary interface text.
+- **On Muted** (`{colors.on-muted}`): Metadata, descriptions, counts, and secondary labels. Do not use it for essential instructions at small sizes.
+
+### Borders & Inputs
+
+- **Border** (`{colors.border}`): Default 1px separators, panel edges, card rings, and table rules.
+- **Border Strong** (`{colors.border-strong}`): Emphasized structure, active drop zones, and input boundaries that need more contrast.
+- **Input** (`{colors.input}`): Input borders, disabled fills, and the dark-theme field tint. Editable fields stay transparent in the light theme so they remain visually integrated with the surrounding panel.
+- **Ring** (`{colors.ring}`): Keyboard focus. Focus treatment must remain visible in both themes and must not be replaced by hover styling.
+
+### Semantic & Data Colors
+
+- **Destructive** (`{colors.destructive}`): Irreversible actions and errors. Destructive buttons use a tinted background plus destructive text rather than a large solid-red surface.
+- **Warning** (`{colors.warning}`) and **Info** (`{colors.info}`): Status accents accompanied by a label or icon.
+- Chart colors use this runtime order: `--chart-1` green, `--chart-2` dark green, `--chart-3` cyan-green, `--chart-4` pale green, and `--chart-5` muted green.
+- Category colors use this runtime order: `--cat-1` green, `--cat-2` blue, `--cat-3` amber, `--cat-4` red, `--cat-5` violet, and `--cat-6` cyan. Preserve the order unless the data domain defines a stable semantic mapping.
+- Color ramps, satellite imagery, raster previews, and map symbology are content palettes. They do not redefine the interface palette.
+
+### Dark Mode
+
+Dark mode uses the matching `dark-*` semantic values rather than mechanically inverting light colors. Panels are only slightly lighter than the application background, borders stay translucent, and primary foreground changes to a dark value for readable contrast. Editable text fields use `{colors.dark-input-surface}`, derived from 30% of `{colors.dark-input}`, as a quiet surface tint. Preserve the same hierarchy and component states across themes.
 
 ## Typography
 
-Geist Mono Variable 是默认字体，也是当前 `font-sans` 与 `font-mono` 的实现。统一等宽字形强化数值、坐标、代码、图层名和资源元数据的可比性。
+Mapseek uses **Geist Mono Variable** as both its sans and mono runtime family. A single monospaced voice reinforces the product's technical character and makes coordinates, identifiers, layer names, counts, and code-like values directly comparable.
 
-- 应用根字号为 16px；密集组件正文默认 12px，辅助文本为 10–11px，界面标题通常为 14–15px。
-- 字重限制为 400、500、600；产品标识可使用 700。不要用超细字重或仅靠加粗制造层级。
-- 技术标签和分组标题可使用大写、`0.04em–0.06em` 字距；普通句子、按钮和表单标签保持正常大小写。
-- 坐标、统计值、存储量和计数启用 tabular numerals；代码、端点和标识符保持等宽且允许横向滚动或截断。
-- 42px `data-display` 只用于字体预览或同类展示数据，不能成为常规页面标题。
+### Hierarchy
+
+| Token | Size | Weight | Line height | Use |
+|---|---:|---:|---:|---|
+| `{typography.headline-lg}` | 18px | 600 | 1.2 | Page and major panel titles |
+| `{typography.headline-md}` | 15px | 600 | 1.25 | Dialog and section titles |
+| `{typography.headline-sm}` | 14px | 500 | 1.3 | Card titles and grouped controls |
+| `{typography.body-base}` | 16px | 400 | 1.5 | Root document scale and prose-oriented surfaces |
+| `{typography.body-lg}` | 13px | 400 | 1.5 | Prominent interface copy and resource names |
+| `{typography.body-md}` | 12px | 400 | 1.5 | Default controls, tables, fields, and panels |
+| `{typography.body-sm}` | 11px | 400 | 1.5 | Metadata, counts, and compact status text |
+| `{typography.label-md}` | 10px | 500 | 1.2 | Uppercase taxonomy and section labels |
+| `{typography.data-display}` | 42px | 600 | 1 | Font specimens and exceptional data previews |
+
+### Principles
+
+- Use weights 400, 500, and 600 for most UI. Reserve 700 for the product mark or an exceptional display need.
+- Use uppercase and `0.04em-0.06em` tracking only for short taxonomy labels and section eyebrows, never for sentences or buttons.
+- Enable tabular numerals for coordinates, statistics, storage, timestamps, and counts.
+- Keep identifiers, endpoints, code, and long data values monospaced; allow truncation with a discoverable full value or horizontal scrolling.
+- The 42px data display is a specimen treatment, not a general page-heading style.
+- Do not introduce a contrasting editorial or geometric display family. Hierarchy comes from size, weight, spacing, and structure.
 
 ## Layout
 
-布局以 4px 基线和细粒度半步构建；常用组件间距为 4–8px，容器内边距为 8–16px，面板级间距为 16–24px。
+The layout system is built on a 4px baseline with 2px and 6px intermediate steps for compact alignment. Controls commonly use 4-8px gaps, containers use 8-16px padding, and major panels use 16-24px separation.
 
-- **Control heights：** `xs` 24px、`sm` 28px、default 32px、`lg` 36px；同一工具栏优先保持单一高度。
-- **Panels：** 侧栏和编辑面板使用稳定宽度、1px 边界和独立滚动；例如资源侧栏当前基准宽度为 220px。
-- **Grids：** 资源网格使用 `auto-fill/minmax` 自适应列；图标、雪碧图和字体卡片可以有不同最小列宽，但共享间距和状态规则。
-- **Tables：** 表格容器必须允许横向滚动；表头约 40px，数据行保持紧凑并支持选择/悬停反馈。
-- **Overlays：** 弹窗最大宽度受视口约束，移动宽度至少保留 16px 边距；抽屉用于长内容，popover/tooltip 用于局部信息。
-- 使用逻辑方向属性（`start/end`、`ps/pe`、`ms/me`）支持 RTL；方向性图标在 RTL 下镜像。
+### Spacing System
+
+- `{spacing.hairline}` 1px: rules and borders.
+- `{spacing.micro}` 2px: icon corrections and tightly coupled state details.
+- `{spacing.xs}` 4px and `{spacing.sm}` 6px: compact control and toolbar gaps.
+- `{spacing.md}` 8px and `{spacing.lg}` 12px: field groups, row padding, and small containers.
+- `{spacing.xl}` 16px: standard card, dialog, and panel padding.
+- `{spacing.2xl}` 24px and `{spacing.3xl}` 32px: major sections and spacious empty states.
+
+### Application Structure
+
+- The primary shell follows **top bar -> navigation or resource rail -> working canvas -> contextual panel or overlay**.
+- Toolbars stay one row where possible and use one control height per cluster.
+- Sidebars and editing panels use stable widths, a 1px boundary, and independent scrolling. The resource sidebar baseline is 220px.
+- The main area may host a map, virtualized table, adaptive resource grid, schema form, or editor. It owns remaining width and must keep `min-width: 0` behavior.
+- Persistent actions belong in the top bar or panel footer. Destructive actions must not receive the same visual weight as the primary action.
+
+### Grids, Tables & Forms
+
+- Resource grids use `auto-fill` with domain-specific minimum card widths. Preserve shared gaps, borders, and selection rules across icon, sprite, and font modes.
+- Tables live in an explicit bordered container with horizontal overflow. Headers are approximately 40px high; cells remain compact and whitespace is intentional.
+- Field layouts may be vertical, inline, or responsive. Default editor rows use a stable label column, optional action column, and flexible content column.
+- Dialogs cap width against the viewport and retain at least 16px outer space on narrow screens. Use sheets for long forms or detail inspection and popovers for local choices.
+- Use logical direction properties (`start`, `end`, `ps`, `pe`, `ms`, `me`) so layouts remain RTL-compatible.
 
 ## Elevation & Depth
 
-默认层级依靠 **边界、底色差和遮罩**，而不是阴影。卡片使用细 ring，表格和面板使用 1px border，选中项使用浅主色底与主色边界。
+Mapseek is **border-first and surface-first**. Most hierarchy comes from 1px rules, small neutral surface shifts, and overlays. Static cards and panels do not float above the workspace.
 
-- 普通卡片和静态面板不得添加投影。
-- 弹窗、菜单、toast 和地图浮动控件可使用主题已有 `shadow-*`；地图浮层使用 `--shadow-map-float`。
-- 遮罩保持轻量并可配合小幅 backdrop blur；不可让背景信息完全失去上下文。
-- z-index 只按应用栏、浮动控件、菜单/tooltip、模态层的明确层级使用，禁止任意递增。
+| Level | Treatment | Use |
+|---|---|---|
+| Flat | Background only | App shell, map canvas, content regions |
+| Structured | 1px `{colors.border}` | Panels, tables, cards, grouped controls |
+| Selected | `{colors.selection}` plus primary edge or indicator | Current row, resource, layer, or navigation item |
+| Floating | Surface plus theme shadow | Menus, popovers, tooltips, dialogs, toasts |
+| Map floating | `--shadow-map-float` | Controls that sit directly above map content |
+
+- Avoid shadows on ordinary cards, toolbars, sidebars, table rows, and form sections.
+- Use the existing theme shadow scale only for components that detach from document flow.
+- Dialog backdrops stay light (`black/10`) with a small blur so spatial context remains visible.
+- Motion is fast and functional: 120ms for immediate feedback, 180ms for standard transitions, and 260ms for larger reveals. Prefer opacity, color, and short transform changes; honor reduced motion.
+- Maintain deliberate z-index tiers for app chrome, map controls, menus/tooltips, and modal layers. Do not increment z-index ad hoc.
 
 ## Shapes
 
-所有矩形控件、输入框、卡片、菜单、弹窗和面板均为 **0px 圆角**。这是 Mapseek 的核心识别特征，不得用默认 shadcn 圆角覆盖。
+Zero radius is a defining Mapseek characteristic. All rectangular controls, fields, cards, tables, menus, popovers, dialogs, sheets, and panels use `{rounded.none}`. Do not allow framework defaults to reintroduce rounded corners.
 
-- `rounded.full` 只允许用于天然圆形的状态点、switch 轨道/滑块或头像遮罩。
-- 图标默认来自 Tabler，常用尺寸 12–16px，常用 stroke 为 1.5–1.75；同一区域保持一致。
-- 图标按钮必须保持正方形，并使用组件提供的 `icon-*` 尺寸变体。
-- 分隔线使用 1px；不要通过多层边框、厚描边或装饰性轮廓制造层级。
+### Shape Rules
+
+- `{rounded.full}` is reserved for naturally circular status dots, avatar masks, and switch tracks or thumbs.
+- Icon-only controls are square. Standard icon-button sizes follow the 24px, 28px, 32px, and 36px control scale.
+- Tabler Icons are the default icon language. Typical interface icons are 12-16px with a 1.5-1.75 stroke.
+- Use a consistent icon size and stroke within each toolbar or data row.
+- Separators are 1px. Do not create hierarchy with stacked outlines, thick strokes, or decorative frames.
+- The official product asset is `public/img/mapseek.png`. Preserve its transparency, aspect ratio, and full mark; do not recolor, crop, or redraw it.
+- Data previews may use checkerboards, color ramps, glyph samples, or map thumbnails, but those treatments stay inside a clearly bounded preview region.
 
 ## Components
 
-### Ownership and composition
+Components follow a fixed ownership model: theme -> primitives -> domain blocks -> product screens. The theme defines tokens, primitives define reusable behavior, blocks define domain composition, and product screens supply data and business actions.
 
-- `registry/theme/registry.json` 拥有颜色、字体、圆角、阴影、动效和 Tailwind 主题映射。
-- `registry/ui/` 拥有可复用的基础语义、尺寸、状态和可访问性；产品代码不得复制 button/input/dialog 等基础实现。
-- `registry/blocks/` 只组合 primitives 并表达 GIS/资源领域结构。blocks 通过 props 接收数据、label 和 handler，不嵌入业务引擎或网络请求。
-- `packages/docs/` 直接消费当前 registry 源码，是唯一的文档、视觉与交互验收面。每个公开 primitive 和 block 必须同时提供中英文文档、可访问且可深链的嵌入示例；新增公开项时完整性测试必须同步通过。
+### Buttons & Actions
 
-### Required component behavior
+**`button-primary`** - Green primary action, 32px high, 12px interface type, zero radius. Use one dominant primary action per local task. Hover lowers intensity; press may translate by 1px; focus adds a ring.
 
-- **Button/IconButton：** 使用现有 variant 与 size；图标独占按钮必须提供可访问名称和 tooltip（若含义不显然）。disabled 使用不可交互和透明度降低，pending 同时设置 `aria-busy`。
-- **Input/Field：** 默认高 32px；label、description、error 由 Field 组合；错误同时设置 `aria-invalid` 与可读错误文本，`FieldError` 保持 `role="alert"`。
-- **Card：** 用于明确分组，不作为每个内容块的默认包装；default 内边距 16px，small 为 12px。
-- **Dialog/Sheet：** Dialog 统一使用 `DialogContent → DialogHeader / DialogBody / DialogFooter` 结构；`DialogContent` 负责 16px 内边距和 16px 区块间距，业务用例不得在标题或 footer 上重复补边距。标题必须可读，关闭按钮必须有屏幕阅读器标签；footer 在窄屏纵向排列，在 `sm` 以上横向右对齐。短确认流程用 dialog，长表单/详情用 sheet。
-- **Table/Grid：** 行或卡片的 hover、focus-within、selected 三态必须可区分；可选项使用真实 Checkbox，不用仅可点击的装饰元素代替。
-- **Tooltip/Popover/Menu：** tooltip 只补充简短说明；可操作内容进入 popover/menu。不得把关键任务信息仅放入 hover 内容。
-- **Empty/Skeleton/Progress/Toast：** 根据持续时间和结果分别表达空态、加载、进行中、成功或失败；不要用同一个 spinner 覆盖所有情况。
+**Secondary variants** - Outline, secondary, and ghost treatments preserve hierarchy without inventing another action color. Use `link` only for genuine inline navigation or low-chrome actions.
 
-### New component acceptance
+**Destructive action** - Destructive text is normative in front matter; the runtime button derives its background from the same token at 10% opacity (20% in dark mode). Require confirmation when the outcome is irreversible or difficult to recover.
 
-新增 primitive 前必须证明现有 `registry/ui/` 无法通过组合满足需求。新增 block 必须具有明确领域语义、无业务副作用、支持 label 注入，并在 `registry/*/registry.json` 中声明依赖。变体优先使用 `class-variance-authority` 和 `data-*` 状态，不创建平行样式系统。
+**Icon button** - Square 24-36px action with a 12-16px icon. Provide an accessible name and, when meaning is not obvious, a tooltip. Never use an unlabeled icon as the only description of a critical action.
+
+### Forms & Selection
+
+**`input`** - 32px high, zero radius, 12px text, 10px horizontal padding, explicit border, transparent light-theme surface, 30% `{colors.dark-input}` dark-theme tint, and a 3px translucent focus ring. Placeholder text is secondary; it does not replace a label. `textarea` and `input-group` use the same surface treatment.
+
+**`field`** - Composes label, description, control, and error. Invalid controls use both `aria-invalid` and visible error copy; `FieldError` announces with `role="alert"`.
+
+**Checkbox, switch, slider, select, combobox, toggle, and tabs** - Keep their Base UI semantics and existing keyboard behavior. Selected and checked states require a persistent visual indicator beyond hover.
+
+### Containers & Overlays
+
+**`card`** - Group related content only. Default cards use 16px padding and gap; small cards use 12px. The default ring is subtle and corners stay square.
+
+**`dialog`** - Uses `DialogContent -> DialogHeader / DialogBody / DialogFooter`, 16px padding, 16px section gaps, and a readable title. Footer actions stack on narrow screens and align to the end at `sm` and above.
+
+**`sheet`** - Long editing or detail workflows that need more vertical room than a dialog.
+
+**Popover, dropdown, context menu, command, and tooltip** - Local floating choices. Match the trigger's alignment, retain keyboard navigation, and keep the surrounding task visible.
+
+### Data & Status
+
+**`table`** - Bordered, horizontally scrollable, 12px data type, 40px header, 8px cell padding. Hover and selected states must remain distinguishable.
+
+**`badge`** - 20px high with 8px horizontal padding. Use for concise state or category labels, not for paragraph-like copy.
+
+**Progress, skeleton, empty, sonner, and notification center** - Match feedback scope: local work stays near its source; global or background work may use notifications. Persistent state must not exist only in a temporary toast.
+
+**JSON viewer/editor and chart** - Preserve monospaced alignment and data semantics. Large datasets need scrolling, virtualization, or incremental rendering rather than smaller unreadable type.
+
+### Domain Blocks
+
+- **AppTopBar**: Compact application chrome with navigation, identity, document state, central tools, and end-aligned primary action.
+- **ResourceSidebar / ResourceGrid**: Stable navigation rail paired with adaptive resource cards; selected state combines tinted fill, green text or edge, and semantic state.
+- **LayerPanel / LayerStyleEditor / StylePanel**: Dense inspector structures built from reusable fields and grouped sections.
+- **LoomLayerPanel / LoomToolbox / LoomToolbar / CustomColormap**: Controlled map-editing surfaces for project layers, spatial tools, editing modes, and committed-versus-draft color schemes.
+- **MapControls / MapCoordinateStatus / MapSwitcher**: Small floating map tools that use the dedicated map elevation and keep labels or tooltips discoverable.
+- **AttrTable / AttrInspector / GeoJSONView / JSONEditor**: Data-first inspection surfaces with overflow and long-value handling.
+- **ProcessingTimeline / ServiceStatus / ResourceStatus / NotificationCenter**: Explicit progress and status patterns with text, icon, and color working together.
+- Blocks receive data, labels, and handlers through props. They must not embed a product engine, network request, or non-injectable business copy.
 
 ## Do's and Don'ts
 
-- **Do** 使用主题语义类（如 `bg-background`、`text-muted-foreground`、`border-border`）。
-- **Don't** 在组件中新增与主题重复的 hex、rgb、hsl 或 OKLCH 常量。
-- **Do** 复用 24/28/32/36px 控件高度和 4px 间距节奏。
-- **Don't** 为“更现代”而加入圆角、渐变、玻璃效果或大面积阴影。
-- **Do** 为 hover 同时设计 keyboard focus，为选中同时提供非颜色线索。
-- **Don't** 把 `div onClick` 当作默认按钮；若结构限制必须使用，补齐 role、tabIndex 和键盘处理。
-- **Do** 使用逻辑方向属性与 RTL 图标镜像。
-- **Don't** 在 blocks 中写死业务文案；通过 labels/defaults 注入，并保持术语一致。
-- **Do** 在深色与浅色主题都验证文本、边界、选择和危险状态。
-- **Don't** 以降低字体到 10px 以下作为解决空间不足的首选；先截断、折行、滚动或重新分组。
+### Do
 
-## Accessibility
+- Use semantic theme tokens and existing primitive variants before adding styles.
+- Keep controls compact and align neighboring controls to one height.
+- Preserve the green primary color for current action, focus, selection, and limited high-value emphasis.
+- Use 1px borders and small surface shifts to establish structure.
+- Keep rectangular components at zero radius.
+- Use Geist Mono and tabular numerals for technical values.
+- Pair every state color with text, an icon, a border, progress, or a structural change.
+- Keep icon-only actions square, accessible, and discoverable.
+- Test light mode, dark mode, keyboard navigation, RTL, narrow widths, overflow, and reduced motion.
 
-- **目标：** WCAG 2.2 AA；普通文本最低 4.5:1，大文本最低 3:1，非文本交互边界/状态最低 3:1。
-- 所有交互必须支持键盘；使用 `:focus-visible`，焦点环不得被 `outline-none` 后无替代地移除。
-- 图标按钮、关闭按钮、颜色选择器和地图控制必须有 `aria-label`；装饰图标不得重复朗读文字。
-- 表单错误通过文本和 `aria-invalid` 关联；加载操作使用 `aria-busy`，动态结果根据重要性使用合适的 live region。
-- 动效遵守 `prefers-reduced-motion`；不以闪烁、连续位移或颜色变化作为唯一反馈。
-- 紧凑视觉尺寸不等于紧凑命中区：触屏场景应由外层布局扩大命中区域，关键操作目标建议至少 44×44px。
+### Don't
 
-## Responsive behavior
+- Don't introduce marketing-page whitespace, oversized hero typography, gradients, glassmorphism, or decorative blur.
+- Don't round cards, controls, panels, dialogs, or menus.
+- Don't add shadows to static surfaces or use elevation as decoration.
+- Don't use primary green for unrelated categories, every chart series, or passive decoration.
+- Don't copy hex or OKLCH literals into components when a semantic token exists.
+- Don't shrink data type below the documented compact scale to make content fit.
+- Don't use hover as the only signal for selection or availability.
+- Don't duplicate primitive behavior inside domain blocks.
+- Don't hide essential actions behind an unlabeled icon or color-only affordance.
 
-- 主要支持现代桌面浏览器；窄屏作为可用降级，不承诺把所有专业多面板流程重构为移动优先体验。
-- 顶部栏在窄屏允许动作区换至下一行；dialog footer 在窄屏纵向排列，在 `sm` 以上恢复横向右对齐。
-- 双列选择卡在 `md` 以下改为单列；表格和端点保持横向滚动，不压缩到不可读。
-- 侧栏和重型编辑器在产品层决定折叠、sheet 化或隐藏；primitive 不硬编码产品断点策略。
-- hover 专属操作必须在触屏或键盘焦点下有等价入口。
+## Responsive Behavior
 
-## Interaction states
+Mapseek is desktop-first, but every component must remain understandable and operable on narrower screens. Responsive behavior should preserve task priority rather than simply scaling everything down.
 
-- **Loading：** 已知结构使用 Skeleton；确定进度使用 Progress；全屏初始化才使用 LoadingScreen。
-- **Empty：** 说明为什么为空，并在可恢复时提供单一明确动作。
-- **Error：** 就地错误靠近触发源；全局失败使用 toast/notification，同时保留可恢复路径。
-- **Success：** 保存等即时操作可使用短 toast；持续状态应写入界面本身，不只显示瞬时消息。
-- **Disabled：** 仅用于当前不可执行的动作；若原因不明显，在邻近说明或 tooltip 中解释。
-- **Selected：** 使用浅主色底、主色边界/指示条以及语义状态；hover 不得覆盖 selected。
-- **Slow/offline：** 保留用户输入，显示进行中或重试状态，不把网络延迟表现为空内容。
+### Breakpoints
 
-## Content voice
+| Range | Expected behavior |
+|---|---|
+| `< 640px` | Stack dialog actions, keep 16px viewport margins, collapse multi-column grids to one column, and move secondary panel content behind an explicit trigger. |
+| `640-767px` | Allow two-column resource grids when minimum card width is preserved; keep compact controls but enlarge touch hit areas when required by the product shell. |
+| `768-1023px` | Collapse or overlay secondary rails when the working canvas would become unusable; preserve the primary map, table, or editor. |
+| `>= 1024px` | Use the full desktop shell with persistent sidebars, toolbars, working canvas, and contextual panels. |
 
-- 语气直接、技术准确、简短；按钮使用动词，状态使用明确名词或过去分词。
-- 同一领域术语保持唯一译法；坐标系、波段、图层、数据集、瓦片集、雪碧图和服务端点不得混用近义词。
-- 错误信息说明发生了什么、影响什么、用户下一步能做什么；不要只写“操作失败”。
-- block 的可见文案通过 `labels` 与 `defaults` 注入；基础 primitive 只保留必要的可访问默认值。
+### Collapsing Strategy
 
-## Implementation constraints
+- Preserve the working canvas first, then the primary action, then current context; collapse secondary navigation and metadata after those.
+- Toolbars may wrap only at meaningful action-group boundaries. Prefer overflow menus for low-frequency actions.
+- Resource grids adapt through `auto-fill/minmax`; tables scroll horizontally instead of compressing columns into unreadable values.
+- Sidebars become sheets or explicitly triggered overlays on narrow layouts.
+- Touch products may expand the visual control's hit region toward 44px without changing the desktop density contract.
 
-- **框架：** React 19、TypeScript 5.9、Tailwind CSS 4、Base UI、shadcn registry、Tabler Icons。
-- **样式：** 使用 CSS variables + Tailwind 语义类；类名合并使用现有 `cn`，变体使用 CVA 或既有 `data-*` 模式。
-- **主题：** 任何令牌变更先修改 `registry/theme/registry.json`，再同步消费面；不得让 `DESIGN.md` 与运行时主题长期分叉。
-- **国际化：** blocks 的业务文案必须可注入；使用逻辑方向属性，保持 `components.json` 的 RTL 能力。
-- **性能：** 大表格/列表保留虚拟化或滚动边界；避免在 render 内创建与数据量线性增长的昂贵样式计算。
-- **验证：** 变更后运行 `bun run lint`、`bun run typecheck`、`bun run test`、`bun run registry:validate`，并使用 `@google/design.md lint DESIGN.md` 校验本文件。
+## Iteration Guide
 
-## Open questions
+1. Start with the nearest existing primitive or block; do not begin from raw HTML and local literals.
+2. Keep token changes in `registry/theme/registry.json`, then regenerate or synchronize consuming surfaces and this document.
+3. Use the existing 24/28/32/36px control scale, 4px spacing baseline, zero-radius geometry, and Tabler icon language.
+4. Add component variants through the established CVA or `data-*` pattern; keep state names semantic.
+5. Keep visible block copy injectable through `labels` and behavioral data injectable through props.
+6. Verify loading, empty, error, disabled, selected, long-content, overflow, dark, RTL, keyboard, and reduced-motion cases.
+7. Provide or update bilingual documentation and a deep-linkable showcase for every public primitive or block.
+8. Run `pnpm run lint`, `pnpm run typecheck`, `pnpm test`, `pnpm run registry:validate`, and `pnpm run design:lint` after relevant changes.
 
-- [ ] 亮色 `primary` + 白色按钮文字当前对比度为 3.22:1，是否调整主色或前景色以达到普通文本 4.5:1？负责人：设计系统；影响：主按钮和 WCAG 2.2 AA。
-- [ ] 产品层是否正式承诺移动端完整编辑流程？负责人：产品；影响：侧栏与编辑器的响应式模式。
-- [ ] 是否需要为 chart/category 色板建立色盲安全的成对/序列约束？负责人：设计系统；影响：图表和分类地图。
-- [ ] 触屏设备上的紧凑控件是否统一由产品壳扩大至 44px 命中区？负责人：前端架构；影响：地图控件和工具栏。
+## Known Gaps
+
+- Light-theme `{components.button-primary}` currently has a 3.22:1 white-on-green contrast ratio. This passes for large text and many non-text indicators but is below WCAG AA's 4.5:1 target for normal text; the design-system owner must resolve the primary or foreground value.
+- `{components.input}` is intentionally transparent in the light theme and inherits its containing background or surface. Contrast must be evaluated against that composed surface; automated checks that compare text directly with transparent black do not represent the rendered result.
+- Full mobile editing flows are product-shell decisions. The registry defines narrow-layout behavior, but it does not promise that every desktop GIS workflow is touch-first.
+- Chart and category token order exists at runtime, but a color-vision-safe pairing and sequencing policy is not yet documented.
+- Motion tokens are defined, but complex map transitions, timeline choreography, and editor reveal sequences remain product-specific.
+- Some data-heavy blocks rely on the consuming product to supply virtualization, paging, or streaming boundaries.

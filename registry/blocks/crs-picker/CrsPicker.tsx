@@ -2,6 +2,7 @@ import { IconMap2, IconSearch, IconWorld, type Icon as TablerIcon } from "@table
 import * as React from "react"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
 import { buildCrsList } from "./built-in-crs"
 import { DEFAULT_CRS_PICKER_LABELS } from "./defaults"
 import type { CrsItem, CrsPickerProps } from "./types"
@@ -74,12 +75,12 @@ export function CrsPicker({
           strokeWidth={2}
           className={cn("shrink-0", hasQuery ? "text-primary" : "text-muted-foreground")}
         />
-        <input
-          type="text"
+        <Input
+          type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={labels.searchPlaceholder}
-          className="h-8 w-full border-0 bg-transparent text-xs text-foreground placeholder:text-muted-foreground outline-none"
+          className="h-8 w-full border-0 bg-transparent px-0 text-xs text-foreground placeholder:text-muted-foreground shadow-none outline-none focus-visible:ring-0"
         />
       </div>
 

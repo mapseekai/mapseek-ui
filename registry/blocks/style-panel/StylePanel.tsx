@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
@@ -74,7 +75,9 @@ function StylePanelFill({
       <FieldLabel>{label ?? labels.fill}</FieldLabel>
       <div data-slot="style-panel-fill" className={cn("flex items-center gap-1.5", className)}>
         {swatches.map((c) => (
-          <button
+          <Button
+            variant="ghost"
+            size="icon-sm"
             type="button"
             key={c}
             onClick={() => patch(value, onChange, { fill: c })}
@@ -168,7 +171,9 @@ function StylePanelMarker({ shapes }: { shapes: MarkerShape[] }) {
         {shapes.map((s) => {
           const isCur = cur === s
           return (
-            <button
+            <Button
+              variant="ghost"
+              size="icon-sm"
               type="button"
               key={s}
               onClick={() =>
@@ -186,7 +191,7 @@ function StylePanelMarker({ shapes }: { shapes: MarkerShape[] }) {
               title={s}
             >
               {s === "circle" ? "●" : s === "square" ? "■" : "▲"}
-            </button>
+            </Button>
           )
         })}
       </div>

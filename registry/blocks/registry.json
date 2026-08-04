@@ -209,6 +209,33 @@
       "dependencies": ["@tabler/icons-react"]
     },
     {
+      "name": "custom-colormap",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/dialog",
+        "@mapseek/raster-style-panel",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "custom-colormap/CustomColormap.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/custom-colormap/CustomColormap.tsx"
+        },
+        {
+          "path": "custom-colormap/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/custom-colormap/index.ts"
+        },
+        {
+          "path": "custom-colormap/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/custom-colormap/labels.ts"
+        }
+      ]
+    },
+    {
       "name": "filter-panel",
       "type": "registry:block",
       "registryDependencies": [
@@ -540,6 +567,105 @@
           "path": "loading-screen/labels.ts",
           "type": "registry:block",
           "target": "@components/blocks/loading-screen/labels.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "loom-layer-panel",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/badge",
+        "@mapseek/button",
+        "@mapseek/input",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "loom-layer-panel/LoomLayerPanel.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-layer-panel/LoomLayerPanel.tsx"
+        },
+        {
+          "path": "loom-layer-panel/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-layer-panel/index.ts"
+        },
+        {
+          "path": "loom-layer-panel/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-layer-panel/labels.ts"
+        },
+        {
+          "path": "loom-layer-panel/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-layer-panel/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "loom-toolbox",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/button", "@mapseek/input", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "loom-toolbox/LoomToolbox.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbox/LoomToolbox.tsx"
+        },
+        {
+          "path": "loom-toolbox/ToolDetail.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbox/ToolDetail.tsx"
+        },
+        {
+          "path": "loom-toolbox/ToolList.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbox/ToolList.tsx"
+        },
+        {
+          "path": "loom-toolbox/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbox/index.ts"
+        },
+        {
+          "path": "loom-toolbox/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbox/labels.ts"
+        },
+        {
+          "path": "loom-toolbox/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbox/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "loom-toolbar",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/badge", "@mapseek/button", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "loom-toolbar/LoomToolbar.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbar/LoomToolbar.tsx"
+        },
+        {
+          "path": "loom-toolbar/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbar/index.ts"
+        },
+        {
+          "path": "loom-toolbar/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbar/labels.ts"
+        },
+        {
+          "path": "loom-toolbar/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/loom-toolbar/types.ts"
         }
       ],
       "dependencies": ["@tabler/icons-react"]

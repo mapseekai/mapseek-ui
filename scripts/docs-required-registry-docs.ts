@@ -46,6 +46,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "color-input",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "collapsible",
     {
       category: "primitive",
@@ -143,6 +149,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
   ],
   [
     "progress",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "radio-group",
     {
       category: "primitive",
     },
@@ -250,6 +262,24 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "loom-layer-panel",
+    {
+      category: "block",
+    },
+  ],
+  [
+    "loom-toolbox",
+    {
+      category: "block",
+    },
+  ],
+  [
+    "loom-toolbar",
+    {
+      category: "block",
+    },
+  ],
+  [
     "notification-center",
     {
       category: "block",
@@ -341,6 +371,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
   ],
   [
     "crs-picker",
+    {
+      category: "block",
+    },
+  ],
+  [
+    "custom-colormap",
     {
       category: "block",
     },

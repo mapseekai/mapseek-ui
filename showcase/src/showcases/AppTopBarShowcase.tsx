@@ -42,7 +42,7 @@ function StatusPill({
   return (
     <span
       className={[
-        "ml-1 inline-flex items-center gap-1 border px-1.5 py-0.5 font-mono text-[9px] leading-none font-medium uppercase",
+        "ml-1 inline-flex items-center gap-1 whitespace-nowrap border px-1.5 py-0.5 font-mono text-[9px] leading-none font-medium uppercase",
         dirty
           ? "border-warning/25 bg-warning/10 text-warning"
           : "border-primary/25 bg-primary/10 text-primary",

@@ -11,6 +11,7 @@ export const primitiveShowcases = [
   primitive("calendar", "Calendar 日历", () => import("./CalendarShowcase")),
   primitive("card", "Card 卡片", () => import("./CardShowcase")),
   primitive("checkbox", "Checkbox 复选框", () => import("./CheckboxShowcase")),
+  primitive("color-input", "Color Input 颜色输入", () => import("./ColorInputShowcase")),
   primitive("combobox", "Combobox 组合框", () => import("./ComboboxShowcase")),
   primitive("command", "Command 命令面板", () => import("./CommandShowcase")),
   primitive("confirm-dialog", "Confirm Dialog 确认框", () => import("./ConfirmDialogShowcase")),
@@ -41,5 +42,6 @@ export const primitiveShowcases = [
   primitive("context-menu", "Context Menu 右键菜单", () => import("./ContextMenuShowcase")),
   primitive("json-viewer", "JSON Viewer 数据查看", () => import("./JsonViewerShowcase")),
   primitive("progress", "Progress 进度", () => import("./ProgressShowcase")),
+  primitive("radio-group", "Radio Group 单选组", () => import("./RadioGroupShowcase")),
   primitive("sheet", "Sheet 侧边抽屉", () => import("./SheetShowcase")),
 ] satisfies readonly ShowcaseEntry[]

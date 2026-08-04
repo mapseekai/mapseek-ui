@@ -42,7 +42,7 @@ function Slider({
             data-slot="slider-thumb"
             key={thumbValue}
             index={index}
-            className="relative block size-3 shrink-0 rounded-none border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2 hover:ring-1 focus-visible:ring-1 focus-visible:outline-hidden active:ring-1 disabled:pointer-events-none disabled:opacity-50"
+            className="relative block size-3 shrink-0 rounded-none border border-ring bg-white ring-ring/50 transition-[color,box-shadow] select-none after:absolute after:-inset-2 hover:ring-1 has-[:focus-visible]:ring-[length:var(--focus-ring-width)] has-[:focus-visible]:outline-hidden active:ring-1 disabled:pointer-events-none disabled:opacity-50"
           />
         ))}
       </SliderPrimitive.Control>

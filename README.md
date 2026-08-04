@@ -1,50 +1,68 @@
 # Mapseek UI
 
-Mapseek UI 是面向地图、空间数据和运维界面的 shadcn 源码组件与区块 registry。
+面向地图、空间数据和运维界面的 shadcn 源码组件与区块 registry。
 
-## 文档命令
+## 环境要求
+
+- Node.js `>=20.19`
+- pnpm `10.14.0`
+
+## 开发
 
 ```bash
-bun run docs:dev
-bun run docs:dev:en
-bun run docs:build
-bun run docs:visual
-bun run docs:verify
+pnpm install
+pnpm docs:dev
 ```
 
-- `docs:dev` 启动中文文档站点。
-- `docs:dev:en` 启动英文文档站点。
-- `docs:build` 生成静态文档和同域 `/r/*.json` registry 输出。
-- `docs:visual` 针对已构建站点运行中英文、亮暗色、桌面和移动端视觉检查。
-- `docs:verify` 运行发布前完整检查：lint、typecheck、测试、registry 校验、文档校验、构建、视觉检查和真实安装验证。
+`pnpm docs:dev` 会同时启动文档站点和 Showcase：
 
-## 安装
+- 文档站点：<http://localhost:3000/>
+- Showcase：<http://localhost:5173/>
 
-公开站点发布后，在应用的 `components.json` 中配置同域 registry 模板：
+常用检查命令：
+
+```bash
+pnpm typecheck
+pnpm lint
+pnpm test
+pnpm registry:validate
+```
+
+构建文档站点和 registry：
+
+```bash
+pnpm docs:build
+```
+
+## 使用 registry
+
+文档站点发布后，在应用的 `components.json` 中配置 registry：
 
 ```json
 {
   "registries": {
-    "@mapseek": "https://<docs-domain>/r/{name}.json"
+    "@mapseek": "https://mapseekai.github.io/mapseek-ui/r/{name}.json"
   }
 }
 ```
 
-安装组件或区块：
+在线地址：
+
+- 文档站点：<https://mapseekai.github.io/mapseek-ui/>
+- Showcase：<https://mapseekai.github.io/mapseek-ui/showcase/>
+
+然后安装组件、区块、主题或工具：
 
 ```bash
-bunx shadcn@4.8.0 add @mapseek/button
-bunx shadcn@4.8.0 add @mapseek/layer-panel
+pnpm dlx shadcn@latest add @mapseek/button
+pnpm dlx shadcn@latest add @mapseek/layer-panel
+pnpm dlx shadcn@latest add @mapseek/theme
+pnpm dlx shadcn@latest add @mapseek/utils
 ```
 
-安装主题和工具：
+## 项目结构
 
-```bash
-bunx shadcn@4.8.0 add @mapseek/theme
-bunx shadcn@4.8.0 add @mapseek/utils
-```
-
-## 维护者
-
-- [`docs/superpowers/specs/2026-08-01-mapseek-ui-documentation-platform-design.md`](docs/superpowers/specs/2026-08-01-mapseek-ui-documentation-platform-design.md) 记录文档平台设计约束。
-- [`docs/provenance.md`](docs/provenance.md) 记录来源和同步策略。
+- `registry/`：组件、区块、主题和工具源码。
+- `packages/docs/`：文档站点源码。
+- `showcase/`：独立 Showcase 源码。
+- `scripts/`：registry 构建、校验和文档检查脚本。

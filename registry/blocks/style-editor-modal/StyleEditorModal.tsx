@@ -1,6 +1,7 @@
 import type * as React from "react"
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type {
   StyleEditorModalActionsProps,
@@ -87,14 +88,16 @@ export function StyleEditorModalAlert({
     >
       <span className="min-w-0 flex-1 text-sm">{children}</span>
       {onDismiss ? (
-        <button
+        <Button
+          variant="ghost"
+          size="icon-xs"
           type="button"
           onClick={onDismiss}
           aria-label={dismissLabel}
           className="flex size-6 shrink-0 cursor-pointer items-center justify-center text-xl leading-none hover:bg-destructive/10"
         >
           ×
-        </button>
+        </Button>
       ) : null}
     </div>
   )
@@ -112,7 +115,9 @@ export function StyleEditorModalTile({
   className,
 }: StyleEditorModalTileProps) {
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="sm"
       type="button"
       className={cn(
         "group flex w-full cursor-pointer flex-col overflow-hidden border border-border bg-background text-left transition-colors hover:border-primary hover:bg-muted/50",
@@ -131,7 +136,7 @@ export function StyleEditorModalTile({
         className="aspect-video w-full bg-muted bg-cover bg-center"
         style={imageUrl ? { backgroundImage: `url(${imageUrl})` } : undefined}
       />
-    </button>
+    </Button>
   )
 }
 

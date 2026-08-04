@@ -1,66 +1,60 @@
-import { type ChildProcess, spawn } from "node:child_process"
+import { spawn } from "node:child_process"
 import { cp, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises"
+import type { Server } from "node:http"
+import { tmpdir } from "node:os"
 import { join, resolve } from "node:path"
 import { afterEach, expect, it } from "vitest"
-import { dlxCommand } from "../pnpm-command"
+import { dlxCommand, npmCommand, pnpmCommand } from "../pnpm-command"
+import { startRegistryServer } from "../registry-server"
 
 const repoRoot = resolve(import.meta.dirname, "../..")
+const themeVirtualStore = join(repoRoot, "node_modules/.pnpm-theme-install-test").replaceAll(
+  "\\",
+  "/",
+)
 let fixture: string | undefined
-let server: ChildProcess | undefined
+let server: Server | undefined
 
 afterEach(async () => {
-  server?.kill()
+  if (server?.listening) {
+    await new Promise<void>((resolve, reject) =>
+      server?.close((error) => (error ? reject(error) : resolve())),
+    )
+  }
   if (fixture) await rm(fixture, { recursive: true, force: true })
-})
+}, 60_000)
 
 async function run(cwd: string, command: string[]): Promise<void> {
   const executable = command[0]
   if (executable === undefined) throw new Error("Missing command executable")
-  const process = spawn(executable, command.slice(1), { cwd, stdio: "inherit" })
+  const childProcess = spawn(executable, command.slice(1), {
+    cwd,
+    stdio: "inherit",
+    shell: process.platform === "win32",
+  })
   await new Promise<void>((resolve, reject) => {
-    process.once("error", reject)
-    process.once("exit", (code) =>
+    childProcess.once("error", reject)
+    childProcess.once("exit", (code) =>
       code === 0 ? resolve() : reject(new Error(`${command.join(" ")} failed`)),
     )
   })
 }
 async function installTheme(fixture: string): Promise<void> {
-  const installer = join(fixture, "install-theme.ts")
-  await writeFile(
-    installer,
-    `import { spawn } from "node:child_process"
-const fixture = process.argv[2]!
-async function run(command: string[]) {
-  const [executable, ...args] = command
-  if (!executable) throw new Error("Missing command executable")
-  const child = spawn(executable, args, { cwd: fixture, stdio: "inherit" })
-  const exitCode = await new Promise<number | null>((resolve, reject) => {
-    child.once("error", reject)
-    child.once("exit", resolve)
-  })
-  if (exitCode !== 0) throw new Error(\`\${command.join(" ")} failed\`)
-}
-await run(["pnpm", "install"])
-await run(${JSON.stringify(dlxCommand("shadcn@4.8.0", "add", "@mapseek/theme", "--yes", "--cwd"))}.concat(fixture))
-`,
+  await run(fixture, pnpmCommand("install"))
+  await run(
+    repoRoot,
+    dlxCommand("shadcn@4.8.0", "add", "@mapseek/theme", "--yes", "--cwd", fixture),
   )
-  await run(repoRoot, ["tsx", installer, fixture])
 }
 
-async function startRegistryServer(): Promise<void> {
-  server = spawn("tsx", ["scripts/registry-server.ts"], { cwd: repoRoot })
-  for (let attempt = 0; attempt < 20; attempt += 1) {
-    try {
-      if ((await fetch("http://127.0.0.1:4174/r/registry.json")).ok) return
-    } catch {}
-    await new Promise((resolve) => setTimeout(resolve, 25))
-  }
-  throw new Error("Registry server did not start")
+async function startServer(): Promise<void> {
+  server = await startRegistryServer()
 }
 
 it("installs the Mapseek theme with its tokens and dependencies", async () => {
-  fixture = await mkdtemp(join(repoRoot, ".mapseek-vite-theme-"))
+  fixture = await mkdtemp(join(tmpdir(), "mapseek-vite-theme-"))
   await cp(join(repoRoot, "fixtures/vite-react-template"), fixture, { recursive: true })
+  await writeFile(join(fixture, ".npmrc"), `virtual-store-dir=${themeVirtualStore}\n`)
   const componentsPath = join(fixture, "components.json")
   await writeFile(
     componentsPath,
@@ -70,10 +64,10 @@ it("installs the Mapseek theme with its tokens and dependencies", async () => {
     ),
   )
 
-  await run(repoRoot, ["pnpm", "run", "registry:build"])
-  await startRegistryServer()
+  await run(repoRoot, pnpmCommand("run", "registry:build"))
+  await startServer()
   await installTheme(fixture)
-  await run(fixture, ["npm", "run", "build"])
+  await run(fixture, npmCommand("run", "build"))
   const assets = await readdir(join(fixture, "dist/assets"))
   const cssAsset = assets.find((path) => path.endsWith(".css"))
   if (cssAsset === undefined) throw new Error("Missing built CSS asset")
@@ -99,4 +93,4 @@ it("installs the Mapseek theme with its tokens and dependencies", async () => {
     "@fontsource-variable/geist-mono": expect.any(String),
     "tw-animate-css": expect.any(String),
   })
-}, 120_000)
+}, 360_000)

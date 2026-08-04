@@ -1,0 +1,43 @@
+import type { LoomToolboxLabels } from "./types"
+
+export const LOOM_TOOLBOX_LABELS_ZH_CN: LoomToolboxLabels = {
+  title: "工具箱",
+  close: "关闭工具箱",
+  open: "打开工具箱",
+  search: "搜索工具、模型或脚本",
+  tabs: { all: "全部", favorites: "收藏", recent: "最近使用" },
+  quickAccess: "快捷访问",
+  categories: "工具分类",
+  toolCount: (count) => `${count} 个工具`,
+  empty: "没有匹配的工具",
+  favorite: (tool) => `收藏 ${tool}`,
+  unfavorite: (tool) => `取消收藏 ${tool}`,
+  back: "返回工具箱",
+  parameters: "参数",
+  inputLayer: "输入图层",
+  distance: "缓冲距离（米）",
+  parametersValid: "参数有效，可以运行工具",
+  completed: "已完成，结果已添加为新图层。",
+  run: (tool) => `运行 ${tool}`,
+}
+
+export const LOOM_TOOLBOX_LABELS_EN: LoomToolboxLabels = {
+  title: "Toolbox",
+  close: "Close toolbox",
+  open: "Open toolbox",
+  search: "Search tools, models, or scripts",
+  tabs: { all: "All", favorites: "Favorites", recent: "Recent" },
+  quickAccess: "Quick access",
+  categories: "Tool categories",
+  toolCount: (count) => `${count} tools`,
+  empty: "No matching tools",
+  favorite: (tool) => `Favorite ${tool}`,
+  unfavorite: (tool) => `Remove ${tool} from favorites`,
+  back: "Back to toolbox",
+  parameters: "Parameters",
+  inputLayer: "Input layer",
+  distance: "Buffer distance (meters)",
+  parametersValid: "Parameters are valid. The tool is ready to run.",
+  completed: "Completed. The result was added as a new layer.",
+  run: (tool) => `Run ${tool}`,
+}

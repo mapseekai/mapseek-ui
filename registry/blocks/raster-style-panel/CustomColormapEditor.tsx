@@ -8,6 +8,8 @@ import {
   type Icon as TablerIcon,
 } from "@tabler/icons-react"
 import { useEffect, useId, useRef, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { ColorInput } from "@/components/ui/color-input"
 import { cn } from "@/lib/utils"
 import { buildColormapGradient } from "./gradient"
 import { DEFAULT_COLORMAP_PRESETS } from "./presets"
@@ -96,7 +98,7 @@ export function CustomColormapEditor({
     <div className={cn("flex flex-col gap-3.5", className)}>
       {/* Preview */}
       <div
-        className="h-6 border border-border"
+        className="h-6"
         style={{ background: buildColormapGradient(value) }}
       />
 
@@ -111,30 +113,32 @@ export function CustomColormapEditor({
           {stops.map((color, i) => (
             <span
               key={stopIds[i] ?? color}
-              className="group/stop relative h-7 w-7 shrink-0 cursor-pointer border border-border-strong"
-              style={{ background: color }}
+              className="group/stop relative h-7 w-7 shrink-0"
             >
-              <input
-                type="color"
+              <ColorInput
                 value={color}
                 aria-label={`${labels.stops} ${i + 1}`}
                 onChange={(e) => updateStop(i, e.target.value)}
-                className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                className="size-full border-border-strong"
               />
               {canRemove && (
-                <button
+                <Button
+                  size="icon-xs"
+                  variant="ghost"
                   type="button"
                   aria-label={labels.removeStop}
                   title={labels.removeStop}
                   onClick={() => removeStop(i)}
-                  className="absolute -top-[7px] left-1/2 grid h-3.5 w-3.5 -translate-x-1/2 place-items-center rounded-full border border-border-strong bg-card opacity-0 transition-opacity group-hover/stop:opacity-100 group-focus-within/stop:opacity-100 hover:border-destructive"
+                  className="absolute -top-1 left-1/2 grid h-4 w-4 -translate-x-1/2 place-items-center border border-border bg-background p-0 opacity-0 transition-opacity group-hover/stop:opacity-100 group-focus-within/stop:opacity-100 hover:border-destructive"
                 >
                   <IconX size={10} className="text-muted-foreground" />
-                </button>
+                </Button>
               )}
             </span>
           ))}
-          <button
+          <Button
+            variant="ghost"
+            size="icon-sm"
             type="button"
             aria-label={labels.addStop}
             title={labels.addStop}
@@ -142,7 +146,7 @@ export function CustomColormapEditor({
             className="grid h-7 w-7 shrink-0 place-items-center border border-dashed border-border-strong text-muted-foreground hover:border-primary hover:text-primary"
           >
             <IconPlus size={12} stroke={1.75} />
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -187,14 +191,17 @@ export function CustomColormapEditor({
         />
         <div className="grid grid-cols-4 gap-1.5">
           {presets.map((p) => (
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               key={p.id}
               type="button"
               onClick={() => importPreset(p.stops)}
               className="flex cursor-pointer flex-col gap-1 border border-border bg-background p-1 hover:bg-muted"
             >
               <span
-                className="h-2.5 border border-border"
+                aria-hidden="true"
+                className="h-3 w-full"
                 style={{
                   background: `linear-gradient(to right, ${p.stops.join(", ")})`,
                 }}
@@ -202,7 +209,7 @@ export function CustomColormapEditor({
               <span className="text-center font-mono text-[10px] text-muted-foreground">
                 {p.name}
               </span>
-            </button>
+            </Button>
           ))}
         </div>
       </section>

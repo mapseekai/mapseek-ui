@@ -6,7 +6,7 @@ import { IconButton } from "@/registry/ui/icon-button"
 
 type CopyButtonProps = Omit<ComponentProps<"button">, "children" | "onClick"> & {
   content: string
-  variant?: "icon" | "text"
+  variant?: "icon" | "text" | "ghost"
   label?: string
   copiedLabel?: string
   duration?: number
@@ -93,7 +93,7 @@ function CopyButton({
     <Button
       type={type}
       data-slot="copy-button"
-      variant="outline"
+      variant={variant === "ghost" ? "ghost" : "outline"}
       size={textSize}
       aria-label={accessibleLabel}
       onClick={() => void handleCopy()}

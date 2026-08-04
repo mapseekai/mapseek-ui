@@ -77,7 +77,7 @@ export function StylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {demoLabels.reset}
         </Button>
       </div>
-      <pre className="mt-3 overflow-x-auto text-xs text-muted-foreground">
+      <pre className="mt-3 overflow-x-auto font-mono text-[10px] leading-4 text-muted-foreground">
         {JSON.stringify(value, null, 2)}
       </pre>
     </section>

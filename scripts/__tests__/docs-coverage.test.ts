@@ -13,7 +13,27 @@ function docsIdentity(category: "block" | "primitive", registryName: string): st
   return `${category}:${registryName}`
 }
 
+const promotedShowcaseBlocks = [
+  "custom-colormap",
+  "loom-layer-panel",
+  "loom-toolbox",
+  "loom-toolbar",
+] as const
+
 describe("docs coverage", () => {
+  it("publishes promoted showcase components as registry blocks", async () => {
+    const catalog = await loadCatalog(process.cwd())
+    const publishedBlocks = new Set(
+      catalog.filter((item) => item.type === "registry:block").map((item) => item.name),
+    )
+
+    for (const registryName of promotedShowcaseBlocks) {
+      expect(publishedBlocks.has(registryName), `${registryName} should be a registry block`).toBe(
+        true,
+      )
+    }
+  })
+
   it("covers every published primitive and block with one bilingual docs page", async () => {
     const catalog = await loadCatalog(process.cwd())
     const registryItems = catalog

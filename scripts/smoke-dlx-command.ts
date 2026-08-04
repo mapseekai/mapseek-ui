@@ -7,6 +7,7 @@ if (!executable) throw new Error("Missing command executable")
 const child = spawn(executable, args, {
   cwd: import.meta.dirname,
   stdio: ["ignore", "pipe", "pipe"],
+  shell: process.platform === "win32",
 })
 const output = await new Promise<{ stdout: string; stderr: string; exitCode: number | null }>(
   (resolve, reject) => {
@@ -20,7 +21,7 @@ const output = await new Promise<{ stdout: string; stderr: string; exitCode: num
 )
 
 if (output.exitCode !== 0) throw new Error(`${command.join(" ")} failed: ${output.stderr}`)
-if (command[0] !== "pnpm" || command.includes("bunx") || command.includes("npx")) {
+if (!["pnpm", "pnpm.cmd"].includes(command[0] ?? "") || command.includes("bunx") || command.includes("npx")) {
   throw new Error(`expected an explicit pnpm dlx command, received: ${command.join(" ")}`)
 }
 

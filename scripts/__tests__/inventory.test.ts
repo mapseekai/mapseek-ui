@@ -23,6 +23,7 @@ const foundationalPrimitives = [
 const inputAndSelectionPrimitives = [
   "calendar",
   "checkbox",
+  "color-input",
   "combobox",
   "command",
   "field",
@@ -31,6 +32,7 @@ const inputAndSelectionPrimitives = [
   "pagination",
   "popover",
   "progress",
+  "radio-group",
   "select",
   "slider",
   "switch",
@@ -82,6 +84,7 @@ const basePrimitives = [
 const inputAndSelectionDependencies = {
   calendar: ["@mapseek/button", "@mapseek/utils"],
   checkbox: ["@mapseek/utils"],
+  "color-input": ["@mapseek/utils"],
   combobox: ["@mapseek/input-group", "@mapseek/utils"],
   command: ["@mapseek/dialog", "@mapseek/input-group", "@mapseek/utils"],
   field: ["@mapseek/label", "@mapseek/separator", "@mapseek/utils"],
@@ -90,6 +93,7 @@ const inputAndSelectionDependencies = {
   pagination: ["@mapseek/button", "@mapseek/utils"],
   popover: ["@mapseek/utils"],
   progress: ["@mapseek/utils"],
+  "radio-group": ["@mapseek/utils"],
   select: ["@mapseek/utils"],
   slider: ["@mapseek/utils"],
   switch: ["@mapseek/utils"],
@@ -102,6 +106,7 @@ const inputAndSelectionDependencies = {
 const inputAndSelectionNpmDependencies = {
   calendar: ["@tabler/icons-react", "date-fns", "react-day-picker"],
   checkbox: ["@base-ui/react", "@tabler/icons-react"],
+  "color-input": ["@base-ui/react"],
   combobox: ["@base-ui/react", "@tabler/icons-react"],
   command: ["@tabler/icons-react", "cmdk"],
   field: ["class-variance-authority"],
@@ -110,6 +115,7 @@ const inputAndSelectionNpmDependencies = {
   pagination: ["@tabler/icons-react"],
   popover: ["@base-ui/react"],
   progress: ["@base-ui/react"],
+  "radio-group": ["@base-ui/react", "@tabler/icons-react"],
   select: ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
   slider: ["@base-ui/react"],
   switch: ["@base-ui/react"],

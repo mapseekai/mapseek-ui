@@ -282,7 +282,9 @@ function SourceOptionCardGrid({
         const typeLabel = item.sourceType === "raster" ? labels.raster : labels.vector
 
         return (
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             key={item.key}
             type="button"
             disabled={alreadyAdded}
@@ -323,14 +325,14 @@ function SourceOptionCardGrid({
               </div>
               <span
                 className={cn(
-                  "flex size-5 shrink-0 items-center justify-center border transition-colors",
+                  "flex size-4 shrink-0 items-center justify-center border transition-colors",
                   selected
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-input bg-background group-hover:border-foreground/30",
                 )}
                 aria-hidden
               >
-                {selected ? <IconCheck size={12} stroke={3} /> : null}
+                {selected ? <IconCheck size={10} stroke={3} /> : null}
               </span>
             </div>
 
@@ -367,7 +369,7 @@ function SourceOptionCardGrid({
                 </Badge>
               ) : null}
             </div>
-          </button>
+          </Button>
         )
       })}
     </div>

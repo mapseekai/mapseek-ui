@@ -1,16 +1,21 @@
-import { type ChildProcess, spawn } from "node:child_process"
 import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises"
+import type { Server } from "node:http"
 import { tmpdir } from "node:os"
 import { join, resolve } from "node:path"
 import { afterEach, expect, it } from "vitest"
+import { startRegistryServer } from "../registry-server"
 
 const repoRoot = resolve(import.meta.dirname, "../..")
 const publicRoot = join(repoRoot, "public")
-let server: ChildProcess | undefined
+let server: Server | undefined
 let cleanup: (() => Promise<void>) | undefined
 
 afterEach(async () => {
-  server?.kill()
+  if (server?.listening) {
+    await new Promise<void>((resolve, reject) =>
+      server?.close((error) => (error ? reject(error) : resolve())),
+    )
+  }
   await cleanup?.()
 })
 
@@ -24,17 +29,7 @@ it("rejects public symlinks that resolve outside the public root", async () => {
     await rm(link, { force: true })
     await rm(outside, { recursive: true, force: true })
   }
-  server = spawn("tsx", ["scripts/registry-server.ts"], { cwd: repoRoot })
-  let response: Response | undefined
-  // A separate process owns the fixed port; retrying observes its real readiness.
-  for (let attempt = 0; attempt < 20 && !response; attempt += 1) {
-    try {
-      response = await fetch("http://127.0.0.1:4174/outside.json")
-    } catch {
-      const { promise, resolve: continueAfterStartup } = Promise.withResolvers<void>()
-      setTimeout(continueAfterStartup, 25)
-      await promise
-    }
-  }
-  expect(response?.status).toBe(403)
+  server = await startRegistryServer()
+  const response = await fetch("http://127.0.0.1:4174/outside.json")
+  expect(response.status).toBe(403)
 })

@@ -10,8 +10,13 @@ packages/docs/out/
 packages/docs/tsconfig.tsbuildinfo
 test-results/
 .superpowers/
+.omo/
 .env
 .env.*
 !.env.example
 /public/r/
+/packages/docs/public/r/
 .verify-item-*
+docs/provenance.md
+docs/superpowers/
+task-*-report.md

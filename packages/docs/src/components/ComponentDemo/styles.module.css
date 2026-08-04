@@ -147,7 +147,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1023px) {
   .header {
     flex-direction: column;
   }
@@ -156,7 +156,9 @@
     flex-wrap: wrap;
     justify-content: flex-start;
   }
+}
 
+@media (max-width: 640px) {
   .preview {
     min-height: 9rem;
     padding: 1rem;

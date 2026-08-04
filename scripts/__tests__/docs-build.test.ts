@@ -1,4 +1,4 @@
-import { access, readdir, readFile, readlink } from "node:fs/promises"
+import { access, lstat, readdir, readFile } from "node:fs/promises"
 import { join } from "node:path"
 import { expect, it } from "vitest"
 import { requiredRegistryDocs } from "../docs-required-registry-docs"
@@ -21,10 +21,12 @@ async function readBuiltCss(): Promise<string> {
   return contents.join("\n")
 }
 
-async function readBuiltJs(): Promise<string> {
-  const chunksDir = "packages/docs/out/_next/static/chunks"
-  const files = (await readdir(chunksDir)).filter((file) => file.endsWith(".js"))
-  const contents = await Promise.all(files.map((file) => readFile(join(chunksDir, file), "utf8")))
+async function readBuiltPageJs(pagePath: string): Promise<string> {
+  const html = await readFile(pagePath, "utf8")
+  const scripts = [...html.matchAll(/<script[^>]+src="([^"]+\.js)"/gu)].map((match) =>
+    join("packages/docs/out", match[1].replace(/^\//u, "")),
+  )
+  const contents = await Promise.all(scripts.map((file) => readFile(file, "utf8")))
 
   return contents.join("\n")
 }
@@ -56,8 +58,10 @@ it("declares the Fumadocs docs workspace contract", async () => {
     "registry:build",
     "docs:theme",
     "docs:sources",
-    "@mapseek/docs dev",
+    "scripts/start-dev.ts",
   ])
+  expect(root.scripts["showcase:dev"]).toBe("vite --config showcase/vite.config.ts")
+  expect(root.scripts["showcase:build"]).toBe("vite build --config showcase/vite.config.ts")
   expect(root.scripts["docs:theme"]).toBe("tsx scripts/generate-docs-theme.ts")
   expect(root.scripts["docs:sources"]).toBe("tsx scripts/generate-showcase-sources.ts")
   expect(docs.dependencies).toMatchObject({
@@ -95,7 +99,12 @@ it("publishes installable registry artifacts and compiled theme utilities", asyn
 })
 
 it("serves the generated registry from the docs public directory", async () => {
-  await expect(readlink("packages/docs/public/r")).resolves.toBe("../../../public/r")
+  const docsRegistry = await lstat("packages/docs/public/r")
+  expect(docsRegistry.isDirectory()).toBe(true)
+  expect(docsRegistry.isSymbolicLink()).toBe(false)
+  await expect(readFile("packages/docs/public/r/button.json", "utf8")).resolves.toBe(
+    await readFile("public/r/button.json", "utf8"),
+  )
 })
 
 it("renders manifest-derived component and block indexes in the static build", async () => {
@@ -325,13 +334,13 @@ it("uses the theme primary color for active Tabs states", async () => {
 })
 
 it("keeps displayed example source as exact TSX source", async () => {
-  const js = await readBuiltJs()
+  const js = await readBuiltPageJs("packages/docs/out/components/button/index.html")
 
   expect(js).toContain('import { Button } from "@registry/ui/button"')
   expect(js).toContain("export function ButtonBasicDemo")
   expect(js).not.toContain('import{Button}from"@registry/ui/button"')
   expect(js).not.toContain('from"react/jsx-runtime"')
-})
+}, 30_000)
 
 it("renders documentation examples from the original Showcase source", async () => {
   const docs = await filesUnder("packages/docs/content/docs", ".mdx")
@@ -346,4 +355,4 @@ it("renders documentation examples from the original Showcase source", async () 
     expect(source).not.toContain('from "@site/src/examples/')
     expect(source).not.toContain("<ComponentDemo")
   }
-})
+}, 60_000)

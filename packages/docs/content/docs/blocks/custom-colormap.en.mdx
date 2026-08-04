@@ -1,0 +1,34 @@
+---
+title: "CustomColormap"
+registryName: custom-colormap
+category: block
+stability: experimental
+showcase: custom-colormap
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+CustomColormap wraps the custom stop editor in a controlled preview and dialog with interpolation, color-space, and preset controls.
+
+## Installation
+
+<RegistryInstall registryName="custom-colormap" />
+
+## Import
+
+```tsx
+import { CustomColormap, type CustomColormapValue } from "@/components/blocks/custom-colormap"
+```
+
+## Colormap editing
+
+<ShowcaseDemo registryName="custom-colormap" title="Colormap editing" description="Keep the committed value separate from the editing draft and only commit on Apply." minHeight={240} />
+
+## Commit semantics
+
+The caller owns `value`, `draft`, and `open`. Copy the committed value into the draft when opening, then commit the draft from `onApply` and close the dialog.
+
+## Dependencies
+
+<RegistryDependencies registryName="custom-colormap" />

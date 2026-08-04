@@ -253,6 +253,22 @@
       ]
     },
     {
+      "name": "color-input",
+      "type": "registry:ui",
+      "title": "Color Input",
+      "description": "Themed native color input primitive.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [
+        {
+          "path": "color-input.tsx",
+          "type": "registry:ui",
+          "target": "@ui/color-input.tsx"
+        }
+      ]
+    },
+    {
       "name": "combobox",
       "type": "registry:ui",
       "title": "Combobox",
@@ -393,6 +409,22 @@
           "path": "progress.tsx",
           "type": "registry:ui",
           "target": "@ui/progress.tsx"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "Themed radio group and radio control primitives.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [
+        {
+          "path": "radio-group.tsx",
+          "type": "registry:ui",
+          "target": "@ui/radio-group.tsx"
         }
       ]
     },

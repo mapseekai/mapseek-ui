@@ -1,0 +1,34 @@
+---
+title: "LoomLayerPanel"
+registryName: loom-layer-panel
+category: block
+stability: experimental
+showcase: loom-layer-panel
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+LoomLayerPanel 是面向地图工程的受控图层面板，包含分组、搜索、可见性筛选、当前图层和面板折叠状态。
+
+## 安装
+
+<RegistryInstall registryName="loom-layer-panel" />
+
+## 导入
+
+```tsx
+import { LoomLayerPanel, type LoomLayer } from "@/components/blocks/loom-layer-panel"
+```
+
+## 工程图层
+
+<ShowcaseDemo registryName="loom-layer-panel" title="工程图层" description="搜索、筛选、分组折叠、选择和可见性均由调用方状态控制。" minHeight={620} />
+
+## 受控状态
+
+通过 `layers`、`selectedId`、`query`、`visibleOnly`、`collapsedGroups` 和对应处理器接入项目状态。可见文案统一由 `labels` 注入。
+
+## 依赖
+
+<RegistryDependencies registryName="loom-layer-panel" />

@@ -1,4 +1,5 @@
-import { IconCopy, IconExternalLink } from "@tabler/icons-react"
+import { IconExternalLink } from "@tabler/icons-react"
+import { CopyButton } from "@/components/ui/copy-button"
 import { IconButton } from "@/components/ui/icon-button"
 import { Tooltip } from "@/components/ui/tooltip"
 import type { ServiceEndpointRowProps } from "./types"
@@ -50,9 +51,13 @@ export function ServiceEndpointRow({
             ),
           )}
         </code>
-        <IconButton size="sm" title={copyLabel} aria-label={copyLabel} onClick={onCopy}>
-          <IconCopy size={12} stroke={1.5} />
-        </IconButton>
+        <CopyButton
+          content={url}
+          aria-label={copyLabel}
+          label={copyLabel}
+          title={copyLabel}
+          onCopy={onCopy}
+        />
         <Tooltip content={openTooltip}>
           <IconButton
             size="sm"

@@ -1,5 +1,6 @@
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react"
 import * as React from "react"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import type { MapSwitcherContextValue, MapSwitcherItemData, MapSwitcherProps } from "./types"
 
@@ -138,7 +139,9 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
 
   if (mode === "image") {
     return (
-      <button
+      <Button
+        variant="ghost"
+        size="sm"
         type="button"
         role="option"
         aria-selected={isActive}
@@ -166,13 +169,15 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
         </div>
         {/* Label below thumbnail */}
         <span className="text-[10px] text-foreground truncate max-w-[76px] px-0.5">{label}</span>
-      </button>
+      </Button>
     )
   }
 
   // mode="button"
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="sm"
       type="button"
       role="option"
       aria-selected={isActive}
@@ -190,7 +195,7 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
         style={{ background: color ?? "var(--muted-foreground)" }}
       />
       <span className="truncate">{label}</span>
-    </button>
+    </Button>
   )
 }
 
@@ -203,7 +208,9 @@ function MapSwitcherTrigger() {
   const item = selectedId ? getItem(selectedId) : undefined
 
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="sm"
       type="button"
       onClick={toggleOpen}
       aria-expanded={open}
@@ -237,7 +244,7 @@ function MapSwitcherTrigger() {
           />
         )}
       </div>
-    </button>
+    </Button>
   )
 }
 

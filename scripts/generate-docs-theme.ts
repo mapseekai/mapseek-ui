@@ -34,7 +34,7 @@ ${serializeVariables(theme.cssVars.dark)}
 }
 `
 
-await writeFile(
-  resolve(import.meta.dirname, "../packages/docs/app/theme.generated.css"),
-  stylesheet,
-)
+await Promise.all([
+  writeFile(resolve(import.meta.dirname, "../packages/docs/app/theme.generated.css"), stylesheet),
+  writeFile(resolve(import.meta.dirname, "../showcase/src/theme.generated.css"), stylesheet),
+])

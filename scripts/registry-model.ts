@@ -27,6 +27,7 @@ export const BASE_COMPONENTS = [
   "card",
   "chart",
   "checkbox",
+  "color-input",
   "collapsible",
   "combobox",
   "command",
@@ -44,6 +45,7 @@ export const BASE_COMPONENTS = [
   "pagination",
   "popover",
   "progress",
+  "radio-group",
   "select",
   "separator",
   "sheet",
@@ -65,6 +67,7 @@ export const BLOCKS = [
   "attr-table",
   "band-stat",
   "crs-picker",
+  "custom-colormap",
   "filter-panel",
   "form-inputs",
   "geojson-view",
@@ -75,6 +78,9 @@ export const BLOCKS = [
   "layout",
   "linked-ref-list",
   "loading-screen",
+  "loom-layer-panel",
+  "loom-toolbox",
+  "loom-toolbar",
   "map-controls",
   "map-coordinate-status",
   "map-switcher",
@@ -109,6 +115,10 @@ async function readJson(path: string): Promise<unknown> {
   return JSON.parse(await readFile(path, "utf8"))
 }
 
+function toPortablePath(path: string): string {
+  return path.replaceAll("\\", "/")
+}
+
 async function loadManifest(repoRoot: string, manifestPath: string): Promise<RegistryItem[]> {
   const manifest = (await readJson(join(repoRoot, manifestPath))) as {
     include?: string[]
@@ -122,7 +132,7 @@ async function loadManifest(repoRoot: string, manifestPath: string): Promise<Reg
     ...item,
     files: item.files.map((file) => ({
       ...file,
-      path: isAbsolute(file.path) ? file.path : join(directory, file.path),
+      path: isAbsolute(file.path) ? file.path : toPortablePath(join(directory, file.path)),
     })),
   }))
   return [...items, ...included.flat()]

@@ -4,6 +4,7 @@ import { tmpdir } from "node:os"
 import { dirname, join } from "node:path"
 import { afterEach, beforeEach, expect, it } from "vitest"
 import { validateExampleCoverage } from "../check-docs-examples"
+import { tsxCommand } from "../pnpm-command"
 import type { RegistryItem } from "../registry-model"
 
 let fixtureRoot: string
@@ -138,7 +139,12 @@ it("prints Showcase coverage failures and exits non-zero from the CLI", async ()
       JSON.stringify({ items: [{ name: "button", type: "registry:ui", files: [] }] }),
     )
 
-    const child = spawn("tsx", ["scripts/check-docs-examples.ts", repoRoot, fixtureRoot], {
+    const [executable, ...args] = tsxCommand(
+      "scripts/check-docs-examples.ts",
+      repoRoot,
+      fixtureRoot,
+    )
+    const child = spawn(executable, args, {
       cwd: join(import.meta.dirname, "../.."),
       stdio: ["ignore", "pipe", "pipe"],
     })

@@ -1,6 +1,8 @@
 import { useId, useRef, useState } from "react"
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
 import {
@@ -99,7 +101,9 @@ export function StyleColorInput({
   const swatch = hasButton ? (
     <PopoverTrigger
       render={
-        <button
+        <Button
+          variant="ghost"
+          size="icon-xs"
           type="button"
           aria-label={swatchLabel ?? ariaLabel ?? "Open color picker"}
           className="h-6 w-6 shrink-0 cursor-pointer border border-input bg-background"
@@ -110,7 +114,7 @@ export function StyleColorInput({
   ) : null
 
   const renderInput = (openPickerOnInteract: boolean) => (
-    <input
+    <Input
       id={reactId}
       ref={inputRef}
       aria-label={ariaLabel}
@@ -143,7 +147,9 @@ export function StyleColorInput({
           <div className="relative w-full">
             <PopoverTrigger
               render={
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   type="button"
                   aria-hidden="true"
                   tabIndex={-1}

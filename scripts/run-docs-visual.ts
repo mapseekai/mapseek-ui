@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process"
+import { tsxCommand } from "./pnpm-command"
 
 type VisualCheck = {
   readonly name: string
@@ -17,7 +18,8 @@ function tail(output: string): string {
 }
 
 for (const check of checks) {
-  const child = spawn("tsx", ["scripts/docs-visual-qa.ts", ...check.args], {
+  const [executable, ...args] = tsxCommand("scripts/docs-visual-qa.ts", ...check.args)
+  const child = spawn(executable, args, {
     cwd: `${import.meta.dirname}/..`,
     stdio: ["ignore", "pipe", "pipe"],
   })

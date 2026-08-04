@@ -1,5 +1,12 @@
 import type React from "react"
-import { Select } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 export type InputSelectProps = {
   value: string
@@ -10,7 +17,7 @@ export type InputSelectProps = {
   title?: string
   "aria-label"?: string
   className?: string
-  size?: React.ComponentProps<typeof Select>["size"]
+  size?: React.ComponentProps<typeof SelectTrigger>["size"]
 }
 
 export const InputSelect: React.FC<InputSelectProps> = ({
@@ -35,30 +42,35 @@ export const InputSelect: React.FC<InputSelectProps> = ({
   const EMPTY_VALUE = "__MAPUTNIK_EMPTY__"
   const mappedValue = value === "" ? EMPTY_VALUE : value
 
-  const handleValueChange = (newVal: string) => {
+  const handleValueChange = (newVal: string | null) => {
+    if (newVal == null) return
     onChange(newVal === EMPTY_VALUE ? "" : newVal)
   }
 
   return (
-    <Select
-      value={mappedValue}
-      onValueChange={handleValueChange}
-      placeholder="Select option..."
-      className={className}
-      size={size}
-      data-wd-key={dataWdKey}
-      style={style}
-      title={title}
-      aria-label={ariaLabel}
-    >
-      {(options as [string, React.ReactNode][]).map(([val, label]) => {
-        const itemValue = val === "" ? EMPTY_VALUE : val
-        return (
-          <Select.Item key={itemValue} value={itemValue} className="text-xs">
-            {label}
-          </Select.Item>
-        )
-      })}
+    <Select value={mappedValue} onValueChange={handleValueChange}>
+      <SelectTrigger
+        className={className}
+        size={size}
+        data-wd-key={dataWdKey}
+        style={style}
+        title={title}
+        aria-label={ariaLabel}
+      >
+        <SelectValue placeholder="Select option..." />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          {(options as [string, React.ReactNode][]).map(([val, label]) => {
+            const itemValue = val === "" ? EMPTY_VALUE : val
+            return (
+              <SelectItem key={itemValue} value={itemValue} className="text-xs">
+                {label}
+              </SelectItem>
+            )
+          })}
+        </SelectGroup>
+      </SelectContent>
     </Select>
   )
 }

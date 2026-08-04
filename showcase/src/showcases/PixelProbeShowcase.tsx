@@ -1,4 +1,5 @@
 import { type PixelField, PixelProbe } from "@registry/blocks/pixel-probe"
+import { Button } from "@registry/ui/button"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -22,6 +23,7 @@ const labels = {
     labels: {
       title: "像元探测",
       copy: "复制 JSON",
+      copied: "已复制",
       close: "关闭",
       prev: "上一个像元",
       next: "下一个像元",
@@ -47,6 +49,7 @@ const labels = {
     labels: {
       title: "Pixel probe",
       copy: "Copy JSON",
+      copied: "Copied",
       close: "Close",
       prev: "Previous pixel",
       next: "Next pixel",
@@ -65,9 +68,10 @@ export function PixelProbeDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   if (closed) {
     return (
       <div className="flex flex-col gap-2">
-        <button
+        <Button
           type="button"
-          className="w-fit border border-border bg-primary px-3 py-1 font-mono text-xs text-primary-foreground hover:opacity-90"
+          size="xs"
+          className="w-fit"
           onClick={() => {
             setClosed(false)
             setEmpty(false)
@@ -75,7 +79,7 @@ export function PixelProbeDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           }}
         >
           {demoLabels.reopen}
-        </button>
+        </Button>
         <span data-demo-status="pixel-probe" className="font-mono text-xs text-muted-foreground">
           {status}
         </span>
@@ -85,17 +89,19 @@ export function PixelProbeDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
 
   return (
     <div className="flex w-full max-w-3xl flex-col gap-2">
-      <button
+      <Button
         type="button"
         data-demo-action="pixel-probe-clear-selection"
-        className="w-fit border border-border bg-card px-3 py-1 font-mono text-xs text-foreground hover:bg-muted"
+        variant="outline"
+        size="xs"
+        className="w-fit"
         onClick={() => {
           setEmpty(true)
           setStatus(demoLabels.empty)
         }}
       >
         {demoLabels.clearSelection}
-      </button>
+      </Button>
       <div className="relative h-[560px] w-full border border-border bg-muted/20">
         {empty ? (
           <div

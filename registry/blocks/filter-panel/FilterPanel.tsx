@@ -2,7 +2,14 @@ import { IconAdjustmentsAlt, IconCode, IconEye, IconPlus, IconX } from "@tabler/
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Select } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
@@ -88,7 +95,7 @@ function FilterPanelModeToggle({ className }: { className?: string }) {
                 : "bg-background text-foreground",
             )}
           >
-            <m.Icon size={12} />
+            <m.Icon data-icon="inline-start" />
             {m.label}
           </Button>
         )
@@ -161,25 +168,37 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
             <div className="grid grid-cols-[64px_auto_minmax(0,1fr)_20px] items-center gap-x-1">
               <Select
                 value={f.field}
-                onValueChange={(val) => updateRow(f.id, { field: val })}
-                className={miniSelect}
+                onValueChange={(val) => val != null && updateRow(f.id, { field: val })}
               >
-                {fields.map((o) => (
-                  <Select.Item key={o} value={o}>
-                    {o}
-                  </Select.Item>
-                ))}
+                <SelectTrigger className={miniSelect}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {fields.map((o) => (
+                      <SelectItem key={o} value={o}>
+                        {o}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
               </Select>
               <Select
                 value={f.op}
-                onValueChange={(val) => updateRow(f.id, { op: val })}
-                className={cn(miniSelect, "w-max min-w-12 whitespace-nowrap")}
+                onValueChange={(val) => val != null && updateRow(f.id, { op: val })}
               >
-                {ops.map((o) => (
-                  <Select.Item key={o} value={o}>
-                    {o}
-                  </Select.Item>
-                ))}
+                <SelectTrigger className={cn(miniSelect, "w-max min-w-12 whitespace-nowrap")}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {ops.map((o) => (
+                      <SelectItem key={o} value={o}>
+                        {o}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
               </Select>
               <Input
                 className="h-6 rounded-none border-border bg-background px-2 font-mono text-[11px]"
@@ -194,7 +213,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 aria-label={labels.removeCondition}
                 className="size-5 rounded-none text-muted-foreground"
               >
-                <IconX size={12} />
+                <IconX />
               </Button>
             </div>
           </div>
@@ -206,7 +225,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
           onClick={addRow}
           className="h-6 flex-1 gap-1 rounded-none border border-dashed border-primary/40 px-1.5 text-[11px] font-medium leading-none text-primary hover:text-primary"
         >
-          <IconPlus size={12} /> {labels.addCondition}
+          <IconPlus data-icon="inline-start" /> {labels.addCondition}
         </Button>
       </div>
     </div>
@@ -223,7 +242,6 @@ function FilterPanelSql({ keywords, className }: { keywords: string[]; className
         spellCheck={false}
         onChange={(e) => patch(value, onChange, { sql: e.target.value })}
         placeholder='code = "R2" AND area_m2 > 30000'
-        className="min-h-[70px] w-full resize-y rounded-none border-border-strong bg-muted p-2 font-mono text-[11px] font-medium leading-[1.5] text-foreground shadow-none"
       />
       <div className="mt-1 flex flex-wrap gap-[3px]">
         {keywords.map((kw) => (

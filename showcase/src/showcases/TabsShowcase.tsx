@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@registry/ui/tabs"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
-export function TabsOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function TabsOverviewDemo(_props: LocalizedDemoProps) {
   const [controlledValue, setControlledValue] = useState("schema")
 
   return (

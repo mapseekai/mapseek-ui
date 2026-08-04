@@ -1,7 +1,6 @@
 import type * as React from "react"
-
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 import type {
   StyleEditorModalActionsProps,
@@ -63,7 +62,7 @@ export function StyleEditorModalSection({
   className,
 }: StyleEditorModalSectionProps) {
   return (
-    <section className={cn("space-y-4 not-last:mb-8", className)}>
+    <section className={cn("flex flex-col gap-4 not-last:mb-8", className)}>
       {title ? (
         <h1 className="m-0 border-b border-border pb-1 text-lg font-bold">{title}</h1>
       ) : null}

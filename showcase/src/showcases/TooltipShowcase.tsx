@@ -1,5 +1,5 @@
 import { Button } from "@registry/ui/button"
-import { Tooltip, TooltipProvider } from "@registry/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@registry/ui/tooltip"
 import { IconDownload, IconMap, IconSettings, IconTrash, IconZoomIn } from "@tabler/icons-react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -55,25 +55,45 @@ export function TooltipOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
             {demoLabels.hoverOrFocusForHelp}
           </h4>
           <div className="flex flex-wrap gap-3">
-            <Tooltip content={demoLabels.viewMap} asChild>
-              <Button data-demo="tooltip-map" variant="outline" size="sm">
-                {demoLabels.map}
-              </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button data-demo="tooltip-map" variant="outline" size="sm">
+                    {demoLabels.map}
+                  </Button>
+                }
+              />
+              <TooltipContent>{demoLabels.viewMap}</TooltipContent>
             </Tooltip>
-            <Tooltip content={demoLabels.downloadDataset} asChild>
-              <Button variant="outline" size="sm">
-                {demoLabels.download}
-              </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button variant="outline" size="sm">
+                    {demoLabels.download}
+                  </Button>
+                }
+              />
+              <TooltipContent>{demoLabels.downloadDataset}</TooltipContent>
             </Tooltip>
-            <Tooltip content={demoLabels.deleteLayerCannotUndo} asChild>
-              <Button variant="destructive" size="sm">
-                {demoLabels.delete}
-              </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button variant="destructive" size="sm">
+                    {demoLabels.delete}
+                  </Button>
+                }
+              />
+              <TooltipContent>{demoLabels.deleteLayerCannotUndo}</TooltipContent>
             </Tooltip>
-            <Tooltip content={demoLabels.layerSettings} asChild>
-              <Button variant="ghost" size="sm">
-                {demoLabels.settings}
-              </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button variant="ghost" size="sm">
+                    {demoLabels.settings}
+                  </Button>
+                }
+              />
+              <TooltipContent>{demoLabels.layerSettings}</TooltipContent>
             </Tooltip>
           </div>
         </section>
@@ -84,10 +104,15 @@ export function TooltipOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           </h4>
           <div className="flex flex-wrap gap-3">
             {(["top", "bottom", "left", "right"] as const).map((side) => (
-              <Tooltip key={side} content={demoLabels.side(side)} side={side} asChild>
-                <Button variant="outline" size="sm">
-                  {side}
-                </Button>
+              <Tooltip key={side}>
+                <TooltipTrigger
+                  render={
+                    <Button variant="outline" size="sm">
+                      {side}
+                    </Button>
+                  }
+                />
+                <TooltipContent side={side}>{demoLabels.side(side)}</TooltipContent>
               </Tooltip>
             ))}
           </div>
@@ -97,10 +122,15 @@ export function TooltipOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
             {demoLabels.disabledTooltip}
           </h4>
-          <Tooltip content={demoLabels.disabledTooltipContent} disabled asChild>
-            <Button data-demo="tooltip-disabled-trigger" variant="outline" size="sm">
-              {demoLabels.noTooltip}
-            </Button>
+          <Tooltip disabled>
+            <TooltipTrigger
+              render={
+                <Button data-demo="tooltip-disabled-trigger" variant="outline" size="sm">
+                  {demoLabels.noTooltip}
+                </Button>
+              }
+            />
+            <TooltipContent>{demoLabels.disabledTooltipContent}</TooltipContent>
           </Tooltip>
         </section>
 
@@ -109,35 +139,60 @@ export function TooltipOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
             {demoLabels.iconToolbar}
           </h4>
           <div className="flex gap-1 border border-border p-1">
-            <Tooltip content={demoLabels.layerPanel} asChild>
-              <Button aria-label={demoLabels.layerPanel} variant="ghost" size="icon-sm">
-                <IconMap />
-              </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button aria-label={demoLabels.layerPanel} variant="ghost" size="icon-sm">
+                    <IconMap />
+                  </Button>
+                }
+              />
+              <TooltipContent>{demoLabels.layerPanel}</TooltipContent>
             </Tooltip>
-            <Tooltip content={demoLabels.zoomToSelection} asChild>
-              <Button aria-label={demoLabels.zoomToSelection} variant="ghost" size="icon-sm">
-                <IconZoomIn />
-              </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button aria-label={demoLabels.zoomToSelection} variant="ghost" size="icon-sm">
+                    <IconZoomIn />
+                  </Button>
+                }
+              />
+              <TooltipContent>{demoLabels.zoomToSelection}</TooltipContent>
             </Tooltip>
-            <Tooltip content={demoLabels.download} asChild>
-              <Button aria-label={demoLabels.download} variant="ghost" size="icon-sm">
-                <IconDownload />
-              </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button aria-label={demoLabels.download} variant="ghost" size="icon-sm">
+                    <IconDownload />
+                  </Button>
+                }
+              />
+              <TooltipContent>{demoLabels.download}</TooltipContent>
             </Tooltip>
-            <Tooltip content={demoLabels.settings} asChild>
-              <Button aria-label={demoLabels.settings} variant="ghost" size="icon-sm">
-                <IconSettings />
-              </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button aria-label={demoLabels.settings} variant="ghost" size="icon-sm">
+                    <IconSettings />
+                  </Button>
+                }
+              />
+              <TooltipContent>{demoLabels.settings}</TooltipContent>
             </Tooltip>
-            <Tooltip content={demoLabels.deleteLayerCannotUndo} asChild>
-              <Button
-                aria-label={demoLabels.delete}
-                variant="ghost"
-                size="icon-sm"
-                className="text-destructive hover:text-destructive"
-              >
-                <IconTrash />
-              </Button>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <Button
+                    aria-label={demoLabels.delete}
+                    variant="ghost"
+                    size="icon-sm"
+                    className="text-destructive hover:text-destructive"
+                  >
+                    <IconTrash />
+                  </Button>
+                }
+              />
+              <TooltipContent>{demoLabels.deleteLayerCannotUndo}</TooltipContent>
             </Tooltip>
           </div>
         </section>

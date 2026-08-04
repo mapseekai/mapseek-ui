@@ -16,7 +16,7 @@ const data = [
 
 const config = { features: { label: "Features", color: "var(--chart-1)" } } satisfies ChartConfig
 
-export function ChartOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function ChartOverviewDemo(_props: LocalizedDemoProps) {
   return (
     <section className="max-w-2xl space-y-3">
       <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">

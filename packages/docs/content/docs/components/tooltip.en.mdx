@@ -19,7 +19,12 @@ Tooltip provides brief supplemental help such as icon button names, dangerous ac
 ## Import
 
 ```tsx
-import { Tooltip, TooltipProvider } from "@/registry/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/registry/ui/tooltip"
 ```
 
 ## Usage
@@ -28,11 +33,11 @@ import { Tooltip, TooltipProvider } from "@/registry/ui/tooltip"
 
 ## Exports
 
-`tooltip.tsx` exports `TooltipProvider`, `Tooltip`, `TooltipTrigger`, and `TooltipContent`. The common path passes `content` directly to `Tooltip`.
+`tooltip.tsx` exports `TooltipProvider`, `Tooltip`, `TooltipTrigger`, and `TooltipContent`. Reuse an existing element with `TooltipTrigger render={<Button />}` and place the supplemental label inside `TooltipContent`.
 
 ## States
 
-`side` controls placement, `delay` can override provider delay, and `disabled` renders children without creating an overlay. `asChild` reuses an existing focusable trigger.
+`TooltipContent` uses `side` for placement, `TooltipProvider` controls the default `delay`, and root-level `disabled` disables the overlay. Base UI's `render` prop composes an existing focusable trigger.
 
 ## Accessibility
 
@@ -41,4 +46,3 @@ Tooltip is only for short supplemental text, not critical task information or ac
 ## Dependencies
 
 <RegistryDependencies registryName="tooltip" />
-

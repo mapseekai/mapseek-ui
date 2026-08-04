@@ -1,7 +1,6 @@
 import {
   ResourceSidebar,
   type ResourceSidebarCategory,
-  type ResourceSidebarLabels,
   type ResourceTab,
 } from "@registry/blocks/resource-sidebar"
 import { useState } from "react"

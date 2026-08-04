@@ -2,6 +2,7 @@ import { access, readFile, realpath, stat } from "node:fs/promises"
 import { createServer } from "node:http"
 import { extname, resolve, sep } from "node:path"
 import { type Browser, chromium, expect, type Locator, type Page } from "@playwright/test"
+import { SHADCN_PACKAGE } from "../shared/shadcn"
 
 type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots" | "onboarding" | "release"
 type DocsVisualCategory = "block" | "primitive"
@@ -1113,6 +1114,11 @@ export async function assertPrimitiveInteraction(
   primitive: string,
   path: string,
 ): Promise<void> {
+  if (primitive === "avatar") {
+    await expect(page.locator('[data-demo="avatar-size-default"]')).toHaveCSS("overflow", "visible")
+    await expect(page.locator('[data-demo="avatar-size-lg"]')).toHaveCSS("overflow", "visible")
+  }
+
   if (primitive === "accordion") {
     const single = page.locator('[data-demo="accordion-single"]')
     await single
@@ -1147,8 +1153,50 @@ export async function assertPrimitiveInteraction(
 
   if (primitive === "color-input") {
     const controlled = page.locator('[data-demo="color-input-controlled"]')
+    await expect(controlled.locator('input[type="color"]')).toHaveCount(0)
     await controlled.getByLabel(localized(path, "图层颜色", "Layer color")).fill("#dc2626")
     await expect(controlled.locator('[data-demo="color-input-value"]')).toContainText("#dc2626")
+
+    await page.evaluate(() => {
+      const EyeDropperMock = Function(
+        'return function EyeDropper() { this.open = function () { return Promise.reject(new DOMException("The user canceled the selection.", "AbortError")) } }',
+      )()
+      Object.defineProperty(globalThis, "EyeDropper", {
+        configurable: true,
+        value: EyeDropperMock,
+      })
+    })
+    await controlled
+      .getByRole("button", {
+        name: localized(path, "打开颜色选择器", "Open color picker"),
+      })
+      .click()
+    const eyeDropperErrors: string[] = []
+    const collectEyeDropperErrors = (message: { type(): string; text(): string }) => {
+      if (message.type() === "error" && message.text().includes("EyeDropper failed")) {
+        eyeDropperErrors.push(message.text())
+      }
+    }
+    page.on("console", collectEyeDropperErrors)
+    await page
+      .getByRole("button", { name: "Pick color" })
+      .evaluate((button) => (button as HTMLButtonElement).click())
+    await page.waitForTimeout(0)
+    page.off("console", collectEyeDropperErrors)
+    expect(eyeDropperErrors).toEqual([])
+  }
+
+  if (primitive === "icon-button") {
+    const defaultIcon = page
+      .locator('[data-demo="icon-button-default"] [data-slot="icon-button"] svg')
+      .first()
+    const smallIcon = page
+      .locator('[data-demo="icon-button-small"] [data-slot="icon-button"] svg')
+      .first()
+    await expect(defaultIcon).toHaveCSS("width", "16px")
+    await expect(defaultIcon).toHaveCSS("height", "16px")
+    await expect(smallIcon).toHaveCSS("width", "14px")
+    await expect(smallIcon).toHaveCSS("height", "14px")
   }
 
   if (primitive === "combobox") {
@@ -1470,13 +1518,13 @@ async function assertInstallWidget(page: Page, path: string): Promise<void> {
 
   const install = article.locator("[data-install-widget]").first()
   const command = install.locator("code").first()
-  await expect(command).toContainText("npx shadcn@4.8.0 add @mapseek/")
+  await expect(command).toContainText(`npx ${SHADCN_PACKAGE} add @mapseek/`)
   await install.getByRole("tab", { name: "pnpm", exact: true }).click()
-  await expect(command).toContainText("pnpm dlx shadcn@4.8.0 add @mapseek/")
+  await expect(command).toContainText(`pnpm dlx ${SHADCN_PACKAGE} add @mapseek/`)
   await install.getByRole("tab", { name: "bun", exact: true }).click()
-  await expect(command).toContainText("bunx shadcn@4.8.0 add @mapseek/")
+  await expect(command).toContainText(`bunx ${SHADCN_PACKAGE} add @mapseek/`)
   await install.getByRole("tab", { name: "npm", exact: true }).click()
-  await expect(command).toContainText("npx shadcn@4.8.0 add @mapseek/")
+  await expect(command).toContainText(`npx ${SHADCN_PACKAGE} add @mapseek/`)
 }
 
 const sharedWidgetSentinels = [
@@ -1669,13 +1717,22 @@ export async function assertBlockInteraction(
   if (block === "attr-table") {
     const demo = page.locator('[data-demo="attr-table"]')
     await demo.locator('[data-demo-action="section-data"]').click()
-    await demo.getByLabel(localized(path, "模拟空数据", "Simulate empty")).check()
+    await demo
+      .getByRole("checkbox", { name: localized(path, "模拟空数据", "Simulate empty") })
+      .check()
     await expect(demo).toContainText(localized(path, "无数据", "No rows"))
-    await demo.getByLabel(localized(path, "模拟空数据", "Simulate empty")).uncheck()
-    await demo.getByLabel(localized(path, "模拟错误", "Simulate error")).check()
+    await demo
+      .getByRole("checkbox", { name: localized(path, "模拟空数据", "Simulate empty") })
+      .uncheck()
+    await demo
+      .getByRole("checkbox", { name: localized(path, "模拟错误", "Simulate error") })
+      .check()
     await expect(demo.getByRole("button", { name: localized(path, "重试", "Retry") })).toBeVisible()
     await demo.getByRole("button", { name: localized(path, "重试", "Retry") }).click()
     await demo.locator('[data-demo-action="section-schema"]').click()
+    const copyButton = demo.locator('[data-slot="copy-button"]').first()
+    await copyButton.click()
+    await expect(copyButton.locator(".tabler-icon-check")).toBeVisible()
     await demo.getByPlaceholder(localized(path, "搜索字段", "Search fields")).fill("name")
     await expect(demo).toContainText("name")
     await demo.locator('[data-demo-action="section-sheet"]').click()
@@ -1790,6 +1847,19 @@ export async function assertBlockInteraction(
         .poll(() => mapPlaceholder.evaluate((element) => element.getBoundingClientRect().width))
         .toBeGreaterThanOrEqual(560)
     }
+    if ((page.viewportSize()?.width ?? 0) >= 640) {
+      await expect
+        .poll(() =>
+          coordinateStatus.evaluate((element) => {
+            const statusRect = element.getBoundingClientRect()
+            return Array.from(element.children).every((child) => {
+              const childRect = child.getBoundingClientRect()
+              return childRect.top >= statusRect.top && childRect.bottom <= statusRect.bottom
+            })
+          }),
+        )
+        .toBe(true)
+    }
     await assertNoHorizontalOverflow(coordinateStatus, `${path} MapCoordinateStatus readout`)
     await expect(demo).toContainText("EPSG:3857")
     await expect(demo).toContainText("13,522,425.02 m")
@@ -1830,6 +1900,43 @@ export async function assertBlockInteraction(
 
   if (block === "map-switcher") {
     const demo = page.locator('[data-demo="map-switcher"]')
+    const imageMode = demo.locator('[data-demo-section="map-switcher-image"]')
+    const imageTrigger = imageMode.locator('[data-slot="map-switcher"] > button')
+    const triggerBox = await imageTrigger.boundingBox()
+    expect(triggerBox?.height).toBeGreaterThanOrEqual(68)
+    await expect(imageTrigger).toHaveCSS("box-shadow", "none")
+    const triggerBorderColor = await imageTrigger.evaluate(
+      (element) => getComputedStyle(element).borderTopColor,
+    )
+    expect(triggerBorderColor).not.toBe("rgba(0, 0, 0, 0)")
+    await expect(imageTrigger.locator("img")).toHaveCSS("object-fit", "contain")
+    await expect(imageTrigger.locator("div").first()).toHaveCSS("border-bottom-width", "0px")
+    await imageTrigger.click()
+    const imageOptions = imageMode.locator('[role="option"]')
+    await expect(imageOptions).toHaveCount(4)
+    const optionBoxes = await imageOptions.evaluateAll((options) =>
+      options.map((option) => {
+        const box = option.getBoundingClientRect()
+        return { top: box.top, bottom: box.bottom, height: box.height }
+      }),
+    )
+    expect(optionBoxes[0]?.height).toBeGreaterThanOrEqual(64)
+    expect(optionBoxes[0]?.bottom).toBeLessThanOrEqual(optionBoxes[2]?.top ?? 0)
+
+    const buttonMode = demo.locator('[data-demo-section="map-switcher-button"]')
+    const buttonTrigger = buttonMode.locator('[data-slot="map-switcher"] > button')
+    const buttonTriggerBox = await buttonTrigger.boundingBox()
+    expect(buttonTriggerBox?.height).toBeLessThanOrEqual(32)
+    await buttonTrigger.click()
+    const buttonOptionOffsets = await buttonMode.locator('[role="option"]').evaluateAll((options) =>
+      options.map((option) => {
+        const optionBox = option.getBoundingClientRect()
+        const firstContentBox = option.firstElementChild?.getBoundingClientRect()
+        return firstContentBox ? firstContentBox.left - optionBox.left : Number.POSITIVE_INFINITY
+      }),
+    )
+    expect(buttonOptionOffsets.every((offset) => offset <= 10)).toBe(true)
+
     const controlled = demo.locator('[data-demo-section="map-switcher-controlled"]')
     await controlled.locator('[data-demo-action="map-switcher-toggle-open"]').click()
     const panel = controlled.locator('[data-slot="map-switcher-panel"]')
@@ -1868,7 +1975,11 @@ export async function assertBlockInteraction(
         return Math.abs(stageBox.x + stageBox.width - (statusBox.x + statusBox.width))
       })
       .toBeLessThanOrEqual(2)
-    await demo.getByTitle(localized(path, "复制 JSON", "Copy JSON")).click()
+    const copyButton = probe.locator('[data-slot="copy-button"]')
+    await expect(copyButton).toHaveCount(1)
+    await copyButton.click()
+    await expect(copyButton).toHaveAttribute("aria-label", localized(path, "已复制", "Copied"))
+    await expect(copyButton.locator("svg")).toHaveClass(/tabler-icon-check/)
     await expect(demo.locator('[data-demo-status="pixel-probe"]')).toContainText(
       localized(path, "已复制 JSON", "Copied JSON"),
     )
@@ -1900,11 +2011,14 @@ export async function assertBlockInteraction(
       localized(path, "主按钮", "Primary button"),
     )
     const selectMenuTrigger = selectPicker.getByRole("button").nth(1)
-    await openMenuWithKeyboard(
-      page,
-      selectMenuTrigger,
-      page.locator('[data-slot="popover-content"]').last(),
-    )
+    const selectMenu = page.locator('[data-slot="popover-content"]').last()
+    await openMenuWithKeyboard(page, selectMenuTrigger, selectMenu)
+    const menuItemsFitContent = await selectMenu
+      .locator('[role="option"]')
+      .evaluateAll((options) =>
+        options.every((option) => option.scrollHeight <= option.clientHeight),
+      )
+    expect(menuItemsFitContent).toBe(true)
     await page.getByRole("option", { name: localized(path, "框选", "Box select") }).focus()
     await page.keyboard.press("Enter")
     await expect(demo.locator('[data-demo-status="split-tool-picker"]')).toContainText(
@@ -2109,7 +2223,25 @@ export async function assertBlockInteraction(
     )
     await demo.locator('[data-demo-action="processing-timeline-advance"]').click()
     await expect(demo.locator('[data-demo-status="processing-timeline"]')).toContainText("55%")
-    await demo.getByRole("button", { name: localized(path, "复制", "Copy"), exact: true }).click()
+    const logButton = demo.getByRole("button", {
+      name: localized(path, "日志", "Log"),
+      exact: true,
+    })
+    const copyButton = demo.getByRole("button", {
+      name: localized(path, "复制", "Copy"),
+      exact: true,
+    })
+    const [logCenter, copyCenter] = await Promise.all(
+      [logButton, copyButton].map((button) =>
+        button.evaluate((element) => {
+          const box = element.getBoundingClientRect()
+          return box.top + box.height / 2
+        }),
+      ),
+    )
+    expect(Math.abs(logCenter - copyCenter)).toBeLessThanOrEqual(0.5)
+
+    await copyButton.click()
     await expect(demo.locator('[data-demo-status="processing-timeline"]')).toContainText(
       localized(path, "已复制日志", "Copied log"),
     )
@@ -2176,7 +2308,18 @@ export async function assertBlockInteraction(
 
   if (block === "resource-grid") {
     const demo = page.locator('[data-demo="resource-grid"]')
+    const iconGrid = demo.locator('[data-testid="resource-icon-grid"]')
     await expect(demo).toContainText(localized(path, "搜索", "Search"))
+    const initialGridWidth = await iconGrid.evaluate(
+      (element) => element.getBoundingClientRect().width,
+    )
+    await demo.getByRole("button", { name: new RegExp(localized(path, "搜索", "Search")) }).click()
+    await expect(demo.locator('[data-demo-status="resource-grid"]')).toContainText(
+      localized(path, "已打开", "Opened"),
+    )
+    await expect
+      .poll(() => iconGrid.evaluate((element) => element.getBoundingClientRect().width))
+      .toBe(initialGridWidth)
     await demo
       .getByRole("checkbox", { name: new RegExp(localized(path, "定位", "Locate")) })
       .check()
@@ -2198,6 +2341,19 @@ export async function assertBlockInteraction(
 
   if (block === "resource-sidebar") {
     const demo = page.locator('[data-demo="resource-sidebar"]')
+    const typeRow = demo.getByRole("button", {
+      name: new RegExp(`^${localized(path, "图标", "Icons")}`),
+    })
+    const categoryRow = demo.getByRole("button", {
+      name: localized(path, "全部图标", "All icons"),
+    })
+    const categoryList = demo.locator('[data-slot="resource-sidebar-category-list"]')
+    const [typeRowBox, categoryRowBox] = await Promise.all([
+      typeRow.boundingBox(),
+      categoryRow.boundingBox(),
+    ])
+    expect(typeRowBox?.height).toBe(categoryRowBox?.height)
+    await expect(categoryList).toHaveCSS("padding-bottom", "6px")
     await demo
       .getByRole("button", { name: new RegExp(`^${localized(path, "字体", "Fonts")}`) })
       .click()
@@ -2388,7 +2544,7 @@ export async function assertBlockInteraction(
     const demo = page.locator('[data-demo="style-function-editor"]')
     await expect(demo).toContainText(localized(path, "基数", "Base"))
     await expect(demo).toContainText(localized(path, "停靠点", "Stops"))
-    await expect(demo).toContainText(localized(path, "缩放级别", "Zoom"))
+    await expect(demo).toContainText(localized(path, "层级", "Zoom"))
     await demo.locator('[data-demo-action="style-function-editor-add"]').click()
     await expect(demo.locator('[data-demo-status="style-function-editor"]')).toContainText(
       localized(path, "已添加停靠点", "Added stop"),

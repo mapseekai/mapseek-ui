@@ -55,7 +55,7 @@ export function InputAutocomplete({
           showTrigger={false}
         />
         {options.length > 0 && (
-          <ComboboxContent className="z-50 min-w-[200px]">
+          <ComboboxContent className="min-w-50">
             <ComboboxEmpty>No results found.</ComboboxEmpty>
             <ComboboxList>
               {options.map((option) => (

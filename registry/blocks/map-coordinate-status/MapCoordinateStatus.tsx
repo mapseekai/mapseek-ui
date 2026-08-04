@@ -135,7 +135,7 @@ export function MapCoordinateStatus({
         className,
       )}
     >
-      <div className="flex min-h-7 items-center px-1.5">
+      <div className="flex min-h-7 items-center px-1.5 sm:min-h-0">
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger
             render={
@@ -147,9 +147,9 @@ export function MapCoordinateStatus({
                   open ? "bg-primary/[0.18]" : "bg-primary/10",
                 )}
               >
-                <CrsIcon size={11} stroke={1.75} className="shrink-0" />
+                <CrsIcon data-icon="inline-start" stroke={1.75} className="shrink-0" />
                 {crs}
-                <IconChevronDown size={10} className="opacity-70" />
+                <IconChevronDown data-icon="inline-end" className="opacity-70" />
               </Button>
             }
           />
@@ -157,7 +157,7 @@ export function MapCoordinateStatus({
             side="top"
             align="start"
             sideOffset={8}
-            className="w-auto gap-0 p-0 shadow-[var(--shadow-lg)]"
+            className="w-auto gap-0 p-0 shadow-(--shadow-lg)"
           >
             <CrsPicker
               value={crs}
@@ -172,7 +172,7 @@ export function MapCoordinateStatus({
       {displayReadouts.map((item) => (
         <div
           key={item.key}
-          className="flex min-h-7 items-center border-l border-border px-1.5 whitespace-nowrap sm:px-2.5"
+          className="flex min-h-7 items-center border-l border-border px-1.5 whitespace-nowrap sm:min-h-0 sm:px-2.5"
         >
           <span className="mr-1.5 text-[10px] tracking-[0.04em] text-muted-foreground uppercase">
             {item.label}

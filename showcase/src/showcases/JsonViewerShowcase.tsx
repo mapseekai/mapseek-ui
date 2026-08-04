@@ -12,7 +12,7 @@ const feature = {
   geometry: { type: "Point", coordinates: [116.397, 39.908] },
 }
 
-export function JsonViewerOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function JsonViewerOverviewDemo(_props: LocalizedDemoProps) {
   return (
     <div className="max-w-3xl">
       <JsonViewer data={feature} title="GeoJSON Feature" defaultExpanded showColorIndent />

@@ -88,6 +88,15 @@ it("scans the real registry and showcase sources for Tailwind utilities", async 
   expect(globals).not.toContain('@source "../../../../showcase/')
 })
 
+it("keeps every docs scrollbar square", async () => {
+  const globals = await readFile("packages/docs/app/globals.css", "utf8")
+
+  expect(globals).toContain("::-webkit-scrollbar-thumb")
+  expect(globals).toContain("::-webkit-scrollbar-track")
+  expect(globals).toContain("::-webkit-scrollbar-corner")
+  expect(globals.match(/border-radius: 0;/g)).toHaveLength(3)
+})
+
 it("publishes installable registry artifacts and compiled theme utilities", async () => {
   await expect(access("public/r/button.json")).resolves.toBeUndefined()
   await expect(access("packages/docs/public/r/button.json")).resolves.toBeUndefined()
@@ -114,14 +123,18 @@ it("renders manifest-derived component and block indexes in the static build", a
   const enBlocks = await readFile("packages/docs/out/en/blocks/index.html", "utf8")
 
   expect(components).toContain("搜索组件")
+  expect(components).toContain('placeholder="输入名称、包名或描述"')
   expect(components).toContain("Button")
   expect(components).toContain("/components/button")
   expect(blocks).toContain("搜索区块")
+  expect(blocks).toContain('placeholder="输入名称、包名或描述"')
   expect(blocks).toContain("Layer Panel")
   expect(blocks).toContain("/blocks/layer-panel")
   expect(enComponents).toContain("Search components")
+  expect(enComponents).toContain('placeholder="Enter a name, package, or description"')
   expect(enComponents).toContain("/en/components/button")
   expect(enBlocks).toContain("Search blocks")
+  expect(enBlocks).toContain('placeholder="Enter a name, package, or description"')
   expect(enBlocks).toContain("/en/blocks/layer-panel")
 })
 

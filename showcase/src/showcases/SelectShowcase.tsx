@@ -1,4 +1,11 @@
-import { Select } from "@registry/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@registry/ui/select"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -51,15 +58,20 @@ export function SelectOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         </h4>
         <div className="max-w-xs">
           <Select
-            aria-label={demoLabels.crsAriaLabel}
-            placeholder={demoLabels.selectCrs}
             value={value}
-            onValueChange={setValue}
+            onValueChange={(nextValue) => nextValue != null && setValue(nextValue)}
           >
-            <Select.Item value="4326">EPSG:4326 - WGS 84</Select.Item>
-            <Select.Item value="3857">EPSG:3857 - Web Mercator</Select.Item>
-            <Select.Item value="4490">EPSG:4490 - CGCS2000</Select.Item>
-            <Select.Item value="2154">EPSG:2154 - France Lambert 93</Select.Item>
+            <SelectTrigger aria-label={demoLabels.crsAriaLabel}>
+              <SelectValue placeholder={demoLabels.selectCrs} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="4326">EPSG:4326 - WGS 84</SelectItem>
+                <SelectItem value="3857">EPSG:3857 - Web Mercator</SelectItem>
+                <SelectItem value="4490">EPSG:4490 - CGCS2000</SelectItem>
+                <SelectItem value="2154">EPSG:2154 - France Lambert 93</SelectItem>
+              </SelectGroup>
+            </SelectContent>
           </Select>
         </div>
         <p className="text-xs text-muted-foreground" data-demo="select-value">
@@ -72,15 +84,18 @@ export function SelectOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {demoLabels.preselected}
         </h4>
         <div className="max-w-xs">
-          <Select
-            aria-label={demoLabels.defaultFormatAriaLabel}
-            placeholder={demoLabels.selectFormat}
-            defaultValue="geojson"
-          >
-            <Select.Item value="geojson">GeoJSON</Select.Item>
-            <Select.Item value="topojson">TopoJSON</Select.Item>
-            <Select.Item value="shapefile">Shapefile</Select.Item>
-            <Select.Item value="kml">KML</Select.Item>
+          <Select defaultValue="geojson">
+            <SelectTrigger aria-label={demoLabels.defaultFormatAriaLabel}>
+              <SelectValue placeholder={demoLabels.selectFormat} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="geojson">GeoJSON</SelectItem>
+                <SelectItem value="topojson">TopoJSON</SelectItem>
+                <SelectItem value="shapefile">Shapefile</SelectItem>
+                <SelectItem value="kml">KML</SelectItem>
+              </SelectGroup>
+            </SelectContent>
           </Select>
         </div>
       </section>
@@ -90,15 +105,17 @@ export function SelectOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {demoLabels.small}
         </h4>
         <div className="max-w-xs">
-          <Select
-            aria-label={demoLabels.smallFormatAriaLabel}
-            placeholder={demoLabels.selectFormat}
-            defaultValue="geojson"
-            size="sm"
-          >
-            <Select.Item value="geojson">GeoJSON</Select.Item>
-            <Select.Item value="topojson">TopoJSON</Select.Item>
-            <Select.Item value="shapefile">Shapefile</Select.Item>
+          <Select defaultValue="geojson">
+            <SelectTrigger size="sm" aria-label={demoLabels.smallFormatAriaLabel}>
+              <SelectValue placeholder={demoLabels.selectFormat} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="geojson">GeoJSON</SelectItem>
+                <SelectItem value="topojson">TopoJSON</SelectItem>
+                <SelectItem value="shapefile">Shapefile</SelectItem>
+              </SelectGroup>
+            </SelectContent>
           </Select>
         </div>
       </section>
@@ -108,13 +125,16 @@ export function SelectOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {demoLabels.disabled}
         </h4>
         <div className="max-w-xs">
-          <Select
-            aria-label={demoLabels.disabledSelectAriaLabel}
-            placeholder={demoLabels.select}
-            disabled
-          >
-            <Select.Item value="opt1">{demoLabels.optionOne}</Select.Item>
-            <Select.Item value="opt2">{demoLabels.optionTwo}</Select.Item>
+          <Select disabled>
+            <SelectTrigger aria-label={demoLabels.disabledSelectAriaLabel}>
+              <SelectValue placeholder={demoLabels.select} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="opt1">{demoLabels.optionOne}</SelectItem>
+                <SelectItem value="opt2">{demoLabels.optionTwo}</SelectItem>
+              </SelectGroup>
+            </SelectContent>
           </Select>
         </div>
       </section>

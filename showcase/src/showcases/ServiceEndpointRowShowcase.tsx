@@ -51,7 +51,7 @@ export function ServiceEndpointRowDemo({ locale = "zh-CN" }: LocalizedDemoProps)
   const [status, setStatus] = useState(demoLabels.pending)
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex w-full min-w-0 max-w-full flex-col gap-3">
       <span
         data-demo-status="service-endpoint-row"
         className="font-mono text-xs text-muted-foreground"

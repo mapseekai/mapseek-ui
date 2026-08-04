@@ -6,7 +6,7 @@ import {
   IconX,
 } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
-import { Tooltip } from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { EditField, ReadField } from "./attr-field"
 import type { AttrFieldMeta, AttrInspectorProps } from "./types"
@@ -62,15 +62,20 @@ export function AttrInspector({
           <span className="text-xs font-medium">{labels.title}</span>
         </div>
         {onClose && (
-          <Tooltip content={labels.close}>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onClose}
-              className="mr-1 h-8 w-8 rounded-none text-muted-foreground"
-            >
-              <IconX size={16} />
-            </Button>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onClose}
+                  className="mr-1 size-8 rounded-none text-muted-foreground"
+                >
+                  <IconX />
+                </Button>
+              }
+            />
+            <TooltipContent>{labels.close}</TooltipContent>
           </Tooltip>
         )}
       </div>
@@ -107,7 +112,7 @@ export function AttrInspector({
               onClick={onAddField}
               className="mt-2.5 h-6 w-full justify-start gap-1.5 rounded-none px-2.5 text-[11px]"
             >
-              <IconColumnInsertRight size={16} /> {labels.addField}
+              <IconColumnInsertRight data-icon="inline-start" /> {labels.addField}
             </Button>
           )}
         </div>
@@ -116,12 +121,12 @@ export function AttrInspector({
           <div className="flex gap-1.5 border-t border-border px-2.5 py-2">
             {showDelete && (
               <Button variant="ghost" onClick={onDelete} className={actionBtn}>
-                <IconTrash size={16} /> {labels.delete}
+                <IconTrash data-icon="inline-start" /> {labels.delete}
               </Button>
             )}
             {showGeoJSON && (
               <Button variant="ghost" onClick={onViewGeoJSON} className={actionBtn}>
-                <IconBraces size={16} /> {labels.viewGeoJSON}
+                <IconBraces data-icon="inline-start" /> {labels.viewGeoJSON}
               </Button>
             )}
             {showConfirm && (

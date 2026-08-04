@@ -6,7 +6,9 @@ import {
   SchemaTable,
   useStaticRowSource,
 } from "@registry/blocks/attr-table"
+import { Button } from "@registry/ui/button"
 import { Checkbox } from "@registry/ui/checkbox"
+import { ToggleGroup, ToggleGroupItem } from "@registry/ui/toggle-group"
 import { useMemo, useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -131,24 +133,25 @@ export function AttrTableDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      <div className="flex flex-wrap gap-2">
+      <ToggleGroup
+        value={[section]}
+        size="sm"
+        onValueChange={(nextSections) => {
+          const nextSection = nextSections.at(-1) as Section | undefined
+          if (nextSection) setSection(nextSection)
+        }}
+      >
         {sections.map((item) => (
-          <button
+          <ToggleGroupItem
             key={item}
-            type="button"
+            value={item}
             data-demo-action={`section-${item}`}
-            className={[
-              "border border-border px-3 py-1 font-mono text-xs",
-              section === item
-                ? "bg-primary text-primary-foreground"
-                : "bg-background text-foreground hover:bg-muted",
-            ].join(" ")}
-            onClick={() => setSection(item)}
+            aria-label={demoLabels[item]}
           >
             {demoLabels[item]}
-          </button>
+          </ToggleGroupItem>
         ))}
-      </div>
+      </ToggleGroup>
       {section === "schema" ? (
         <div className="h-[420px] border border-border">
           <SchemaTable
@@ -162,22 +165,25 @@ export function AttrTableDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
       ) : section === "data" ? (
         <div className="flex flex-col gap-2">
           <div className="flex flex-wrap items-center gap-3 text-xs">
-            <label className="flex items-center gap-1">
+            <label htmlFor="attr-table-simulate-loading" className="flex items-center gap-1">
               <Checkbox
+                id="attr-table-simulate-loading"
                 checked={simulateLoading}
                 onCheckedChange={(checked) => setSimulateLoading(checked === true)}
               />
               {demoLabels.loading}
             </label>
-            <label className="flex items-center gap-1">
+            <label htmlFor="attr-table-simulate-error" className="flex items-center gap-1">
               <Checkbox
+                id="attr-table-simulate-error"
                 checked={simulateError}
                 onCheckedChange={(checked) => setSimulateError(checked === true)}
               />
               {demoLabels.error}
             </label>
-            <label className="flex items-center gap-1">
+            <label htmlFor="attr-table-simulate-empty" className="flex items-center gap-1">
               <Checkbox
+                id="attr-table-simulate-empty"
                 checked={simulateEmpty}
                 onCheckedChange={(checked) => setSimulateEmpty(checked === true)}
               />
@@ -193,14 +199,15 @@ export function AttrTableDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         </div>
       ) : (
         <div className="flex flex-col gap-2">
-          <button
+          <Button
             type="button"
             data-demo-action="open-sheet"
-            className="w-fit border border-border bg-primary px-3 py-1 font-mono text-xs text-primary-foreground hover:opacity-90"
+            size="xs"
+            className="w-fit"
             onClick={() => setSheetOpen(true)}
           >
             {demoLabels.openSheet}
-          </button>
+          </Button>
           {sheetOpen ? (
             <div className="fixed inset-0 z-50 bg-background/80" data-demo="attr-table-sheet">
               <div className="relative h-full w-full overflow-hidden bg-[repeating-linear-gradient(45deg,var(--muted),var(--muted)_10px,transparent_10px,transparent_20px)]">

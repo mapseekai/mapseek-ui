@@ -34,6 +34,22 @@
       ]
     },
     {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Inline status callout.",
+      "categories": ["feedback"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "alert.tsx",
+          "type": "registry:ui",
+          "target": "@ui/alert.tsx"
+        }
+      ]
+    },
+    {
       "name": "badge",
       "type": "registry:ui",
       "title": "Badge",
@@ -256,15 +272,37 @@
       "name": "color-input",
       "type": "registry:ui",
       "title": "Color Input",
-      "description": "Themed native color input primitive.",
+      "description": "Composed color input with swatch, text field, and picker.",
       "categories": ["input"],
-      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
-      "dependencies": ["@base-ui/react"],
+      "registryDependencies": [
+        "@mapseek/theme",
+        "@mapseek/button",
+        "@mapseek/input",
+        "@mapseek/popover",
+        "@mapseek/select",
+        "@mapseek/utils"
+      ],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react", "color"],
       "files": [
         {
-          "path": "color-input.tsx",
+          "path": "color-input/ColorPicker.tsx",
           "type": "registry:ui",
-          "target": "@ui/color-input.tsx"
+          "target": "@ui/color-input/ColorPicker.tsx"
+        },
+        {
+          "path": "color-input/ColorInput.tsx",
+          "type": "registry:ui",
+          "target": "@ui/color-input/ColorInput.tsx"
+        },
+        {
+          "path": "color-input/index.ts",
+          "type": "registry:ui",
+          "target": "@ui/color-input/index.ts"
+        },
+        {
+          "path": "color-input/types.ts",
+          "type": "registry:ui",
+          "target": "@ui/color-input/types.ts"
         }
       ]
     },

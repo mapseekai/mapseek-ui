@@ -70,7 +70,7 @@ export function NotificationCenter({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger render={<IconButton className="relative" aria-label={labels.trigger} />}>
-        <IconBell size={15} stroke={1.75} />
+        <IconBell stroke={1.75} />
         {total > 0 ? (
           <span className="mono pointer-events-none absolute top-0.5 right-0.5 h-3 min-w-3 border border-primary bg-background px-px text-center text-[8px] leading-[11px] font-bold text-primary">
             {total > 9 ? "9+" : total}
@@ -105,7 +105,7 @@ export function NotificationCenter({
               onClick={onClearAll}
               disabled={!onClearAll}
             >
-              <IconTrash size={12} stroke={1.75} />
+              <IconTrash data-icon="inline-start" stroke={1.75} />
               {labels.clearAll}
             </Button>
           ) : null}
@@ -153,12 +153,12 @@ function SummaryCell({ label, value }: { label: string; value: number }) {
 
 function LoadingState({ label }: { label: string }) {
   return (
-    <div className="space-y-3 p-3" role="status" aria-label={label}>
+    <div className="flex flex-col gap-3 p-3" role="status" aria-label={label}>
       {[0, 1, 2].map((i) => (
         <div key={i} className="grid grid-cols-[3px_24px_minmax(0,1fr)] gap-2">
           <Skeleton className="h-12 w-[3px]" />
           <Skeleton className="size-6" />
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <Skeleton className="h-3 w-4/5" />
             <Skeleton className="h-3 w-3/5" />
             <Skeleton className="h-3 w-1/3" />
@@ -197,7 +197,7 @@ function ErrorState({ labels, onRetry }: Pick<NotificationCenterProps, "labels" 
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" size="sm" onClick={onRetry} disabled={!onRetry}>
-          <IconRefresh size={13} stroke={1.75} />
+          <IconRefresh data-icon="inline-start" stroke={1.75} />
           {labels.retry}
         </Button>
       </EmptyContent>

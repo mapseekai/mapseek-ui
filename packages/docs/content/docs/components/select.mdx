@@ -19,7 +19,13 @@ Select 用于有限选项的单值选择，例如 CRS、格式和模式。它基
 ## 导入
 
 ```tsx
-import { Select } from "@/registry/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/registry/ui/select"
 ```
 
 ## 用法
@@ -28,11 +34,11 @@ import { Select } from "@/registry/ui/select"
 
 ## 导出
 
-`select.tsx` 导出 `Select`，并通过 `Select.Item` 暴露选项组件。根组件支持 `value/onValueChange`、`defaultValue`、`placeholder`、`disabled` 和 `size`。
+`select.tsx` 按标准组合方式导出 `Select`、`SelectTrigger`、`SelectValue`、`SelectContent`、`SelectGroup`、`SelectLabel`、`SelectItem`、`SelectSeparator` 和滚动按钮。状态属性放在根组件，尺寸和无障碍属性放在 trigger。
 
 ## 状态
 
-受控值使用 `value/onValueChange`；静态默认值使用 `defaultValue`。`size="sm"` 提供 28px 触发器；`disabled` 阻止打开列表。
+受控值使用 `value/onValueChange`；静态默认值使用 `defaultValue`。`SelectTrigger size="sm"` 提供紧凑触发器；根组件的 `disabled` 阻止打开列表。
 
 ## 无障碍
 
@@ -41,4 +47,3 @@ import { Select } from "@/registry/ui/select"
 ## 依赖
 
 <RegistryDependencies registryName="select" />
-

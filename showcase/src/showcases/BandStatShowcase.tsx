@@ -1,4 +1,4 @@
-import { BandStat, type BandStatData, type BandStatLabels } from "@registry/blocks/band-stat"
+import { BandStat, type BandStatData } from "@registry/blocks/band-stat"
 import { Button } from "@registry/ui/button"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"

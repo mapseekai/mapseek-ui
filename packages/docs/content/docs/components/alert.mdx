@@ -1,0 +1,39 @@
+---
+title: "Alert"
+registryName: alert
+category: primitive
+stability: stable
+showcase: alert
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Alert 用于页面内需要立即说明的状态、校验结果或错误提示。它统一图标、标题、说明和可选操作的布局，避免业务组件重复拼接提示框样式。
+
+## 安装
+
+<RegistryInstall registryName="alert" />
+
+## 导入
+
+```tsx
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/registry/ui/alert"
+```
+
+## 状态提示
+
+<ShowcaseDemo registryName="alert" demo="overview" title="默认与危险状态" description="展示成功校验和可恢复错误两种提示。" minHeight={260} />
+
+## 导出
+
+`Alert` 是根容器，`AlertTitle` 与 `AlertDescription` 提供结构化文案，`AlertAction` 放置恢复操作。`variant` 支持 `default` 和 `destructive`。
+
+## 无障碍
+
+组件默认带有 `role="alert"`，适合需要即时宣布的动态结果。静态说明若不需要打断屏幕阅读器，应根据场景覆盖为更温和的语义。提示不能只依赖颜色，文案应说明状态及下一步。
+
+## 依赖
+
+<RegistryDependencies registryName="alert" />

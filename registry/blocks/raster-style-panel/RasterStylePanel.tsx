@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Select } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
 import { ColormapPicker } from "./ColormapPicker"
@@ -162,16 +169,19 @@ export function RasterStylePanel({
     selected: number | undefined,
     onSelect: (band: number) => void,
   ) => (
-    <Select
-      aria-label={label}
-      value={selected ? String(selected) : ""}
-      onValueChange={(raw) => onSelect(Number(raw))}
-    >
-      {bands.map((band) => (
-        <Select.Item key={band} value={String(band)}>
-          {labels.band} {band}
-        </Select.Item>
-      ))}
+    <Select value={selected ? String(selected) : ""} onValueChange={(raw) => onSelect(Number(raw))}>
+      <SelectTrigger aria-label={label}>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          {bands.map((band) => (
+            <SelectItem key={band} value={String(band)}>
+              {labels.band} {band}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
     </Select>
   )
   const switchSelector = (mode: "single" | "rgb") => {

@@ -50,7 +50,7 @@ function Stat({
       </span>
       <span className="flex items-center gap-1.5">
         {icon}
-        <span className={cn("truncate text-lg font-medium leading-none", mono && "mono tnum")}>
+        <span className={cn("truncate text-base font-medium leading-none", mono && "mono tnum")}>
           {value}
         </span>
         {unit && <span className="mono text-xs text-muted-foreground">{unit}</span>}

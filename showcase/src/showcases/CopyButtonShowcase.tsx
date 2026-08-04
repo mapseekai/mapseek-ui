@@ -32,6 +32,13 @@ export function CopyButtonOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         copiedLabel={copy.copied}
         data-demo-action="copy-button-text"
       />
+      <CopyButton
+        content="dataset.8f12-a91c"
+        variant="ghost"
+        label={copy.copy}
+        copiedLabel={copy.copied}
+        data-demo-action="copy-button-ghost"
+      />
     </div>
   )
 }

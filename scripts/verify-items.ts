@@ -2,6 +2,7 @@ import { spawn } from "node:child_process"
 import { access, cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
 import { join } from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
+import { SHADCN_PACKAGE } from "../shared/shadcn"
 import { dlxCommand, pnpmCommand } from "./pnpm-command"
 import { loadCatalog } from "./registry-model"
 import { withRegistryServer } from "./registry-server"
@@ -51,10 +52,15 @@ export async function assertInstalledItemDestination(fixture: string, name: stri
   if (await exists(join(fixture, "@"))) throw new Error(`top-level @ directory created for ${name}`)
 
   const item = (await loadCatalog(repoRoot)).find((candidate) => candidate.name === name)
+  const hasDirectoryIndex = item?.files.some((file) => file.target === `@ui/${name}/index.ts`)
   const expectedSources =
     item?.type === "registry:block"
       ? [join(fixture, "src", "components", "blocks", name, "index.ts")]
-      : [join(fixture, "src", "components", "ui", `${name}.tsx`)]
+      : [
+          hasDirectoryIndex
+            ? join(fixture, "src", "components", "ui", name, "index.ts")
+            : join(fixture, "src", "components", "ui", `${name}.tsx`),
+        ]
   if (await requiresUtils(name)) expectedSources.push(join(fixture, "src", "lib", "utils.ts"))
   for (const source of expectedSources) {
     if (!(await exists(source))) throw new Error(`installed ${name} source outside src: ${source}`)
@@ -76,7 +82,7 @@ export async function verifyItems(names: readonly string[]): Promise<void> {
           ),
         )
         await run(fixture, pnpmCommand("install"))
-        await run(fixture, dlxCommand("shadcn@4.8.0", "add", `@mapseek/${name}`, "--yes"))
+        await run(fixture, dlxCommand(SHADCN_PACKAGE, "add", `@mapseek/${name}`, "--yes"))
         await assertInstalledItemDestination(fixture, name)
         await run(fixture, pnpmCommand("run", "typecheck"))
         await run(fixture, pnpmCommand("run", "build"))

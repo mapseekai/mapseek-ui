@@ -77,7 +77,7 @@ function EmptyDescription({ className, ...props }: React.ComponentProps<"div">) 
   return (
     <div
       data-slot="empty-description"
-      className={cn("text-[11px] leading-[1.5] text-muted-foreground", className)}
+      className={cn("text-[11px] leading-normal text-muted-foreground", className)}
       {...props}
     />
   )

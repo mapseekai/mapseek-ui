@@ -1,14 +1,16 @@
 "use client"
 
+import { Input } from "@registry/ui/input"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { useState } from "react"
+import { useId, useState } from "react"
 import { getRegistryDocItems, type RegistryDocItem } from "../RegistryItem/registry-data"
 import styles from "./styles.module.css"
 
 export type ComponentIndexProps = {
   readonly category: RegistryDocItem["category"]
   readonly searchLabel: string
+  readonly searchPlaceholder: string
   readonly emptyLabel: string
 }
 
@@ -27,8 +29,14 @@ function hrefForItem(category: RegistryDocItem["category"], name: string, locale
   return `${prefix}/${section}/${name}`
 }
 
-export function ComponentIndex({ category, searchLabel, emptyLabel }: ComponentIndexProps) {
+export function ComponentIndex({
+  category,
+  searchLabel,
+  searchPlaceholder,
+  emptyLabel,
+}: ComponentIndexProps) {
   const params = useParams()
+  const searchId = useId()
   const segs = (params.slug as string[] | undefined) ?? []
   const locale = segs[0] === "en" ? "en" : "zh-CN"
   const [query, setQuery] = useState("")
@@ -37,11 +45,13 @@ export function ComponentIndex({ category, searchLabel, emptyLabel }: ComponentI
 
   return (
     <section className={styles.index} data-component-index={category}>
-      <label className={styles.searchLabel}>
+      <label className={styles.searchLabel} htmlFor={searchId}>
         <span>{searchLabel}</span>
-        <input
+        <Input
+          id={searchId}
           className={styles.searchInput}
           type="search"
+          placeholder={searchPlaceholder}
           value={query}
           onChange={(event) => setQuery(event.currentTarget.value)}
         />

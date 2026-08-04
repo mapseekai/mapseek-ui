@@ -9,7 +9,7 @@ showcase: color-input
 import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
-Color Input 是带有 Mapseek 主题边框、焦点环和禁用状态的原生颜色输入控件，适合紧凑的图层样式表单。
+Color Input 是基础颜色输入组件，组合色块、文本输入和自定义颜色选择器，适合需要精确输入与可视化选色的表单。
 
 ## 安装
 
@@ -23,11 +23,11 @@ import { ColorInput } from "@/registry/ui/color-input"
 
 ## 用法
 
-<ShowcaseDemo registryName="color-input" demo="overview" title="受控值与禁用状态" description="修改颜色后会立即同步显示十六进制值，并展示不可交互的禁用状态。" minHeight={280} />
+<ShowcaseDemo registryName="color-input" demo="overview" title="受控值与禁用状态" description="可以通过色块打开自定义颜色选择器，也可以直接输入颜色值；修改后会立即同步，并展示不可交互的禁用状态。" minHeight={320} />
 
 ## 导出
 
-`color-input.tsx` 导出 `ColorInput`。组件继承原生 `input[type=color]` 属性，可使用 `value/onChange`、`defaultValue`、`disabled` 和 `aria-label`。
+`color-input` 导出 `ColorInput`、底层 `ColorPicker` 组合件和对应类型。`ColorInput` 支持 `value/onTextChange`、`defaultValue`、`disabled`、`mode`、`layout` 和 `aria-label`；业务组件可以在此基础上封装领域语义。
 
 ## 无障碍
 

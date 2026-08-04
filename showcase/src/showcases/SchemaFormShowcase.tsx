@@ -4,6 +4,7 @@ import {
   type SchemaFormField,
   seedSchemaFormValues,
 } from "@registry/blocks/schema-form"
+import { Button } from "@registry/ui/button"
 import { Checkbox } from "@registry/ui/checkbox"
 import { useMemo, useState } from "react"
 import type { LocalizedDemoProps } from "./types"
@@ -106,8 +107,9 @@ export function SchemaFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
     <div className="flex w-full max-w-[460px] flex-col gap-4">
       <p className="m-0 text-xs text-muted-foreground">{demoLabels.intro}</p>
       <div className="flex flex-wrap items-center gap-2">
-        <label className="flex items-center gap-2 text-xs">
+        <label htmlFor="schema-form-empty-options" className="flex items-center gap-2 text-xs">
           <Checkbox
+            id="schema-form-empty-options"
             checked={emptyOptions}
             onCheckedChange={(checked) => {
               setEmptyOptions(checked === true)
@@ -116,14 +118,15 @@ export function SchemaFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           />
           {demoLabels.emptyOptions}
         </label>
-        <button
+        <Button
           type="button"
           data-demo-action="reset-schema"
-          className="border border-border bg-background px-2 py-1 font-mono text-xs hover:bg-muted"
+          variant="outline"
+          size="xs"
           onClick={() => setValues(seedSchemaFormValues(fields))}
         >
           {demoLabels.reset}
-        </button>
+        </Button>
       </div>
       <div className="border border-border p-3">
         <SchemaForm
@@ -143,7 +146,7 @@ export function SchemaFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
       >
         {valid ? demoLabels.valid : demoLabels.invalid}
       </span>
-      <pre className="overflow-auto border border-border bg-muted/30 p-2 font-mono text-[10px] leading-4">
+      <pre className="overflow-auto border border-border bg-muted/30 p-2 font-mono !text-xs !leading-4">
         {JSON.stringify(values, null, 2)}
       </pre>
     </div>

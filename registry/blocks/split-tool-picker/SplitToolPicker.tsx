@@ -2,7 +2,7 @@ import { IconChevronDown, type Icon as TablerIcon } from "@tabler/icons-react"
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Tooltip } from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
 import { DEFAULT_SPLIT_TOOL_PICKER_LABELS } from "./defaults"
@@ -66,26 +66,31 @@ function SplitToolPicker({
 
   return (
     <div data-slot="split-tool-picker" className={cn("inline-flex items-center", className)}>
-      <Tooltip
-        content={`${selectedItem.label}${selectedItem.hint ? ` · ${selectedItem.hint}` : ""}`}
-        side="bottom"
-      >
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          disabled={disabled}
-          aria-label={selectedItem.label}
-          aria-pressed={active}
-          onClick={() => commitValue(selectedItem.id, "primary")}
-          className={cn(
-            "size-8",
-            active ? "bg-selection-bg text-primary" : "bg-transparent text-foreground",
-          )}
-          data-active={active ? "true" : undefined}
-        >
-          <SelectedIcon size={15} />
-        </Button>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              disabled={disabled}
+              aria-label={selectedItem.label}
+              aria-pressed={active}
+              onClick={() => commitValue(selectedItem.id, "primary")}
+              className={cn(
+                "size-8",
+                active ? "bg-selection-bg text-primary" : "bg-transparent text-foreground",
+              )}
+              data-active={active ? "true" : undefined}
+            >
+              <SelectedIcon />
+            </Button>
+          }
+        />
+        <TooltipContent side="bottom">
+          {selectedItem.label}
+          {selectedItem.hint ? ` · ${selectedItem.hint}` : ""}
+        </TooltipContent>
       </Tooltip>
 
       <Popover open={open} onOpenChange={setOpen}>
@@ -102,7 +107,7 @@ function SplitToolPicker({
                 open && "bg-selection-bg text-primary",
               )}
             >
-              <IconChevronDown size={12} stroke={2.25} />
+              <IconChevronDown stroke={2.25} />
             </Button>
           }
         />
@@ -132,14 +137,14 @@ function SplitToolPicker({
                     setOpen(false)
                   }}
                   className={cn(
-                    "flex w-full cursor-pointer items-center gap-2.5 border-l-2 px-2 py-2 text-left outline-none",
+                    "flex h-auto w-full cursor-pointer items-center gap-2.5 border-l-2 px-2 py-2 text-left outline-none",
                     selected
                       ? "border-l-primary bg-selection-bg text-primary"
                       : "border-l-transparent text-foreground hover:bg-muted",
                   )}
                 >
                   <Icon
-                    size={14}
+                    data-icon="inline-start"
                     stroke={1.75}
                     className={selected ? "text-primary" : "text-muted-foreground"}
                   />

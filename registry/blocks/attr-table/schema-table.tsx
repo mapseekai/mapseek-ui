@@ -1,9 +1,10 @@
 import { IconSearch } from "@tabler/icons-react"
 import { useMemo, useState } from "react"
+import { Badge } from "@/components/ui/badge"
 import { CopyButton } from "@/components/ui/copy-button"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
-import { attributeColumns } from "./columns"
+import { attributeColumns, rawTypeBadgeClass } from "./columns"
 import type { ColumnDef } from "./types"
 import { useStaticRowSource } from "./use-static-row-source"
 import { VirtualTable } from "./virtual-table"
@@ -83,7 +84,9 @@ export function SchemaTable({
                 />
               </span>
             ) : (
-              <span className="text-muted-foreground">{row.rawType}</span>
+              <Badge variant="outline" className={rawTypeBadgeClass(row.rawType)}>
+                {row.rawType}
+              </Badge>
             )
           }
           emptyLabel={isFiltered ? noMatchLabel : emptyLabel}

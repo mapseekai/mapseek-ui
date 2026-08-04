@@ -10,6 +10,7 @@
       "!packages/docs/.source",
       "!packages/docs/out",
       "!packages/docs/build",
+      "!packages/docs/public/r",
       "!packages/docs/next-env.d.ts",
       "!**/*.generated.ts",
       "!test-results",

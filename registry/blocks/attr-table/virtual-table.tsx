@@ -1,6 +1,7 @@
 import { IconAlertTriangle } from "@tabler/icons-react"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { useEffect, useRef } from "react"
+import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 import type { ColumnDef, RowSource } from "./types"
@@ -71,13 +72,15 @@ export function VirtualTable<TRow>({
       >
         <IconAlertTriangle size={20} stroke={1.5} className="text-destructive" />
         <span>{source.error.message}</span>
-        <button
+        <Button
+          variant="outline"
+          size="sm"
           type="button"
           onClick={source.refetch}
-          className="rounded-none border border-border bg-card px-2 py-1 text-xs text-foreground hover:bg-muted"
+          className="rounded-none bg-card"
         >
           {errorRetryLabel}
-        </button>
+        </Button>
       </div>
     )
   }
@@ -149,31 +152,22 @@ export function VirtualTable<TRow>({
                 const rowKey = getRowKey(row, vi.index)
                 const isSelected =
                   row != null && selectedRowKey != null && rowKey === selectedRowKey
-                return (
-                  <button
-                    type="button"
-                    key={vi.key}
-                    data-index={vi.index}
-                    ref={virtualizer.measureElement}
-                    disabled={!row || !onRowClick}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      transform: `translateY(${vi.start}px)`,
-                      width: "100%",
-                      height: ROW_HEIGHT,
-                    }}
-                    className={cn(
-                      "flex border-x-0 border-t-0 border-b border-border/60 bg-transparent p-0 text-left font-inherit text-inherit transition-colors",
-                      row ? "cursor-pointer hover:bg-muted/40" : "pointer-events-none",
-                      isSelected &&
-                        "bg-primary/15 ring-1 ring-primary/40 ring-inset hover:bg-primary/20",
-                    )}
-                    onClick={() => {
-                      if (row && onRowClick) onRowClick(row)
-                    }}
-                  >
+                const rowStyle = {
+                  position: "absolute" as const,
+                  top: 0,
+                  left: 0,
+                  transform: `translateY(${vi.start}px)`,
+                  width: "100%",
+                  height: ROW_HEIGHT,
+                }
+                const rowClassName = cn(
+                  "flex border-x-0 border-t-0 border-b border-border/60 bg-transparent p-0 text-left font-inherit text-inherit transition-colors",
+                  row ? "cursor-pointer hover:bg-muted/40" : "pointer-events-none",
+                  isSelected &&
+                    "bg-primary/15 ring-1 ring-primary/40 ring-inset hover:bg-primary/20",
+                )
+                const rowCells = (
+                  <>
                     <Cell
                       width={INDEX_COL_WIDTH}
                       className={cn(
@@ -194,7 +188,33 @@ export function VirtualTable<TRow>({
                             <Skeleton className="h-3 w-20" />
                           </Cell>
                         ))}
-                  </button>
+                  </>
+                )
+
+                return row && onRowClick ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    type="button"
+                    key={vi.key}
+                    data-index={vi.index}
+                    ref={virtualizer.measureElement}
+                    style={rowStyle}
+                    className={rowClassName}
+                    onClick={() => onRowClick(row)}
+                  >
+                    {rowCells}
+                  </Button>
+                ) : (
+                  <div
+                    key={vi.key}
+                    data-index={vi.index}
+                    ref={virtualizer.measureElement}
+                    style={rowStyle}
+                    className={rowClassName}
+                  >
+                    {rowCells}
+                  </div>
                 )
               })}
         </div>

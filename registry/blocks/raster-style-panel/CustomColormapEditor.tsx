@@ -97,13 +97,10 @@ export function CustomColormapEditor({
   return (
     <div className={cn("flex flex-col gap-3.5", className)}>
       {/* Preview */}
-      <div
-        className="h-6"
-        style={{ background: buildColormapGradient(value) }}
-      />
+      <div className="h-6" style={{ background: buildColormapGradient(value) }} />
 
       {/* Stops */}
-      <section className="flex flex-col gap-1.5">
+      <section className="flex flex-col gap-1.5 border border-border p-2">
         <SectionHead
           icon={IconPalette}
           title={labels.stops}
@@ -111,16 +108,16 @@ export function CustomColormapEditor({
         />
         <div className="flex flex-wrap items-center gap-1">
           {stops.map((color, i) => (
-            <span
-              key={stopIds[i] ?? color}
-              className="group/stop relative h-7 w-7 shrink-0"
-            >
-              <ColorInput
-                value={color}
-                aria-label={`${labels.stops} ${i + 1}`}
-                onChange={(e) => updateStop(i, e.target.value)}
-                className="size-full border-border-strong"
-              />
+            <span key={stopIds[i] ?? color} className="group/stop relative size-7 shrink-0">
+              <div className="size-7 [&_button]:size-7">
+                <ColorInput
+                  mode="button"
+                  value={color}
+                  aria-label={`${labels.stops} ${i + 1}`}
+                  swatchLabel={`${labels.stops} ${i + 1}`}
+                  onTextChange={(nextColor) => updateStop(i, nextColor)}
+                />
+              </div>
               {canRemove && (
                 <Button
                   size="icon-xs"
@@ -129,9 +126,9 @@ export function CustomColormapEditor({
                   aria-label={labels.removeStop}
                   title={labels.removeStop}
                   onClick={() => removeStop(i)}
-                  className="absolute -top-1 left-1/2 grid h-4 w-4 -translate-x-1/2 place-items-center border border-border bg-background p-0 opacity-0 transition-opacity group-hover/stop:opacity-100 group-focus-within/stop:opacity-100 hover:border-destructive"
+                  className="group/delete absolute -top-1.5 left-1/2 z-10 grid size-3.5 -translate-x-1/2 place-items-center rounded-full border border-border bg-background p-0 opacity-0 transition-opacity group-hover/stop:opacity-100 hover:border-destructive"
                 >
-                  <IconX size={10} className="text-muted-foreground" />
+                  <IconX className="text-muted-foreground group-hover/delete:text-destructive" />
                 </Button>
               )}
             </span>
@@ -143,9 +140,9 @@ export function CustomColormapEditor({
             aria-label={labels.addStop}
             title={labels.addStop}
             onClick={addStop}
-            className="grid h-7 w-7 shrink-0 place-items-center border border-dashed border-border-strong text-muted-foreground hover:border-primary hover:text-primary"
+            className="grid size-7 shrink-0 place-items-center border border-dashed border-border-strong text-muted-foreground hover:border-primary hover:text-primary"
           >
-            <IconPlus size={12} stroke={1.75} />
+            <IconPlus stroke={1.75} />
           </Button>
         </div>
       </section>
@@ -197,11 +194,11 @@ export function CustomColormapEditor({
               key={p.id}
               type="button"
               onClick={() => importPreset(p.stops)}
-              className="flex cursor-pointer flex-col gap-1 border border-border bg-background p-1 hover:bg-muted"
+              className="flex h-auto min-h-12 cursor-pointer flex-col gap-1 border border-border bg-background p-1 hover:bg-muted"
             >
               <span
                 aria-hidden="true"
-                className="h-3 w-full"
+                className="h-4 w-full shrink-0"
                 style={{
                   background: `linear-gradient(to right, ${p.stops.join(", ")})`,
                 }}

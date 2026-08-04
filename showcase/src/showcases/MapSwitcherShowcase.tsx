@@ -1,4 +1,5 @@
-import { MapSwitcher, type MapSwitcherItemData } from "@registry/blocks/map-switcher"
+import { MapSwitcher } from "@registry/blocks/map-switcher"
+import { Button } from "@registry/ui/button"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -107,7 +108,7 @@ function MapFrame({
   readonly children: React.ReactNode
 }) {
   return (
-    <div className="relative flex h-48 w-80 max-w-full items-end justify-end border border-border bg-muted p-3">
+    <div className="relative flex h-48 w-80 max-w-full items-end justify-center border border-border bg-muted p-3">
       <span className="absolute top-2 left-2 font-mono text-[10px] text-muted-foreground">
         {demoLabels.mapPlaceholder}
       </span>
@@ -203,22 +204,24 @@ export function MapSwitcherDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           </MapFrame>
           <div className="space-y-2">
             <div className="flex gap-2">
-              <button
+              <Button
                 type="button"
                 data-demo-action="map-switcher-toggle-open"
-                className="border border-border bg-card px-2 py-1 text-xs text-foreground hover:bg-muted"
+                variant="outline"
+                size="xs"
                 onClick={() => handleOpenChange(!open)}
               >
                 {open ? demoLabels.collapse : demoLabels.expand}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 data-demo-action="map-switcher-next"
-                className="border border-border bg-card px-2 py-1 text-xs text-foreground hover:bg-muted"
+                variant="outline"
+                size="xs"
                 onClick={handleNextItem}
               >
                 {demoLabels.next}
-              </button>
+              </Button>
             </div>
             <div className="min-h-[80px] w-48 space-y-0.5 border border-border bg-card p-2">
               <p className="mb-1 font-mono text-[10px] text-muted-foreground">

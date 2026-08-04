@@ -1,7 +1,9 @@
 "use client"
 
 import { CopyButton } from "@registry/ui/copy-button"
+import { ToggleGroup, ToggleGroupItem } from "@registry/ui/toggle-group"
 import { useEffect, useState } from "react"
+import { SHADCN_PACKAGE } from "../../../../../shared/shadcn"
 import { getRegistryDocItem } from "./registry-data"
 import styles from "./styles.module.css"
 import { useLocaleLabels } from "./use-locale-labels"
@@ -38,11 +40,11 @@ function installCommand(manager: PackageManager, name: string): string {
   const target = `@mapseek/${name}`
   switch (manager) {
     case "pnpm":
-      return `pnpm dlx shadcn@4.8.0 add ${target}`
+      return `pnpm dlx ${SHADCN_PACKAGE} add ${target}`
     case "bun":
-      return `bunx shadcn@4.8.0 add ${target}`
+      return `bunx ${SHADCN_PACKAGE} add ${target}`
     default:
-      return `npx shadcn@4.8.0 add ${target}`
+      return `npx ${SHADCN_PACKAGE} add ${target}`
   }
 }
 
@@ -68,21 +70,26 @@ export function RegistryInstall({ registryName, labels }: RegistryInstallProps) 
 
   return (
     <div className={styles.install} data-install-widget>
-      <div aria-label={installLabels.packageManager} className={styles.managerTabs} role="tablist">
+      <ToggleGroup
+        aria-label={installLabels.packageManager}
+        className={styles.managerTabs}
+        spacing={0}
+        value={[manager]}
+        onValueChange={([next]) => {
+          if (next === "npm" || next === "pnpm" || next === "bun") selectManager(next)
+        }}
+      >
         {PACKAGE_MANAGERS.map((id) => (
-          <button
-            aria-selected={manager === id}
+          <ToggleGroupItem
             className={styles.managerTab}
             data-active={manager === id || undefined}
             key={id}
-            onClick={() => selectManager(id)}
-            role="tab"
-            type="button"
+            value={id}
           >
             {id}
-          </button>
+          </ToggleGroupItem>
         ))}
-      </div>
+      </ToggleGroup>
       <div className={styles.commandRow}>
         <code>{command}</code>
         <CopyButton

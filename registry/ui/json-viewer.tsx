@@ -33,13 +33,13 @@ const getDataType = (value: unknown): DataType => {
 const getTypeStyle = (type: DataType): string => {
   switch (type) {
     case "string":
-      return "text-green-600 dark:text-green-400"
+      return "text-cat-1"
     case "number":
-      return "text-orange-600 dark:text-orange-400"
+      return "text-cat-3"
     case "boolean":
-      return "text-blue-600 dark:text-blue-400"
+      return "text-cat-2"
     case "null":
-      return "text-gray-500 dark:text-gray-400"
+      return "text-muted-foreground"
     default:
       return ""
   }
@@ -346,11 +346,11 @@ const JsonNode: React.FC<JsonNodeProps> = ({
 }
 
 const indentColors = [
-  "border-red-300/60 dark:border-red-700/60",
-  "border-yellow-300/60 dark:border-yellow-700/60",
-  "border-green-300/60 dark:border-green-700/60",
-  "border-blue-300/60 dark:border-blue-700/60",
-  "border-purple-300/60 dark:border-purple-700/60",
+  "border-cat-4/60",
+  "border-cat-3/60",
+  "border-cat-1/60",
+  "border-cat-2/60",
+  "border-cat-5/60",
 ]
 
 const CollapseTrigger: React.FC<{
@@ -385,7 +385,7 @@ const CollapseTrigger: React.FC<{
       {objectKey && (
         <span
           className={cn(
-            "group inline-flex items-center text-purple-600 dark:text-purple-400",
+            "group inline-flex items-center text-cat-5",
             bracket === "{" && "font-medium",
           )}
         >
@@ -393,7 +393,7 @@ const CollapseTrigger: React.FC<{
           <span className="mx-1 text-muted-foreground">: </span>
         </span>
       )}
-      <span className="inline-flex h-4 w-4 items-center justify-center p-0 text-muted-foreground group-hover:text-foreground">
+      <span className="inline-flex size-4 items-center justify-center p-0 text-muted-foreground group-hover:text-foreground">
         <IconChevronRight
           size={14}
           stroke={1.5}
@@ -490,9 +490,7 @@ const JsonObject: React.FC<{
                     />
                   ) : (
                     <>
-                      <span className="inline-flex items-center text-purple-600 dark:text-purple-400">
-                        {`'${key}'`}
-                      </span>
+                      <span className="inline-flex items-center text-cat-5">{`'${key}'`}</span>
                       <span className="text-muted-foreground">: </span>
                       <JsonNode
                         data={value}

@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-CopyButton 用于复制标识、路径等短文本，提供图标和文字两种形态。复制成功后切换为对勾确认态，并在短暂延时后恢复。
+CopyButton 用于复制标识、路径等短文本，提供图标、有边框文字和无边框文字三种形态。复制成功后切换为对勾确认态，并在短暂延时后恢复。
 
 ## 安装
 
@@ -24,11 +24,11 @@ import { CopyButton } from "@/registry/ui/copy-button"
 
 ## 用法
 
-<ShowcaseDemo registryName="copy-button" demo="overview" title="复制按钮形态" description="图标形态用于紧凑工具栏，文字形态用于独立操作；复制成功后短暂显示确认态。" minHeight={120} />
+<ShowcaseDemo registryName="copy-button" demo="overview" title="复制按钮形态" description="图标形态用于紧凑工具栏，文字形态提供有边框和无边框两种选择；复制成功后短暂显示确认态。" minHeight={120} />
 
 ## 导出
 
-`copy-button.tsx` 导出 `CopyButton`。组件接受 `content`（待复制文本）、`variant="icon" | "text"`、`label`、`copiedLabel`、`duration` 以及 `onCopy` / `onCopyError` 回调。
+`copy-button.tsx` 导出 `CopyButton`。组件接受 `content`（待复制文本）、`variant="icon" | "text" | "ghost"`、`label`、`copiedLabel`、`duration` 以及 `onCopy` / `onCopyError` 回调。
 
 ## 状态
 
@@ -41,4 +41,3 @@ import { CopyButton } from "@/registry/ui/copy-button"
 ## 依赖
 
 <RegistryDependencies registryName="copy-button" />
-

@@ -68,7 +68,7 @@ function SheetContent({
         {children}
         {!hideClose && (
           <DialogPrimitive.Close
-            className="absolute top-3 right-3 grid h-8 w-8 cursor-pointer place-items-center text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="absolute top-3 right-3 grid size-8 cursor-pointer place-items-center text-muted-foreground hover:bg-muted hover:text-foreground"
             aria-label="关闭"
           >
             <IconX size={14} />

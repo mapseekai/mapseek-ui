@@ -1,182 +1,179 @@
+"use client"
+
 import { Select as SelectPrimitive } from "@base-ui/react/select"
-import { IconCheck, IconChevronDown } from "@tabler/icons-react"
-import { cva, type VariantProps } from "class-variance-authority"
-import * as React from "react"
+import { IconCheck, IconChevronDown, IconChevronUp, IconSelector } from "@tabler/icons-react"
+
 import { cn } from "@/registry/lib/utils"
 
-const selectTriggerVariants = cva(
-  "inline-flex w-full cursor-pointer items-center justify-between border border-border bg-background text-xs font-medium text-foreground transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[popup-open]:bg-muted dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",
-  {
-    variants: {
-      size: {
-        sm: "h-7 gap-1.5 px-2",
-        default: "h-8 gap-1.5 px-2.5",
-      },
-    },
-    defaultVariants: {
-      size: "default",
-    },
-  },
-)
+const Select = SelectPrimitive.Root
 
-type SelectRootProps = VariantProps<typeof selectTriggerVariants> & {
-  value?: string
-  defaultValue?: string
-  onValueChange?: (value: string) => void
-  placeholder?: React.ReactNode
-  disabled?: boolean
-  // className + HTML pass-through props forwarded to the <button> trigger.
-  className?: string
-  style?: React.CSSProperties
-  title?: string
-  "aria-label"?: string
-  "data-wd-key"?: string
-  children: React.ReactNode
-}
-
-type SelectItemProps = {
-  value: string
-  disabled?: boolean
-  className?: string
-  children: React.ReactNode
-}
-
-const itemsCache = new Map<string, Record<string, React.ReactNode>>()
-
-function SelectItem({ value, disabled, className, children }: SelectItemProps) {
+function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
   return (
-    <SelectPrimitive.Item
-      value={value}
-      disabled={disabled}
+    <SelectPrimitive.Group
+      data-slot="select-group"
+      className={cn("scroll-my-1", className)}
+      {...props}
+    />
+  )
+}
+
+function SelectValue({ className, ...props }: SelectPrimitive.Value.Props) {
+  return (
+    <SelectPrimitive.Value
+      data-slot="select-value"
+      className={cn("flex flex-1 text-start", className)}
+      {...props}
+    />
+  )
+}
+
+function SelectTrigger({
+  className,
+  size = "default",
+  children,
+  ...props
+}: SelectPrimitive.Trigger.Props & { size?: "sm" | "default" }) {
+  return (
+    <SelectPrimitive.Trigger
+      data-slot="select-trigger"
+      data-size={size}
       className={cn(
-        "relative flex h-8 cursor-pointer items-center gap-1.5 px-2 pr-6 text-xs outline-none select-none",
-        "data-[highlighted]:bg-muted",
-        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "flex w-full items-center justify-between gap-1.5 border border-input bg-background pe-2 ps-2.5 text-xs font-medium text-foreground whitespace-nowrap transition-colors outline-none select-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-8 data-[size=sm]:h-7 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5",
         className,
       )}
+      {...props}
     >
-      <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-      <SelectPrimitive.ItemIndicator className="absolute right-1.5 flex h-3 w-3 items-center justify-center text-primary">
-        <IconCheck size={10} stroke={2} />
+      {children}
+      <SelectPrimitive.Icon
+        render={<IconSelector className="pointer-events-none text-muted-foreground" />}
+      />
+    </SelectPrimitive.Trigger>
+  )
+}
+
+function SelectContent({
+  className,
+  children,
+  side = "bottom",
+  sideOffset = 4,
+  align = "center",
+  alignOffset = 0,
+  alignItemWithTrigger = true,
+  ...props
+}: SelectPrimitive.Popup.Props &
+  Pick<
+    SelectPrimitive.Positioner.Props,
+    "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
+  >) {
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Positioner
+        side={side}
+        sideOffset={sideOffset}
+        align={align}
+        alignOffset={alignOffset}
+        alignItemWithTrigger={alignItemWithTrigger}
+        className="isolate z-50"
+      >
+        <SelectPrimitive.Popup
+          data-slot="select-content"
+          data-align-trigger={alignItemWithTrigger}
+          className={cn(
+            "relative max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto border border-border bg-popover text-popover-foreground shadow-md outline-none duration-100 data-[align-trigger=true]:animate-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            className,
+          )}
+          {...props}
+        >
+          <SelectScrollUpButton />
+          <SelectPrimitive.List>{children}</SelectPrimitive.List>
+          <SelectScrollDownButton />
+        </SelectPrimitive.Popup>
+      </SelectPrimitive.Positioner>
+    </SelectPrimitive.Portal>
+  )
+}
+
+function SelectLabel({ className, ...props }: SelectPrimitive.GroupLabel.Props) {
+  return (
+    <SelectPrimitive.GroupLabel
+      data-slot="select-label"
+      className={cn("px-2 py-2 text-xs text-muted-foreground", className)}
+      {...props}
+    />
+  )
+}
+
+function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Props) {
+  return (
+    <SelectPrimitive.Item
+      data-slot="select-item"
+      className={cn(
+        "relative flex w-full cursor-default items-center gap-2 py-2 pe-8 ps-2 text-xs outline-hidden select-none data-highlighted:bg-accent data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50",
+        className,
+      )}
+      {...props}
+    >
+      <SelectPrimitive.ItemText className="flex flex-1 shrink-0 gap-2 whitespace-nowrap">
+        {children}
+      </SelectPrimitive.ItemText>
+      <SelectPrimitive.ItemIndicator
+        render={
+          <span className="pointer-events-none absolute end-2 flex size-4 items-center justify-center" />
+        }
+      >
+        <IconCheck />
       </SelectPrimitive.ItemIndicator>
     </SelectPrimitive.Item>
   )
 }
 
-// Walk children to build an items map { [value]: label } so Select.Value can
-// render the matching Item's label in the trigger (base-ui RC 1.0.0 resolves
-// the selected label from the Root `items` prop, not from rendered Items).
-function collectItems(
-  children: React.ReactNode,
-  acc: Record<string, React.ReactNode>,
-): Record<string, React.ReactNode> {
-  React.Children.forEach(children, (child) => {
-    if (!React.isValidElement(child)) return
-    if (child.type === SelectItem) {
-      const { value, children: label } = child.props as SelectItemProps
-      acc[value] = label
-      return
-    }
-    const nested = (child.props as { children?: React.ReactNode }).children
-    if (nested != null) collectItems(nested, acc)
-  })
-  return acc
-}
-
-function signaturePart(node: React.ReactNode): string {
-  if (typeof node === "string" || typeof node === "number") return String(node)
-  if (node == null || typeof node === "boolean") return ""
-  if (Array.isArray(node)) return node.map(signaturePart).join(",")
-  if (React.isValidElement(node)) {
-    const props = node.props as { children?: React.ReactNode }
-    return `${String(node.type)}(${signaturePart(props.children)})`
-  }
-  return String(node)
-}
-
-function collectItemsSignature(children: React.ReactNode): string {
-  const parts: string[] = []
-  React.Children.forEach(children, (child) => {
-    if (!React.isValidElement(child)) return
-    if (child.type === SelectItem) {
-      const { value, children: label } = child.props as SelectItemProps
-      parts.push(`${value}:${signaturePart(label)}`)
-      return
-    }
-    const nested = (child.props as { children?: React.ReactNode }).children
-    if (nested != null) parts.push(collectItemsSignature(nested))
-  })
-  return parts.join("|")
-}
-
-function SelectRoot({
-  value,
-  defaultValue,
-  onValueChange,
-  placeholder,
-  disabled,
-  className,
-  size,
-  style,
-  title,
-  children,
-  ...rest
-}: SelectRootProps) {
-  const itemsSignature = collectItemsSignature(children)
-  const items = React.useMemo(() => {
-    const cached = itemsCache.get(itemsSignature)
-    if (cached) return cached
-
-    const next = collectItems(children, {})
-    itemsCache.set(itemsSignature, next)
-    return next
-  }, [children, itemsSignature])
-
+function SelectSeparator({ className, ...props }: SelectPrimitive.Separator.Props) {
   return (
-    <SelectPrimitive.Root
-      value={value}
-      defaultValue={defaultValue}
-      onValueChange={(next) => {
-        if (onValueChange && typeof next === "string") onValueChange(next)
-      }}
-      disabled={disabled}
-      items={items}
-    >
-      <SelectPrimitive.Trigger
-        className={cn(selectTriggerVariants({ size, className }))}
-        style={style}
-        title={title}
-        aria-label={rest["aria-label"]}
-        data-wd-key={rest["data-wd-key"]}
-        data-slot="select-trigger"
-      >
-        <SelectPrimitive.Value>
-          {(current: unknown) => {
-            const key = current == null ? "" : String(current)
-            if (key in items) return items[key]
-            return placeholder ?? ""
-          }}
-        </SelectPrimitive.Value>
-        <SelectPrimitive.Icon className="ml-1 shrink-0 text-muted-foreground">
-          <IconChevronDown size={10} stroke={1.5} />
-        </SelectPrimitive.Icon>
-      </SelectPrimitive.Trigger>
-      <SelectPrimitive.Portal>
-        <SelectPrimitive.Positioner sideOffset={4} className="z-[1070] outline-none">
-          <SelectPrimitive.Popup
-            className={cn(
-              "max-h-[220px] min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-md outline-none",
-              "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
-            )}
-          >
-            {children}
-          </SelectPrimitive.Popup>
-        </SelectPrimitive.Positioner>
-      </SelectPrimitive.Portal>
-    </SelectPrimitive.Root>
+    <SelectPrimitive.Separator
+      data-slot="select-separator"
+      className={cn("pointer-events-none -mx-1 h-px bg-border", className)}
+      {...props}
+    />
   )
 }
 
-const Select = Object.assign(SelectRoot, { Item: SelectItem })
+function SelectScrollUpButton({ className, ...props }: SelectPrimitive.ScrollUpArrow.Props) {
+  return (
+    <SelectPrimitive.ScrollUpArrow
+      className={cn(
+        "sticky top-0 z-10 flex w-full items-center justify-center bg-popover py-1",
+        className,
+      )}
+      {...props}
+    >
+      <IconChevronUp />
+    </SelectPrimitive.ScrollUpArrow>
+  )
+}
 
-export { Select }
+function SelectScrollDownButton({ className, ...props }: SelectPrimitive.ScrollDownArrow.Props) {
+  return (
+    <SelectPrimitive.ScrollDownArrow
+      className={cn(
+        "sticky bottom-0 z-10 flex w-full items-center justify-center bg-popover py-1",
+        className,
+      )}
+      {...props}
+    >
+      <IconChevronDown />
+    </SelectPrimitive.ScrollDownArrow>
+  )
+}
+
+export {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+}

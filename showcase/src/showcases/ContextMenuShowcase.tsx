@@ -17,7 +17,7 @@ import {
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
-export function ContextMenuOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function ContextMenuOverviewDemo(_props: LocalizedDemoProps) {
   const [snapEnabled, setSnapEnabled] = useState(true)
   const [unit, setUnit] = useState("meters")
   const [lastAction, setLastAction] = useState("No action selected")

@@ -108,11 +108,7 @@ function IconBody({
     <div className="flex min-h-full flex-col">
       <div className="flex min-h-[140px] items-center justify-center border-b border-border bg-muted p-6">
         {detail.svg ? (
-          <img
-            src={svgDataUri(detail.svg)}
-            alt={detail.title}
-            className="h-14 w-14 object-contain"
-          />
+          <img src={svgDataUri(detail.svg)} alt={detail.title} className="size-14 object-contain" />
         ) : (
           <PlaceholderGlyph size={72} seed={detail.seed} />
         )}
@@ -162,11 +158,11 @@ function IconBody({
       </div>
       <div className={DRAWER_FOOTER_CLASS}>
         <Button variant="outline" size="sm" className="flex-1" onClick={onCopy}>
-          <IconCopy size={12} stroke={1.75} />
+          <IconCopy data-icon="inline-start" stroke={1.75} />
           {detail.copyLabel}
         </Button>
         <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
-          <IconDownload size={12} stroke={1.75} />
+          <IconDownload data-icon="inline-start" stroke={1.75} />
           {detail.downloadLabel}
         </Button>
       </div>
@@ -249,11 +245,11 @@ function SpriteBody({
       </div>
       <div className={DRAWER_FOOTER_CLASS}>
         <Button size="sm" className="flex-1" onClick={onEditSprite}>
-          <IconPencil size={12} stroke={1.75} />
+          <IconPencil data-icon="inline-start" stroke={1.75} />
           {detail.editLabel}
         </Button>
         <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
-          <IconDownload size={12} stroke={1.75} />
+          <IconDownload data-icon="inline-start" stroke={1.75} />
           {detail.downloadLabel}
         </Button>
       </div>
@@ -314,11 +310,11 @@ function FontBody({
       {slicing && !open && (
         <div className={DRAWER_FOOTER_CLASS}>
           <Button size="sm" className="flex-1" onClick={() => setOpen(true)}>
-            <IconScissors size={12} stroke={1.75} />
+            <IconScissors data-icon="inline-start" stroke={1.75} />
             {slicing.configureLabel}
           </Button>
           <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
-            <IconDownload size={12} stroke={1.75} />
+            <IconDownload data-icon="inline-start" stroke={1.75} />
             {slicing.downloadLabel}
           </Button>
         </div>
@@ -326,7 +322,7 @@ function FontBody({
       {!slicing && detail.downloadLabel && (
         <div className={DRAWER_FOOTER_CLASS}>
           <Button variant="outline" size="sm" className="flex-1" onClick={onDownload}>
-            <IconDownload size={12} stroke={1.75} />
+            <IconDownload data-icon="inline-start" stroke={1.75} />
             {detail.downloadLabel}
           </Button>
         </div>
@@ -406,7 +402,7 @@ function FontBody({
               className="flex-1"
               onClick={() => onRunSlice?.(selected, customChars)}
             >
-              <IconScissors size={12} stroke={1.75} />
+              <IconScissors data-icon="inline-start" stroke={1.75} />
               {slicing.runLabel}
             </Button>
           </div>

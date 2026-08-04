@@ -89,10 +89,8 @@ export function ResourceGrid({
               data-testid="resource-icon-card"
               data-selected={selected}
               className={cn(
-                "group relative isolate aspect-square min-w-0 bg-background ring-inset transition-colors hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
-                selected
-                  ? "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:bg-primary/5 ring-1 ring-primary"
-                  : "hover:bg-muted",
+                "group relative isolate aspect-square min-w-0 bg-background ring-inset transition-colors before:pointer-events-none before:absolute before:inset-0 before:-z-10 hover:before:bg-primary/5 hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
+                selected && "before:bg-primary/5 ring-1 ring-primary",
               )}
             >
               {selectable && (
@@ -114,16 +112,16 @@ export function ResourceGrid({
                 variant="ghost"
                 size="sm"
                 type="button"
-                className="flex h-full w-full cursor-pointer flex-col items-center justify-center gap-1.5 border-0 bg-transparent p-2.5 text-center [font:inherit]"
+                className="flex size-full cursor-pointer flex-col items-center justify-center gap-1.5 border-0 bg-transparent p-2.5 text-center [font:inherit] hover:bg-transparent"
                 onClick={() => onOpen("icon", it.id)}
                 onContextMenu={(e) => onContextMenu(e, "icon", it.id)}
               >
                 {renderIconPreview?.(it) ?? <PlaceholderGlyph size={28} seed={it.seed} />}
-                <div className="w-full min-w-0 truncate whitespace-nowrap text-center text-[11px] font-medium text-foreground">
+                <div className="w-full min-w-0 truncate text-center text-[11px] font-medium text-foreground">
                   {it.name}
                 </div>
                 {it.categoryLabel && (
-                  <div className="max-w-full truncate whitespace-nowrap font-mono text-[9.5px] tracking-[0.04em] text-muted-foreground uppercase">
+                  <div className="max-w-full truncate font-mono text-[9.5px] tracking-[0.04em] text-muted-foreground uppercase">
                     {it.categoryLabel}
                   </div>
                 )}
@@ -207,7 +205,7 @@ function ResourceCard({
       variant="ghost"
       size="sm"
       type="button"
-      className="flex cursor-pointer flex-col border border-border bg-background text-left transition-all hover:border-primary"
+      className="flex h-auto w-full cursor-pointer flex-col items-stretch overflow-hidden border border-border bg-background p-0 text-left transition-all hover:border-primary"
       onClick={onOpen}
       onContextMenu={onContextMenu}
     >

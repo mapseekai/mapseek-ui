@@ -130,15 +130,15 @@ function ComboboxContent({
         align={align}
         alignOffset={alignOffset}
         anchor={anchor}
-        className="isolate z-[3000] outline-none"
+        className="isolate z-3000 outline-none"
       >
         <ComboboxPrimitive.Popup
           data-slot="combobox-content"
           data-chips={!!anchor}
           className={cn(
             "max-h-72 min-w-36 overflow-hidden border border-border bg-popover text-popover-foreground shadow-md outline-none",
-            "max-h-(--available-height) w-(--anchor-width) max-w-(--available-width) min-w-[calc(var(--anchor-width)+--spacing(7))]",
-            "transition-opacity duration-100 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+            "max-h-(--available-height) w-(--anchor-width) max-w-(--available-width) min-w-[calc(var(--anchor-width)+(--spacing(7)))]",
+            "transition-opacity duration-100 data-ending-style:opacity-0 data-starting-style:opacity-0",
             className,
           )}
           {...props}
@@ -154,7 +154,7 @@ function ComboboxList({ className, ...props }: ComboboxPrimitive.List.Props) {
       data-slot="combobox-list"
       className={cn(
         "scroll-py-1 overflow-y-auto overscroll-contain p-1",
-        "max-h-[min(calc(--spacing(72)---spacing(9)),calc(var(--available-height)---spacing(9)))]",
+        "max-h-[min(calc(--spacing(72)-(--spacing(9))),calc(var(--available-height)-(--spacing(9))))]",
         className,
       )}
       {...props}
@@ -169,7 +169,7 @@ function ComboboxItem({ className, children, ...props }: ComboboxPrimitive.Item.
       className={cn(
         "relative flex w-full cursor-pointer select-none items-center justify-between gap-2 px-2 py-2 text-xs outline-hidden",
         "data-highlighted:bg-muted",
-        "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "data-disabled:pointer-events-none data-disabled:opacity-50",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
         className,
       )}

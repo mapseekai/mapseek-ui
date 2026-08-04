@@ -22,9 +22,12 @@ export type ValidationIssue = {
 export const BASE_COMPONENTS = [
   "accordion",
   "avatar",
+  "alert",
   "badge",
   "button",
+  "copy-button",
   "card",
+  "calendar",
   "chart",
   "checkbox",
   "color-input",

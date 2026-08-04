@@ -53,7 +53,7 @@ export function StyleFilterEditorUnsupported({
   return (
     <div
       className={cn(
-        "space-y-3 border border-destructive/25 bg-destructive/5 p-3 text-sm",
+        "flex flex-col gap-3 border border-destructive/25 bg-destructive/5 p-3 text-sm",
         className,
       )}
     >

@@ -1,7 +1,8 @@
 import { spawn } from "node:child_process"
+import { SHADCN_PACKAGE } from "../shared/shadcn"
 import { dlxCommand } from "./pnpm-command"
 
-const command = dlxCommand("shadcn@4.8.0", "--version")
+const command = dlxCommand(SHADCN_PACKAGE, "--version")
 const [executable, ...args] = command
 if (!executable) throw new Error("Missing command executable")
 const child = spawn(executable, args, {
@@ -21,7 +22,11 @@ const output = await new Promise<{ stdout: string; stderr: string; exitCode: num
 )
 
 if (output.exitCode !== 0) throw new Error(`${command.join(" ")} failed: ${output.stderr}`)
-if (!["pnpm", "pnpm.cmd"].includes(command[0] ?? "") || command.includes("bunx") || command.includes("npx")) {
+if (
+  !["pnpm", "pnpm.cmd"].includes(command[0] ?? "") ||
+  command.includes("bunx") ||
+  command.includes("npx")
+) {
   throw new Error(`expected an explicit pnpm dlx command, received: ${command.join(" ")}`)
 }
 

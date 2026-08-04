@@ -19,7 +19,13 @@ Select is a finite single-value picker for CRS, formats, and modes. It is built 
 ## Import
 
 ```tsx
-import { Select } from "@/registry/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/registry/ui/select"
 ```
 
 ## Usage
@@ -28,11 +34,11 @@ import { Select } from "@/registry/ui/select"
 
 ## Exports
 
-`select.tsx` exports `Select` and exposes options through `Select.Item`. The root supports `value/onValueChange`, `defaultValue`, `placeholder`, `disabled`, and `size`.
+`select.tsx` follows the standard composition API and exports `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectGroup`, `SelectLabel`, `SelectItem`, `SelectSeparator`, and the scroll buttons. State props belong on the root; sizing and accessible labels belong on the trigger.
 
 ## States
 
-Use `value/onValueChange` for controlled state and `defaultValue` for static defaults. `size="sm"` provides a 28px trigger; `disabled` prevents opening the list.
+Use `value/onValueChange` for controlled state and `defaultValue` for static defaults. `SelectTrigger size="sm"` provides the compact trigger; root-level `disabled` prevents opening the list.
 
 ## Accessibility
 
@@ -41,4 +47,3 @@ Selects without visible labels need `aria-label`. Keyboard users should be able 
 ## Dependencies
 
 <RegistryDependencies registryName="select" />
-

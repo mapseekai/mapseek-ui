@@ -4,6 +4,7 @@ import {
   type AttrInspectorFeature,
   type AttrInspectorMode,
 } from "@registry/blocks/attr-inspector"
+import { ToggleGroup, ToggleGroupItem } from "@registry/ui/toggle-group"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -81,22 +82,25 @@ export function AttrInspectorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="flex flex-wrap items-center gap-2">
-        {(["read", "edit"] as const).map((item) => (
-          <button
-            key={item}
-            type="button"
-            data-demo-action={`mode-${item}`}
-            className={[
-              "border border-border px-3 py-1 font-mono text-xs",
-              mode === item
-                ? "bg-primary text-primary-foreground"
-                : "bg-background text-foreground hover:bg-muted",
-            ].join(" ")}
-            onClick={() => setMode(item)}
-          >
-            {item === "read" ? demoLabels.read : demoLabels.edit}
-          </button>
-        ))}
+        <ToggleGroup
+          value={[mode]}
+          size="sm"
+          onValueChange={(nextModes) => {
+            const nextMode = nextModes.at(-1) as AttrInspectorMode | undefined
+            if (nextMode) setMode(nextMode)
+          }}
+        >
+          {(["read", "edit"] as const).map((item) => (
+            <ToggleGroupItem
+              key={item}
+              value={item}
+              data-demo-action={`mode-${item}`}
+              aria-label={item === "read" ? demoLabels.read : demoLabels.edit}
+            >
+              {item === "read" ? demoLabels.read : demoLabels.edit}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
         <span data-demo-status="attr-inspector" className="font-mono text-xs text-muted-foreground">
           {status}
         </span>

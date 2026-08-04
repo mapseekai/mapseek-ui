@@ -1,4 +1,4 @@
-import type React from "react"
+import { type FC, useId } from "react"
 import { Radio, RadioGroup } from "@/components/ui/radio-group"
 import { cn } from "@/lib/utils"
 
@@ -10,13 +10,14 @@ export type InputMultiInputProps = {
   "aria-label"?: string
 }
 
-export const InputMultiInput: React.FC<InputMultiInputProps> = ({
+export const InputMultiInput: FC<InputMultiInputProps> = ({
   name,
   value,
   options: propsOptions,
   onChange,
   "aria-label": ariaLabel,
 }) => {
+  const groupId = useId()
   // Accept either ["value", "label"] tuples or a flat string[] (which expands
   // to [v, v]); normalize to tuples.
   const options: [string, string][] =
@@ -36,11 +37,13 @@ export const InputMultiInput: React.FC<InputMultiInputProps> = ({
         if (next !== selectedValue) onChange(next)
       }}
     >
-      {options.map(([val, label]) => {
+      {options.map(([val, label], index) => {
         const isSelected = val === selectedValue
+        const optionId = `${groupId}-${index}`
         return (
           <label
             key={val}
+            htmlFor={optionId}
             className={cn(
               "z-0 -ml-px flex h-7 flex-1 cursor-pointer items-center justify-center border border-input px-3 text-xs font-medium whitespace-nowrap transition-colors first:ml-0 hover:bg-muted focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none",
               isSelected
@@ -48,7 +51,7 @@ export const InputMultiInput: React.FC<InputMultiInputProps> = ({
                 : "bg-background text-muted-foreground",
             )}
           >
-            <Radio value={val} className="sr-only" />
+            <Radio id={optionId} value={val} className="sr-only" />
             {label}
           </label>
         )

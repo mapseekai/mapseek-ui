@@ -193,7 +193,7 @@ export function NotificationCenterDemo({ locale = "zh-CN" }: LocalizedDemoProps)
           {status}
         </span>
       </div>
-      <div className="flex items-center justify-between gap-6 border border-border bg-background p-4">
+      <div className="flex items-center justify-between gap-6 border border-border bg-background px-4 py-2">
         <span className="text-xs text-muted-foreground">{demoLabels.title}</span>
         <NotificationCenter
           items={mode === "empty" ? [] : items}

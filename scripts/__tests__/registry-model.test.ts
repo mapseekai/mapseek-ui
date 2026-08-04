@@ -187,11 +187,23 @@ describe("validateCatalog", () => {
 })
 
 describe("assertCompleteInventory", () => {
+  const completeCatalog = () => [
+    ...BASE_COMPONENTS.map((name) => ({ name, type: "registry:ui", files: [] })),
+    ...BLOCKS.map((name) => ({ name, type: "registry:block", files: [] })),
+  ]
+
+  it("accepts the registry support items outside the component inventory", () => {
+    expect(() =>
+      assertCompleteInventory([
+        ...completeCatalog(),
+        { name: "theme", type: "registry:theme", files: [] },
+        { name: "utils", type: "registry:lib", files: [] },
+      ]),
+    ).not.toThrow()
+  })
+
   it("rejects a base component with a block type", () => {
-    const catalog = [
-      ...BASE_COMPONENTS.map((name) => ({ name, type: "registry:ui", files: [] })),
-      ...BLOCKS.map((name) => ({ name, type: "registry:block", files: [] })),
-    ]
+    const catalog = completeCatalog()
     const button = catalog.find((entry) => entry.name === "button")
     if (!button) throw new Error("button is missing from the approved inventory")
     button.type = "registry:block"
@@ -199,10 +211,7 @@ describe("assertCompleteInventory", () => {
   })
 
   it("rejects a block with a UI type", () => {
-    const catalog = [
-      ...BASE_COMPONENTS.map((name) => ({ name, type: "registry:ui", files: [] })),
-      ...BLOCKS.map((name) => ({ name, type: "registry:block", files: [] })),
-    ]
+    const catalog = completeCatalog()
     const schemaForm = catalog.find((entry) => entry.name === "schema-form")
     if (!schemaForm) throw new Error("schema-form is missing from the approved inventory")
     schemaForm.type = "registry:ui"

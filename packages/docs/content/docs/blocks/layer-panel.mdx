@@ -34,7 +34,7 @@ import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
 
 ## 图层与分组模型
 
-`LayerData` 至少需要 `id`、`name`、`visible` 和 `geometryType`。`featureCount`、`crsLabel` 和 `flags` 是展示增强字段。分组不是 registry API；如果工程有分组、重命名或分组菜单，把 group model 保留在调用方，再把过滤后的图层传给 `LayerPanel.Item`。
+`LayerData` 至少需要 `id`、`name`、`visible` 和 `geometryType`。`featureCount`、`crsLabel` 和 `flags` 是展示增强字段。使用 `LayerPanel.Group`、`GroupHeader`、`GroupTrigger`、`GroupTitle`、`GroupActions` 和 `GroupContent` 组合分组外观；分组数据、折叠、重命名和菜单动作仍由调用方控制。
 
 ## 必需处理器
 
@@ -42,7 +42,7 @@ import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
 
 ## 无障碍标签
 
-通过 `labels` 覆盖 geometry、添加图层、要素、定位、属性表和删除文案。图层行使用图层名作为可访问名称；可见性、定位、属性表和删除是原生 `button`。调用方添加的分组按钮、菜单和重命名输入也需要自己的 `aria-label` 或可读文本。
+通过 `labels` 覆盖 geometry、添加图层、要素、定位、属性表和删除文案。图层行使用图层名作为可访问名称；操作统一复用 registry `Button`。为 `GroupTrigger` 提供展开/折叠标签，分组菜单和重命名输入也需要自己的 `aria-label` 或可读文本。
 
 ## 滚动与响应式
 
@@ -51,4 +51,3 @@ import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
 ## 依赖
 
 <RegistryDependencies registryName="layer-panel" />
-

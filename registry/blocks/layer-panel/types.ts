@@ -1,4 +1,5 @@
 import type * as React from "react"
+import type { Button } from "@/components/ui/button"
 import type { LayerPanelLabels } from "./labels"
 
 export type LayerGeometry = "point" | "polyline" | "polygon" | "mixed" | "raster"
@@ -32,6 +33,15 @@ export interface LayerPanelProps {
   labels?: Partial<LayerPanelLabels>
   className?: string
   children: React.ReactNode
+}
+
+export interface LayerPanelGroupProps extends React.ComponentProps<"section"> {
+  collapsed?: boolean
+}
+
+export interface LayerPanelGroupTriggerProps extends React.ComponentProps<typeof Button> {
+  expandedLabel?: string
+  collapsedLabel?: string
 }
 
 export interface LayerPanelContextValue {

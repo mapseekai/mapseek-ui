@@ -1,4 +1,4 @@
-import { spawn, spawnSync, type ChildProcess } from "node:child_process"
+import { type ChildProcess, spawn, spawnSync } from "node:child_process"
 
 const packageManager = process.platform === "win32" ? "pnpm.cmd" : "pnpm"
 const children: ChildProcess[] = []

@@ -4,7 +4,13 @@
     {
       "name": "add-field-form",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/checkbox", "@mapseek/input", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/checkbox",
+        "@mapseek/field",
+        "@mapseek/input",
+        "@mapseek/toggle-group",
+        "@mapseek/utils"
+      ],
       "files": [
         {
           "path": "add-field-form/AddFieldForm.tsx",
@@ -92,6 +98,7 @@
       "name": "attr-table",
       "type": "registry:block",
       "registryDependencies": [
+        "@mapseek/badge",
         "@mapseek/copy-button",
         "@mapseek/icon-button",
         "@mapseek/input",
@@ -577,7 +584,9 @@
       "registryDependencies": [
         "@mapseek/badge",
         "@mapseek/button",
-        "@mapseek/input",
+        "@mapseek/empty",
+        "@mapseek/input-group",
+        "@mapseek/toggle-group",
         "@mapseek/utils"
       ],
       "files": [
@@ -607,7 +616,17 @@
     {
       "name": "loom-toolbox",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/button", "@mapseek/input", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/alert",
+        "@mapseek/button",
+        "@mapseek/empty",
+        "@mapseek/field",
+        "@mapseek/input",
+        "@mapseek/input-group",
+        "@mapseek/separator",
+        "@mapseek/toggle-group",
+        "@mapseek/utils"
+      ],
       "files": [
         {
           "path": "loom-toolbox/LoomToolbox.tsx",
@@ -673,7 +692,7 @@
     {
       "name": "map-controls",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/button", "@mapseek/utils"],
+      "registryDependencies": ["@mapseek/button", "@mapseek/collapsible", "@mapseek/utils"],
       "files": [
         {
           "path": "map-controls/MapControls.tsx",
@@ -735,7 +754,7 @@
     {
       "name": "map-switcher",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/utils"],
+      "registryDependencies": ["@mapseek/button", "@mapseek/collapsible", "@mapseek/utils"],
       "files": [
         {
           "path": "map-switcher/MapSwitcher.tsx",
@@ -805,7 +824,12 @@
     {
       "name": "pixel-probe",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/icon-button", "@mapseek/tooltip", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/copy-button",
+        "@mapseek/icon-button",
+        "@mapseek/tooltip",
+        "@mapseek/utils"
+      ],
       "dependencies": ["@tabler/icons-react"],
       "files": [
         {
@@ -845,7 +869,12 @@
     {
       "name": "processing-timeline",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/button", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/badge",
+        "@mapseek/button",
+        "@mapseek/copy-button",
+        "@mapseek/utils"
+      ],
       "files": [
         {
           "path": "processing-timeline/ProcessingTimeline.tsx",
@@ -886,6 +915,8 @@
       "name": "raster-style-panel",
       "type": "registry:block",
       "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/color-input",
         "@mapseek/input",
         "@mapseek/select",
         "@mapseek/tooltip",
@@ -993,6 +1024,7 @@
       "type": "registry:block",
       "registryDependencies": [
         "@mapseek/badge",
+        "@mapseek/button",
         "@mapseek/checkbox",
         "@mapseek/utils",
         "@mapseek/placeholder-glyph",
@@ -1073,8 +1105,8 @@
       "type": "registry:block",
       "registryDependencies": [
         "@mapseek/checkbox",
+        "@mapseek/field",
         "@mapseek/input",
-        "@mapseek/label",
         "@mapseek/select",
         "@mapseek/utils"
       ],
@@ -1104,7 +1136,12 @@
     {
       "name": "service-endpoint-row",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/icon-button", "@mapseek/tooltip"],
+      "registryDependencies": [
+        "@mapseek/copy-button",
+        "@mapseek/icon-button",
+        "@mapseek/input-group",
+        "@mapseek/tooltip"
+      ],
       "files": [
         {
           "path": "service-endpoint-row/ServiceEndpointRow.tsx",
@@ -1244,13 +1281,7 @@
     {
       "name": "style-color-input",
       "type": "registry:block",
-      "registryDependencies": [
-        "@mapseek/button",
-        "@mapseek/input",
-        "@mapseek/popover",
-        "@mapseek/select",
-        "@mapseek/utils"
-      ],
+      "registryDependencies": ["@mapseek/color-input"],
       "files": [
         {
           "path": "style-color-input/ColorPicker.tsx",
@@ -1272,8 +1303,7 @@
           "type": "registry:block",
           "target": "@components/blocks/style-color-input/types.ts"
         }
-      ],
-      "dependencies": ["@base-ui/react", "@tabler/icons-react", "color"]
+      ]
     },
     {
       "name": "style-editor-modal",

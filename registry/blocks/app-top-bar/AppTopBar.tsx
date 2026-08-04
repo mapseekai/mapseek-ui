@@ -1,6 +1,6 @@
 import { IconArrowLeft, IconDeviceFloppy } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
-import { Tooltip } from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import type { AppTopBarProps } from "./types"
 
@@ -32,16 +32,21 @@ export function AppTopBar({
       )}
     >
       <div className="flex min-w-0 items-center gap-2 overflow-hidden">
-        <Tooltip content={labels.backTooltip ?? labels.back} side="bottom">
-          <Button
-            aria-label={labels.back}
-            variant="ghost"
-            size="icon"
-            onClick={onBack}
-            className="-ml-1 size-6 rounded-none text-muted-foreground hover:text-foreground"
-          >
-            <IconArrowLeft size={16} />
-          </Button>
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <Button
+                aria-label={labels.back}
+                variant="ghost"
+                size="icon"
+                onClick={onBack}
+                className="-ml-1 size-6 rounded-none text-muted-foreground hover:text-foreground"
+              >
+                <IconArrowLeft />
+              </Button>
+            }
+          />
+          <TooltipContent side="bottom">{labels.backTooltip ?? labels.back}</TooltipContent>
         </Tooltip>
 
         {brand}
@@ -67,7 +72,7 @@ export function AppTopBar({
             onClick={() => void onSave()}
             className="m-0 h-[26px] gap-1.5 rounded-none border-primary bg-primary px-2.5 text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
           >
-            <IconDeviceFloppy size={13} /> {labels.save}
+            <IconDeviceFloppy data-icon="inline-start" /> {labels.save}
           </Button>
         )}
 

@@ -6,6 +6,7 @@ import { loadCatalog } from "../registry-model"
 const foundationalPrimitives = [
   "accordion",
   "avatar",
+  "alert",
   "badge",
   "button",
   "copy-button",
@@ -84,7 +85,13 @@ const basePrimitives = [
 const inputAndSelectionDependencies = {
   calendar: ["@mapseek/button", "@mapseek/utils"],
   checkbox: ["@mapseek/utils"],
-  "color-input": ["@mapseek/utils"],
+  "color-input": [
+    "@mapseek/button",
+    "@mapseek/input",
+    "@mapseek/popover",
+    "@mapseek/select",
+    "@mapseek/utils",
+  ],
   combobox: ["@mapseek/input-group", "@mapseek/utils"],
   command: ["@mapseek/dialog", "@mapseek/input-group", "@mapseek/utils"],
   field: ["@mapseek/label", "@mapseek/separator", "@mapseek/utils"],
@@ -106,7 +113,7 @@ const inputAndSelectionDependencies = {
 const inputAndSelectionNpmDependencies = {
   calendar: ["@tabler/icons-react", "date-fns", "react-day-picker"],
   checkbox: ["@base-ui/react", "@tabler/icons-react"],
-  "color-input": ["@base-ui/react"],
+  "color-input": ["@base-ui/react", "@tabler/icons-react", "color"],
   combobox: ["@base-ui/react", "@tabler/icons-react"],
   command: ["@tabler/icons-react", "cmdk"],
   field: ["class-variance-authority"],
@@ -156,12 +163,23 @@ const applicationShellStatusAndResourceDependencies = {
     "@mapseek/skeleton",
     "@mapseek/utils",
   ],
-  "processing-timeline": ["@mapseek/button", "@mapseek/utils"],
+  "processing-timeline": [
+    "@mapseek/badge",
+    "@mapseek/button",
+    "@mapseek/copy-button",
+    "@mapseek/utils",
+  ],
   "service-status": ["@mapseek/switch", "@mapseek/utils", "@mapseek/labels"],
-  "service-endpoint-row": ["@mapseek/icon-button", "@mapseek/tooltip"],
+  "service-endpoint-row": [
+    "@mapseek/copy-button",
+    "@mapseek/icon-button",
+    "@mapseek/input-group",
+    "@mapseek/tooltip",
+  ],
   "resource-status": ["@mapseek/utils"],
   "resource-grid": [
     "@mapseek/badge",
+    "@mapseek/button",
     "@mapseek/checkbox",
     "@mapseek/utils",
     "@mapseek/placeholder-glyph",
@@ -210,8 +228,8 @@ describe("input and selection primitive inventory", () => {
       const item = itemsByName.get(name)
       expect(item, `missing ${name}`).toBeDefined()
       expect(item?.type).toBe("registry:ui")
-      expect(item?.files).toHaveLength(1)
-      expect(item?.files[0]?.target).toMatch(/^@ui\//)
+      expect(item?.files).toHaveLength(name === "color-input" ? 4 : 1)
+      expect(item?.files.every((file) => file.target?.startsWith("@ui/"))).toBe(true)
       expect(item?.registryDependencies).toEqual([
         "@mapseek/theme",
         ...inputAndSelectionDependencies[name],

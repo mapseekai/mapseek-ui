@@ -4,8 +4,15 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Select } from "@/components/ui/select"
-import { Tooltip } from "@/components/ui/tooltip"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { inferAttrFieldKind } from "./infer-hint"
 import type { AttrFieldKind, AttrFieldMeta } from "./types"
@@ -127,8 +134,13 @@ function FieldHeader({
       </span>
       {readOnly && <span className="flex-1" />}
       {readOnly && (
-        <Tooltip content={primaryKeyLabel}>
-          <IconLock size={11} className="text-muted-foreground" />
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <IconLock aria-label={primaryKeyLabel} size={11} className="text-muted-foreground" />
+            }
+          />
+          <TooltipContent>{primaryKeyLabel}</TooltipContent>
         </Tooltip>
       )}
     </div>
@@ -205,16 +217,19 @@ export function EditField({
           readOnly
         />
       ) : isEnum ? (
-        <Select
-          value={strVal}
-          onValueChange={(val) => onChange(name, val)}
-          className={cn(inputBase, "font-normal")}
-        >
-          {enumOptions.map((o) => (
-            <Select.Item key={o} value={o}>
-              {o}
-            </Select.Item>
-          ))}
+        <Select value={strVal} onValueChange={(val) => onChange(name, val)}>
+          <SelectTrigger className={cn(inputBase, "font-normal")}>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {enumOptions.map((o) => (
+                <SelectItem key={o} value={o}>
+                  {o}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
         </Select>
       ) : kind === "date" ? (
         <DateEditField name={name} value={dateValue} onChange={onChange} />

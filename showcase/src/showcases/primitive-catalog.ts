@@ -4,6 +4,7 @@ const primitive = defineCategory("primitive")
 
 export const primitiveShowcases = [
   primitive("accordion", "Accordion 折叠面板", () => import("./AccordionShowcase")),
+  primitive("alert", "Alert 提示", () => import("./AlertShowcase")),
   primitive("avatar", "Avatar 头像", () => import("./AvatarShowcase")),
   primitive("badge", "Badge 徽标", () => import("./BadgeShowcase")),
   primitive("button", "Button 按钮", () => import("./ButtonShowcase")),

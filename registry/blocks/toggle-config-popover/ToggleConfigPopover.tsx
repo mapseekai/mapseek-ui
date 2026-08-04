@@ -2,7 +2,7 @@ import { IconChevronDown, type Icon as TablerIcon } from "@tabler/icons-react"
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Tooltip } from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
 import { DEFAULT_TOGGLE_CONFIG_POPOVER_LABELS } from "./defaults"
@@ -71,59 +71,67 @@ function ToggleConfigPopover({
       data-slot="toggle-config-popover"
       className={cn("inline-flex items-center gap-[0.5px]", className)}
     >
-      <Tooltip content={resolvedTooltip} side="bottom">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          role="switch"
-          aria-checked={checked}
-          aria-label={resolvedToggleLabel}
-          disabled={disabled}
-          onClick={() => onCheckedChange(!checked)}
-          className={cn(
-            "relative size-8 rounded-none",
-            checked ? "bg-selection-bg text-primary" : "bg-transparent text-muted-foreground",
-            toggleClassName,
-          )}
-        >
-          <Icon size={15} />
-          <span
-            aria-hidden="true"
-            className={cn(
-              "absolute bottom-1 right-1 size-[5px] rounded-full",
-              checked ? "bg-primary opacity-100" : "bg-muted-foreground opacity-40",
-            )}
-          />
-        </Button>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              role="switch"
+              aria-checked={checked}
+              aria-label={resolvedToggleLabel}
+              disabled={disabled}
+              onClick={() => onCheckedChange(!checked)}
+              className={cn(
+                "relative size-8 rounded-none",
+                checked ? "bg-selection-bg text-primary" : "bg-transparent text-muted-foreground",
+                toggleClassName,
+              )}
+            >
+              <Icon />
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "absolute right-1 bottom-1 size-[5px] rounded-full",
+                  checked ? "bg-primary opacity-100" : "bg-muted-foreground opacity-40",
+                )}
+              />
+            </Button>
+          }
+        />
+        <TooltipContent side="bottom">{resolvedTooltip}</TooltipContent>
       </Tooltip>
 
       <Popover open={actualOpen} onOpenChange={setOpen}>
-        <Tooltip content={resolvedSettingsTooltip} side="bottom">
-          <PopoverTrigger
-            render={
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                disabled={disabled}
-                aria-label={resolvedTriggerLabel}
-                className={cn(
-                  "h-8 w-[18px] rounded-none text-muted-foreground",
-                  actualOpen && "bg-selection-bg text-primary",
-                  triggerClassName,
-                )}
-              >
-                <IconChevronDown size={12} stroke={2.25} className="text-muted-foreground" />
-              </Button>
-            }
-          />
+        <Tooltip>
+          <TooltipTrigger render={<span className="inline-flex" />}>
+            <PopoverTrigger
+              render={
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-xs"
+                  disabled={disabled}
+                  aria-label={resolvedTriggerLabel}
+                  className={cn(
+                    "h-8 w-[18px] rounded-none text-muted-foreground",
+                    actualOpen && "bg-selection-bg text-primary",
+                    triggerClassName,
+                  )}
+                >
+                  <IconChevronDown stroke={2.25} className="text-muted-foreground" />
+                </Button>
+              }
+            />
+          </TooltipTrigger>
+          <TooltipContent side="bottom">{resolvedSettingsTooltip}</TooltipContent>
         </Tooltip>
         <PopoverContent
           side="bottom"
           align="center"
           sideOffset={4}
-          className={cn("w-[280px] gap-0 p-0 shadow-[var(--shadow-lg)]", contentClassName)}
+          className={cn("w-[280px] gap-0 p-0 shadow-(--shadow-lg)", contentClassName)}
         >
           <header className="flex h-9 items-center gap-2 border-b border-border px-3">
             <Icon size={14} className={checked ? "text-primary" : "text-muted-foreground"} />

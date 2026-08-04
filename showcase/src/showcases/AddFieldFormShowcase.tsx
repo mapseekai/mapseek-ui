@@ -4,6 +4,7 @@ import {
   EMPTY_ADD_FIELD,
   type FieldTypeOption,
 } from "@registry/blocks/add-field-form"
+import { Button } from "@registry/ui/button"
 import {
   IconCalendar,
   IconHash,
@@ -81,13 +82,14 @@ export function AddFieldFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
     <div className="flex w-full flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="m-0 text-xs text-muted-foreground">{demoLabels.intro}</p>
-        <button
+        <Button
           type="button"
-          className="border border-border bg-background px-2 py-1 font-mono text-xs hover:bg-muted"
+          variant="outline"
+          size="xs"
           onClick={() => setValue({ ...EMPTY_ADD_FIELD, type: "text" })}
         >
           {demoLabels.reset}
-        </button>
+        </Button>
       </div>
       <div className="grid gap-4 lg:grid-cols-[420px_minmax(0,1fr)]">
         <div className="min-w-0 border border-border bg-card p-3.5">

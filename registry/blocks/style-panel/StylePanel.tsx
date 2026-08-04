@@ -105,7 +105,7 @@ function StylePanelOpacity({ min = 0, max = 100 }: { min?: number; max?: number 
         <Slider
           min={min}
           max={max}
-          value={[v]}
+          value={v}
           onValueChange={(next) =>
             patch(value, onChange, {
               opacity: Array.isArray(next) ? next[0] : (next as number),
@@ -141,7 +141,7 @@ function StylePanelStroke({
           min={min}
           max={max}
           step={step}
-          value={[v]}
+          value={v}
           onValueChange={(next) =>
             patch(value, onChange, {
               stroke: {

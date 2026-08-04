@@ -1,4 +1,5 @@
 import { IconCheck, IconRefresh, IconX } from "@tabler/icons-react"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { CopyButton } from "@/components/ui/copy-button"
 import { cn } from "@/lib/utils"
@@ -18,7 +19,7 @@ const MARKER_STATE: Record<NonNullable<TimelineStep["state"]>, string> = {
  */
 export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimelineProps) {
   return (
-    <ol className="space-y-4">
+    <ol className="flex flex-col gap-4">
       {steps.map((step, i) => {
         const state = step.state ?? "done"
         const eventRows = getEventRows(step.events)
@@ -27,7 +28,7 @@ export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimel
             <div className="relative flex w-5 flex-col items-center">
               <span
                 className={cn(
-                  "z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full",
+                  "z-10 flex size-5 shrink-0 items-center justify-center rounded-full",
                   MARKER_STATE[state],
                 )}
               >
@@ -45,16 +46,16 @@ export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimel
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm font-medium">{step.label}</span>
                 {step.status && (
-                  <span className="inline-flex items-center gap-1 whitespace-nowrap border border-primary/25 bg-primary/10 px-1.5 py-0.5 text-[11px] text-primary">
-                    <IconCheck size={11} stroke={2} />
+                  <Badge variant="outline" className="border-primary/25 bg-primary/10 text-primary">
+                    <IconCheck stroke={2} />
                     {step.status}
-                  </span>
+                  </Badge>
                 )}
                 {step.retry && (
-                  <span className="inline-flex items-center gap-1 whitespace-nowrap border border-warning/25 bg-warning/10 px-1.5 py-0.5 text-[11px] text-warning">
-                    <IconRefresh size={11} stroke={2} />
+                  <Badge variant="outline" className="border-warning/25 bg-warning/10 text-warning">
+                    <IconRefresh stroke={2} />
                     {step.retry}
-                  </span>
+                  </Badge>
                 )}
                 {(step.time || step.duration) && (
                   <span className="mono flex w-full items-center gap-3 text-xs text-muted-foreground sm:ml-auto sm:w-auto">
@@ -64,7 +65,7 @@ export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimel
                 )}
               </div>
               {step.events.length > 0 && (
-                <div className="mt-2 space-y-2">
+                <div className="mt-2 flex flex-col gap-2">
                   {eventRows.map((row) => (
                     <EventCard
                       key={row.key}
@@ -103,7 +104,7 @@ function ProgressDetail({ step }: { step: TimelineStep }) {
   const percent = typeof step.percent === "number" ? Math.max(0, Math.min(100, step.percent)) : null
 
   return (
-    <div className="mt-2 space-y-1.5">
+    <div className="mt-2 flex flex-col gap-1.5">
       {step.message && <div className="text-xs text-muted-foreground">{step.message}</div>}
       {step.progressKind === "percent" && percent != null && (
         <div className="flex items-center gap-2">
@@ -155,7 +156,7 @@ function EventCard({
             <span className="mono text-[11px] text-muted-foreground">{event.time}</span>
           )}
           {log != null && (
-            <div className="flex gap-1">
+            <div className="flex items-center gap-1">
               <Button variant="ghost" size="xs">
                 {labels.log}
               </Button>

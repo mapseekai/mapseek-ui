@@ -38,7 +38,7 @@ export function LoomLayerActions({
           title={labels.locateLayer(layer.name)}
           onClick={() => onLocateLayer(layer.id)}
         >
-          <IconCurrentLocation className="size-3.5" />
+          <IconCurrentLocation />
         </Button>
       )}
       {selected && onOpenAttributeTable && (
@@ -50,7 +50,7 @@ export function LoomLayerActions({
           title={labels.openAttributeTable(layer.name)}
           onClick={() => onOpenAttributeTable(layer.id)}
         >
-          <IconTable className="size-3.5" />
+          <IconTable />
         </Button>
       )}
       {selected && onMoreLayerActions && (
@@ -62,7 +62,7 @@ export function LoomLayerActions({
           title={labels.moreLayerActions(layer.name)}
           onClick={() => onMoreLayerActions(layer.id)}
         >
-          <IconDotsVertical className="size-3.5" />
+          <IconDotsVertical />
         </Button>
       )}
       <Button
@@ -74,9 +74,9 @@ export function LoomLayerActions({
         onClick={() => onVisibilityChange(layer.id, !layer.visible)}
       >
         {layer.visible ? (
-          <IconEye className="size-4 text-primary" />
+          <IconEye className="text-primary" />
         ) : (
-          <IconEyeOff className="size-4 text-muted-foreground" />
+          <IconEyeOff className="text-muted-foreground" />
         )}
       </Button>
     </>

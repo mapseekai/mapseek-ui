@@ -27,11 +27,12 @@ it("keeps keyboard focus rings at the three-pixel design token", async () => {
   )
 
   for (const source of components) {
-    expect(source).toContain("ring-[length:var(--focus-ring-width)]")
+    expect(source).toContain("ring-(length:--focus-ring-width)")
+    expect(source).not.toContain("ring-[length:var(--focus-ring-width)]")
   }
 
   const slider = await readComponent("slider")
-  expect(slider).toContain("has-[:focus-visible]:ring-[length:var(--focus-ring-width)]")
+  expect(slider).toContain("has-[:focus-visible]:ring-(length:--focus-ring-width)")
 })
 
 it("keeps table headers on the full muted surface", async () => {

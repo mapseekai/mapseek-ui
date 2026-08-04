@@ -16,7 +16,9 @@ export default defineConfig({
       "@/components/blocks": fileURLToPath(new URL("../registry/blocks", import.meta.url)),
       "@/lib/utils": fileURLToPath(new URL("../registry/lib/utils.ts", import.meta.url)),
       "@/lib/mapseek-labels": fileURLToPath(new URL("../registry/lib/labels.ts", import.meta.url)),
-      "@/lib/svg-data-uri": fileURLToPath(new URL("../registry/lib/svg-data-uri.ts", import.meta.url)),
+      "@/lib/svg-data-uri": fileURLToPath(
+        new URL("../registry/lib/svg-data-uri.ts", import.meta.url),
+      ),
       "@": repositoryRoot,
       "@registry": fileURLToPath(new URL("../registry", import.meta.url)),
     },

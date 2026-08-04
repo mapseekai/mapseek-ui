@@ -10,10 +10,10 @@ export function StyleFunctionPanel({ title, children, className }: StyleFunction
   return (
     <section
       data-slot="style-function-panel"
-      className={cn("space-y-4 border border-border bg-card p-4", className)}
+      className={cn("flex flex-col gap-4 border border-border bg-card p-4", className)}
     >
       <h3 className="m-0 text-xs leading-tight font-semibold text-muted-foreground">{title}</h3>
-      <div className="space-y-4">{children}</div>
+      <div className="flex flex-col gap-4">{children}</div>
     </section>
   )
 }

@@ -2,7 +2,7 @@ import { IconChevronDown, IconDatabase, IconRefresh } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Progress } from "@/components/ui/progress"
-import { Tooltip } from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { formatBytes } from "./format-bytes"
 import type { StorageMeterProps } from "./types"
@@ -26,10 +26,15 @@ export function StorageMeter({
 }: StorageMeterProps) {
   if (data.unsupported) {
     return (
-      <Tooltip content={labels.unsupportedHint}>
-        <span className="inline-flex h-6 items-center gap-1 border border-dashed border-border px-2 font-sans text-[11px] leading-none text-muted-foreground">
-          <IconDatabase size={11} /> {labels.unsupported}
-        </span>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <span className="inline-flex h-6 items-center gap-1 border border-dashed border-border px-2 font-sans text-[11px] leading-none text-muted-foreground">
+              <IconDatabase size={11} /> {labels.unsupported}
+            </span>
+          }
+        />
+        <TooltipContent>{labels.unsupportedHint}</TooltipContent>
       </Tooltip>
     )
   }
@@ -50,7 +55,7 @@ export function StorageMeter({
               className,
             )}
           >
-            <IconDatabase size={11} className="text-muted-foreground" />
+            <IconDatabase data-icon="inline-start" className="text-muted-foreground" />
             <span className="inline-flex items-baseline gap-[3px] whitespace-nowrap font-mono text-[11px] tabular-nums">
               <strong className="font-semibold text-foreground">{formatBytes(data.usage)}</strong>
               <span className="text-muted-foreground">/</span>
@@ -62,7 +67,7 @@ export function StorageMeter({
               className="w-14 gap-0"
               indicatorClassName={cn("transition-[width] duration-200", barColor)}
             />
-            <IconChevronDown size={9} className="text-muted-foreground" />
+            <IconChevronDown data-icon="inline-end" className="text-muted-foreground" />
           </Button>
         }
       />
@@ -76,17 +81,22 @@ export function StorageMeter({
         <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.04em] text-muted-foreground">
           <IconDatabase size={12} />
           <span>{labels.title}</span>
-          <Tooltip content={labels.refresh} className="ml-auto">
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              onClick={onRefresh}
-              disabled={loading}
-              aria-label={labels.refresh}
-              className="text-muted-foreground hover:text-foreground disabled:cursor-progress disabled:opacity-40"
-            >
-              <IconRefresh size={11} />
-            </Button>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  onClick={onRefresh}
+                  disabled={loading}
+                  aria-label={labels.refresh}
+                  className="ml-auto text-muted-foreground hover:text-foreground disabled:cursor-progress disabled:opacity-40"
+                >
+                  <IconRefresh />
+                </Button>
+              }
+            />
+            <TooltipContent>{labels.refresh}</TooltipContent>
           </Tooltip>
         </div>
 

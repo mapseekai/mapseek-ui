@@ -3,11 +3,6 @@ import { Button } from "@registry/ui/button"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
-type PlaceholderGlyphFixture = {
-  readonly seed: string
-  readonly label: string
-}
-
 const labels = {
   "zh-CN": {
     toggleTone: "切换 muted",

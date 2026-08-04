@@ -18,7 +18,7 @@ import {
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
-export function DropdownMenuOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function DropdownMenuOverviewDemo(_props: LocalizedDemoProps) {
   const [gridVisible, setGridVisible] = useState(true)
   const [format, setFormat] = useState("geojson")
   const [lastAction, setLastAction] = useState("No menu action selected")

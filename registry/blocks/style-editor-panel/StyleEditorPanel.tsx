@@ -48,7 +48,7 @@ export function StyleEditorPanelContent({
   return (
     <div className="relative min-h-0 flex-1 overflow-hidden">
       <ScrollContainer className={scrollClassName}>
-        <div className={cn("space-y-4 p-4", className)}>{children}</div>
+        <div className={cn("flex flex-col gap-4 p-4", className)}>{children}</div>
       </ScrollContainer>
     </div>
   )
@@ -60,9 +60,9 @@ export function StyleEditorPanelSection({
   className,
 }: StyleEditorPanelSectionProps) {
   return (
-    <section className={cn("space-y-3", className)}>
+    <section className={cn("grid gap-3", className)}>
       {title ? (
-        <h2 className="m-0 border-b border-border pb-1 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+        <h2 className="m-0 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
           {title}
         </h2>
       ) : null}
@@ -93,7 +93,7 @@ export function StyleEditorPanelCard({
         {meta ? <div className="shrink-0">{meta}</div> : null}
         {action ? <div className="shrink-0">{action}</div> : null}
       </header>
-      {children ? <div className="p-3">{children}</div> : null}
+      {children ? <div className="flex flex-col gap-2 p-3">{children}</div> : null}
     </section>
   )
 }

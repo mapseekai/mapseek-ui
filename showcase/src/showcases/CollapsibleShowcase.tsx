@@ -3,7 +3,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@registry/u
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
-export function CollapsibleOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function CollapsibleOverviewDemo(_props: LocalizedDemoProps) {
   const [open, setOpen] = useState(false)
   return (
     <Collapsible open={open} onOpenChange={setOpen} className="max-w-xl border border-border">

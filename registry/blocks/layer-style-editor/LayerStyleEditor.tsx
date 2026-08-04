@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -60,23 +61,25 @@ export function LayerStyleEditor({
                   />
                 }
               >
-                <IconDotsVertical size={16} stroke={1.75} />
+                <IconDotsVertical stroke={1.75} />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[140px]">
-                {actions.map((action) => (
-                  <DropdownMenuItem
-                    key={action.id}
-                    disabled={action.disabled}
-                    variant={action.variant}
-                    data-wd-key={action.dataWdKey}
-                    onClick={(event) => {
-                      event.stopPropagation()
-                      action.onSelect()
-                    }}
-                  >
-                    {action.label}
-                  </DropdownMenuItem>
-                ))}
+              <DropdownMenuContent align="end" className="min-w-35">
+                <DropdownMenuGroup>
+                  {actions.map((action) => (
+                    <DropdownMenuItem
+                      key={action.id}
+                      disabled={action.disabled}
+                      variant={action.variant}
+                      data-wd-key={action.dataWdKey}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        action.onSelect()
+                      }}
+                    >
+                      {action.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : null}
@@ -89,7 +92,7 @@ export function LayerStyleEditor({
               aria-label={closeLabel}
               title={closeLabel}
             >
-              <IconX size={16} stroke={1.75} />
+              <IconX stroke={1.75} />
             </Button>
           ) : null}
         </div>
@@ -130,7 +133,6 @@ export function LayerStyleEditor({
                   "h-7 text-xs font-medium text-muted-foreground",
                   "hover:text-foreground active:border-primary active:bg-primary active:text-primary-foreground",
                   "data-active:border-primary data-active:bg-primary data-active:font-semibold data-active:text-primary-foreground data-active:hover:text-primary-foreground",
-                  "dark:data-active:border-primary dark:data-active:bg-primary dark:data-active:text-primary-foreground",
                 )}
               >
                 {tab.label}

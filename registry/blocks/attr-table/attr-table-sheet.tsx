@@ -1,5 +1,6 @@
 import { IconArrowsMaximize, IconArrowsMinimize, IconX } from "@tabler/icons-react"
 import { useCallback, useState } from "react"
+import { Button } from "@/components/ui/button"
 import { IconButton } from "@/components/ui/icon-button"
 import { cn } from "@/lib/utils"
 import { type TableSheetState, useTableSheetState } from "./use-table-sheet-state"
@@ -127,16 +128,18 @@ export function AttrTableSheet({
       aria-label={ariaLabel}
       style={{ height: s.height }}
       className={cn(
-        "pointer-events-auto absolute right-0 bottom-0 left-0 z-30 flex flex-col border-t border-border bg-card shadow-[var(--shadow-lg)]",
+        "pointer-events-auto absolute right-0 bottom-0 left-0 z-30 flex flex-col border-t border-border bg-card shadow-(--shadow-lg)",
         // Only animate height for programmatic transitions (open/close,
         // fullscreen toggle) — never during a drag, otherwise the
         // cursor races ahead of the easing curve.
-        !isDragging && "transition-[height] duration-[180ms] ease-[var(--ease-out)]",
+        !isDragging && "transition-[height] duration-[180ms] ease-(--ease-out)",
         className,
       )}
     >
       {/* Drag handle */}
-      <button
+      <Button
+        variant="ghost"
+        size="sm"
         type="button"
         onPointerDown={handlePointerDown}
         onKeyDown={handleResizeKeyDown}
@@ -148,7 +151,7 @@ export function AttrTableSheet({
         aria-label="Resize attribute table"
       >
         <span className="h-0.5 w-10 rounded-full bg-foreground/20 group-hover:bg-foreground/40" />
-      </button>
+      </Button>
 
       {/* Header — 3-column grid keeps the center slot horizontally centered
           regardless of the asymmetric content on either side. */}
@@ -162,15 +165,15 @@ export function AttrTableSheet({
           {showFullscreen && (
             <IconButton size="sm" onClick={s.toggleFullscreen} title={fullscreenLabel}>
               {s.fullscreen ? (
-                <IconArrowsMinimize size={12} stroke={1.5} />
+                <IconArrowsMinimize stroke={1.5} />
               ) : (
-                <IconArrowsMaximize size={12} stroke={1.5} />
+                <IconArrowsMaximize stroke={1.5} />
               )}
             </IconButton>
           )}
           {showClose && (
             <IconButton size="sm" onClick={onClose} title={closeLabel}>
-              <IconX size={12} stroke={1.5} />
+              <IconX stroke={1.5} />
             </IconButton>
           )}
         </div>

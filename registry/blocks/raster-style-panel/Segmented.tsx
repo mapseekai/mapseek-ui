@@ -1,6 +1,6 @@
 import type { Icon as TablerIcon } from "@tabler/icons-react"
-import { Tooltip } from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 export interface SegmentedOption<T extends string> {
@@ -72,8 +72,9 @@ export function Segmented<T extends string>({
           </Button>
         )
         return opt.tip ? (
-          <Tooltip key={opt.value} content={opt.tip}>
-            {btn}
+          <Tooltip key={opt.value}>
+            <TooltipTrigger render={btn} />
+            <TooltipContent>{opt.tip}</TooltipContent>
           </Tooltip>
         ) : (
           btn

@@ -1,4 +1,4 @@
-import { MapControls, type MapControlsLabels } from "@registry/blocks/map-controls"
+import { MapControls } from "@registry/blocks/map-controls"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 

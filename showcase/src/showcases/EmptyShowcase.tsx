@@ -10,7 +10,7 @@ import {
 import { IconBox, IconMap2, IconSearch } from "@tabler/icons-react"
 import type { LocalizedDemoProps } from "./types"
 
-export function EmptyOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function EmptyOverviewDemo(_props: LocalizedDemoProps) {
   return (
     <div className="grid w-full max-w-xl gap-5">
       <Empty data-demo="empty-default">

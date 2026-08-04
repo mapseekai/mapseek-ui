@@ -34,7 +34,7 @@ import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
 
 ## Layer and Group Models
 
-`LayerData` requires at least `id`, `name`, `visible`, and `geometryType`. `featureCount`, `crsLabel`, and `flags` are display enhancements. Groups are not part of the registry API; if a project has groups, rename behavior, or group menus, keep that group model in the caller and pass the visible layers to `LayerPanel.Item`.
+`LayerData` requires at least `id`, `name`, `visible`, and `geometryType`. `featureCount`, `crsLabel`, and `flags` are display enhancements. Compose group presentation with `LayerPanel.Group`, `GroupHeader`, `GroupTrigger`, `GroupTitle`, `GroupActions`, and `GroupContent`; the caller still owns group data, collapse state, renaming, and menu actions.
 
 ## Required Handlers
 
@@ -42,7 +42,7 @@ A read-only panel can pass only `layers` and `selectedId`. Provide `onVisibleCha
 
 ## Accessibility Labels
 
-Use `labels` to localize geometry names, add-layer, feature count, locate, attribute table, and delete text. Rows use the layer name as their accessible name; visibility, locate, table, and delete controls are native `button` elements. Caller-owned group buttons, menus, and rename inputs need their own `aria-label` or readable text.
+Use `labels` to localize geometry names, add-layer, feature count, locate, attribute table, and delete text. Rows use the layer name as their accessible name, and actions reuse the registry `Button`. Give `GroupTrigger` expanded/collapsed labels; group menus and rename inputs also need an `aria-label` or readable text.
 
 ## Scrolling and Responsive Constraints
 
@@ -51,4 +51,3 @@ Give the panel an explicit height or a parent scroll boundary. The list scrolls 
 ## Dependencies
 
 <RegistryDependencies registryName="layer-panel" />
-

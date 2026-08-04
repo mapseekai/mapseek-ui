@@ -1,7 +1,8 @@
 import { IconExternalLink } from "@tabler/icons-react"
 import { CopyButton } from "@/components/ui/copy-button"
 import { IconButton } from "@/components/ui/icon-button"
-import { Tooltip } from "@/components/ui/tooltip"
+import { InputGroup, InputGroupText } from "@/components/ui/input-group"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import type { ServiceEndpointRowProps } from "./types"
 
 /**
@@ -24,7 +25,7 @@ export function ServiceEndpointRow({
   const urlSegments = getUrlSegments(url)
 
   return (
-    <div className="flex flex-col gap-2 border border-border p-3">
+    <div className="flex w-full min-w-0 max-w-full flex-col gap-2 overflow-hidden border border-border p-3">
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
           {icon}
@@ -37,20 +38,22 @@ export function ServiceEndpointRow({
           {method}
         </span>
       </div>
-      <div className="flex items-center gap-1.5">
-        <code className="mono min-w-0 flex-1 overflow-x-auto whitespace-nowrap border border-border bg-muted/40 px-2 py-1.5 text-[11px]">
-          {urlSegments.map((segment) =>
-            /^\{.+\}$/.test(segment.part) ? (
-              <span key={segment.key} className="font-medium text-warning">
-                {segment.part}
-              </span>
-            ) : (
-              <span key={segment.key} className="text-muted-foreground">
-                {segment.part}
-              </span>
-            ),
-          )}
-        </code>
+      <div className="flex min-w-0 items-center gap-1.5">
+        <InputGroup className="h-auto min-h-8 w-auto flex-1 overflow-hidden bg-muted/40">
+          <InputGroupText className="mono min-w-0 max-w-full flex-1 gap-0 overflow-x-auto whitespace-nowrap px-2 py-1.5 text-[11px]">
+            {urlSegments.map((segment) =>
+              /^\{.+\}$/.test(segment.part) ? (
+                <span key={segment.key} className="font-medium text-warning">
+                  {segment.part}
+                </span>
+              ) : (
+                <span key={segment.key} className="text-muted-foreground">
+                  {segment.part}
+                </span>
+              ),
+            )}
+          </InputGroupText>
+        </InputGroup>
         <CopyButton
           content={url}
           aria-label={copyLabel}
@@ -58,16 +61,21 @@ export function ServiceEndpointRow({
           title={copyLabel}
           onCopy={onCopy}
         />
-        <Tooltip content={openTooltip}>
-          <IconButton
-            size="sm"
-            disabled={openDisabled}
-            title={openLabel}
-            aria-label={openLabel}
-            onClick={onOpen}
-          >
-            <IconExternalLink size={12} stroke={1.5} />
-          </IconButton>
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <IconButton
+                size="sm"
+                disabled={openDisabled}
+                title={openLabel}
+                aria-label={openLabel}
+                onClick={onOpen}
+              >
+                <IconExternalLink stroke={1.5} />
+              </IconButton>
+            }
+          />
+          <TooltipContent>{openTooltip}</TooltipContent>
         </Tooltip>
       </div>
     </div>

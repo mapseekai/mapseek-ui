@@ -7,6 +7,7 @@ const labels = {
     controlled: "受控颜色",
     colorLabel: "图层颜色",
     current: "当前颜色",
+    openColor: "打开颜色选择器",
     disabled: "禁用状态",
     disabledLabel: "禁用颜色输入",
   },
@@ -14,6 +15,7 @@ const labels = {
     controlled: "Controlled color",
     colorLabel: "Layer color",
     current: "Current color",
+    openColor: "Open color picker",
     disabled: "Disabled state",
     disabledLabel: "Disabled color input",
   },
@@ -32,8 +34,9 @@ export function ColorInputOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         <div className="flex items-center gap-3">
           <ColorInput
             aria-label={demoLabels.colorLabel}
+            swatchLabel={demoLabels.openColor}
             value={value}
-            onChange={(event) => setValue(event.currentTarget.value)}
+            onTextChange={setValue}
           />
           <output className="font-mono text-sm" data-demo="color-input-value">
             {demoLabels.current}: {value}
@@ -45,7 +48,12 @@ export function ColorInputOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.disabled}
         </h4>
-        <ColorInput aria-label={demoLabels.disabledLabel} defaultValue="#94a3b8" disabled />
+        <ColorInput
+          aria-label={demoLabels.disabledLabel}
+          swatchLabel={demoLabels.disabledLabel}
+          defaultValue="#94a3b8"
+          disabled
+        />
       </section>
     </div>
   )

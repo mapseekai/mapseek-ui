@@ -11,7 +11,7 @@ import {
 } from "@registry/ui/card"
 import type { LocalizedDemoProps } from "./types"
 
-export function CardOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function CardOverviewDemo(_props: LocalizedDemoProps) {
   return (
     <div className="grid max-w-3xl gap-6 md:grid-cols-2">
       <Card data-demo="card-basic">

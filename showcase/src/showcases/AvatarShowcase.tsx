@@ -8,7 +8,7 @@ import {
 import { IconCheck } from "@tabler/icons-react"
 import type { LocalizedDemoProps } from "./types"
 
-export function AvatarOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function AvatarOverviewDemo(_props: LocalizedDemoProps) {
   return (
     <div className="w-full space-y-8">
       <section className="space-y-3">

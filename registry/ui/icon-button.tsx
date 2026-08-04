@@ -18,9 +18,11 @@ function IconButton({
       type={type}
       data-slot="icon-button"
       className={cn(
-        "grid place-items-center border border-transparent transition-colors",
+        "grid place-items-center border border-transparent transition-colors [&_svg]:pointer-events-none [&_svg]:shrink-0",
         "cursor-pointer outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20",
-        size === "sm" ? "h-6 w-6" : "h-8 w-8",
+        size === "sm"
+          ? "size-6 [&_svg:not([class*='size-'])]:size-3.5"
+          : "size-8 [&_svg:not([class*='size-'])]:size-4",
         danger
           ? "text-destructive hover:bg-destructive/10"
           : "text-muted-foreground hover:bg-muted hover:text-foreground",

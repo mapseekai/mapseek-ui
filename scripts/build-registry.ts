@@ -1,6 +1,7 @@
 import { spawn } from "node:child_process"
 import { cp, rm } from "node:fs/promises"
 import { join, resolve } from "node:path"
+import { SHADCN_PACKAGE } from "../shared/shadcn"
 import { dlxCommand } from "./pnpm-command"
 import { assertGeneratedOutputMatchesCatalog, assertValidCatalog } from "./registry-model"
 
@@ -27,6 +28,6 @@ await Promise.all([
   rm(docsRegistryOutput, { recursive: true, force: true }),
 ])
 await assertValidCatalog(repoRoot)
-await run(dlxCommand("shadcn@4.8.0", "build"))
+await run(dlxCommand(SHADCN_PACKAGE, "build"))
 await assertGeneratedOutputMatchesCatalog(repoRoot)
 await cp(registryOutput, docsRegistryOutput, { recursive: true })

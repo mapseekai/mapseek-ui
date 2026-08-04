@@ -3,13 +3,6 @@ import { Button } from "@registry/ui/button"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
-type ProductLogoFixture = {
-  readonly src: string
-  readonly alt: string
-  readonly label: string
-  readonly note: string
-}
-
 const labels = {
   "zh-CN": {
     toggleText: "切换文字",

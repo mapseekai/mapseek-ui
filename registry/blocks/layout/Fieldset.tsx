@@ -16,7 +16,7 @@ export const Fieldset: React.FC<FieldsetProps> = (props) => {
   return (
     <fieldset
       className={cn(
-        "m-0 min-w-0 space-y-2 border-t border-border/60 p-0 pt-3 first:border-t-0 first:pt-0",
+        "m-0 flex min-w-0 flex-col gap-2 border-t border-border/60 p-0 pt-3 first:border-t-0 first:pt-0",
         { "text-destructive": props.error },
         props.className,
       )}
@@ -32,7 +32,7 @@ export const Fieldset: React.FC<FieldsetProps> = (props) => {
         {props.action && <div className="shrink-0">{props.action}</div>}
       </div>
 
-      <div className="space-y-2">{props.children}</div>
+      <div className="flex flex-col gap-2">{props.children}</div>
     </fieldset>
   )
 }

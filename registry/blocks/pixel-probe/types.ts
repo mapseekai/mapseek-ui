@@ -15,6 +15,7 @@ export interface PixelField {
 export interface PixelProbeLabels {
   title: string
   copy: string
+  copied?: string
   close: string
   prev: string
   next: string

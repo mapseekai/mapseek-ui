@@ -66,14 +66,14 @@ export function LoomToolbar({
       <div className="absolute start-[8%] top-[36%] h-36 w-[46%] border-2 border-primary/45 bg-primary/10 [clip-path:polygon(8%_14%,78%_0,100%_56%,68%_100%,0_82%)]" />
 
       <div className="absolute inset-x-3 top-4 flex justify-center">
-        <div className="max-w-full overflow-x-auto border border-border bg-card shadow-[var(--shadow-map-float)]">
+        <div className="max-w-full overflow-x-auto border border-border bg-card shadow-(--shadow-map-float)">
           <div className="flex h-11 min-w-max items-center gap-1 px-1.5">
             <Button
               size="sm"
               className="h-7 gap-1.5 px-2.5 text-[11px]"
               onClick={() => onEditingChange(!editing)}
             >
-              <IconPencil className="size-3.5" />
+              <IconPencil data-icon="inline-start" />
               {editing ? labels.stopEditing : labels.startEditing}
             </Button>
 
@@ -86,7 +86,7 @@ export function LoomToolbar({
                   className="h-7 gap-1.5 px-2 text-[11px]"
                   onClick={onSave}
                 >
-                  <IconDeviceFloppy className="size-3.5" />
+                  <IconDeviceFloppy data-icon="inline-start" />
                   {labels.save}
                 </Button>
                 <Badge variant="outline">{labels.currentLayer(activeLayerName)}</Badge>
@@ -125,7 +125,7 @@ export function LoomToolbar({
                       )}
                       onClick={() => onModeChange(tool.id)}
                     >
-                      <ToolIcon className="size-4" />
+                      <ToolIcon />
                     </Button>
                   )
                 })}
@@ -147,7 +147,7 @@ export function LoomToolbar({
               )}
               onClick={() => onSnappingChange(!snapping)}
             >
-              <IconMagnet className="size-4" />
+              <IconMagnet />
             </Button>
 
             <Separator />
@@ -160,7 +160,7 @@ export function LoomToolbar({
               className="size-8"
               onClick={onUndo}
             >
-              <IconArrowBackUp className="size-4" />
+              <IconArrowBackUp />
             </Button>
             <Button
               variant="ghost"
@@ -171,13 +171,13 @@ export function LoomToolbar({
               className="size-8"
               onClick={onRedo}
             >
-              <IconArrowForwardUp className="size-4" />
+              <IconArrowForwardUp />
             </Button>
           </div>
         </div>
       </div>
 
-      <div className="absolute bottom-4 end-4 flex items-center gap-2 border border-border bg-card/95 px-3 py-2 text-xs shadow-[var(--shadow-map-float)]">
+      <div className="absolute bottom-4 end-4 flex items-center gap-2 border border-border bg-card/95 px-3 py-2 text-xs shadow-(--shadow-map-float)">
         <span className="text-muted-foreground">{labels.currentMode}</span>
         <Badge>{activeTool?.label ?? activeMode}</Badge>
         {dirty && <span className="text-warning">{labels.unsaved}</span>}

@@ -9,6 +9,7 @@ import {
   InputString,
 } from "@registry/blocks/form-inputs"
 import { NumberRangeInput } from "@registry/blocks/number-range-input"
+import { Button } from "@registry/ui/button"
 import type { ReactNode } from "react"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
@@ -62,10 +63,11 @@ export function FormInputsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
     <div className="flex w-full max-w-[520px] flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="m-0 text-xs text-muted-foreground">{demoLabels.intro}</p>
-        <button
+        <Button
           type="button"
           data-demo-action="reset-inputs"
-          className="border border-border bg-background px-2 py-1 font-mono text-xs hover:bg-muted"
+          variant="outline"
+          size="xs"
           onClick={() => {
             setText("")
             setMulti("")
@@ -79,7 +81,7 @@ export function FormInputsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           }}
         >
           {demoLabels.reset}
-        </button>
+        </Button>
       </div>
       <div className="flex flex-col gap-3 border border-border p-3">
         <Row label="string">

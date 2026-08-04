@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-CopyButton copies short texts such as identifiers and paths, in icon and text variants. After a successful copy it switches to a check confirmation and reverts after a short delay.
+CopyButton copies short texts such as identifiers and paths, in icon, bordered text, and borderless text variants. After a successful copy it switches to a check confirmation and reverts after a short delay.
 
 ## Installation
 
@@ -24,11 +24,11 @@ import { CopyButton } from "@/registry/ui/copy-button"
 
 ## Usage
 
-<ShowcaseDemo registryName="copy-button" demo="overview" title="Copy button variants" description="The icon variant fits compact toolbars and the text variant works as a standalone action; a successful copy briefly shows a confirmation state." minHeight={120} />
+<ShowcaseDemo registryName="copy-button" demo="overview" title="Copy button variants" description="The icon variant fits compact toolbars, while text actions can be bordered or borderless; a successful copy briefly shows a confirmation state." minHeight={120} />
 
 ## Exports
 
-`copy-button.tsx` exports `CopyButton`. The component accepts `content` (text to copy), `variant="icon" | "text"`, `label`, `copiedLabel`, `duration`, and `onCopy` / `onCopyError` callbacks.
+`copy-button.tsx` exports `CopyButton`. The component accepts `content` (text to copy), `variant="icon" | "text" | "ghost"`, `label`, `copiedLabel`, `duration`, and `onCopy` / `onCopyError` callbacks.
 
 ## States
 
@@ -41,4 +41,3 @@ The icon variant must carry an `aria-label` describing the copy target; the conf
 ## Dependencies
 
 <RegistryDependencies registryName="copy-button" />
-

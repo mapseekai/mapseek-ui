@@ -7,8 +7,15 @@ import {
 import { Button } from "@registry/ui/button"
 import { Input } from "@registry/ui/input"
 import { Label } from "@registry/ui/label"
-import { Select } from "@registry/ui/select"
-import { Tooltip } from "@registry/ui/tooltip"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@registry/ui/select"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@registry/ui/tooltip"
 import { IconArrowBackUp, IconMathFunction, IconPlaylistAdd, IconTrash } from "@tabler/icons-react"
 import { type ReactNode, useState } from "react"
 import type { LocalizedDemoProps } from "./types"
@@ -30,7 +37,7 @@ const labels = {
     functionLabel: "函数",
     base: "基数",
     caption: "停靠点",
-    zoom: "缩放级别",
+    zoom: "层级",
     output: "输出值",
     remove: "删除停靠点",
     undo: "撤销函数",
@@ -98,9 +105,16 @@ export function StyleFunctionEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps
       <StyleFunctionPanel title={demoLabels.title}>
         <FieldRow label={demoLabels.functionLabel}>
           <Select value="interpolate" onValueChange={() => undefined}>
-            <Select.Item value="interpolate">{demoLabels.functions.interpolate}</Select.Item>
-            <Select.Item value="categorical">{demoLabels.functions.categorical}</Select.Item>
-            <Select.Item value="interval">{demoLabels.functions.interval}</Select.Item>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="interpolate">{demoLabels.functions.interpolate}</SelectItem>
+                <SelectItem value="categorical">{demoLabels.functions.categorical}</SelectItem>
+                <SelectItem value="interval">{demoLabels.functions.interval}</SelectItem>
+              </SelectGroup>
+            </SelectContent>
           </Select>
         </FieldRow>
         <FieldRow label={demoLabels.base}>
@@ -125,28 +139,38 @@ export function StyleFunctionEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps
                 <Input value={stop.output} readOnly />
               </td>
               <td className="py-2 pl-2 text-right align-top">
-                <Tooltip content={demoLabels.remove}>
-                  <StyleFunctionIconButton
-                    aria-label={`${demoLabels.remove}: ${stop.zoom}`}
-                    data-demo-action={`style-function-editor-remove-${index}`}
-                    onClick={() => removeStop(index)}
-                  >
-                    <IconTrash />
-                  </StyleFunctionIconButton>
+                <Tooltip>
+                  <TooltipTrigger
+                    render={
+                      <StyleFunctionIconButton
+                        aria-label={`${demoLabels.remove}: ${stop.zoom}`}
+                        data-demo-action={`style-function-editor-remove-${index}`}
+                        onClick={() => removeStop(index)}
+                      >
+                        <IconTrash />
+                      </StyleFunctionIconButton>
+                    }
+                  />
+                  <TooltipContent>{demoLabels.remove}</TooltipContent>
                 </Tooltip>
               </td>
             </tr>
           ))}
         </StyleFunctionStopsTable>
         <StyleFunctionActions>
-          <Tooltip content={demoLabels.undo}>
-            <StyleFunctionIconButton
-              aria-label={demoLabels.undo}
-              data-demo-action="style-function-editor-undo"
-              onClick={() => setStatus(demoLabels.undone)}
-            >
-              <IconArrowBackUp />
-            </StyleFunctionIconButton>
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <StyleFunctionIconButton
+                  aria-label={demoLabels.undo}
+                  data-demo-action="style-function-editor-undo"
+                  onClick={() => setStatus(demoLabels.undone)}
+                >
+                  <IconArrowBackUp />
+                </StyleFunctionIconButton>
+              }
+            />
+            <TooltipContent>{demoLabels.undo}</TooltipContent>
           </Tooltip>
           <Button
             type="button"

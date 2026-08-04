@@ -201,9 +201,9 @@ export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         <p data-demo-status="raster-style-panel" className="m-0 font-mono text-xs">
           {status}
         </p>
-        <div className="min-w-0 border border-border bg-background p-2">
+        <div className="min-w-0 overflow-hidden border border-border bg-background p-2">
           <p className="m-0 mb-2 text-xs font-medium text-muted-foreground">{demoLabels.summary}</p>
-          <pre className="m-0 max-h-64 overflow-auto font-mono !text-[10px] !leading-4">
+          <pre className="m-0 max-h-64 max-w-full overflow-auto whitespace-pre-wrap break-words font-mono !text-[10px] !leading-4">
             {JSON.stringify(value, null, 2)}
           </pre>
         </div>

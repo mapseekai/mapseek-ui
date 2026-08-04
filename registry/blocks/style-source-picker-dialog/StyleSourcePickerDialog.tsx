@@ -106,7 +106,7 @@ export function StyleSourcePickerDialog({
         className="flex max-h-[86vh] flex-col gap-0 overflow-hidden p-0 shadow-none [&>[data-slot=dialog-header]]:px-5 [&>[data-slot=dialog-header]]:py-4"
         width="56rem"
       >
-        <div className="space-y-3 border-b px-5 pb-4">
+        <div className="flex flex-col gap-3 border-b px-5 pb-4">
           <div className="relative">
             <IconSearch
               size={14}
@@ -291,14 +291,14 @@ function SourceOptionCardGrid({
             onClick={() => onToggle(item.key)}
             aria-pressed={selected}
             className={cn(
-              "group flex min-h-32 w-full flex-col border bg-background p-3 text-left transition-colors",
+              "group flex min-h-32 w-full flex-col items-stretch justify-start border bg-background p-3 text-left transition-colors",
               selected
                 ? "border-primary bg-primary/5"
                 : "border-border hover:border-primary/50 hover:bg-muted/40",
               alreadyAdded && "cursor-not-allowed opacity-55",
             )}
           >
-            <div className="flex items-start gap-3">
+            <div className="flex w-full items-start gap-3 text-left">
               <span
                 className={cn(
                   "flex size-8 shrink-0 items-center justify-center border",
@@ -336,7 +336,7 @@ function SourceOptionCardGrid({
               </span>
             </div>
 
-            <div className="mt-auto flex flex-wrap items-center gap-1.5 pt-4">
+            <div className="mt-auto flex w-full flex-wrap items-center justify-start gap-1.5 pt-4">
               <Badge
                 variant="outline"
                 className={
@@ -352,9 +352,7 @@ function SourceOptionCardGrid({
                 <Badge
                   variant="outline"
                   className={
-                    item.status === "READY"
-                      ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
-                      : undefined
+                    item.status === "READY" ? "border-cat-1/40 bg-cat-1/15 text-cat-1" : undefined
                   }
                 >
                   {item.status}
@@ -363,7 +361,7 @@ function SourceOptionCardGrid({
               {alreadyAdded ? (
                 <Badge
                   variant="outline"
-                  className="border-amber-500/40 bg-amber-500/15 font-semibold text-amber-700 dark:text-amber-400"
+                  className="border-warning/40 bg-warning/15 font-semibold text-warning"
                 >
                   {labels.alreadyAdded}
                 </Badge>

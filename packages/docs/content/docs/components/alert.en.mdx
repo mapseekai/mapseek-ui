@@ -1,0 +1,39 @@
+---
+title: "Alert"
+registryName: alert
+category: primitive
+stability: stable
+showcase: alert
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Alert presents an inline status, validation result, or error that needs immediate attention. It standardizes the layout for an icon, title, description, and optional action instead of making each business component rebuild a callout.
+
+## Installation
+
+<RegistryInstall registryName="alert" />
+
+## Import
+
+```tsx
+import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/registry/ui/alert"
+```
+
+## Status alerts
+
+<ShowcaseDemo registryName="alert" demo="overview" title="Default and destructive states" description="Shows a successful validation result and a recoverable error." minHeight={260} />
+
+## Exports
+
+`Alert` is the root, `AlertTitle` and `AlertDescription` structure its copy, and `AlertAction` contains a recovery action. `variant` supports `default` and `destructive`.
+
+## Accessibility
+
+The component uses `role="alert"` by default for dynamic results that need immediate announcement. Override it with a less disruptive semantic role for static guidance when appropriate. Never communicate status through color alone; explain the state and the next step in text.
+
+## Dependencies
+
+<RegistryDependencies registryName="alert" />

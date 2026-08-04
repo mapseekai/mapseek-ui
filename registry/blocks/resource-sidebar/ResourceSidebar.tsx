@@ -10,7 +10,7 @@ import {
   IconTypography,
 } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
-import { Tooltip } from "@/components/ui/tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import type { ResourceSidebarProps, ResourceTab } from "./types"
 
@@ -37,7 +37,7 @@ export function ResourceSidebar({
   className,
 }: ResourceSidebarProps) {
   const leafBase =
-    "relative flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-xs text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-muted"
+    "relative flex h-[34px] w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-xs text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-muted"
   const activeLeaf = "bg-primary/10 text-primary before:opacity-100"
 
   function leafClass(active: boolean, extra: string) {
@@ -71,7 +71,7 @@ export function ResourceSidebar({
         <TypeRow
           active={tab === "icon"}
           className={leafClass(tab === "icon", "py-1.5 pr-2.5 pl-7")}
-          icon={<IconPhoto size={12} stroke={ICON_STROKE} />}
+          icon={<IconPhoto data-icon="inline-start" stroke={ICON_STROKE} />}
           label={labels.icon}
           count={tabCounts.icon}
           onClick={() => onTabChange("icon")}
@@ -79,7 +79,7 @@ export function ResourceSidebar({
         <TypeRow
           active={tab === "sprite"}
           className={leafClass(tab === "sprite", "py-1.5 pr-2.5 pl-7")}
-          icon={<IconGridDots size={12} stroke={ICON_STROKE} />}
+          icon={<IconGridDots data-icon="inline-start" stroke={ICON_STROKE} />}
           label={labels.sprite}
           count={tabCounts.sprite}
           onClick={() => onTabChange("sprite")}
@@ -87,7 +87,7 @@ export function ResourceSidebar({
         <TypeRow
           active={tab === "font"}
           className={leafClass(tab === "font", "px-2.5 py-[7px] font-semibold")}
-          icon={<IconTypography size={12} stroke={ICON_STROKE} />}
+          icon={<IconTypography data-icon="inline-start" stroke={ICON_STROKE} />}
           label={labels.font}
           count={tabCounts.font}
           onClick={() => onTabChange("font")}
@@ -100,10 +100,13 @@ export function ResourceSidebar({
         {labels.categoriesSection}
       </div>
 
-      <div className="flex-1 overflow-auto px-1.5">
+      <div
+        data-slot="resource-sidebar-category-list"
+        className="flex-1 overflow-auto px-1.5 pb-1.5"
+      >
         <CategoryRow
           active={activeCat === "all"}
-          icon={<IconStack2 size={12} stroke={ICON_STROKE} />}
+          icon={<IconStack2 data-icon="inline-start" stroke={ICON_STROKE} />}
           label={labels.allItems}
           count={totalCount}
           onClick={() => onSelectCat("all")}
@@ -113,42 +116,52 @@ export function ResourceSidebar({
           <CategoryRow
             key={c.id}
             active={activeCat === c.id}
-            icon={<IconFolder size={12} stroke={ICON_STROKE} />}
+            icon={<IconFolder data-icon="inline-start" stroke={ICON_STROKE} />}
             label={c.label}
             count={c.count}
             onClick={() => onSelectCat(c.id)}
             actions={
               c.isDefault ? undefined : (
                 <>
-                  <Tooltip content={labels.rename} side="top" delay={0}>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="transition-none active:not-aria-[haspopup]:translate-y-0"
-                      aria-label={labels.rename}
-                      title={labels.rename}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onRenameCategory(c.id)
-                      }}
-                    >
-                      <IconPencil size={11} stroke={ICON_STROKE} />
-                    </Button>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          className="transition-none active:not-aria-[haspopup]:translate-y-0"
+                          aria-label={labels.rename}
+                          title={labels.rename}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onRenameCategory(c.id)
+                          }}
+                        >
+                          <IconPencil stroke={ICON_STROKE} />
+                        </Button>
+                      }
+                    />
+                    <TooltipContent side="top">{labels.rename}</TooltipContent>
                   </Tooltip>
-                  <Tooltip content={labels.remove} side="top" delay={0}>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="transition-none active:not-aria-[haspopup]:translate-y-0"
-                      aria-label={labels.remove}
-                      title={labels.remove}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        onRemoveCategory(c.id)
-                      }}
-                    >
-                      <IconTrash size={11} stroke={ICON_STROKE} />
-                    </Button>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-xs"
+                          className="transition-none active:not-aria-[haspopup]:translate-y-0"
+                          aria-label={labels.remove}
+                          title={labels.remove}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            onRemoveCategory(c.id)
+                          }}
+                        >
+                          <IconTrash stroke={ICON_STROKE} />
+                        </Button>
+                      }
+                    />
+                    <TooltipContent side="top">{labels.remove}</TooltipContent>
                   </Tooltip>
                 </>
               )
@@ -159,7 +172,7 @@ export function ResourceSidebar({
 
       <div className="border-t border-border p-2.5">
         <Button variant="outline" size="sm" className="w-full" onClick={onCreateCategory}>
-          <IconPlus size={12} stroke={ICON_STROKE} />
+          <IconPlus data-icon="inline-start" stroke={ICON_STROKE} />
           {labels.newCategory}
         </Button>
       </div>

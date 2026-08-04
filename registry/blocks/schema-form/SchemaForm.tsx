@@ -1,7 +1,21 @@
 import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select } from "@/components/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import type { SchemaFormField, SchemaFormProps } from "./types"
 
@@ -24,16 +38,61 @@ export function SchemaForm({
   className,
 }: SchemaFormProps) {
   return (
-    <div className={cn("flex flex-col gap-3", className)}>
+    <FieldGroup className={cn("gap-3", className)}>
       {fields.map((f: SchemaFormField) => {
         const id = `${idPrefix}-${f.key}`
-        return (
-          <div key={f.key} className="flex flex-col gap-1.5">
-            <Label htmlFor={id} className="text-xs">
-              {f.label}
-              {f.required && <span className="text-destructive"> *</span>}
-            </Label>
+        const label = (
+          <>
+            {f.label}
+            {f.required && <span className="text-destructive"> *</span>}
+          </>
+        )
 
+        if (f.type === "multiselect") {
+          return (
+            <FieldSet key={f.key} className="gap-2">
+              <FieldLegend variant="label" className="mb-0 text-xs">
+                {label}
+              </FieldLegend>
+              <FieldGroup className="max-h-[140px] gap-0 overflow-auto border border-border bg-background">
+                {f.options.length === 0 ? (
+                  <FieldDescription className="px-2 py-1.5">{f.emptyHint}</FieldDescription>
+                ) : (
+                  f.options.map((o) => {
+                    const optionId = `${id}-${o.value}`
+                    const checked =
+                      Array.isArray(values[f.key]) && (values[f.key] as string[]).includes(o.value)
+                    return (
+                      <Field
+                        key={o.value}
+                        orientation="horizontal"
+                        className="h-7 items-center gap-2 px-2 hover:bg-muted"
+                      >
+                        <Checkbox
+                          id={optionId}
+                          checked={checked}
+                          onCheckedChange={() => onChange(f.key, nextMulti(values[f.key], o.value))}
+                        />
+                        <FieldLabel
+                          htmlFor={optionId}
+                          className="cursor-pointer text-xs font-normal"
+                        >
+                          {o.label}
+                        </FieldLabel>
+                      </Field>
+                    )
+                  })
+                )}
+              </FieldGroup>
+            </FieldSet>
+          )
+        }
+
+        return (
+          <Field key={f.key} className="gap-1.5">
+            <FieldLabel htmlFor={id} className="text-xs">
+              {label}
+            </FieldLabel>
             {f.type === "number" && (
               <Input
                 id={id}
@@ -61,50 +120,26 @@ export function SchemaForm({
 
             {f.type === "select" && (
               <Select
-                aria-label={f.label}
                 defaultValue={f.default}
-                placeholder={f.placeholder}
                 onValueChange={(v) => onChange(f.key, v || undefined)}
               >
-                {f.options.map((o) => (
-                  <Select.Item key={o.value} value={o.value}>
-                    {o.label}
-                  </Select.Item>
-                ))}
+                <SelectTrigger id={id} aria-label={f.label}>
+                  <SelectValue placeholder={f.placeholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {f.options.map((o) => (
+                      <SelectItem key={o.value} value={o.value}>
+                        {o.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
               </Select>
             )}
-
-            {f.type === "multiselect" && (
-              <div className="max-h-[140px] overflow-auto border border-border bg-background">
-                {f.options.length === 0 ? (
-                  <p className="px-2 py-1.5 text-[11px] text-muted-foreground">{f.emptyHint}</p>
-                ) : (
-                  f.options.map((o) => {
-                    const optionId = `${id}-${o.value}`
-                    const checked =
-                      Array.isArray(values[f.key]) && (values[f.key] as string[]).includes(o.value)
-                    return (
-                      <div
-                        key={o.value}
-                        className="flex h-7 items-center gap-2 px-2 hover:bg-muted"
-                      >
-                        <Checkbox
-                          id={optionId}
-                          checked={checked}
-                          onCheckedChange={() => onChange(f.key, nextMulti(values[f.key], o.value))}
-                        />
-                        <label htmlFor={optionId} className="cursor-pointer text-xs">
-                          {o.label}
-                        </label>
-                      </div>
-                    )
-                  })
-                )}
-              </div>
-            )}
-          </div>
+          </Field>
         )
       })}
-    </div>
+    </FieldGroup>
   )
 }

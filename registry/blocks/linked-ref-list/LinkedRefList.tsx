@@ -2,9 +2,9 @@ import { IconExternalLink, IconLink } from "@tabler/icons-react"
 import type { ReactNode } from "react"
 import { useState } from "react"
 
-import { IconButton } from "@/components/ui/icon-button"
 import { Button } from "@/components/ui/button"
-import { Tooltip } from "@/components/ui/tooltip"
+import { IconButton } from "@/components/ui/icon-button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 import type {
@@ -116,7 +116,7 @@ function SummaryCard({
       type="button"
       onClick={onSelect}
       className={cn(
-        "flex min-w-0 flex-col gap-2 border-r border-b-2 border-border px-4 py-3 text-left transition-colors last:border-r-0",
+        "flex h-auto min-w-0 flex-col gap-2 border-r border-b-2 border-border px-4 py-3 text-left transition-colors last:border-r-0",
         selected
           ? "border-b-primary bg-[oklch(0.627_0.194_149_/_0.06)]"
           : "border-b-transparent bg-background hover:bg-muted/20",
@@ -173,15 +173,25 @@ function ItemRow({
       ) : null}
       {item.status ? <StatusPill status={item.status} /> : null}
       <span className="flex shrink-0 items-center gap-1">
-        <Tooltip content={openLabel}>
-          <IconButton size="sm" disabled aria-label={openLabel}>
-            <IconExternalLink size={14} stroke={1.5} />
-          </IconButton>
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <IconButton size="sm" disabled aria-label={openLabel}>
+                <IconExternalLink stroke={1.5} />
+              </IconButton>
+            }
+          />
+          <TooltipContent>{openLabel}</TooltipContent>
         </Tooltip>
-        <Tooltip content={openLabel}>
-          <IconButton size="sm" disabled aria-label={openLabel}>
-            <IconLink size={14} stroke={1.5} />
-          </IconButton>
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <IconButton size="sm" disabled aria-label={openLabel}>
+                <IconLink stroke={1.5} />
+              </IconButton>
+            }
+          />
+          <TooltipContent>{openLabel}</TooltipContent>
         </Tooltip>
       </span>
     </li>

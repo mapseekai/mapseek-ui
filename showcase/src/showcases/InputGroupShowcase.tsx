@@ -8,7 +8,7 @@ import {
 import { IconSearch } from "@tabler/icons-react"
 import type { LocalizedDemoProps } from "./types"
 
-export function InputGroupOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function InputGroupOverviewDemo(_props: LocalizedDemoProps) {
   return (
     <div className="grid w-full max-w-sm gap-8">
       <section className="space-y-3" data-demo="input-group-prefix">

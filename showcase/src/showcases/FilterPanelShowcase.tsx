@@ -1,4 +1,5 @@
 import { EMPTY_FILTER, FilterPanel, type FilterValue } from "@registry/blocks/filter-panel"
+import { Button } from "@registry/ui/button"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -39,14 +40,15 @@ export function FilterPanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         </FilterPanel>
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        <button
+        <Button
           type="button"
           data-demo-action="external-clear"
-          className="border border-border bg-background px-2 py-1 font-mono text-xs hover:bg-muted"
+          variant="outline"
+          size="xs"
           onClick={() => setValue(EMPTY_FILTER)}
         >
           {demoLabels.clearExternal}
-        </button>
+        </Button>
         <span data-demo-status="filter-mode" className="font-mono text-xs text-muted-foreground">
           {demoLabels.statusPrefix}: {value.mode}
         </span>

@@ -1,12 +1,23 @@
-import { IconFolderPlus, IconLayoutSidebar, IconPlus, IconSearch, IconStack2 } from "@tabler/icons-react"
+import {
+  IconFolderPlus,
+  IconLayoutSidebar,
+  IconPlus,
+  IconSearch,
+  IconStack2,
+} from "@tabler/icons-react"
 import { useMemo } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { cn } from "@/lib/utils"
-import { LOOM_LAYER_PANEL_LABELS_ZH_CN } from "./labels"
 import { LoomLayerGroup } from "./LoomLayerGroup"
+import { LOOM_LAYER_PANEL_LABELS_ZH_CN } from "./labels"
 import type { LoomLayer, LoomLayerPanelLabels } from "./types"
+
+const selectedToggleClass =
+  "aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:hover:bg-primary aria-pressed:hover:text-primary-foreground data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:hover:bg-primary data-[state=on]:hover:text-primary-foreground"
 
 export type LoomLayerPanelProps = {
   readonly layers: readonly LoomLayer[]
@@ -125,35 +136,37 @@ export function LoomLayerPanel({
           </Button>
         )}
       </header>
-      <div className="space-y-2 border-b border-border px-3 py-2.5">
-        <div className="relative">
-          <IconSearch className="pointer-events-none absolute start-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-          <Input
+      <div className="flex flex-col gap-2 border-b border-border px-3 py-2.5">
+        <InputGroup>
+          <InputGroupAddon>
+            <IconSearch />
+          </InputGroupAddon>
+          <InputGroupInput
             aria-label={labels.search}
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
-            className="ps-8"
             placeholder={labels.search}
           />
-        </div>
-        <div className="flex gap-1">
+        </InputGroup>
+        <ToggleGroup
+          aria-label={labels.title}
+          value={[String(visibleOnly)]}
+          onValueChange={([value]) => {
+            if (value) onVisibleOnlyChange(value === "true")
+          }}
+          size="sm"
+          spacing={1}
+        >
           {([false, true] as const).map((onlyVisible) => (
-            <button
+            <ToggleGroupItem
               key={String(onlyVisible)}
-              type="button"
-              aria-pressed={visibleOnly === onlyVisible}
-              className={cn(
-                "px-2.5 py-1 text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                visibleOnly === onlyVisible
-                  ? "bg-primary/10 font-semibold text-primary"
-                  : "text-muted-foreground",
-              )}
-              onClick={() => onVisibleOnlyChange(onlyVisible)}
+              value={String(onlyVisible)}
+              className={selectedToggleClass}
             >
               {onlyVisible ? labels.visible : labels.all}
-            </button>
+            </ToggleGroupItem>
           ))}
-        </div>
+        </ToggleGroup>
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
         {groups.map((group) => {
@@ -178,7 +191,14 @@ export function LoomLayerPanel({
           )
         })}
         {filteredLayers.length === 0 && (
-          <p className="py-10 text-center text-xs text-muted-foreground">{labels.empty}</p>
+          <Empty className="min-h-40 border-0 p-4">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <IconStack2 />
+              </EmptyMedia>
+              <EmptyTitle>{labels.empty}</EmptyTitle>
+            </EmptyHeader>
+          </Empty>
         )}
       </div>
     </aside>

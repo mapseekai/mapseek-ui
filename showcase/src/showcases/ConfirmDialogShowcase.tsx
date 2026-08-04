@@ -82,7 +82,7 @@ function ConfirmDialogActions() {
   )
 }
 
-export function ConfirmDialogOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function ConfirmDialogOverviewDemo(_props: LocalizedDemoProps) {
   return (
     <ConfirmProvider>
       <ConfirmDialogActions />

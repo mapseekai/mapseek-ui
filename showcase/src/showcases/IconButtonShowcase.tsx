@@ -1,7 +1,7 @@
 import { IconButton } from "@registry/ui/icon-button"
 import { IconDownload, IconPencil, IconRefresh, IconTrash } from "@tabler/icons-react"
 
-const iconProps = { size: 14, stroke: 1.75 } as const
+const iconProps = { stroke: 1.75 } as const
 
 import type { LocalizedDemoProps } from "./types"
 

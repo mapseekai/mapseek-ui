@@ -1,4 +1,5 @@
-import { type CrsItem, CrsPicker, type CrsPickerLabels } from "@registry/blocks/crs-picker"
+import { type CrsItem, CrsPicker } from "@registry/blocks/crs-picker"
+import { Button } from "@registry/ui/button"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -118,22 +119,24 @@ export function CrsPickerDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         </h3>
         <CrsPicker value={value} onChange={handleChange} labels={demoLabels.picker} />
         <div className="flex flex-wrap gap-2">
-          <button
+          <Button
             type="button"
             data-demo-action="crs-picker-switch-3857"
-            className="border border-border bg-card px-2 py-1 text-xs text-foreground hover:bg-muted"
+            variant="outline"
+            size="xs"
             onClick={() => handleChange("EPSG:3857")}
           >
             {demoLabels.switch3857}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             data-demo-action="crs-picker-switch-4326"
-            className="border border-border bg-card px-2 py-1 text-xs text-foreground hover:bg-muted"
+            variant="outline"
+            size="xs"
             onClick={() => handleChange("EPSG:4326")}
           >
             {demoLabels.switch4326}
-          </button>
+          </Button>
         </div>
         <div className="min-h-[84px] space-y-0.5 border border-border bg-card p-2">
           <p className="mb-1 font-mono text-[10px] text-muted-foreground">{demoLabels.logTitle}</p>

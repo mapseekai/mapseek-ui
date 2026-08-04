@@ -1,7 +1,7 @@
 {
   "name": "map-switcher",
   "type": "registry:block",
-  "registryDependencies": ["@mapseek/utils"],
+  "registryDependencies": ["@mapseek/button", "@mapseek/collapsible", "@mapseek/utils"],
   "files": [
     {
       "path": "map-switcher/MapSwitcher.tsx",

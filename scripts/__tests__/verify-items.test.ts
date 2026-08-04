@@ -30,6 +30,14 @@ describe("assertInstalledItemDestination", () => {
     await expect(assertInstalledItemDestination(fixtureRoot, "sonner")).resolves.toBeUndefined()
   })
 
+  it("accepts a multi-file UI item through its directory index", async () => {
+    await writeFixture("src/components/ui/color-input/index.ts")
+    await writeFixture("src/lib/utils.ts")
+    await expect(
+      assertInstalledItemDestination(fixtureRoot, "color-input"),
+    ).resolves.toBeUndefined()
+  })
+
   it("rejects aliases written outside src", async () => {
     await writeFixture("components/ui/button.tsx")
     await writeFixture("lib/utils.ts")

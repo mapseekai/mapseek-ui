@@ -136,7 +136,7 @@ export function ResourceGridDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex w-full min-w-0 flex-col gap-3">
       <div className="flex flex-wrap gap-2">
         {(["icon", "sprite", "font"] as const).map((value) => (
           <Button

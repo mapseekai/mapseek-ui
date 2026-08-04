@@ -1,4 +1,5 @@
 import { Block, Collapser, Fieldset, ScrollContainer } from "@registry/blocks/layout"
+import { Button } from "@registry/ui/button"
 import { Input } from "@registry/ui/input"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
@@ -50,29 +51,33 @@ export function LayoutDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           wideMode
           label={demoLabels.textField}
           action={
-            <button
+            <Button
               type="button"
               data-demo-action="layout-field-action"
-              className="px-1 text-xs"
+              variant="ghost"
+              size="icon-xs"
+              aria-label={demoLabels.action}
               onClick={() => setStatus(demoLabels.action)}
             >
               f
-            </button>
+            </Button>
           }
         >
           <Input className="h-7 text-xs" defaultValue="{name}" />
         </Block>
       </Fieldset>
 
-      <button
+      <Button
         type="button"
         data-demo-action="layout-collapse"
         onClick={() => setCollapsed((current) => !current)}
-        className="flex items-center gap-2 border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted"
+        variant="outline"
+        size="sm"
+        className="justify-start"
       >
         <Collapser isCollapsed={collapsed} />
         {collapsed ? demoLabels.expand : demoLabels.collapse}
-      </button>
+      </Button>
 
       <div data-demo-panel="layout-scroll">
         <ScrollContainer className="h-[160px] border border-border p-3">

@@ -21,7 +21,13 @@ import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
 import { DEFAULT_LAYER_PANEL_LABELS } from "./defaults"
 import type { LayerPanelLabels } from "./labels"
-import type { LayerData, LayerGeometry, LayerPanelProps } from "./types"
+import type {
+  LayerData,
+  LayerGeometry,
+  LayerPanelGroupProps,
+  LayerPanelGroupTriggerProps,
+  LayerPanelProps,
+} from "./types"
 import {
   LayerItemContext,
   LayerPanelContext,
@@ -264,7 +270,7 @@ function LayerPanelAddButton({
         className,
       )}
     >
-      <IconPlus size={13} />
+      <IconPlus data-icon="inline-start" />
       {children ?? labels.addLayer}
     </Button>
   )
@@ -290,6 +296,95 @@ function LayerPanelList({
       {children}
     </div>
   )
+}
+
+const LayerPanelGroupContext = React.createContext({ collapsed: false })
+
+function LayerPanelGroup({
+  collapsed = false,
+  className,
+  children,
+  ...props
+}: LayerPanelGroupProps) {
+  const value = React.useMemo(() => ({ collapsed }), [collapsed])
+  return (
+    <LayerPanelGroupContext.Provider value={value}>
+      <section
+        data-slot="layer-panel-group"
+        data-collapsed={collapsed ? "true" : undefined}
+        className={cn("min-w-0", className)}
+        {...props}
+      >
+        {children}
+      </section>
+    </LayerPanelGroupContext.Provider>
+  )
+}
+
+function LayerPanelGroupHeader({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="layer-panel-group-header"
+      className={cn(
+        "flex min-h-9 items-center gap-1 border-b border-border bg-muted/35 px-2",
+        className,
+      )}
+      {...props}
+    />
+  )
+}
+
+function LayerPanelGroupTrigger({
+  expandedLabel,
+  collapsedLabel,
+  className,
+  children,
+  ...props
+}: LayerPanelGroupTriggerProps) {
+  const { collapsed } = React.useContext(LayerPanelGroupContext)
+  return (
+    <Button
+      data-slot="layer-panel-group-trigger"
+      variant="ghost"
+      size="icon-sm"
+      type="button"
+      aria-expanded={!collapsed}
+      aria-label={collapsed ? collapsedLabel : expandedLabel}
+      className={cn("shrink-0 rounded-none text-muted-foreground hover:text-foreground", className)}
+      {...props}
+    >
+      {children ?? (collapsed ? <IconChevronDown className="-rotate-90" /> : <IconChevronDown />)}
+    </Button>
+  )
+}
+
+function LayerPanelGroupTitle({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="layer-panel-group-title"
+      className={cn(
+        "min-w-0 flex-1 truncate text-[12px] font-semibold uppercase tracking-[0.05em] text-foreground",
+        className,
+      )}
+      {...props}
+    />
+  )
+}
+
+function LayerPanelGroupActions({ className, ...props }: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="layer-panel-group-actions"
+      className={cn("flex shrink-0 items-center gap-1", className)}
+      {...props}
+    />
+  )
+}
+
+function LayerPanelGroupContent({ className, ...props }: React.ComponentProps<"div">) {
+  const { collapsed } = React.useContext(LayerPanelGroupContext)
+  if (collapsed) return null
+  return <div data-slot="layer-panel-group-content" className={className} {...props} />
 }
 
 function LayerPanelItem({
@@ -334,7 +429,7 @@ function LayerPanelItem({
         data-testid="layer-item"
         data-selected={isSelected ? "true" : undefined}
         className={cn(
-          "group relative flex select-none items-center gap-2 border-l-2 px-2.5 py-2 transition-colors",
+          "group relative flex select-none items-center gap-2 border-b border-l-2 border-b-border px-2.5 py-2 transition-colors",
           isSelected
             ? "border-l-primary bg-selection-bg"
             : "border-l-transparent hover:bg-muted/50",
@@ -347,19 +442,6 @@ function LayerPanelItem({
             className="cursor-grab text-muted-foreground/50 opacity-0 group-hover:opacity-100"
           />
         )}
-
-        <Button
-          variant="ghost"
-          size="sm"
-          type="button"
-          draggable={!!ctx.onReorder}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          onClick={() => ctx.onSelectChange(layer.id)}
-          className="absolute inset-0 z-0 cursor-pointer border-0 bg-transparent p-0 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
-          aria-label={layer.name}
-        />
 
         {ctx.onVisibleChange && (
           <Button
@@ -376,7 +458,7 @@ function LayerPanelItem({
               layer.visible ? "text-primary" : "text-muted-foreground",
             )}
           >
-            {layer.visible ? <IconEye size={15} /> : <IconEyeOff size={15} />}
+            {layer.visible ? <IconEye /> : <IconEyeOff />}
           </Button>
         )}
 
@@ -386,11 +468,26 @@ function LayerPanelItem({
           className="pointer-events-none shrink-0 text-primary"
         />
 
-        <div className="pointer-events-none min-w-0 flex-1">
+        <Button
+          variant="ghost"
+          size="sm"
+          data-slot="layer-panel-item-content"
+          type="button"
+          draggable={!!ctx.onReorder}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+          onClick={() => ctx.onSelectChange(layer.id)}
+          className="relative z-0 h-auto min-w-0 flex-1 cursor-pointer justify-start rounded-none p-0 text-left"
+          aria-label={layer.name}
+        >
           <div className="truncate text-[13px] font-medium leading-tight text-foreground">
             {layer.name}
           </div>
-          <div className="mt-0.5 flex items-center gap-1.5 text-[11px] leading-tight text-muted-foreground">
+          <div
+            data-slot="layer-panel-item-meta"
+            className="mt-0.5 flex min-w-0 items-center gap-1.5 overflow-hidden whitespace-nowrap text-[11px] leading-tight text-muted-foreground"
+          >
             {layer.featureCount != null && (
               <>
                 <span className="font-mono tabular-nums">{layer.featureCount}</span>
@@ -400,14 +497,15 @@ function LayerPanelItem({
             )}
             <span>{getGeomLabel(ctx.labels, layer.geometryType)}</span>
             {layer.crsLabel && (
-              <span className="ml-0.5 inline-flex items-center border border-primary/25 bg-primary/10 px-1 font-mono text-[10px] font-medium uppercase tracking-[0.04em] text-primary">
+              <span className="ml-0.5 inline-flex min-w-0 items-center truncate border border-primary/25 bg-primary/10 px-1 font-mono text-[10px] font-medium uppercase tracking-[0.04em] text-primary">
                 {layer.crsLabel}
               </span>
             )}
           </div>
-        </div>
+        </Button>
 
         <div
+          data-slot="layer-panel-item-actions"
           className={cn(
             "relative z-10 flex shrink-0 items-center gap-0.5 transition-opacity",
             isSelected ? "opacity-100" : "opacity-0",
@@ -423,7 +521,7 @@ function LayerPanelItem({
               title={ctx.labels.zoomToLayer}
               className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-card hover:text-foreground"
             >
-              <IconCurrentLocation size={14} />
+              <IconCurrentLocation />
             </Button>
           )}
           {ctx.onOpenTable && (
@@ -436,19 +534,21 @@ function LayerPanelItem({
               title={ctx.labels.attributeTable}
               className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-card hover:text-foreground"
             >
-              <IconTable size={14} />
+              <IconTable />
             </Button>
           )}
           {ctx.onRemove && (
-            <button
+            <Button
+              variant="ghost"
+              size="icon-xs"
               type="button"
               onClick={() => ctx.onRemove?.(layer.id)}
               aria-label={`Remove ${layer.name}`}
               title={ctx.labels.delete}
-              className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-card hover:text-destructive"
+              className="size-6 text-muted-foreground hover:bg-card hover:text-destructive"
             >
-              <IconTrash size={14} />
-            </button>
+              <IconTrash />
+            </Button>
           )}
         </div>
       </div>
@@ -503,12 +603,12 @@ function LayerPanelSection({
         className="relative flex h-7 w-full cursor-pointer select-none items-center gap-1.5 border-0 bg-transparent pl-8 pr-3 text-left"
       >
         <span className="pointer-events-none absolute left-[21px] top-1/2 h-px w-[9px] bg-border" />
-        <Icon size={12} className="text-foreground" />
+        <Icon data-icon="inline-start" className="text-foreground" />
         <span className="flex-1 text-[11px] font-semibold uppercase leading-[14px] tracking-[0.06em] text-foreground">
           {label}
         </span>
         <IconChevronUp
-          size={12}
+          data-icon="inline-end"
           className="text-muted-foreground transition-transform duration-[180ms]"
           style={{ transform: open ? "none" : "rotate(180deg)" }}
         />
@@ -561,6 +661,12 @@ export const LayerPanel = Object.assign(LayerPanelRoot, {
   Actions: LayerPanelActions,
   AddButton: LayerPanelAddButton,
   List: LayerPanelList,
+  Group: LayerPanelGroup,
+  GroupHeader: LayerPanelGroupHeader,
+  GroupTrigger: LayerPanelGroupTrigger,
+  GroupTitle: LayerPanelGroupTitle,
+  GroupActions: LayerPanelGroupActions,
+  GroupContent: LayerPanelGroupContent,
   Item: LayerPanelItem,
   Section: LayerPanelSection,
   Empty: LayerPanelEmpty,

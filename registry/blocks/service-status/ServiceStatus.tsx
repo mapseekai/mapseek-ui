@@ -44,16 +44,15 @@ export function ServiceStatus({
         checked={running}
         disabled={disabled}
         onCheckedChange={onChange}
-        className="rounded-none [&_[data-slot='switch-thumb']]:rounded-none"
       />
 
       {running ? (
-        <span className="relative flex h-1.5 w-1.5 shrink-0">
+        <span className="relative flex size-1.5 shrink-0">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+          <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
         </span>
       ) : (
-        <span className="block h-1.5 w-1.5 shrink-0 rounded-full bg-muted-foreground/50" />
+        <span className="block size-1.5 shrink-0 rounded-full bg-muted-foreground/50" />
       )}
 
       <span

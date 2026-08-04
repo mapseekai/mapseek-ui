@@ -6,8 +6,11 @@ import {
   IconTools,
   IconX,
 } from "@tabler/icons-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
 import type { LoomTool, LoomToolboxLabels } from "./types"
 
 export type ToolDetailProps = {
@@ -41,19 +44,22 @@ export function ToolDetail({
   return (
     <>
       <header className="flex items-center gap-2 border-b border-border px-3 py-2.5">
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           type="button"
-          className="flex items-center gap-1 text-xs text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="h-auto gap-1 rounded-none p-0 text-xs text-primary"
           onClick={onBack}
         >
           <IconArrowLeft className="size-3.5" /> {labels.back}
-        </button>
+        </Button>
         <span className="flex-1" />
-        <button
+        <Button
+          variant="ghost"
+          size="icon-xs"
           type="button"
           aria-label={favored ? labels.unfavorite(tool.label) : labels.favorite(tool.label)}
           aria-pressed={favored}
-          className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           onClick={() => onFavoriteChange(tool.id, !favored)}
         >
           {favored ? (
@@ -61,7 +67,7 @@ export function ToolDetail({
           ) : (
             <IconStar className="size-4 text-muted-foreground" />
           )}
-        </button>
+        </Button>
         <Button
           variant="ghost"
           size="icon"
@@ -74,7 +80,7 @@ export function ToolDetail({
       </header>
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
         <div className="flex items-start gap-2">
-          <span className="flex size-8 items-center justify-center bg-primary/10 text-primary">
+          <span className="flex size-8 items-center justify-center bg-muted text-primary">
             <ToolIcon className="size-4" />
           </span>
           <div className="min-w-0">
@@ -82,29 +88,36 @@ export function ToolDetail({
             <p className="mt-1 text-xs text-muted-foreground">{tool.description}</p>
           </div>
         </div>
-        <div className="my-4 border-t border-border" />
+        <Separator className="my-4" />
         <h3 className="mb-3 text-xs font-semibold">{labels.parameters}</h3>
-        <label htmlFor="loom-tool-input-layer" className="grid gap-1.5 text-xs">
-          <span className="text-muted-foreground">{labels.inputLayer}</span>
-          <Input id="loom-tool-input-layer" value={inputLayerName} readOnly />
-        </label>
-        {tool.parameterKind === "distance" && (
-          <label htmlFor="loom-tool-distance" className="mt-3 grid gap-1.5 text-xs">
-            <span className="text-muted-foreground">{labels.distance}</span>
-            <Input
-              id="loom-tool-distance"
-              inputMode="decimal"
-              value={distance}
-              onChange={(event) => onDistanceChange(event.target.value)}
-            />
-          </label>
-        )}
-        <div className="mt-4 flex items-center gap-1.5 bg-primary/10 px-2.5 py-2 text-[11px] text-primary">
-          <IconCircleCheck className="size-3.5" />
-          {labels.parametersValid}
-        </div>
+        <FieldGroup className="gap-3">
+          <Field className="gap-1.5">
+            <FieldLabel htmlFor="loom-tool-input-layer" className="text-xs text-muted-foreground">
+              {labels.inputLayer}
+            </FieldLabel>
+            <Input id="loom-tool-input-layer" value={inputLayerName} readOnly />
+          </Field>
+          {tool.parameterKind === "distance" && (
+            <Field className="gap-1.5">
+              <FieldLabel htmlFor="loom-tool-distance" className="text-xs text-muted-foreground">
+                {labels.distance}
+              </FieldLabel>
+              <Input
+                id="loom-tool-distance"
+                inputMode="decimal"
+                value={distance}
+                onChange={(event) => onDistanceChange(event.target.value)}
+              />
+            </Field>
+          )}
+        </FieldGroup>
+        <Alert className="mt-4">
+          <IconCircleCheck />
+          <AlertDescription>{labels.parametersValid}</AlertDescription>
+        </Alert>
       </div>
-      <footer className="border-t border-border p-3">
+      <Separator />
+      <footer className="p-3">
         {completed && (
           <div role="status" className="mb-2 text-[11px] text-primary">
             {labels.completed}
@@ -115,7 +128,7 @@ export function ToolDetail({
           disabled={tool.parameterKind === "distance" && distance.trim().length === 0}
           onClick={() => onRun(tool.id)}
         >
-          <IconTools />
+          <IconTools data-icon="inline-start" />
           {labels.run(tool.label)}
         </Button>
       </footer>

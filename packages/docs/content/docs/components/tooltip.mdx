@@ -19,7 +19,12 @@ Tooltip 用于补充简短说明，例如图标按钮名称、危险动作提示
 ## 导入
 
 ```tsx
-import { Tooltip, TooltipProvider } from "@/registry/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/registry/ui/tooltip"
 ```
 
 ## 用法
@@ -28,11 +33,11 @@ import { Tooltip, TooltipProvider } from "@/registry/ui/tooltip"
 
 ## 导出
 
-`tooltip.tsx` 导出 `TooltipProvider`、`Tooltip`、`TooltipTrigger` 和 `TooltipContent`。常规用法可直接向 `Tooltip` 传入 `content`。
+`tooltip.tsx` 导出 `TooltipProvider`、`Tooltip`、`TooltipTrigger` 和 `TooltipContent`。将已有元素通过 `TooltipTrigger render={<Button />}` 作为触发器，并把提示文本放入 `TooltipContent`。
 
 ## 状态
 
-`side` 控制方向，`delay` 可覆盖 provider 延迟，`disabled` 会直接渲染 children 而不创建浮层。`asChild` 可复用已有可聚焦触发元素。
+`TooltipContent` 的 `side` 控制方向，`TooltipProvider` 的 `delay` 控制默认延迟，根组件的 `disabled` 禁用浮层。使用 Base UI 的 `render` 组合已有可聚焦元素。
 
 ## 无障碍
 
@@ -41,4 +46,3 @@ Tooltip 只能补充短文本，不能承载关键任务信息或可操作内容
 ## 依赖
 
 <RegistryDependencies registryName="tooltip" />
-

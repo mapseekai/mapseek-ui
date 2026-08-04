@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { COLORMAP_GRADIENTS, NAMED_COLORMAPS } from "./colormaps"
 import type { ColormapName } from "./types"
 

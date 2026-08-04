@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-StyleColorInput 将颜色 swatch、文本输入和可替换 picker 组合为一个受控颜色字段。
+StyleColorInput 基于基础 `ColorInput` 提供样式业务中的兼容命名和导出。
 
 ## 安装
 
@@ -35,7 +35,7 @@ import {
 
 ## 公开导出与 Props
 
-导出 `StyleColorInput`、底层 `ColorPicker` 组合件，以及 `StyleColorInputMode`、`StyleColorInputLayout`、`StyleColorInputProps` 等类型。
+导出 `StyleColorInput`、底层 `ColorPicker` 组合件，以及 `StyleColorInputMode`、`StyleColorInputLayout`、`StyleColorInputProps` 等兼容类型；实现由基础 `ColorInput` 提供。
 
 ## 加载、空态、错误与状态
 
@@ -48,4 +48,3 @@ import {
 ## 依赖
 
 <RegistryDependencies registryName="style-color-input" />
-

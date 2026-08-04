@@ -212,7 +212,7 @@ export function NumberRangeInput({
     )
     return {
       inputValue,
-      sliderValueArray: [sliderValue],
+      sliderValue,
     }
   }, [editing, dirtyValue, editingRange, value, defaultValue, min, max, step])
   const displayedInputValue = formatNumberValue(rangeState.inputValue, step)
@@ -227,7 +227,7 @@ export function NumberRangeInput({
         max={max}
         min={min}
         step={step}
-        value={rangeState.sliderValueArray}
+        value={rangeState.sliderValue}
         onBlur={() => {
           setEditing(false)
           setEditingRange(false)

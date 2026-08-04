@@ -51,10 +51,12 @@ export function LoomLayerGroup({
   return (
     <section className="mb-3">
       <div className="flex items-center gap-1">
-        <button
+        <Button
+          variant="ghost"
+          size="sm"
           type="button"
           aria-expanded={!collapsed}
-          className="flex min-w-0 items-center gap-2 py-1.5 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="h-auto min-w-0 justify-start gap-2 rounded-none py-1.5 text-start"
           onClick={() => onGroupCollapsedChange?.(group, !collapsed)}
         >
           {collapsed ? (
@@ -65,7 +67,7 @@ export function LoomLayerGroup({
           <IconFolder className="size-4 shrink-0 text-primary" />
           <span className="truncate text-xs font-semibold">{group}</span>
           <span className="text-[11px] text-muted-foreground">{members.length}</span>
-        </button>
+        </Button>
         <span className="flex-1" />
         {onRenameGroup && (
           <Button
@@ -76,12 +78,12 @@ export function LoomLayerGroup({
             title={labels.renameGroup(group)}
             onClick={() => onRenameGroup(group)}
           >
-            <IconPencil className="size-3.5" />
+            <IconPencil />
           </Button>
         )}
       </div>
       {!collapsed && (
-        <div className="space-y-1 ps-5">
+        <div className="flex flex-col gap-1 ps-5">
           {members.map((layer) => {
             const GeometryIcon = GEOMETRY_ICONS[layer.geometry]
             const selected = selectedId === layer.id
@@ -93,10 +95,12 @@ export function LoomLayerGroup({
                   selected ? "border-primary/30 bg-primary/10" : "border-border",
                 )}
               >
-                <button
+                <Button
+                  variant="ghost"
+                  size="sm"
                   type="button"
                   aria-label={labels.selectLayer(layer.name)}
-                  className="flex min-w-0 flex-1 items-center gap-2 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start"
                   onClick={() => onSelectLayer(layer.id)}
                 >
                   <GeometryIcon className="size-3.5 shrink-0 text-primary" />
@@ -107,7 +111,7 @@ export function LoomLayerGroup({
                     </span>
                   </span>
                   {selected && <Badge>{labels.current}</Badge>}
-                </button>
+                </Button>
                 <LoomLayerActions
                   layer={layer}
                   labels={labels}

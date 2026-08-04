@@ -33,12 +33,12 @@ function pickAppShowcase(
   registryName: string,
 ): ComponentType<LocalizedDemoProps> {
   const title = titleFromName(registryName)
-  const component =
-    module[`${title}Showcase`] ??
-    module[`${title}OverviewDemo`] ??
-    module[`${title}Demo`] ??
-    Object.values(module).find((candidate) => candidate !== undefined)
-  if (!component) throw new Error(`Showcase module for "${registryName}" has no usable export.`)
+  const component = module[`${title}OverviewDemo`] ?? module[`${title}Demo`]
+  if (!component) {
+    throw new Error(
+      `Showcase module for "${registryName}" must export ${title}OverviewDemo or ${title}Demo.`,
+    )
+  }
   return component
 }
 

@@ -1,6 +1,14 @@
 import { type LayerData, LayerPanel } from "@registry/blocks/layer-panel"
+import { Button } from "@registry/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@registry/ui/dropdown-menu"
+import { Input } from "@registry/ui/input"
 import { Slider } from "@registry/ui/slider"
-import { IconFilter, IconPaint } from "@tabler/icons-react"
+import { IconDots, IconFilter, IconPaint } from "@tabler/icons-react"
 import { useMemo, useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
@@ -359,7 +367,6 @@ export function LayerPanelGroupsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const [groups, setGroups] = useState(initialGroups)
   const [selectedId, setSelectedId] = useState(initialGroupLayers[0]?.id ?? "")
   const [editingGroupId, setEditingGroupId] = useState<string | null>(null)
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null)
   const [draftName, setDraftName] = useState("")
   const [status, setStatus] = useState(demoLabels.selectedStatus)
   const layersById = useMemo(() => new Map(layers.map((layer) => [layer.id, layer])), [layers])
@@ -380,7 +387,6 @@ export function LayerPanelGroupsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const beginRename = (group: LayerGroup) => {
     setEditingGroupId(group.id)
     setDraftName(group.name)
-    setOpenMenuId(null)
   }
 
   const saveRename = (groupId: string) => {
@@ -425,24 +431,24 @@ export function LayerPanelGroupsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
 
         <LayerPanel.List>
           {groups.map((group) => (
-            <div key={group.id} data-demo={`layer-panel-group-${group.id}`} className="min-w-0">
-              <div className="flex min-h-9 items-center gap-1 border-b border-border bg-muted/35 px-2">
-                <button
-                  type="button"
+            <LayerPanel.Group
+              key={group.id}
+              collapsed={group.collapsed}
+              data-demo={`layer-panel-group-${group.id}`}
+            >
+              <LayerPanel.GroupHeader>
+                <LayerPanel.GroupTrigger
                   data-demo={`layer-panel-group-collapse-${group.id}`}
-                  aria-expanded={!group.collapsed}
-                  aria-label={group.collapsed ? demoLabels.expandGroup : demoLabels.collapseGroup}
-                  className="inline-flex size-7 shrink-0 items-center justify-center text-muted-foreground hover:text-foreground"
+                  collapsedLabel={demoLabels.expandGroup}
+                  expandedLabel={demoLabels.collapseGroup}
                   onClick={() => toggleGroup(group.id)}
-                >
-                  {group.collapsed ? "+" : "-"}
-                </button>
+                />
 
                 {editingGroupId === group.id ? (
-                  <input
+                  <Input
                     data-demo={`layer-panel-group-rename-input-${group.id}`}
                     aria-label={demoLabels.renameGroup}
-                    className="min-w-0 flex-1 border border-border bg-background px-2 py-1 text-[12px]"
+                    className="h-7 min-w-0 flex-1 rounded-none text-[12px]"
                     value={draftName}
                     onChange={(event) => setDraftName(event.target.value)}
                     onKeyDown={(event) => {
@@ -450,102 +456,100 @@ export function LayerPanelGroupsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
                     }}
                   />
                 ) : (
-                  <div className="min-w-0 flex-1 truncate text-[12px] font-semibold uppercase tracking-[0.05em] text-foreground">
-                    {group.name}
-                  </div>
+                  <LayerPanel.GroupTitle>{group.name}</LayerPanel.GroupTitle>
                 )}
 
-                {editingGroupId === group.id ? (
-                  <button
-                    type="button"
-                    data-demo={`layer-panel-group-rename-save-${group.id}`}
-                    className="shrink-0 px-2 py-1 text-[11px] text-primary hover:bg-card"
-                    onClick={() => saveRename(group.id)}
-                  >
-                    {demoLabels.saveRename}
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    data-demo={`layer-panel-group-rename-${group.id}`}
-                    className="shrink-0 px-2 py-1 text-[11px] text-muted-foreground hover:bg-card hover:text-foreground"
-                    onClick={() => beginRename(group)}
-                  >
-                    {demoLabels.renameGroup}
-                  </button>
-                )}
-
-                <button
-                  type="button"
-                  data-demo={`layer-panel-group-menu-trigger-${group.id}`}
-                  aria-expanded={openMenuId === group.id}
-                  className="shrink-0 px-2 py-1 text-[11px] text-muted-foreground hover:bg-card hover:text-foreground"
-                  onClick={() =>
-                    setOpenMenuId((current) => (current === group.id ? null : group.id))
-                  }
-                >
-                  {demoLabels.groupMenu}
-                </button>
-              </div>
-
-              {openMenuId === group.id ? (
-                <div
-                  data-demo={`layer-panel-group-menu-${group.id}`}
-                  className="grid gap-1 border-b border-border bg-card px-8 py-2"
-                >
-                  <button
-                    type="button"
-                    data-demo={`layer-panel-group-menu-zoom-${group.id}`}
-                    className="text-left text-[12px] text-foreground hover:text-primary"
-                    onClick={() => {
-                      setOpenMenuId(null)
-                      setStatus(`${demoLabels.menuStatus}: ${demoLabels.zoomGroup} ${group.name}`)
-                    }}
-                  >
-                    {demoLabels.zoomGroup}
-                  </button>
-                  <button
-                    type="button"
-                    data-demo={`layer-panel-group-menu-duplicate-${group.id}`}
-                    className="text-left text-[12px] text-foreground hover:text-primary"
-                    onClick={() => {
-                      setOpenMenuId(null)
-                      setStatus(
-                        `${demoLabels.menuStatus}: ${demoLabels.duplicateGroup} ${group.name}`,
-                      )
-                    }}
-                  >
-                    {demoLabels.duplicateGroup}
-                  </button>
-                </div>
-              ) : null}
-
-              {group.collapsed
-                ? null
-                : group.layerIds.flatMap((layerId) => {
-                    const layer = layersById.get(layerId)
-                    if (!layer) return []
-                    return (
-                      <LayerPanel.Item key={layer.id} layer={layer}>
-                        <LayerPanel.Section id="style" icon={IconPaint} label={demoLabels.style}>
-                          <p className="m-0 text-[11px] leading-5 text-muted-foreground">
-                            {layer.geometryType === "point" ? "Marker size 6" : "Opacity 78%"}
-                          </p>
-                        </LayerPanel.Section>
-                        <LayerPanel.Section
-                          id="filter"
-                          icon={IconFilter}
-                          label={demoLabels.filter}
-                          defaultOpen={false}
+                <LayerPanel.GroupActions>
+                  {editingGroupId === group.id ? (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      data-demo={`layer-panel-group-rename-save-${group.id}`}
+                      className="h-7 rounded-none text-[11px] text-primary"
+                      onClick={() => saveRename(group.id)}
+                    >
+                      {demoLabels.saveRename}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      data-demo={`layer-panel-group-rename-${group.id}`}
+                      className="h-7 rounded-none text-[11px] text-muted-foreground"
+                      onClick={() => beginRename(group)}
+                    >
+                      {demoLabels.renameGroup}
+                    </Button>
+                  )}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          data-demo={`layer-panel-group-menu-trigger-${group.id}`}
+                          aria-label={demoLabels.groupMenu}
+                          className="rounded-none text-muted-foreground"
                         >
-                          <p className="m-0 text-[11px] leading-5 text-muted-foreground">
-                            group_id = {group.id}
-                          </p>
-                        </LayerPanel.Section>
-                      </LayerPanel.Item>
-                    )
-                  })}
-            </div>
+                          <IconDots />
+                        </Button>
+                      }
+                    />
+                    <DropdownMenuContent
+                      align="end"
+                      data-demo={`layer-panel-group-menu-${group.id}`}
+                    >
+                      <DropdownMenuItem
+                        data-demo={`layer-panel-group-menu-zoom-${group.id}`}
+                        onClick={() =>
+                          setStatus(
+                            `${demoLabels.menuStatus}: ${demoLabels.zoomGroup} ${group.name}`,
+                          )
+                        }
+                      >
+                        {demoLabels.zoomGroup}
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        data-demo={`layer-panel-group-menu-duplicate-${group.id}`}
+                        onClick={() =>
+                          setStatus(
+                            `${demoLabels.menuStatus}: ${demoLabels.duplicateGroup} ${group.name}`,
+                          )
+                        }
+                      >
+                        {demoLabels.duplicateGroup}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </LayerPanel.GroupActions>
+              </LayerPanel.GroupHeader>
+
+              <LayerPanel.GroupContent>
+                {group.layerIds.flatMap((layerId) => {
+                  const layer = layersById.get(layerId)
+                  if (!layer) return []
+                  return (
+                    <LayerPanel.Item key={layer.id} layer={layer}>
+                      <LayerPanel.Section id="style" icon={IconPaint} label={demoLabels.style}>
+                        <p className="m-0 text-[11px] leading-5 text-muted-foreground">
+                          {layer.geometryType === "point" ? "Marker size 6" : "Opacity 78%"}
+                        </p>
+                      </LayerPanel.Section>
+                      <LayerPanel.Section
+                        id="filter"
+                        icon={IconFilter}
+                        label={demoLabels.filter}
+                        defaultOpen={false}
+                      >
+                        <p className="m-0 text-[11px] leading-5 text-muted-foreground">
+                          group_id = {group.id}
+                        </p>
+                      </LayerPanel.Section>
+                    </LayerPanel.Item>
+                  )
+                })}
+              </LayerPanel.GroupContent>
+            </LayerPanel.Group>
           ))}
         </LayerPanel.List>
       </LayerPanel>

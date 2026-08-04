@@ -3,6 +3,7 @@ import { cp, mkdtemp, rm } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join, resolve } from "node:path"
 import { pathToFileURL } from "node:url"
+import { SHADCN_PACKAGE } from "../shared/shadcn"
 import { dlxCommand, pnpmCommand } from "./pnpm-command"
 import { loadCatalog } from "./registry-model"
 import { withRegistryServer } from "./registry-server"
@@ -35,7 +36,7 @@ export async function verifyAggregate(): Promise<void> {
         await run(
           fixture,
           dlxCommand(
-            "shadcn@4.8.0",
+            SHADCN_PACKAGE,
             "add",
             ...items.map((item) => `@mapseek/${item.name}`),
             "--yes",

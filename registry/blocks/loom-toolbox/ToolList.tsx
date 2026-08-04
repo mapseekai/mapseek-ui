@@ -1,8 +1,13 @@
 import { IconSearch, IconStar, IconStarFilled, IconTools, IconX } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { cn } from "@/lib/utils"
 import type { LoomTool, LoomToolboxLabels, LoomToolboxTab } from "./types"
+
+const selectedToggleClass =
+  "aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:hover:bg-primary aria-pressed:hover:text-primary-foreground data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:hover:bg-primary data-[state=on]:hover:text-primary-foreground"
 
 type FavoriteButtonProps = {
   readonly tool: LoomTool
@@ -14,18 +19,17 @@ type FavoriteButtonProps = {
 function FavoriteButton({ tool, favored, labels, onFavoriteChange }: FavoriteButtonProps) {
   const Star = favored ? IconStarFilled : IconStar
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="icon-xs"
       type="button"
       aria-label={favored ? labels.unfavorite(tool.label) : labels.favorite(tool.label)}
       aria-pressed={favored}
-      className={cn(
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        favored ? "text-primary" : "text-muted-foreground",
-      )}
+      className={favored ? "text-primary" : "text-muted-foreground"}
       onClick={() => onFavoriteChange(tool.id, !favored)}
     >
-      <Star className={cn("size-3.5", favored && "fill-current")} />
-    </button>
+      <Star className={cn(favored && "fill-current")} />
+    </Button>
   )
 }
 
@@ -72,33 +76,33 @@ export function ToolList({
         </Button>
       </header>
 
-      <div className="space-y-2 border-b border-border px-3 py-2.5">
-        <div className="relative">
-          <IconSearch className="pointer-events-none absolute start-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-          <Input
+      <div className="flex flex-col gap-2 border-b border-border px-3 py-2.5">
+        <InputGroup>
+          <InputGroupAddon>
+            <IconSearch />
+          </InputGroupAddon>
+          <InputGroupInput
             aria-label={labels.search}
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
-            className="ps-8"
             placeholder={labels.search}
           />
-        </div>
-        <div className="flex gap-1">
+        </InputGroup>
+        <ToggleGroup
+          aria-label={labels.categories}
+          value={[tab]}
+          onValueChange={([id]) => {
+            if (id) onTabChange(id as LoomToolboxTab)
+          }}
+          size="sm"
+          spacing={1}
+        >
           {(["all", "favorites", "recent"] as const).map((id) => (
-            <button
-              key={id}
-              type="button"
-              aria-pressed={tab === id}
-              className={cn(
-                "px-2.5 py-1 text-xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                tab === id ? "bg-primary/10 font-semibold text-primary" : "text-muted-foreground",
-              )}
-              onClick={() => onTabChange(id)}
-            >
+            <ToggleGroupItem key={id} value={id} className={selectedToggleClass}>
               {labels.tabs[id]}
-            </button>
+            </ToggleGroupItem>
           ))}
-        </div>
+        </ToggleGroup>
       </div>
 
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
@@ -111,16 +115,18 @@ export function ToolList({
                 return (
                   <div key={tool.id} className="border border-border p-2.5">
                     <div className="mb-2 flex items-center gap-2">
-                      <button
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         type="button"
-                        className="flex min-w-0 flex-1 items-center gap-2 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start"
                         onClick={() => onOpenTool(tool.id)}
                       >
                         <span className="flex size-7 items-center justify-center bg-primary/10 text-primary">
                           <ToolIcon className="size-3.5" />
                         </span>
                         <span className="truncate text-xs font-semibold">{tool.label}</span>
-                      </button>
+                      </Button>
                       <FavoriteButton
                         tool={tool}
                         favored={favoriteIds.has(tool.id)}
@@ -147,7 +153,7 @@ export function ToolList({
               {labels.toolCount(tools.length)}
             </span>
           </div>
-          <div className="space-y-1">
+          <div className="flex flex-col gap-1">
             {tools.map((tool) => {
               const ToolIcon = tool.icon
               return (
@@ -155,9 +161,11 @@ export function ToolList({
                   key={tool.id}
                   className="flex items-center gap-2 border border-transparent px-2 py-1.5 hover:border-border hover:bg-muted/40"
                 >
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
                     type="button"
-                    className="flex min-w-0 flex-1 items-center gap-2 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start"
                     onClick={() => onOpenTool(tool.id)}
                   >
                     <span className="flex size-6 items-center justify-center bg-muted text-muted-foreground">
@@ -169,7 +177,7 @@ export function ToolList({
                         {tool.group} · {tool.description}
                       </span>
                     </span>
-                  </button>
+                  </Button>
                   <FavoriteButton
                     tool={tool}
                     favored={favoriteIds.has(tool.id)}
@@ -180,7 +188,15 @@ export function ToolList({
               )
             })}
             {tools.length === 0 && (
-              <p className="py-8 text-center text-xs text-muted-foreground">{labels.empty}</p>
+              <Empty className="min-h-32 border-0 p-4">
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <IconTools />
+                  </EmptyMedia>
+                  <EmptyTitle>{labels.empty}</EmptyTitle>
+                  <EmptyDescription>{labels.toolCount(0)}</EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             )}
           </div>
         </section>

@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-StyleColorInput combines a color swatch, text field, and replaceable picker into one controlled color field.
+StyleColorInput builds on the foundational `ColorInput` and provides compatibility names and exports for style-domain code.
 
 ## Installation
 
@@ -35,7 +35,7 @@ Use `value`, `open`, `onTextChange`, and `onOpenChange` for fully controlled inp
 
 ## Public Exports and Props
 
-Exports include `StyleColorInput`, the lower-level `ColorPicker` parts, and types such as `StyleColorInputMode`, `StyleColorInputLayout`, and `StyleColorInputProps`.
+Exports include `StyleColorInput`, the lower-level `ColorPicker` parts, and compatibility types such as `StyleColorInputMode`, `StyleColorInputLayout`, and `StyleColorInputProps`; the implementation comes from the foundational `ColorInput`.
 
 ## Loading, Empty, Error, and Status
 
@@ -48,4 +48,3 @@ Pass `aria-label` for the text field and `swatchLabel` for the swatch trigger. A
 ## Dependencies
 
 <RegistryDependencies registryName="style-color-input" />
-

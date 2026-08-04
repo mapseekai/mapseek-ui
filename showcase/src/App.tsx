@@ -2,6 +2,7 @@ import { Badge } from "@registry/ui/badge"
 import { Button } from "@registry/ui/button"
 import { Input } from "@registry/ui/input"
 import { Skeleton } from "@registry/ui/skeleton"
+import { ToggleGroup, ToggleGroupItem } from "@registry/ui/toggle-group"
 import { IconMoon, IconSearch, IconSun } from "@tabler/icons-react"
 import { lazy, Suspense, useEffect, useMemo, useState } from "react"
 import { type ShowcaseCategory, showcaseEntries } from "./showcases/catalog"
@@ -94,28 +95,34 @@ export function App() {
           aria-label={dark ? "切换到浅色模式" : "切换到深色模式"}
           title={dark ? "浅色模式" : "深色模式"}
         >
-          {dark ? <IconSun size={15} /> : <IconMoon size={15} />}
+          {dark ? <IconSun /> : <IconMoon />}
         </Button>
       </header>
 
       <div className="flex min-h-0 flex-1 flex-col md:flex-row">
         <aside className="flex shrink-0 flex-col border-b border-border bg-sidebar md:w-64 md:border-r md:border-b-0">
-          <div className="grid grid-cols-2 border-b border-border">
+          <ToggleGroup
+            value={[activeEntry.category]}
+            size="sm"
+            spacing={0}
+            className="w-full border-b border-border"
+            aria-label="Showcase category"
+            onValueChange={(categories) => {
+              const category = categories.at(-1) as ShowcaseCategory | undefined
+              if (category) selectCategory(category)
+            }}
+          >
             {(["primitive", "block"] as const).map((category) => (
-              <button
-                type="button"
+              <ToggleGroupItem
                 key={category}
-                onClick={() => selectCategory(category)}
-                className={
-                  activeEntry.category === category
-                    ? "border-b-2 border-primary bg-selection-bg px-3 py-2 text-xs font-medium text-primary"
-                    : "border-b-2 border-transparent px-3 py-2 text-xs text-muted-foreground hover:bg-muted focus-visible:bg-muted"
-                }
+                value={category}
+                className="h-9 flex-1"
+                aria-label={CATEGORY_LABELS[category]}
               >
                 {CATEGORY_LABELS[category]} {counts[category]}
-              </button>
+              </ToggleGroupItem>
             ))}
-          </div>
+          </ToggleGroup>
 
           <label htmlFor="showcase-search" className="relative m-2 hidden md:block">
             <span className="sr-only">搜索当前分类</span>
@@ -137,18 +144,17 @@ export function App() {
             className="flex overflow-x-auto md:min-h-0 md:flex-1 md:flex-col md:overflow-y-auto"
           >
             {visibleEntries.map((entry) => (
-              <button
+              <Button
                 type="button"
                 key={entry.id}
                 onClick={() => selectEntry(entry.id)}
-                className={
-                  entry.id === activeEntry.id
-                    ? "shrink-0 border-s-2 border-primary bg-selection-bg px-3 py-2 text-start text-xs font-medium text-primary md:w-full"
-                    : "shrink-0 border-s-2 border-transparent px-3 py-2 text-start text-xs text-foreground hover:bg-muted focus-visible:bg-muted md:w-full"
-                }
+                variant={entry.id === activeEntry.id ? "secondary" : "ghost"}
+                size="sm"
+                className="h-auto shrink-0 justify-start rounded-none md:w-full"
+                aria-current={entry.id === activeEntry.id ? "page" : undefined}
               >
                 {entry.name}
-              </button>
+              </Button>
             ))}
           </nav>
         </aside>

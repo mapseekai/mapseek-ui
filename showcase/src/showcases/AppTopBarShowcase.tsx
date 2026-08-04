@@ -1,4 +1,4 @@
-import { AppTopBar, type AppTopBarLabels } from "@registry/blocks/app-top-bar"
+import { AppTopBar } from "@registry/blocks/app-top-bar"
 import { ProductLogo } from "@registry/blocks/product-logo"
 import { Button } from "@registry/ui/button"
 import { IconHistory } from "@tabler/icons-react"

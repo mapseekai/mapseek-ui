@@ -1,7 +1,12 @@
 "use client"
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@registry/ui/dropdown-menu"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
 
@@ -15,37 +20,19 @@ export function LocaleSwitcher() {
   const isEnglish = pathname === "/en" || pathname.startsWith("/en/")
   const zhPath = isEnglish ? pathname.replace(/^\/en/, "") || "/" : pathname
   const enPath = isEnglish ? pathname : `/en${pathname === "/" ? "" : pathname}`
-  const [open, setOpen] = useState(false)
 
   return (
-    <div className="relative">
-      <button
-        aria-expanded={open}
-        className="inline-flex items-center gap-1 px-2 py-1.5 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground"
-        onClick={() => setOpen((value) => !value)}
-        type="button"
-      >
+    <DropdownMenu>
+      <DropdownMenuTrigger className="inline-flex items-center gap-1 px-2 py-1.5 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground">
         {isEnglish ? "English" : "简体中文"}
-      </button>
-      {open ? (
-        <div className="absolute end-0 top-full z-50 mt-1 min-w-28 border border-fd-border bg-fd-popover p-1 shadow-md">
-          {isEnglish ? (
-            <a
-              className="block px-2 py-1.5 text-sm text-fd-popover-foreground hover:bg-fd-accent"
-              href={`${basePath}${zhPath}`}
-            >
-              简体中文
-            </a>
-          ) : (
-            <a
-              className="block px-2 py-1.5 text-sm text-fd-popover-foreground hover:bg-fd-accent"
-              href={`${basePath}${enPath}`}
-            >
-              English
-            </a>
-          )}
-        </div>
-      ) : null}
-    </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-28">
+        {isEnglish ? (
+          <DropdownMenuItem render={<a href={`${basePath}${zhPath}`} />}>简体中文</DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem render={<a href={`${basePath}${enPath}`} />}>English</DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
   )
 }

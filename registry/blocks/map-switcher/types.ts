@@ -26,7 +26,6 @@ export interface MapSwitcherContextValue {
   selectedId: string | null
   onSelect: (id: string) => void
   open: boolean
-  toggleOpen: () => void
   mode: "button" | "image"
   registerItem: (data: MapSwitcherItemData) => void
   unregisterItem: (id: string) => void

@@ -37,6 +37,8 @@ function CommandDialog({
   return (
     <Dialog {...props}>
       <DialogContent
+        title={title}
+        description={description}
         hideClose={!showCloseButton}
         className={cn("top-1/3 translate-y-0 overflow-hidden rounded-none p-0", className)}
       >
@@ -62,7 +64,7 @@ function CommandInput({
           {...props}
         />
         <InputGroupAddon>
-          <IconSearch className="size-4 shrink-0 opacity-50" />
+          <IconSearch className="shrink-0 opacity-50" />
         </InputGroupAddon>
       </InputGroup>
     </div>

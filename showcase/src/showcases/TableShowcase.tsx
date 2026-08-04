@@ -7,7 +7,7 @@ const rows = [
   { id: "feat-003", name: "Tianmen Mountain", type: "Point", area: "-" },
 ]
 
-export function TableOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function TableOverviewDemo(_props: LocalizedDemoProps) {
   return (
     <div className="max-w-lg space-y-3">
       <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">

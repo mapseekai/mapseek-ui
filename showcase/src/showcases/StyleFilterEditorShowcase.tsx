@@ -8,7 +8,14 @@ import {
 } from "@registry/blocks/style-filter-editor"
 import { Button } from "@registry/ui/button"
 import { Input } from "@registry/ui/input"
-import { Select } from "@registry/ui/select"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@registry/ui/select"
 import { IconPlaylistAdd, IconTrash } from "@tabler/icons-react"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
@@ -49,9 +56,16 @@ type FilterRow = {
 
 function FilterOperator({ label }: { readonly label: string }) {
   return (
-    <Select aria-label={label} value="==" onValueChange={() => undefined}>
-      <Select.Item value="==">==</Select.Item>
-      <Select.Item value="!=">!=</Select.Item>
+    <Select value="==" onValueChange={() => undefined}>
+      <SelectTrigger aria-label={label}>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectItem value="==">==</SelectItem>
+          <SelectItem value="!=">!=</SelectItem>
+        </SelectGroup>
+      </SelectContent>
     </Select>
   )
 }

@@ -4,6 +4,7 @@ import type { Server } from "node:http"
 import { tmpdir } from "node:os"
 import { join, resolve } from "node:path"
 import { afterEach, expect, it } from "vitest"
+import { SHADCN_PACKAGE } from "../../shared/shadcn"
 import { dlxCommand, npmCommand, pnpmCommand } from "../pnpm-command"
 import { startRegistryServer } from "../registry-server"
 
@@ -43,7 +44,7 @@ async function installTheme(fixture: string): Promise<void> {
   await run(fixture, pnpmCommand("install"))
   await run(
     repoRoot,
-    dlxCommand("shadcn@4.8.0", "add", "@mapseek/theme", "--yes", "--cwd", fixture),
+    dlxCommand(SHADCN_PACKAGE, "add", "@mapseek/theme", "--yes", "--cwd", fixture),
   )
 }
 

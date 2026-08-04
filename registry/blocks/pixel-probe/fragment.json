@@ -1,7 +1,12 @@
 {
   "name": "pixel-probe",
   "type": "registry:block",
-  "registryDependencies": ["@mapseek/icon-button", "@mapseek/tooltip", "@mapseek/utils"],
+  "registryDependencies": [
+    "@mapseek/copy-button",
+    "@mapseek/icon-button",
+    "@mapseek/tooltip",
+    "@mapseek/utils"
+  ],
   "files": [
     {
       "path": "pixel-probe/PixelProbe.tsx",

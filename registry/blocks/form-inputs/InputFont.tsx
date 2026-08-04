@@ -52,7 +52,7 @@ export const InputFont: React.FC<InputFontProps> = ({
   )
 
   const inputs = currentValues.map((val, i) => (
-    <div key={FONT_INPUT_KEYS[i] ?? `font-input-extra-${i}`} className="mb-2 last:mb-0">
+    <div key={FONT_INPUT_KEYS[i] ?? `font-input-extra-${i}`}>
       <InputAutocomplete
         aria-label={ariaLabel || name}
         value={val}
@@ -63,7 +63,7 @@ export const InputFont: React.FC<InputFontProps> = ({
   ))
 
   return (
-    <div className="space-y-2" style={style}>
+    <div className="flex flex-col gap-2" style={style}>
       {inputs}
     </div>
   )

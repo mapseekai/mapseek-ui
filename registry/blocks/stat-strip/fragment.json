@@ -1,0 +1,22 @@
+{
+  "name": "stat-strip",
+  "type": "registry:block",
+  "registryDependencies": ["@mapseek/utils"],
+  "files": [
+    {
+      "path": "stat-strip/StatStrip.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/stat-strip/StatStrip.tsx"
+    },
+    {
+      "path": "stat-strip/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/stat-strip/index.ts"
+    },
+    {
+      "path": "stat-strip/types.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/stat-strip/types.ts"
+    }
+  ]
+}

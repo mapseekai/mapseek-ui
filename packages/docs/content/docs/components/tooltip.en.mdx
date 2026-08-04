@@ -1,0 +1,44 @@
+---
+title: "Tooltip"
+registryName: tooltip
+category: primitive
+stability: stable
+showcase: tooltip
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Tooltip provides brief supplemental help such as icon button names, dangerous action hints, and toolbar assistance.
+
+## Installation
+
+<RegistryInstall registryName="tooltip" />
+
+## Import
+
+```tsx
+import { Tooltip, TooltipProvider } from "@/registry/ui/tooltip"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="tooltip" demo="overview" title="Tooltip states" description="Covers hover/focus triggers, four sides, disabled rendering, and icon toolbar labels." minHeight={560} />
+
+## Exports
+
+`tooltip.tsx` exports `TooltipProvider`, `Tooltip`, `TooltipTrigger`, and `TooltipContent`. The common path passes `content` directly to `Tooltip`.
+
+## States
+
+`side` controls placement, `delay` can override provider delay, and `disabled` renders children without creating an overlay. `asChild` reuses an existing focusable trigger.
+
+## Accessibility
+
+Tooltip is only for short supplemental text, not critical task information or actions. Icon buttons still need `aria-label`; Tooltip should not be the only accessible name.
+
+## Dependencies
+
+<RegistryDependencies registryName="tooltip" />
+

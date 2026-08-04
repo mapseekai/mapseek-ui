@@ -1,0 +1,52 @@
+---
+title: "StyleSourcePickerDialog"
+registryName: style-source-picker-dialog
+category: block
+stability: stable
+showcase: style-source-picker-dialog
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+StyleSourcePickerDialog is a portal dialog for adding style sources, with search, source filters, type filters, and multi-select confirmation.
+
+## Installation
+
+<RegistryInstall registryName="style-source-picker-dialog" />
+
+## Import
+
+```tsx
+import {
+  StyleSourcePickerDialog,
+  type StyleSourcePickerDialogProps,
+  type StyleSourcePickerOption,
+} from "@/registry/blocks/style-source-picker-dialog"
+```
+
+## Search, Select, and Confirm
+
+<ShowcaseDemo registryName="style-source-picker-dialog" title="Search, select, and confirm" description="The demo covers dialog portal behavior, search, filters, disabled already-added items, selected count, and confirm state." minHeight={560} />
+
+## Usage
+
+Pass `options`, `alreadyAddedKeys`, `loading`, and `confirming` from the caller. On confirm, the component returns the selected option objects.
+
+## Public Exports and Props
+
+Exports include `StyleSourcePickerDialog` and option, draft, filter, label, and props types. Filtering and selection helpers are installed with the component files.
+
+## Loading, Empty, Error, and Status
+
+`loading` shows loading text, `loadErrorMessage` can pair with `onRetryLoad`, and `confirmErrorMessage` displays confirmation failures. Empty search results use localized empty copy.
+
+## Accessibility
+
+Search, filter toggles, and confirm controls need localized labels. Already-added items are disabled and also show a badge, so the reason is not color-only or interaction-only.
+
+## Dependencies
+
+<RegistryDependencies registryName="style-source-picker-dialog" />
+

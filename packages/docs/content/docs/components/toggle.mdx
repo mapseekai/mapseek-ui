@@ -1,0 +1,44 @@
+---
+title: "Toggle"
+registryName: toggle
+category: primitive
+stability: stable
+showcase: toggle
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Toggle 是可按下/取消的单个按钮，用于格式、捕捉、显示模式等局部开关。它保留 Base UI Toggle 的 `aria-pressed` 语义。
+
+## 安装
+
+<RegistryInstall registryName="toggle" />
+
+## 导入
+
+```tsx
+import { Toggle } from "@/registry/ui/toggle"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="toggle" demo="overview" title="切换按钮状态" description="覆盖普通、默认 pressed、disabled、invalid 和受控 pressed 状态，展示文字 toggle。" minHeight={280} />
+
+## 导出
+
+`toggle.tsx` 导出 `Toggle` 和 `toggleVariants`。组件支持 `pressed/onPressedChange`、`defaultPressed`、`disabled`、`aria-invalid`、`variant` 和 `size`。
+
+## 状态
+
+受控状态使用 `pressed/onPressedChange`；静态初始状态使用 `defaultPressed`。pressed 状态通过 `aria-pressed` 和 `data-state=on` 应用 muted 背景。
+
+## 无障碍
+
+Toggle 文案应描述切换的属性，例如 Bold 或 Snap。若只使用图标，必须提供 `aria-label` 并确保 pressed 状态可被读屏识别。
+
+## 依赖
+
+<RegistryDependencies registryName="toggle" />
+

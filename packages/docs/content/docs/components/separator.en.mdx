@@ -1,0 +1,44 @@
+---
+title: "Separator"
+registryName: separator
+category: primitive
+stability: stable
+showcase: separator
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Separator is a lightweight divider for toolbars, metadata, menu groups, and visual regions inside panels.
+
+## Installation
+
+<RegistryInstall registryName="separator" />
+
+## Import
+
+```tsx
+import { Separator } from "@/registry/ui/separator"
+```
+
+## Orientation
+
+<ShowcaseDemo registryName="separator" demo="overview" title="Orientation" description="Shows horizontal and vertical orientations." minHeight={230} />
+
+## Exports
+
+`Separator` inherits Base UI Separator props and renders horizontally by default. `orientation="vertical"` switches to vertical sizing and self-stretch behavior.
+
+## States and Behavior
+
+Separator has no interaction state. It communicates visual grouping and should not replace headings, labels, or accessible structure.
+
+## Accessibility
+
+Keep separator semantics when a semantic split is useful; decorative separators should never receive keyboard focus. Do not use a divider as the only information hierarchy.
+
+## Dependencies
+
+<RegistryDependencies registryName="separator" />
+

@@ -1,0 +1,54 @@
+---
+title: "SchemaForm"
+registryName: schema-form
+category: block
+stability: stable
+showcase: schema-form
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+SchemaForm 是 schema 驱动的表单主体，支持 number、text、select 和 multiselect 四种字段。调用方负责把领域字段转换为这些基础类型，并保存、校验和提交 values。
+
+## 安装
+
+<RegistryInstall registryName="schema-form" />
+
+## 导入
+
+```tsx
+import {
+  SchemaForm,
+  isSchemaFormValid,
+  seedSchemaFormValues,
+  type SchemaFormField,
+  type SchemaFormOption,
+} from "@/registry/blocks/schema-form"
+```
+
+## Schema 驱动表单
+
+<ShowcaseDemo registryName="schema-form" title="Schema 驱动表单" description="示例保留 number、text、select、multiselect、必填校验、最小选择数量、空选项提示和 values 输出。" minHeight={680} />
+
+## 用法
+
+用 `seedSchemaFormValues(fields)` 初始化 values，再把 `fields`、`values` 和 `onChange` 传给 `SchemaForm`。提交按钮通常读取 `isSchemaFormValid(fields, values)` 来决定是否可运行。
+
+## 公开导出与 Props
+
+导出 `SchemaForm`、`seedSchemaFormValues`、`isSchemaFormValid`、`SchemaFormField`、`SchemaFormOption` 和 `SchemaFormProps`。关键 props 是 `fields`、`values`、`onChange`、`idPrefix` 和 `className`。
+
+## 状态与校验
+
+组件不保存业务状态。number 字段支持 min/max，text 支持 placeholder，select 使用默认值，multiselect 支持空态提示、required 和 min 数量校验。
+
+## 无障碍
+
+每个字段都有 `Label` 与控件关联。必填字段显示星号；调用方应在提交区域补充错误汇总或字段级错误文本，避免只用禁用按钮表达无效。
+
+## 依赖
+
+<RegistryDependencies registryName="schema-form" />
+

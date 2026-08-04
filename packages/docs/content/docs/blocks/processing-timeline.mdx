@@ -1,0 +1,53 @@
+---
+title: "ProcessingTimeline"
+registryName: processing-timeline
+category: block
+stability: stable
+showcase: processing-timeline
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ProcessingTimeline 渲染上传、入库、发布等长任务步骤，包含进度条、重试标记、事件卡和错误日志操作。
+
+## 安装
+
+<RegistryInstall registryName="processing-timeline" />
+
+## 导入
+
+```tsx
+import {
+  ProcessingTimeline,
+  type ProcessingTimelineLabels,
+  type TimelineEvent,
+  type TimelineStep,
+} from "@/registry/blocks/processing-timeline"
+```
+
+## 处理时间线与日志复制
+
+<ShowcaseDemo registryName="processing-timeline" title="处理时间线与日志复制" description="示例复用同一个 TSX 模块作为预览和源码，覆盖原示例的核心状态与交互。" minHeight={720} />
+
+## 用法
+
+传入有序 `TimelineStep[]`。每步可以是 done、active、pending 或 failed，并可携带 percent 进度、消息和事件。
+
+## 公开导出与 Props
+
+导出 `ProcessingTimeline`、`TimelineStep`、`TimelineEvent`、`ProcessingTimelineLabels` 和 props。`onCopyLog` 只在错误事件包含 log 时调用。
+
+## 加载、空态、错误与状态
+
+进度、失败和重试都来自 props；示例覆盖 active percent 与完成后含错误重试的历史流程。
+
+## 无障碍
+
+步骤使用有序列表，百分比进度使用 `role="progressbar"` 与 aria 数值。
+
+## 依赖
+
+<RegistryDependencies registryName="processing-timeline" />
+

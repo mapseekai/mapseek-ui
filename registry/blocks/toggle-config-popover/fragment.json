@@ -1,0 +1,34 @@
+{
+  "name": "toggle-config-popover",
+  "type": "registry:block",
+  "registryDependencies": [
+    "@mapseek/button",
+    "@mapseek/popover",
+    "@mapseek/tooltip",
+    "@mapseek/utils",
+    "@mapseek/labels"
+  ],
+  "files": [
+    {
+      "path": "toggle-config-popover/ToggleConfigPopover.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/toggle-config-popover/ToggleConfigPopover.tsx"
+    },
+    {
+      "path": "toggle-config-popover/defaults.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/toggle-config-popover/defaults.ts"
+    },
+    {
+      "path": "toggle-config-popover/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/toggle-config-popover/index.ts"
+    },
+    {
+      "path": "toggle-config-popover/labels.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/toggle-config-popover/labels.ts"
+    }
+  ],
+  "dependencies": ["@tabler/icons-react"]
+}

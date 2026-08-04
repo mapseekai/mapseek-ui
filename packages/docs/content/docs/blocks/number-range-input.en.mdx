@@ -1,0 +1,51 @@
+---
+title: "NumberRangeInput"
+registryName: number-range-input
+category: block
+stability: stable
+showcase: number-range-input
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+NumberRangeInput pairs a numeric input with a single-thumb slider for opacity, zoom level, percentages, and other min/max numeric settings.
+
+## Installation
+
+<RegistryInstall registryName="number-range-input" />
+
+## Import
+
+```tsx
+import {
+  NumberRangeInput,
+  type NumberRangeInputProps,
+} from "@/registry/blocks/number-range-input"
+```
+
+## Number Range Input
+
+<ShowcaseDemo registryName="number-range-input" title="Number range input" description="Shows integer steps, 0.5 decimal steps, 0.001 precision, direct typing, keyboard stepping, and clear state." minHeight={560} />
+
+## Usage
+
+Pass controlled `value`, `min`, `max`, `step`, and `onChange`. Users can drag the slider or type directly; on blur, the component normalizes display according to range and step.
+
+## Public Exports and Props
+
+Exports include `NumberRangeInput` and `NumberRangeInputProps`. Key props are `value`, `defaultValue`, `min`, `max`, `step`, `onChange`, `required`, `disabled`, `name`, `aria-label`, `className`, `sliderClassName`, and `inputClassName`.
+
+## States and Validation
+
+The component stores in-progress edit text and commits valid values through `onChange`. Slider values clamp to min/max and round to step precision; decimal steps constrain displayed precision.
+
+## Accessibility
+
+Provide an `aria-label` for every instance, especially when a form contains multiple range inputs. Both slider and number input support keyboard operation; put units and errors in the field wrapper.
+
+## Dependencies
+
+<RegistryDependencies registryName="number-range-input" />
+

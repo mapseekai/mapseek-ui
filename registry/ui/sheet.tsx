@@ -1,7 +1,7 @@
-import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { IconX } from "@tabler/icons-react"
 import { cva, type VariantProps } from "class-variance-authority"
+import type * as React from "react"
 
 import { cn } from "@/registry/lib/utils"
 
@@ -137,14 +137,14 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 export {
   Sheet,
-  SheetTrigger,
-  SheetClose,
-  SheetPortal,
   SheetBackdrop,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
   SheetBody,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
   SheetFooter,
+  SheetHeader,
+  SheetPortal,
+  SheetTitle,
+  SheetTrigger,
 }

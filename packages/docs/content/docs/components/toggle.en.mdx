@@ -1,0 +1,44 @@
+---
+title: "Toggle"
+registryName: toggle
+category: primitive
+stability: stable
+showcase: toggle
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Toggle is a single pressable on/off button for formatting, snapping, display modes, and local switches. It keeps Base UI Toggle `aria-pressed` semantics.
+
+## Installation
+
+<RegistryInstall registryName="toggle" />
+
+## Import
+
+```tsx
+import { Toggle } from "@/registry/ui/toggle"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="toggle" demo="overview" title="Toggle button states" description="Covers normal, default pressed, disabled, invalid, and controlled pressed states and shows text toggle." minHeight={280} />
+
+## Exports
+
+`toggle.tsx` exports `Toggle` and `toggleVariants`. The component supports `pressed/onPressedChange`, `defaultPressed`, `disabled`, `aria-invalid`, `variant`, and `size`.
+
+## States
+
+Controlled state uses `pressed/onPressedChange`; static initial state uses `defaultPressed`. Pressed state is expressed with `aria-pressed` and `data-state=on`.
+
+## Accessibility
+
+Toggle text should name the switched property, such as Bold or Snap. Icon-only toggles need `aria-label` and a readable pressed state.
+
+## Dependencies
+
+<RegistryDependencies registryName="toggle" />
+

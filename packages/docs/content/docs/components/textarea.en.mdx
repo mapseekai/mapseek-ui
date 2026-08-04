@@ -1,0 +1,44 @@
+---
+title: "Textarea"
+registryName: textarea
+category: primitive
+stability: stable
+showcase: textarea
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Textarea handles multiline short text such as notes, descriptions, and error details. It keeps Mapseek input boundaries, focus ring, invalid state, and disabled semantics.
+
+## Installation
+
+<RegistryInstall registryName="textarea" />
+
+## Import
+
+```tsx
+import { Textarea } from "@/registry/ui/textarea"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="textarea" demo="overview" title="Multiline input states" description="Covers controlled, readOnly, disabled, and invalid and shows default/disabled/error states." minHeight={460} />
+
+## Exports
+
+`textarea.tsx` exports `Textarea`. The component inherits native `textarea` props, including `value/onChange`, `defaultValue`, `readOnly`, `disabled`, `aria-invalid`, and `rows`.
+
+## States
+
+Controlled input uses `value/onChange`; read-only text remains selectable and copyable; disabled means the field cannot be edited. Invalid state uses `aria-invalid`.
+
+## Accessibility
+
+Textarea needs a visible label or `aria-label`. Long help or error copy should live in `FieldDescription`, `FieldError`, or adjacent text.
+
+## Dependencies
+
+<RegistryDependencies registryName="textarea" />
+

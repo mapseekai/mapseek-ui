@@ -1,0 +1,52 @@
+---
+title: "StyleFunctionEditor"
+registryName: style-function-editor
+category: block
+stability: stable
+showcase: style-function-editor
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+StyleFunctionEditor provides the panel, stops table, action area, and icon button parts for style-function editing.
+
+## Installation
+
+<RegistryInstall registryName="style-function-editor" />
+
+## Import
+
+```tsx
+import {
+  StyleFunctionPanel,
+  StyleFunctionStopsTable,
+  type StyleFunctionStopsTableProps,
+} from "@/registry/blocks/style-function-editor"
+```
+
+## Stops Table and Actions
+
+<ShowcaseDemo registryName="style-function-editor" title="Stops table and actions" description="The demo covers function type, stop rows, add, remove, undo, and convert-to-expression actions." minHeight={560} />
+
+## Usage
+
+Callers provide concrete inputs and stop data. `StyleFunctionPanel` fixes the container, `StyleFunctionStopsTable` fixes table structure, and `StyleFunctionActions` hosts save or conversion actions.
+
+## Public Exports and Props
+
+Exports include `StyleFunctionPanel`, `StyleFunctionStopsTable`, `StyleFunctionActions`, `StyleFunctionIconButton`, table column types, and props.
+
+## Loading, Empty, Error, and Status
+
+The block does not parse expressions or validate stops. Render row-level errors in the wrapper, and replace the table body for loading or empty states.
+
+## Accessibility
+
+Tables need a caption and column headers. Icon buttons must receive `aria-label`; tooltips are supplemental only.
+
+## Dependencies
+
+<RegistryDependencies registryName="style-function-editor" />
+

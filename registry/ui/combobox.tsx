@@ -1,6 +1,6 @@
-import * as React from "react"
 import { Combobox as ComboboxPrimitive } from "@base-ui/react/combobox"
-import { IconChevronDown, IconCheck, IconX } from "@tabler/icons-react"
+import { IconCheck, IconChevronDown, IconX } from "@tabler/icons-react"
+import * as React from "react"
 
 import { cn } from "@/registry/lib/utils"
 import {
@@ -290,19 +290,19 @@ function useComboboxAnchor() {
 
 export {
   Combobox,
-  ComboboxInput,
-  ComboboxContent,
-  ComboboxList,
-  ComboboxItem,
-  ComboboxGroup,
-  ComboboxLabel,
-  ComboboxCollection,
-  ComboboxEmpty,
-  ComboboxChips,
   ComboboxChip,
+  ComboboxChips,
   ComboboxChipsInput,
+  ComboboxClear,
+  ComboboxCollection,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxGroup,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxLabel,
+  ComboboxList,
   ComboboxTrigger,
   ComboboxValue,
-  ComboboxClear,
   useComboboxAnchor,
 }

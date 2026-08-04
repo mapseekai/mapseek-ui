@@ -1,0 +1,44 @@
+---
+title: "Chart"
+registryName: chart
+category: primitive
+stability: stable
+showcase: chart
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Chart provides Mapseek UI wrappers for Recharts containers, theme variables, Tooltip, and Legend. Use it for feature counts, service metrics, and processing statistics.
+
+## Installation
+
+<RegistryInstall registryName="chart" />
+
+## Import
+
+```tsx
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/registry/ui/chart"
+```
+
+## Monthly Statistics
+
+<ShowcaseDemo registryName="chart" demo="overview" title="Monthly statistics" description="Shows bar chart, theme color variable, and tooltip content." minHeight={360} />
+
+## Exports
+
+`ChartContainer` provides context and CSS variables. `ChartTooltip` and `ChartLegend` reuse Recharts primitives, while `ChartTooltipContent` and `ChartLegendContent` provide Mapseek UI styling.
+
+## States and Behavior
+
+`ChartConfig` maps data keys to labels, icons, and colors. The container creates `--color-*` variables and supports different values for light and dark themes.
+
+## Accessibility
+
+Prefer enabling `accessibilityLayer` on Recharts charts, and provide key values in nearby prose or tables. Do not rely on color alone to distinguish series.
+
+## Dependencies
+
+<RegistryDependencies registryName="chart" />
+

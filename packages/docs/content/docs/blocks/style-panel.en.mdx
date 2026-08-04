@@ -1,0 +1,52 @@
+---
+title: "StylePanel"
+registryName: style-panel
+category: block
+stability: stable
+showcase: style-panel
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+StylePanel is a vector-layer style panel for fill, opacity, stroke, and marker controls.
+
+## Installation
+
+<RegistryInstall registryName="style-panel" />
+
+## Import
+
+```tsx
+import {
+  StylePanel,
+  type StylePanelProps,
+  type StyleValue,
+} from "@/registry/blocks/style-panel"
+```
+
+## Vector Style Controls
+
+<ShowcaseDemo registryName="style-panel" title="Vector style controls" description="The demo covers swatches, opacity slider, stroke slider, marker switching, and reset." minHeight={520} />
+
+## Usage
+
+Use `StylePanel` as a controlled container and compose `StylePanel.Fill`, `StylePanel.Opacity`, `StylePanel.Stroke`, and `StylePanel.Marker` based on geometry type.
+
+## Public Exports and Props
+
+Exports include the `StylePanel` compound component plus `StylePanelProps`, `StyleValue`, and labels types. Subcontrols must be rendered inside `StylePanel`.
+
+## Loading, Empty, Error, and Status
+
+The component only edits the passed style value; it does not load or save. Save failures, reset state, and unsaved state should be displayed by the surrounding toolbar or panel.
+
+## Accessibility
+
+Swatch buttons use `fillColor` to generate readable names, and sliders expose numeric values. Marker buttons need clear title or `aria-label` text.
+
+## Dependencies
+
+<RegistryDependencies registryName="style-panel" />
+

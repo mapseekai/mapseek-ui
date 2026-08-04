@@ -1,0 +1,40 @@
+{
+  "name": "filter-panel",
+  "type": "registry:block",
+  "registryDependencies": [
+    "@mapseek/button",
+    "@mapseek/input",
+    "@mapseek/select",
+    "@mapseek/textarea",
+    "@mapseek/utils",
+    "@mapseek/labels"
+  ],
+  "files": [
+    {
+      "path": "filter-panel/FilterPanel.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/filter-panel/FilterPanel.tsx"
+    },
+    {
+      "path": "filter-panel/defaults.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/filter-panel/defaults.ts"
+    },
+    {
+      "path": "filter-panel/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/filter-panel/index.ts"
+    },
+    {
+      "path": "filter-panel/labels.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/filter-panel/labels.ts"
+    },
+    {
+      "path": "filter-panel/types.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/filter-panel/types.ts"
+    }
+  ],
+  "dependencies": ["@tabler/icons-react"]
+}

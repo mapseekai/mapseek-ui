@@ -1,10 +1,10 @@
 export { ResourceDetailDrawer } from "./ResourceDetailDrawer"
 export type {
   DetailKV,
-  IconDetail,
-  SpriteDetail,
   FontDetail,
-  SliceCharset,
+  IconDetail,
   ResourceDetail,
   ResourceDetailDrawerProps,
+  SliceCharset,
+  SpriteDetail,
 } from "./types"

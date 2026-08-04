@@ -1,0 +1,48 @@
+---
+title: "PlaceholderGlyph"
+registryName: placeholder-glyph
+category: block
+stability: stable
+showcase: placeholder-glyph
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+PlaceholderGlyph 根据 seed 生成稳定的单色 SVG，用于尚未上传真实图标的资源格、抽屉和 sprite 预览。
+
+## 安装
+
+<RegistryInstall registryName="placeholder-glyph" />
+
+## 导入
+
+```tsx
+import { PlaceholderGlyph, type PlaceholderGlyphProps } from "@/registry/blocks/placeholder-glyph"
+```
+
+## 确定性资源占位图标
+
+<ShowcaseDemo registryName="placeholder-glyph" title="确定性资源占位图标" description="示例复用同一个 TSX 模块作为预览和源码，覆盖原示例的核心状态与交互。" minHeight={520} />
+
+## 用法
+
+为每个资源传稳定 `seed`，用 `size` 控制像素尺寸，用 `mono` 降低视觉权重。
+
+## 公开导出与 Props
+
+导出 `PlaceholderGlyph` 和 `PlaceholderGlyphProps`。关键 props 是 `seed`、`size`、`mono` 和 `className`。
+
+## 加载、空态、错误与状态
+
+组件无内部状态；调用方通常在真实 SVG、sprite 或字体预览缺失时回退到它。
+
+## 无障碍
+
+SVG 内含 title；如果在按钮或图片语义中使用，应由外层提供更具体的资源名称。
+
+## 依赖
+
+<RegistryDependencies registryName="placeholder-glyph" />
+

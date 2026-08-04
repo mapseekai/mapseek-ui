@@ -1,13 +1,11 @@
-import * as React from "react"
-
+import { IconChevronLeft, IconChevronRight, IconDots } from "@tabler/icons-react"
+import type * as React from "react"
 import { cn } from "@/registry/lib/utils"
 import { Button } from "@/registry/ui/button"
-import { IconChevronLeft, IconChevronRight, IconDots } from "@tabler/icons-react"
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
   return (
     <nav
-      role="navigation"
       aria-label="pagination"
       data-slot="pagination"
       className={cn("mx-auto flex w-full justify-center", className)}
@@ -38,9 +36,12 @@ type PaginationLinkProps = {
 function PaginationLink({ className, isActive, size = "icon", ...props }: PaginationLinkProps) {
   return (
     <Button
-      variant={isActive ? "outline" : "ghost"}
+      variant={isActive ? "default" : "ghost"}
       size={size}
-      className={cn(className)}
+      className={cn(
+        isActive && "text-primary-foreground! hover:text-primary-foreground!",
+        className,
+      )}
       nativeButton={false}
       render={
         <a

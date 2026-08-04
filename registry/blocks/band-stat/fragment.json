@@ -1,0 +1,23 @@
+{
+  "name": "band-stat",
+  "type": "registry:block",
+  "registryDependencies": ["@mapseek/chart"],
+  "files": [
+    {
+      "path": "band-stat/BandStat.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/band-stat/BandStat.tsx"
+    },
+    {
+      "path": "band-stat/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/band-stat/index.ts"
+    },
+    {
+      "path": "band-stat/types.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/band-stat/types.ts"
+    }
+  ],
+  "dependencies": ["recharts"]
+}

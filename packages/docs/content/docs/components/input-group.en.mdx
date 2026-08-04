@@ -1,0 +1,44 @@
+---
+title: "InputGroup"
+registryName: input-group
+category: primitive
+stability: stable
+showcase: input-group
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+InputGroup combines inputs, textareas, icons, units, and inline buttons inside one boundary. Use it for search, coordinates, unit values, and multiline notes.
+
+## Installation
+
+<RegistryInstall registryName="input-group" />
+
+## Import
+
+```tsx
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/registry/ui/input-group"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="input-group" demo="overview" title="Input composition" description="Covers icon prefix, text suffix, invalid state, and block-start textarea addon and shows compositions." minHeight={380} />
+
+## Exports
+
+`input-group.tsx` exports `InputGroup`, `InputGroupAddon`, `InputGroupButton`, `InputGroupInput`, `InputGroupText`, and `InputGroupTextarea`.
+
+## States
+
+Addons support `inline-start`, `inline-end`, `block-start`, and `block-end`. Child `aria-invalid` styles the group boundary; disabled children lower the whole group state.
+
+## Accessibility
+
+Addons do not replace labels. Search, coordinate, and notes fields still need a visible label or `aria-label`; unit text should not be the only error signal.
+
+## Dependencies
+
+<RegistryDependencies registryName="input-group" />
+

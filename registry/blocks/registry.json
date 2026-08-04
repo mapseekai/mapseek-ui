@@ -2,13 +2,32 @@
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "items": [
     {
+      "name": "add-field-form",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/checkbox", "@mapseek/input", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "add-field-form/AddFieldForm.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/add-field-form/AddFieldForm.tsx"
+        },
+        {
+          "path": "add-field-form/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/add-field-form/index.ts"
+        },
+        {
+          "path": "add-field-form/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/add-field-form/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
       "name": "app-top-bar",
       "type": "registry:block",
-      "registryDependencies": [
-        "@mapseek/button",
-        "@mapseek/tooltip",
-        "@mapseek/utils"
-      ],
+      "registryDependencies": ["@mapseek/button", "@mapseek/tooltip", "@mapseek/utils"],
       "files": [
         {
           "path": "app-top-bar/AppTopBar.tsx",
@@ -26,17 +45,425 @@
           "target": "@components/blocks/app-top-bar/types.ts"
         }
       ],
-      "dependencies": [
-        "@tabler/icons-react"
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "attr-inspector",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/calendar",
+        "@mapseek/input",
+        "@mapseek/popover",
+        "@mapseek/select",
+        "@mapseek/tooltip",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "attr-inspector/AttrInspector.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-inspector/AttrInspector.tsx"
+        },
+        {
+          "path": "attr-inspector/attr-field.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-inspector/attr-field.tsx"
+        },
+        {
+          "path": "attr-inspector/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-inspector/index.ts"
+        },
+        {
+          "path": "attr-inspector/infer-hint.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-inspector/infer-hint.ts"
+        },
+        {
+          "path": "attr-inspector/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-inspector/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "attr-table",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/copy-button",
+        "@mapseek/icon-button",
+        "@mapseek/input",
+        "@mapseek/skeleton",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "attr-table/attr-table-sheet.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-table/attr-table-sheet.tsx"
+        },
+        {
+          "path": "attr-table/columns.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-table/columns.ts"
+        },
+        {
+          "path": "attr-table/data-table.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-table/data-table.tsx"
+        },
+        {
+          "path": "attr-table/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-table/index.ts"
+        },
+        {
+          "path": "attr-table/schema-table.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-table/schema-table.tsx"
+        },
+        {
+          "path": "attr-table/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-table/types.ts"
+        },
+        {
+          "path": "attr-table/use-static-row-source.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-table/use-static-row-source.ts"
+        },
+        {
+          "path": "attr-table/use-table-sheet-state.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-table/use-table-sheet-state.ts"
+        },
+        {
+          "path": "attr-table/virtual-table.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/attr-table/virtual-table.tsx"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react", "@tanstack/react-virtual"]
+    },
+    {
+      "name": "band-stat",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/chart"],
+      "dependencies": ["recharts"],
+      "files": [
+        {
+          "path": "band-stat/BandStat.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/band-stat/BandStat.tsx"
+        },
+        {
+          "path": "band-stat/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/band-stat/index.ts"
+        },
+        {
+          "path": "band-stat/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/band-stat/types.ts"
+        }
       ]
+    },
+    {
+      "name": "crs-picker",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/utils", "@mapseek/labels"],
+      "files": [
+        {
+          "path": "crs-picker/CrsPicker.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/crs-picker/CrsPicker.tsx"
+        },
+        {
+          "path": "crs-picker/built-in-crs.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/crs-picker/built-in-crs.ts"
+        },
+        {
+          "path": "crs-picker/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/crs-picker/defaults.ts"
+        },
+        {
+          "path": "crs-picker/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/crs-picker/index.ts"
+        },
+        {
+          "path": "crs-picker/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/crs-picker/labels.ts"
+        },
+        {
+          "path": "crs-picker/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/crs-picker/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "filter-panel",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/input",
+        "@mapseek/select",
+        "@mapseek/textarea",
+        "@mapseek/utils",
+        "@mapseek/labels"
+      ],
+      "files": [
+        {
+          "path": "filter-panel/FilterPanel.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/filter-panel/FilterPanel.tsx"
+        },
+        {
+          "path": "filter-panel/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/filter-panel/defaults.ts"
+        },
+        {
+          "path": "filter-panel/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/filter-panel/index.ts"
+        },
+        {
+          "path": "filter-panel/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/filter-panel/labels.ts"
+        },
+        {
+          "path": "filter-panel/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/filter-panel/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "form-inputs",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/checkbox",
+        "@mapseek/combobox",
+        "@mapseek/input",
+        "@mapseek/number-range-input",
+        "@mapseek/select",
+        "@mapseek/textarea",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "form-inputs/InputAutocomplete.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/form-inputs/InputAutocomplete.tsx"
+        },
+        {
+          "path": "form-inputs/InputCheckbox.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/form-inputs/InputCheckbox.tsx"
+        },
+        {
+          "path": "form-inputs/InputEnum.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/form-inputs/InputEnum.tsx"
+        },
+        {
+          "path": "form-inputs/InputFont.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/form-inputs/InputFont.tsx"
+        },
+        {
+          "path": "form-inputs/InputMultiInput.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/form-inputs/InputMultiInput.tsx"
+        },
+        {
+          "path": "form-inputs/InputNumber.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/form-inputs/InputNumber.tsx"
+        },
+        {
+          "path": "form-inputs/InputSelect.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/form-inputs/InputSelect.tsx"
+        },
+        {
+          "path": "form-inputs/InputString.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/form-inputs/InputString.tsx"
+        },
+        {
+          "path": "form-inputs/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/form-inputs/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "geojson-view",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/json-viewer", "@mapseek/utils", "@mapseek/labels"],
+      "files": [
+        {
+          "path": "geojson-view/GeoJSONView.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/geojson-view/GeoJSONView.tsx"
+        },
+        {
+          "path": "geojson-view/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/geojson-view/defaults.ts"
+        },
+        {
+          "path": "geojson-view/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/geojson-view/index.ts"
+        },
+        {
+          "path": "geojson-view/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/geojson-view/labels.ts"
+        },
+        {
+          "path": "geojson-view/stringify.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/geojson-view/stringify.ts"
+        }
+      ]
+    },
+    {
+      "name": "json-editor",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/utils"],
+      "files": [
+        {
+          "path": "json-editor/JsonEditor.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/json-editor/JsonEditor.tsx"
+        },
+        {
+          "path": "json-editor/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/json-editor/index.ts"
+        }
+      ],
+      "dependencies": [
+        "@codemirror/autocomplete",
+        "@codemirror/lang-json",
+        "@codemirror/language",
+        "@codemirror/lint",
+        "@codemirror/search",
+        "@codemirror/state",
+        "@codemirror/view",
+        "@lezer/highlight",
+        "@uiw/react-codemirror",
+        "json-stringify-pretty-compact"
+      ]
+    },
+    {
+      "name": "layer-editor-group",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/accordion", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "layer-editor-group/LayerEditorGroup.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-editor-group/LayerEditorGroup.tsx"
+        },
+        {
+          "path": "layer-editor-group/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-editor-group/index.ts"
+        },
+        {
+          "path": "layer-editor-group/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-editor-group/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "layer-panel",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/labels", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "layer-panel/LayerPanel.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-panel/LayerPanel.tsx"
+        },
+        {
+          "path": "layer-panel/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-panel/defaults.ts"
+        },
+        {
+          "path": "layer-panel/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-panel/index.ts"
+        },
+        {
+          "path": "layer-panel/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-panel/labels.ts"
+        },
+        {
+          "path": "layer-panel/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-panel/types.ts"
+        },
+        {
+          "path": "layer-panel/use-layer-panel.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-panel/use-layer-panel.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "layer-style-editor",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/dropdown-menu",
+        "@mapseek/layer-editor-group",
+        "@mapseek/separator",
+        "@mapseek/tabs",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "layer-style-editor/LayerStyleEditor.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-style-editor/LayerStyleEditor.tsx"
+        },
+        {
+          "path": "layer-style-editor/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-style-editor/index.ts"
+        },
+        {
+          "path": "layer-style-editor/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-style-editor/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
     },
     {
       "name": "layout",
       "type": "registry:block",
-      "registryDependencies": [
-        "@mapseek/label",
-        "@mapseek/utils"
-      ],
+      "registryDependencies": ["@mapseek/label", "@mapseek/utils"],
       "files": [
         {
           "path": "layout/Block.tsx",
@@ -64,17 +491,35 @@
           "target": "@components/blocks/layout/index.ts"
         }
       ],
-      "dependencies": [
-        "@tabler/icons-react"
-      ]
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "linked-ref-list",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/icon-button", "@mapseek/tooltip", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "linked-ref-list/LinkedRefList.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/linked-ref-list/LinkedRefList.tsx"
+        },
+        {
+          "path": "linked-ref-list/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/linked-ref-list/index.ts"
+        },
+        {
+          "path": "linked-ref-list/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/linked-ref-list/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
     },
     {
       "name": "loading-screen",
       "type": "registry:block",
-      "registryDependencies": [
-        "@mapseek/utils",
-        "@mapseek/labels"
-      ],
+      "registryDependencies": ["@mapseek/utils", "@mapseek/labels"],
       "files": [
         {
           "path": "loading-screen/LoadingScreen.tsx",
@@ -97,47 +542,92 @@
           "target": "@components/blocks/loading-screen/labels.ts"
         }
       ],
-      "dependencies": [
-        "@tabler/icons-react"
-      ]
+      "dependencies": ["@tabler/icons-react"]
     },
     {
-      "name": "product-logo",
+      "name": "map-controls",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/button", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "map-controls/MapControls.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/map-controls/MapControls.tsx"
+        },
+        {
+          "path": "map-controls/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/map-controls/index.ts"
+        },
+        {
+          "path": "map-controls/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/map-controls/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "map-coordinate-status",
       "type": "registry:block",
       "registryDependencies": [
-        "@mapseek/utils"
+        "@mapseek/button",
+        "@mapseek/popover",
+        "@mapseek/utils",
+        "@mapseek/labels",
+        "@mapseek/crs-picker"
       ],
       "files": [
         {
-          "path": "product-logo/ProductLogo.tsx",
+          "path": "map-coordinate-status/MapCoordinateStatus.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/product-logo/ProductLogo.tsx"
+          "target": "@components/blocks/map-coordinate-status/MapCoordinateStatus.tsx"
         },
         {
-          "path": "product-logo/index.ts",
+          "path": "map-coordinate-status/defaults.ts",
           "type": "registry:block",
-          "target": "@components/blocks/product-logo/index.ts"
+          "target": "@components/blocks/map-coordinate-status/defaults.ts"
+        },
+        {
+          "path": "map-coordinate-status/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/map-coordinate-status/index.ts"
+        },
+        {
+          "path": "map-coordinate-status/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/map-coordinate-status/labels.ts"
+        },
+        {
+          "path": "map-coordinate-status/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/map-coordinate-status/types.ts"
         }
-      ]
+      ],
+      "dependencies": ["@tabler/icons-react"]
     },
     {
-      "name": "placeholder-glyph",
+      "name": "map-switcher",
       "type": "registry:block",
-      "registryDependencies": [
-        "@mapseek/utils"
-      ],
+      "registryDependencies": ["@mapseek/utils"],
       "files": [
         {
-          "path": "placeholder-glyph/PlaceholderGlyph.tsx",
+          "path": "map-switcher/MapSwitcher.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/placeholder-glyph/PlaceholderGlyph.tsx"
+          "target": "@components/blocks/map-switcher/MapSwitcher.tsx"
         },
         {
-          "path": "placeholder-glyph/index.ts",
+          "path": "map-switcher/index.ts",
           "type": "registry:block",
-          "target": "@components/blocks/placeholder-glyph/index.ts"
+          "target": "@components/blocks/map-switcher/index.ts"
+        },
+        {
+          "path": "map-switcher/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/map-switcher/types.ts"
         }
-      ]
+      ],
+      "dependencies": ["@tabler/icons-react"]
     },
     {
       "name": "notification-center",
@@ -167,17 +657,69 @@
           "target": "@components/blocks/notification-center/types.ts"
         }
       ],
-      "dependencies": [
-        "@tabler/icons-react"
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "number-range-input",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/input", "@mapseek/slider", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "number-range-input/NumberRangeInput.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/number-range-input/NumberRangeInput.tsx"
+        },
+        {
+          "path": "number-range-input/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/number-range-input/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "pixel-probe",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/icon-button", "@mapseek/tooltip", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react"],
+      "files": [
+        {
+          "path": "pixel-probe/PixelProbe.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/pixel-probe/PixelProbe.tsx"
+        },
+        {
+          "path": "pixel-probe/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/pixel-probe/index.ts"
+        },
+        {
+          "path": "pixel-probe/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/pixel-probe/types.ts"
+        }
+      ]
+    },
+    {
+      "name": "placeholder-glyph",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/utils"],
+      "files": [
+        {
+          "path": "placeholder-glyph/PlaceholderGlyph.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/placeholder-glyph/PlaceholderGlyph.tsx"
+        },
+        {
+          "path": "placeholder-glyph/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/placeholder-glyph/index.ts"
+        }
       ]
     },
     {
       "name": "processing-timeline",
       "type": "registry:block",
-      "registryDependencies": [
-        "@mapseek/button",
-        "@mapseek/utils"
-      ],
+      "registryDependencies": ["@mapseek/button", "@mapseek/utils"],
       "files": [
         {
           "path": "processing-timeline/ProcessingTimeline.tsx",
@@ -195,90 +737,130 @@
           "target": "@components/blocks/processing-timeline/types.ts"
         }
       ],
-      "dependencies": [
-        "@tabler/icons-react"
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "product-logo",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/utils"],
+      "files": [
+        {
+          "path": "product-logo/ProductLogo.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/product-logo/ProductLogo.tsx"
+        },
+        {
+          "path": "product-logo/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/product-logo/index.ts"
+        }
       ]
     },
     {
-      "name": "service-status",
+      "name": "raster-style-panel",
       "type": "registry:block",
       "registryDependencies": [
-        "@mapseek/switch",
+        "@mapseek/input",
+        "@mapseek/select",
+        "@mapseek/tooltip",
         "@mapseek/utils",
         "@mapseek/labels"
       ],
       "files": [
         {
-          "path": "service-status/ServiceStatus.tsx",
+          "path": "raster-style-panel/ColormapPicker.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/service-status/ServiceStatus.tsx"
+          "target": "@components/blocks/raster-style-panel/ColormapPicker.tsx"
         },
         {
-          "path": "service-status/defaults.ts",
+          "path": "raster-style-panel/CustomColormapEditor.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/service-status/defaults.ts"
+          "target": "@components/blocks/raster-style-panel/CustomColormapEditor.tsx"
         },
         {
-          "path": "service-status/index.ts",
+          "path": "raster-style-panel/RasterStylePanel.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/service-status/index.ts"
+          "target": "@components/blocks/raster-style-panel/RasterStylePanel.tsx"
         },
         {
-          "path": "service-status/labels.ts",
+          "path": "raster-style-panel/Segmented.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/service-status/labels.ts"
+          "target": "@components/blocks/raster-style-panel/Segmented.tsx"
+        },
+        {
+          "path": "raster-style-panel/StretchControl.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/raster-style-panel/StretchControl.tsx"
+        },
+        {
+          "path": "raster-style-panel/colormaps.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/raster-style-panel/colormaps.ts"
+        },
+        {
+          "path": "raster-style-panel/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/raster-style-panel/defaults.ts"
+        },
+        {
+          "path": "raster-style-panel/gradient.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/raster-style-panel/gradient.ts"
+        },
+        {
+          "path": "raster-style-panel/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/raster-style-panel/index.ts"
+        },
+        {
+          "path": "raster-style-panel/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/raster-style-panel/labels.ts"
+        },
+        {
+          "path": "raster-style-panel/presets.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/raster-style-panel/presets.ts"
+        },
+        {
+          "path": "raster-style-panel/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/raster-style-panel/types.ts"
         }
-      ]
+      ],
+      "dependencies": ["@tabler/icons-react"]
     },
     {
-      "name": "service-endpoint-row",
+      "name": "resource-detail-drawer",
       "type": "registry:block",
       "registryDependencies": [
-        "@mapseek/icon-button",
-        "@mapseek/tooltip"
+        "@mapseek/button",
+        "@mapseek/checkbox",
+        "@mapseek/sheet",
+        "@mapseek/svg-data-uri",
+        "@mapseek/textarea",
+        "@mapseek/utils",
+        "@mapseek/placeholder-glyph",
+        "@mapseek/resource-grid"
       ],
       "files": [
         {
-          "path": "service-endpoint-row/ServiceEndpointRow.tsx",
+          "path": "resource-detail-drawer/ResourceDetailDrawer.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/service-endpoint-row/ServiceEndpointRow.tsx"
+          "target": "@components/blocks/resource-detail-drawer/ResourceDetailDrawer.tsx"
         },
         {
-          "path": "service-endpoint-row/index.ts",
+          "path": "resource-detail-drawer/index.ts",
           "type": "registry:block",
-          "target": "@components/blocks/service-endpoint-row/index.ts"
+          "target": "@components/blocks/resource-detail-drawer/index.ts"
         },
         {
-          "path": "service-endpoint-row/types.ts",
+          "path": "resource-detail-drawer/types.ts",
           "type": "registry:block",
-          "target": "@components/blocks/service-endpoint-row/types.ts"
+          "target": "@components/blocks/resource-detail-drawer/types.ts"
         }
       ],
-      "dependencies": [
-        "@tabler/icons-react"
-      ]
-    },
-    {
-      "name": "resource-status",
-      "type": "registry:block",
-      "registryDependencies": [
-        "@mapseek/utils"
-      ],
-      "files": [
-        {
-          "path": "resource-status/ResourceStatusBadge.tsx",
-          "type": "registry:block",
-          "target": "@components/blocks/resource-status/ResourceStatusBadge.tsx"
-        },
-        {
-          "path": "resource-status/index.ts",
-          "type": "registry:block",
-          "target": "@components/blocks/resource-status/index.ts"
-        }
-      ],
-      "dependencies": [
-        "@tabler/icons-react"
-      ]
+      "dependencies": ["@tabler/icons-react"]
     },
     {
       "name": "resource-grid",
@@ -317,18 +899,12 @@
           "target": "@components/blocks/resource-grid/types.ts"
         }
       ],
-      "dependencies": [
-        "@tabler/icons-react"
-      ]
+      "dependencies": ["@tabler/icons-react"]
     },
     {
       "name": "resource-sidebar",
       "type": "registry:block",
-      "registryDependencies": [
-        "@mapseek/button",
-        "@mapseek/tooltip",
-        "@mapseek/utils"
-      ],
+      "registryDependencies": ["@mapseek/button", "@mapseek/tooltip", "@mapseek/utils"],
       "files": [
         {
           "path": "resource-sidebar/ResourceSidebar.tsx",
@@ -346,72 +922,426 @@
           "target": "@components/blocks/resource-sidebar/types.ts"
         }
       ],
-      "dependencies": [
-        "@tabler/icons-react"
-      ]
+      "dependencies": ["@tabler/icons-react"]
     },
     {
-      "name": "resource-detail-drawer",
+      "name": "resource-status",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/utils"],
+      "files": [
+        {
+          "path": "resource-status/ResourceStatusBadge.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-status/ResourceStatusBadge.tsx"
+        },
+        {
+          "path": "resource-status/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/resource-status/index.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "schema-form",
       "type": "registry:block",
       "registryDependencies": [
-        "@mapseek/button",
         "@mapseek/checkbox",
-        "@mapseek/sheet",
-        "@mapseek/svg-data-uri",
-        "@mapseek/textarea",
-        "@mapseek/utils",
-        "@mapseek/placeholder-glyph",
-        "@mapseek/resource-grid"
+        "@mapseek/input",
+        "@mapseek/label",
+        "@mapseek/select",
+        "@mapseek/utils"
       ],
       "files": [
         {
-          "path": "resource-detail-drawer/ResourceDetailDrawer.tsx",
+          "path": "schema-form/SchemaForm.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/resource-detail-drawer/ResourceDetailDrawer.tsx"
+          "target": "@components/blocks/schema-form/SchemaForm.tsx"
         },
         {
-          "path": "resource-detail-drawer/index.ts",
+          "path": "schema-form/index.ts",
           "type": "registry:block",
-          "target": "@components/blocks/resource-detail-drawer/index.ts"
+          "target": "@components/blocks/schema-form/index.ts"
         },
         {
-          "path": "resource-detail-drawer/types.ts",
+          "path": "schema-form/types.ts",
           "type": "registry:block",
-          "target": "@components/blocks/resource-detail-drawer/types.ts"
+          "target": "@components/blocks/schema-form/types.ts"
+        },
+        {
+          "path": "schema-form/validate.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/schema-form/validate.ts"
         }
-      ],
-      "dependencies": [
-        "@tabler/icons-react"
       ]
     },
     {
-      "name": "linked-ref-list",
+      "name": "service-endpoint-row",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/icon-button", "@mapseek/tooltip"],
+      "files": [
+        {
+          "path": "service-endpoint-row/ServiceEndpointRow.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/service-endpoint-row/ServiceEndpointRow.tsx"
+        },
+        {
+          "path": "service-endpoint-row/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-endpoint-row/index.ts"
+        },
+        {
+          "path": "service-endpoint-row/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-endpoint-row/types.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "service-status",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/switch", "@mapseek/utils", "@mapseek/labels"],
+      "files": [
+        {
+          "path": "service-status/ServiceStatus.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/service-status/ServiceStatus.tsx"
+        },
+        {
+          "path": "service-status/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-status/defaults.ts"
+        },
+        {
+          "path": "service-status/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-status/index.ts"
+        },
+        {
+          "path": "service-status/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/service-status/labels.ts"
+        }
+      ]
+    },
+    {
+      "name": "split-tool-picker",
       "type": "registry:block",
       "registryDependencies": [
-        "@mapseek/icon-button",
+        "@mapseek/button",
+        "@mapseek/popover",
+        "@mapseek/tooltip",
+        "@mapseek/utils",
+        "@mapseek/labels"
+      ],
+      "files": [
+        {
+          "path": "split-tool-picker/SplitToolPicker.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/split-tool-picker/SplitToolPicker.tsx"
+        },
+        {
+          "path": "split-tool-picker/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/split-tool-picker/defaults.ts"
+        },
+        {
+          "path": "split-tool-picker/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/split-tool-picker/index.ts"
+        },
+        {
+          "path": "split-tool-picker/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/split-tool-picker/labels.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "stat-strip",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/utils"],
+      "files": [
+        {
+          "path": "stat-strip/StatStrip.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/stat-strip/StatStrip.tsx"
+        },
+        {
+          "path": "stat-strip/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/stat-strip/index.ts"
+        },
+        {
+          "path": "stat-strip/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/stat-strip/types.ts"
+        }
+      ]
+    },
+    {
+      "name": "storage-meter",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/popover",
+        "@mapseek/progress",
         "@mapseek/tooltip",
         "@mapseek/utils"
       ],
       "files": [
         {
-          "path": "linked-ref-list/LinkedRefList.tsx",
+          "path": "storage-meter/StorageMeter.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/linked-ref-list/LinkedRefList.tsx"
+          "target": "@components/blocks/storage-meter/StorageMeter.tsx"
         },
         {
-          "path": "linked-ref-list/index.ts",
+          "path": "storage-meter/format-bytes.ts",
           "type": "registry:block",
-          "target": "@components/blocks/linked-ref-list/index.ts"
+          "target": "@components/blocks/storage-meter/format-bytes.ts"
         },
         {
-          "path": "linked-ref-list/types.ts",
+          "path": "storage-meter/index.ts",
           "type": "registry:block",
-          "target": "@components/blocks/linked-ref-list/types.ts"
+          "target": "@components/blocks/storage-meter/index.ts"
+        },
+        {
+          "path": "storage-meter/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/storage-meter/types.ts"
         }
       ],
-      "dependencies": [
-        "@tabler/icons-react"
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "style-color-input",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/input",
+        "@mapseek/popover",
+        "@mapseek/select",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "style-color-input/ColorPicker.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/style-color-input/ColorPicker.tsx"
+        },
+        {
+          "path": "style-color-input/StyleColorInput.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/style-color-input/StyleColorInput.tsx"
+        },
+        {
+          "path": "style-color-input/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-color-input/index.ts"
+        },
+        {
+          "path": "style-color-input/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-color-input/types.ts"
+        }
+      ],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react", "color"]
+    },
+    {
+      "name": "style-editor-modal",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/dialog", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "style-editor-modal/StyleEditorModal.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/style-editor-modal/StyleEditorModal.tsx"
+        },
+        {
+          "path": "style-editor-modal/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-editor-modal/index.ts"
+        },
+        {
+          "path": "style-editor-modal/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-editor-modal/types.ts"
+        }
       ]
+    },
+    {
+      "name": "style-editor-panel",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/layout", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "style-editor-panel/StyleEditorPanel.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/style-editor-panel/StyleEditorPanel.tsx"
+        },
+        {
+          "path": "style-editor-panel/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-editor-panel/index.ts"
+        },
+        {
+          "path": "style-editor-panel/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-editor-panel/types.ts"
+        }
+      ]
+    },
+    {
+      "name": "style-filter-editor",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/utils"],
+      "files": [
+        {
+          "path": "style-filter-editor/StyleFilterEditor.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/style-filter-editor/StyleFilterEditor.tsx"
+        },
+        {
+          "path": "style-filter-editor/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-filter-editor/index.ts"
+        },
+        {
+          "path": "style-filter-editor/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-filter-editor/types.ts"
+        }
+      ]
+    },
+    {
+      "name": "style-function-editor",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/button", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "style-function-editor/StyleFunctionEditor.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/style-function-editor/StyleFunctionEditor.tsx"
+        },
+        {
+          "path": "style-function-editor/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-function-editor/index.ts"
+        },
+        {
+          "path": "style-function-editor/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-function-editor/types.ts"
+        }
+      ]
+    },
+    {
+      "name": "style-panel",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/labels",
+        "@mapseek/layer-panel",
+        "@mapseek/slider",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "style-panel/StylePanel.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/style-panel/StylePanel.tsx"
+        },
+        {
+          "path": "style-panel/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-panel/defaults.ts"
+        },
+        {
+          "path": "style-panel/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-panel/index.ts"
+        },
+        {
+          "path": "style-panel/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-panel/labels.ts"
+        },
+        {
+          "path": "style-panel/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-panel/types.ts"
+        }
+      ]
+    },
+    {
+      "name": "style-source-picker-dialog",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/badge",
+        "@mapseek/button",
+        "@mapseek/dialog",
+        "@mapseek/input",
+        "@mapseek/toggle-group",
+        "@mapseek/utils"
+      ],
+      "files": [
+        {
+          "path": "style-source-picker-dialog/StyleSourcePickerDialog.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/style-source-picker-dialog/StyleSourcePickerDialog.tsx"
+        },
+        {
+          "path": "style-source-picker-dialog/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-source-picker-dialog/index.ts"
+        },
+        {
+          "path": "style-source-picker-dialog/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-source-picker-dialog/types.ts"
+        },
+        {
+          "path": "style-source-picker-dialog/utils.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/style-source-picker-dialog/utils.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
+    },
+    {
+      "name": "toggle-config-popover",
+      "type": "registry:block",
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/popover",
+        "@mapseek/tooltip",
+        "@mapseek/utils",
+        "@mapseek/labels"
+      ],
+      "files": [
+        {
+          "path": "toggle-config-popover/ToggleConfigPopover.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/toggle-config-popover/ToggleConfigPopover.tsx"
+        },
+        {
+          "path": "toggle-config-popover/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/toggle-config-popover/defaults.ts"
+        },
+        {
+          "path": "toggle-config-popover/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/toggle-config-popover/index.ts"
+        },
+        {
+          "path": "toggle-config-popover/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/toggle-config-popover/labels.ts"
+        }
+      ],
+      "dependencies": ["@tabler/icons-react"]
     }
   ]
 }

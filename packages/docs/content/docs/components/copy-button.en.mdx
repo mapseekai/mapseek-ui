@@ -1,0 +1,44 @@
+---
+title: "CopyButton"
+registryName: copy-button
+category: primitive
+stability: stable
+showcase: copy-button
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+CopyButton copies short texts such as identifiers and paths, in icon and text variants. After a successful copy it switches to a check confirmation and reverts after a short delay.
+
+## Installation
+
+<RegistryInstall registryName="copy-button" />
+
+## Import
+
+```tsx
+import { CopyButton } from "@/registry/ui/copy-button"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="copy-button" demo="overview" title="Copy button variants" description="The icon variant fits compact toolbars and the text variant works as a standalone action; a successful copy briefly shows a confirmation state." minHeight={120} />
+
+## Exports
+
+`copy-button.tsx` exports `CopyButton`. The component accepts `content` (text to copy), `variant="icon" | "text"`, `label`, `copiedLabel`, `duration`, and `onCopy` / `onCopyError` callbacks.
+
+## States
+
+The button shows the copy icon or `label` by default; after a successful copy it shows a check and `copiedLabel`, reverting after `duration` milliseconds. When the clipboard is unavailable it triggers `onCopyError`.
+
+## Accessibility
+
+The icon variant must carry an `aria-label` describing the copy target; the confirmation state updates the accessible name so screen readers perceive the result.
+
+## Dependencies
+
+<RegistryDependencies registryName="copy-button" />
+

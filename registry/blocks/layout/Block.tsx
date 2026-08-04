@@ -1,6 +1,6 @@
-import React, { useRef, type CSSProperties, type PropsWithChildren, type ReactNode } from "react"
-import { cn } from "@/lib/utils"
+import React, { type CSSProperties, type PropsWithChildren, type ReactNode, useRef } from "react"
 import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
 
 export type BlockProps = PropsWithChildren & {
   "data-wd-key"?: string
@@ -24,7 +24,7 @@ export type BlockProps = PropsWithChildren & {
 export const Block: React.FC<BlockProps> = (props) => {
   const blockElRef = useRef<HTMLDivElement>(null)
 
-  const onLabelClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const onLabelClick = (event: React.MouseEvent<HTMLFieldSetElement>) => {
     const target = event.nativeEvent.target as HTMLElement
     const contains = blockElRef.current?.contains(target)
 
@@ -36,8 +36,14 @@ export const Block: React.FC<BlockProps> = (props) => {
     }
   }
 
+  const onLabelKeyDown = (event: React.KeyboardEvent<HTMLFieldSetElement>) => {
+    if (event.target !== event.currentTarget) return
+    if (event.key !== "Enter" && event.key !== " ") return
+    event.preventDefault()
+  }
+
   const containerClasses = cn(
-    "w-full",
+    "m-0 min-w-0 border-0 p-0 w-full",
     {
       "flex flex-col gap-1.5 py-1": props.wideMode,
       "flex items-center gap-2 py-1": props.inline,
@@ -58,11 +64,12 @@ export const Block: React.FC<BlockProps> = (props) => {
   )
 
   return (
-    <div
+    <fieldset
       style={props.style}
       data-wd-key={props["data-wd-key"]}
       className={containerClasses}
       onClick={onLabelClick}
+      onKeyDown={onLabelKeyDown}
     >
       {props.wideMode ? (
         <>
@@ -113,6 +120,6 @@ export const Block: React.FC<BlockProps> = (props) => {
           </div>
         </>
       )}
-    </div>
+    </fieldset>
   )
 }

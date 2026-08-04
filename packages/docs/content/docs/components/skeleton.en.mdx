@@ -1,0 +1,44 @@
+---
+title: "Skeleton"
+registryName: skeleton
+category: primitive
+stability: stable
+showcase: skeleton
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Skeleton is a loading placeholder for known content structure while data is still unavailable. It fits text rows, card content, and list placeholders.
+
+## Installation
+
+<RegistryInstall registryName="skeleton" />
+
+## Import
+
+```tsx
+import { Skeleton } from "@/registry/ui/skeleton"
+```
+
+## Loading Placeholders
+
+<ShowcaseDemo registryName="skeleton" demo="overview" title="Loading placeholders" description="Shows text-row skeletons and card skeleton." minHeight={280} />
+
+## Exports
+
+`Skeleton` is a `div` with `data-slot="skeleton"` and standard `div` props. Callers control dimensions through `className`.
+
+## States and Behavior
+
+The default style uses `animate-pulse` and `bg-muted`. Placeholder dimensions should approximate final content to avoid layout shift after loading.
+
+## Accessibility
+
+Skeleton should not be announced as real content. Long loading regions need parent-level `aria-busy` or status text so screen-reader users know work is in progress.
+
+## Dependencies
+
+<RegistryDependencies registryName="skeleton" />
+

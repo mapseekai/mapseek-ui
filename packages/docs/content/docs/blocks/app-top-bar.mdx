@@ -1,0 +1,48 @@
+---
+title: "AppTopBar"
+registryName: app-top-bar
+category: block
+stability: stable
+showcase: app-top-bar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+AppTopBar 是地图编辑器的应用顶栏。它负责返回按钮、品牌槽、工程名、保存按钮和动作插槽的布局；品牌、保存状态、快照动作、路由和持久化逻辑由调用方提供。
+
+## 安装
+
+<RegistryInstall registryName="app-top-bar" />
+
+## 导入
+
+```tsx
+import { AppTopBar, type AppTopBarLabels, type AppTopBarProps } from "@/registry/blocks/app-top-bar"
+```
+
+## 受控保存状态
+
+<ShowcaseDemo registryName="app-top-bar" title="受控保存状态" description="示例展示品牌槽、dirty 状态 pill、保存、另存为和快照动作。" minHeight={220} />
+
+## 用法
+
+把 `projectName`、`brand`、`status` 和 `labels` 作为展示输入传给组件，并把 `onBack`、`onSave` 接到应用路由与保存流程。`beforeSaveActions`、`afterSaveActions`、`centerActions` 和 `endActions` 用于放置调用方自己的导出、历史、快照或共享按钮。
+
+## 公开导出与 Props
+
+导出 `AppTopBar`、`AppTopBarProps` 和 `AppTopBarLabels`。关键 props 是 `projectName`、`labels`、`onBack`、`onSave`、`saveDisabled`、`savePending`、`brand`、`status` 和四个动作插槽。组件不内置品牌资源或状态 badge 样式。
+
+## 受控状态
+
+保存状态由调用方拥有。示例中点“保存”会清除 dirty，点“另存为”重新标脏，点“快照”只更新外层状态文本。真实应用通常会把 `savePending` 绑定到异步保存 promise，并在失败时由外层 toast 或 Dialog 呈现错误。
+
+## 无障碍
+
+返回按钮使用 `labels.back` 作为可访问名称，保存按钮使用 `labels.save`。传入动作插槽时优先使用原生 `button` 或项目 Button，并为图标按钮提供 `aria-label` 或清晰文本。`status` 文案应包含可读状态，不要只依赖颜色。
+
+## 依赖
+
+<RegistryDependencies registryName="app-top-bar" />
+

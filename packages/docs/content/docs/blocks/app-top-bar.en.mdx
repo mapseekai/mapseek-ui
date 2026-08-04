@@ -1,0 +1,48 @@
+---
+title: "AppTopBar"
+registryName: app-top-bar
+category: block
+stability: stable
+showcase: app-top-bar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+AppTopBar is the application chrome for map editors. It owns the layout for back, brand, project name, save, and action slots; the caller provides branding, save status, snapshot actions, routing, and persistence behavior.
+
+## Installation
+
+<RegistryInstall registryName="app-top-bar" />
+
+## Import
+
+```tsx
+import { AppTopBar, type AppTopBarLabels, type AppTopBarProps } from "@/registry/blocks/app-top-bar"
+```
+
+## Controlled Save State
+
+<ShowcaseDemo registryName="app-top-bar" title="Controlled save state" description="Shows brand slot, dirty status pill, save, save-as, and snapshot actions." minHeight={220} />
+
+## Usage
+
+Pass `projectName`, `brand`, `status`, and `labels` as display inputs, then connect `onBack` and `onSave` to app routing and persistence. Use `beforeSaveActions`, `afterSaveActions`, `centerActions`, and `endActions` for caller-owned export, history, snapshot, or sharing buttons.
+
+## Public Exports and Props
+
+Exports include `AppTopBar`, `AppTopBarProps`, and `AppTopBarLabels`. Key props are `projectName`, `labels`, `onBack`, `onSave`, `saveDisabled`, `savePending`, `brand`, `status`, and the four action slots. The block does not include brand assets or status badge styles.
+
+## Controlled State
+
+Save state belongs to the caller. In the example, Save clears dirty state, Save as marks it dirty again, and Snapshot only updates outer status text. Real apps usually bind `savePending` to an async save promise and show failures through an outer toast or Dialog.
+
+## Accessibility
+
+The back button uses `labels.back` as its accessible name, and the save button uses `labels.save`. When passing action slots, prefer native `button` or the project Button and provide `aria-label` or clear text for icon-only controls. `status` text should be readable and not rely on color alone.
+
+## Dependencies
+
+<RegistryDependencies registryName="app-top-bar" />
+

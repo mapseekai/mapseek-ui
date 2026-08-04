@@ -1,0 +1,49 @@
+---
+title: "Tabs"
+registryName: tabs
+category: primitive
+stability: stable
+showcase: tabs
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Tabs switches between views for the same object, such as overview, schema, map preview, export settings, and activity history.
+
+## Installation
+
+<RegistryInstall registryName="tabs" />
+
+## Import
+
+```tsx
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/registry/ui/tabs"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="tabs" demo="overview" title="Tab states" description="Covers default value, controlled value, line variant, vertical orientation, and disabled trigger." minHeight={560} />
+
+## Exports
+
+`tabs.tsx` exports `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, and `tabsListVariants`.
+
+## States
+
+Use `defaultValue` for static tabs and `value/onValueChange` for controlled tabs. `TabsList variant="line"` fits editor tab bars, while `orientation="vertical"` fits side navigation.
+
+## Accessibility
+
+Trigger text should describe the target panel. Keyboard users should be able to move with arrow keys, activate with Enter/Space, and skip disabled triggers.
+
+## Dependencies
+
+<RegistryDependencies registryName="tabs" />
+

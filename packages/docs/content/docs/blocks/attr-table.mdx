@@ -1,0 +1,55 @@
+---
+title: "AttrTable"
+registryName: attr-table
+category: block
+stability: stable
+showcase: attr-table
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+AttrTable 提供属性表的公共构件：schema 表、虚拟化数据表、底部抽屉外壳、静态行源和属性列工具。数据加载、错误恢复、选择和抽屉开关由调用方控制。
+
+## 安装
+
+<RegistryInstall registryName="attr-table" />
+
+## 导入
+
+```tsx
+import {
+  AttrTableSheet,
+  DataTable,
+  SchemaTable,
+  useStaticRowSource,
+  type ColumnDef,
+  type RowSource,
+} from "@/registry/blocks/attr-table"
+```
+
+## Schema、数据表与抽屉
+
+<ShowcaseDemo registryName="attr-table" title="Schema、数据表与抽屉" description="示例保留字段搜索、复制按钮、数据行选择、加载/错误/空状态，以及可关闭的底部属性表抽屉。" minHeight={720} />
+
+## 用法
+
+`SchemaTable` 读取字段名和类型并自动过滤 geometry/geography 列。`DataTable` 读取 `RowSource`，通过 `getRowKey`、`renderCell` 和 `onRowClick` 接入业务数据。`AttrTableSheet` 是贴底的可调整高度外壳，适合覆盖地图画布。
+
+## 公开导出与 Props
+
+导出 `AttrTableSheet`、`DataTable`、`SchemaTable`、`attributeColumns`、`isGeometryColumn`、`useStaticRowSource`、`useTableSheetState`、`ColumnDef`、`RowSource`、`DataTableProps`、`SchemaTableProps`、`AttrTableSheetProps` 和 `TableSheetState`。核心 props 是列定义、行源、行 key、单元格渲染、选中 key、空状态文案、错误重试文案和抽屉 header 插槽。
+
+## 状态、空态与错误
+
+`RowSource` 通过 `items`、`totalCount`、`isInitialLoading`、`error` 和 `refetch` 表达数据状态。示例中的开关覆盖加载、错误和空数据路径，行选择通过 `selectedRowKey` 受控。
+
+## 无障碍
+
+Schema 搜索使用原生输入，复制和抽屉按钮提供可访问名称。底部抽屉的 resize handle 支持键盘方向键、Home 和 End；调用方应给抽屉提供准确的 `ariaLabel`。
+
+## 依赖
+
+<RegistryDependencies registryName="attr-table" />
+

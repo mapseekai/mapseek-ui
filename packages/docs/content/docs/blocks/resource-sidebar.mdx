@@ -1,0 +1,54 @@
+---
+title: "ResourceSidebar"
+registryName: resource-sidebar
+category: block
+stability: stable
+showcase: resource-sidebar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ResourceSidebar 是资源库左侧栏，展示资源类型、分类列表、计数以及分类重命名/删除入口。
+
+## 安装
+
+<RegistryInstall registryName="resource-sidebar" />
+
+## 导入
+
+```tsx
+import {
+  ResourceSidebar,
+  type ResourceSidebarCategory,
+  type ResourceSidebarLabels,
+  type ResourceSidebarProps,
+  type ResourceTab,
+} from "@/registry/blocks/resource-sidebar"
+```
+
+## 资源类型与分类侧栏
+
+<ShowcaseDemo registryName="resource-sidebar" title="资源类型与分类侧栏" description="示例复用同一个 TSX 模块作为预览和源码，覆盖原示例的核心状态与交互。" minHeight={620} />
+
+## 用法
+
+用受控 `tab`、`activeCat` 驱动侧栏，按当前 tab 传 categories 和 allItems 文案。
+
+## 公开导出与 Props
+
+导出 `ResourceSidebar`、`ResourceSidebarCategory`、`ResourceSidebarLabels`、`ResourceSidebarProps` 和 `ResourceTab`。
+
+## 加载、空态、错误与状态
+
+tab、分类选择和分类动作全部由调用方控制。示例覆盖类型切换、分类选择、新建、重命名和删除状态。
+
+## 无障碍
+
+类型和分类均为按钮；重命名和删除按钮通过 Tooltip/title 暴露动作名称。
+
+## 依赖
+
+<RegistryDependencies registryName="resource-sidebar" />
+

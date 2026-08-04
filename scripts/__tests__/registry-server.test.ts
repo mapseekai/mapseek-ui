@@ -1,8 +1,8 @@
-import { afterEach, expect, it } from "vitest"
-import { mkdtemp, mkdir, rm, symlink, writeFile } from "node:fs/promises"
-import { spawn, type ChildProcess } from "node:child_process"
+import { type ChildProcess, spawn } from "node:child_process"
+import { mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join, resolve } from "node:path"
+import { afterEach, expect, it } from "vitest"
 
 const repoRoot = resolve(import.meta.dirname, "../..")
 const publicRoot = join(repoRoot, "public")
@@ -24,9 +24,9 @@ it("rejects public symlinks that resolve outside the public root", async () => {
     await rm(link, { force: true })
     await rm(outside, { recursive: true, force: true })
   }
-  server = spawn("bun", ["scripts/registry-server.ts"], { cwd: repoRoot })
+  server = spawn("tsx", ["scripts/registry-server.ts"], { cwd: repoRoot })
   let response: Response | undefined
-  // A separate Bun process owns the fixed port; retrying observes its real readiness.
+  // A separate process owns the fixed port; retrying observes its real readiness.
   for (let attempt = 0; attempt < 20 && !response; attempt += 1) {
     try {
       response = await fetch("http://127.0.0.1:4174/outside.json")

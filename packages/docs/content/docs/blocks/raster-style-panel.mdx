@@ -1,0 +1,52 @@
+---
+title: "RasterStylePanel"
+registryName: raster-style-panel
+category: block
+stability: stable
+showcase: raster-style-panel
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+RasterStylePanel 为 TiTiler 栅格样式提供受控表单，覆盖波段、配色、拉伸、NoData、重采样、瓦片大小和输出格式。
+
+## 安装
+
+<RegistryInstall registryName="raster-style-panel" />
+
+## 导入
+
+```tsx
+import {
+  RasterStylePanel,
+  type RasterStylePanelProps,
+  type RasterStyleValue,
+} from "@/registry/blocks/raster-style-panel"
+```
+
+## 栅格样式编辑
+
+<ShowcaseDemo registryName="raster-style-panel" title="栅格样式编辑" description="示例使用真实受控 value，并展示保存、重置、校验和源码同步。" minHeight={680} />
+
+## 用法
+
+由调用方持有 `value`，在 `onChange` 中写回样式草稿。传入 `bandCount`、`stats`、`autoRange` 和完整 `labels` 后，面板会根据单波段或 RGB 合成切换可用控件。
+
+## 公开导出与 Props
+
+导出 `RasterStylePanel`、`ColormapPicker`、`StretchControl`、色带工具、默认预设，以及 `RasterStyleValue`、`RasterStyleLabels`、`RasterStylePanelProps` 等类型。
+
+## 加载、空态、错误与状态
+
+组件自身不拉取栅格元数据；外层负责加载和错误状态。`onValidityChange` 用于禁用保存按钮，`resetKey` 用于 authoritative 数据替换后重置草稿输入。
+
+## 无障碍
+
+所有表单控件需要由调用方提供本地化 label。校验错误不要只改变颜色，应同步到状态栏或保存按钮禁用状态。
+
+## 依赖
+
+<RegistryDependencies registryName="raster-style-panel" />
+

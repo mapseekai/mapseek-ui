@@ -1,0 +1,29 @@
+{
+  "name": "json-editor",
+  "type": "registry:block",
+  "registryDependencies": ["@mapseek/utils"],
+  "files": [
+    {
+      "path": "json-editor/JsonEditor.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/json-editor/JsonEditor.tsx"
+    },
+    {
+      "path": "json-editor/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/json-editor/index.ts"
+    }
+  ],
+  "dependencies": [
+    "@codemirror/autocomplete",
+    "@codemirror/lang-json",
+    "@codemirror/language",
+    "@codemirror/lint",
+    "@codemirror/search",
+    "@codemirror/state",
+    "@codemirror/view",
+    "@lezer/highlight",
+    "@uiw/react-codemirror",
+    "json-stringify-pretty-compact"
+  ]
+}

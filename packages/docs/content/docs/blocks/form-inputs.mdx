@@ -1,0 +1,57 @@
+---
+title: "FormInputs"
+registryName: form-inputs
+category: block
+stability: stable
+showcase: form-inputs
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+FormInputs 是从样式编辑工作流中抽出的无领域输入控件集合，包括字符串、多行字符串、数字、复选框、选择、短枚举、自动补全、字体栈和数字范围输入。
+
+## 安装
+
+<RegistryInstall registryName="form-inputs" />
+
+## 导入
+
+```tsx
+import {
+  InputAutocomplete,
+  InputCheckbox,
+  InputEnum,
+  InputFont,
+  InputMultiInput,
+  InputNumber,
+  InputSelect,
+  InputString,
+} from "@/registry/blocks/form-inputs"
+```
+
+## 输入控件集合
+
+<ShowcaseDemo registryName="form-inputs" title="输入控件集合" description="示例保留 commit-on-blur 文本和数字输入、范围输入、短枚举、下拉、自动补全、字体栈以及受控值输出。" minHeight={720} />
+
+## 用法
+
+每个输入都接收当前值和 `onChange`，调用方保存最终值。`InputString` 和普通 `InputNumber` 采用编辑中本地状态并在 blur 或 Enter 后提交；`InputEnum` 会根据选项数量选择短枚举或下拉表达。
+
+## 公开导出与 Props
+
+导出 `InputString`、`InputNumber`、`InputCheckbox`、`InputSelect`、`InputEnum`、`InputMultiInput`、`InputAutocomplete`、`InputFont` 以及每个组件的 Props 类型。常用 props 是 `value`、`default`、`options`、`fonts`、`min`、`max`、`allowRange`、`rangeStep`、`required`、`disabled` 和 `aria-label`。
+
+## 状态与校验
+
+数字输入会按 min/max 判断输入合法性；范围模式复用 `NumberRangeInput`。空字符串会转换为 `undefined` 或调用方指定的 fallback。示例中的重置按钮展示了空值、未选和空字体栈状态。
+
+## 无障碍
+
+给无可见文本的输入提供 `aria-label`。短枚举和复选框使用可点击标签；下拉和自动补全依赖基础 UI 的键盘行为。禁用、必填和错误状态应由调用方在字段外层补充说明。
+
+## 依赖
+
+<RegistryDependencies registryName="form-inputs" />
+

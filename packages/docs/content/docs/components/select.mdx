@@ -1,0 +1,44 @@
+---
+title: "Select"
+registryName: select
+category: primitive
+stability: stable
+showcase: select
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Select 用于有限选项的单值选择，例如 CRS、格式和模式。它基于 Base UI Select，并把 item label 映射到 trigger value。
+
+## 安装
+
+<RegistryInstall registryName="select" />
+
+## 导入
+
+```tsx
+import { Select } from "@/registry/ui/select"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="select" demo="overview" title="选择器状态" description="覆盖受控选择、预选值、小尺寸和 disabled，展示四组可见状态。" minHeight={440} />
+
+## 导出
+
+`select.tsx` 导出 `Select`，并通过 `Select.Item` 暴露选项组件。根组件支持 `value/onValueChange`、`defaultValue`、`placeholder`、`disabled` 和 `size`。
+
+## 状态
+
+受控值使用 `value/onValueChange`；静态默认值使用 `defaultValue`。`size="sm"` 提供 28px 触发器；`disabled` 阻止打开列表。
+
+## 无障碍
+
+为无可见 label 的 select 提供 `aria-label`。键盘用户应能通过 Enter/Space 打开、方向键移动、Enter 选择、Escape 关闭。
+
+## 依赖
+
+<RegistryDependencies registryName="select" />
+

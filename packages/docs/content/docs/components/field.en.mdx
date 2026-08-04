@@ -1,0 +1,44 @@
+---
+title: "Field"
+registryName: field
+category: primitive
+stability: stable
+showcase: field
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Field composes label, description, error, and control layout so form spacing, error state, and responsive direction remain consistent.
+
+## Installation
+
+<RegistryInstall registryName="field" />
+
+## Import
+
+```tsx
+import { Field, FieldDescription, FieldError, FieldLabel } from "@/registry/ui/field"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="field" demo="overview" title="Field layout" description="Covers basic field, invalid field, horizontal checkbox field, and disabled field and shows label/description/error composition." minHeight={420} />
+
+## Exports
+
+`field.tsx` exports `FieldSet`, `FieldLegend`, `FieldGroup`, `Field`, `FieldContent`, `FieldLabel`, `FieldTitle`, `FieldDescription`, `FieldSeparator`, and `FieldError`.
+
+## States
+
+`orientation` supports `vertical`, `horizontal`, and `responsive`. Invalid fields use `data-invalid="true"` together with control-level `aria-invalid`; disabled fields can use field-level `data-disabled` to affect labels.
+
+## Accessibility
+
+`FieldError` uses `role="alert"`. Labels should point to real controls; error text should explain the format, impact, and recovery path.
+
+## Dependencies
+
+<RegistryDependencies registryName="field" />
+

@@ -1,0 +1,32 @@
+---
+title: "Mapseek UI"
+registryName: theme
+category: primitive
+stability: stable
+showcase: none
+---
+
+
+Mapseek UI 是一套面向地图、空间数据和运维界面的 shadcn 源码组件。安装时组件会进入你的应用源码树，方便团队审查、调整和长期维护。
+
+## 安装方式
+
+使用 shadcn 将组件源码安装到项目中，而不是把 Mapseek UI 当作运行时组件包引入。组件源码、样式 token 和依赖声明来自本仓库的 registry 输出。
+
+```bash
+bun run registry:build
+```
+
+## 双语文档
+
+中文文档是默认站点，不带路径前缀。英文文档发布在 `/en`，并保持相同的结构化元数据，便于后续组件页面做本地化校验。
+
+## 后续内容
+
+从安装流程开始，再进入组件、业务组件和 registry 交付说明：
+
+- [安装](/getting-started/installation)
+- [主题](/getting-started/theming)
+- [Registry](/getting-started/registry)
+- [组件](/components)
+- [业务组件](/blocks)

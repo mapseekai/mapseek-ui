@@ -1,0 +1,53 @@
+---
+title: "NotificationCenter"
+registryName: notification-center
+category: block
+stability: stable
+showcase: notification-center
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+NotificationCenter is a header dropdown for processing jobs, source metadata, stream state, and clear actions.
+
+## Installation
+
+<RegistryInstall registryName="notification-center" />
+
+## Import
+
+```tsx
+import {
+  NotificationCenter,
+  type NotificationCenterItem,
+  type NotificationCenterLabels,
+  type NotificationCenterProps,
+} from "@/registry/blocks/notification-center"
+```
+
+## Notifications, loading, error, and empty states
+
+<ShowcaseDemo registryName="notification-center" title="Notifications, loading, error, and empty states" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={520} />
+
+## Usage
+
+Pass controlled `items`, localized labels, and `streamActive`. Clear all, clear one, and retry are delegated through callbacks.
+
+## Public Exports and Props
+
+Exports include `NotificationCenter`, `NotificationCenterItem`, `NotificationCenterLabels`, `NotificationCenterStatusTone`, and props. State props include `isLoading`, `isError`, and `streamActive`.
+
+## Loading, Empty, Error, and Status
+
+The block includes loading skeletons, retryable error, empty state, and populated summaries. Demo buttons cover all four paths.
+
+## Accessibility
+
+The trigger uses `labels.trigger` as its accessible name; the dropdown inherits keyboard and focus handling from DropdownMenu.
+
+## Dependencies
+
+<RegistryDependencies registryName="notification-center" />
+

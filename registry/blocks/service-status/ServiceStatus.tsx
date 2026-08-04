@@ -1,6 +1,6 @@
 import { Switch } from "@/components/ui/switch"
-import { cn } from "@/lib/utils"
 import { resolveLabels } from "@/lib/mapseek-labels"
+import { cn } from "@/lib/utils"
 import { DEFAULT_SERVICE_STATUS_LABELS } from "./defaults"
 import type { ServiceStatusLabels } from "./labels"
 
@@ -31,7 +31,7 @@ export function ServiceStatus({
       className={cn(
         "inline-flex items-center font-sans text-xs transition-colors",
         variant === "framed" && [
-          "h-[26px] gap-1.5 border px-2",
+          "h-6 gap-1.5 border px-2",
           running ? "border-primary bg-primary/5" : "border-border bg-background",
         ],
         variant === "inline" && ["h-7 gap-2", running ? "text-primary" : "text-muted-foreground"],
@@ -62,7 +62,9 @@ export function ServiceStatus({
           variant === "framed" && (running ? "text-primary" : "text-muted-foreground"),
         )}
       >
-        {running ? runningLabel ?? resolvedLabels.running : stoppedLabel ?? resolvedLabels.stopped}
+        {running
+          ? (runningLabel ?? resolvedLabels.running)
+          : (stoppedLabel ?? resolvedLabels.stopped)}
       </span>
     </div>
   )

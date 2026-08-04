@@ -1,0 +1,44 @@
+---
+title: "Sonner"
+registryName: sonner
+category: primitive
+stability: stable
+showcase: sonner
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Sonner provides Mapseek-styled toast notifications with square corners, hairline borders, type icons, and top-center placement.
+
+## Installation
+
+<RegistryInstall registryName="sonner" />
+
+## Import
+
+```tsx
+import { Toaster, toast } from "@/registry/ui/sonner"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="sonner" demo="overview" title="Toast types" description="Covers success, error, warning, info, default, description, and action using the page root Toaster." minHeight={300} />
+
+## Exports
+
+`sonner.tsx` exports `Toaster` and the `toast` helper from `sonner`. Render `Toaster` once near the app root, then trigger notifications with `toast.*`.
+
+## States
+
+Use `toast.success`, `toast.error`, `toast.warning`, `toast.info`, or `toast` for message type. Add `description`, `action`, and `cancel` when needed.
+
+## Accessibility
+
+Use toast for short-lived results or background status, not as the only durable state. Errors and recoverable actions should also remain visible near the triggering surface.
+
+## Dependencies
+
+<RegistryDependencies registryName="sonner" />
+

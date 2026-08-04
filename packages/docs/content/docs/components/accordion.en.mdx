@@ -1,0 +1,44 @@
+---
+title: "Accordion"
+registryName: accordion
+category: primitive
+stability: stable
+showcase: accordion
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Accordion folds related explanations, settings, or help content into scannable sections. Use it for FAQ, property notes, and advanced settings, not for data that must stay visible together.
+
+## Installation
+
+<RegistryInstall registryName="accordion" />
+
+## Import
+
+```tsx
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/registry/ui/accordion"
+```
+
+## Expandable Sections
+
+<ShowcaseDemo registryName="accordion" demo="overview" title="Expandable sections" description="Shows single default-open section, multiple-open mode, icon swap, and content animation." minHeight={340} />
+
+## Exports
+
+`accordion.tsx` exports `Accordion`, `AccordionItem`, `AccordionTrigger`, and `AccordionContent`. The root inherits Base UI Accordion props; `multiple` allows several items to stay open.
+
+## States and Behavior
+
+Use `defaultValue` for static defaults and `value/onValueChange` for controlled flows. `AccordionTrigger` swaps chevrons from `aria-expanded`, and `AccordionContent` animates height and opacity.
+
+## Accessibility
+
+Each trigger should describe the panel content. Do not hide critical state only inside collapsed content; keyboard users need a predictable trigger for each section.
+
+## Dependencies
+
+<RegistryDependencies registryName="accordion" />
+

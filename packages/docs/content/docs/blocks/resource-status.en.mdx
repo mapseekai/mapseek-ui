@@ -1,0 +1,52 @@
+---
+title: "ResourceStatusBadge"
+registryName: resource-status
+category: block
+stability: stable
+showcase: resource-status
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ResourceStatusBadge provides unified status markers for resource grids, detail views, and processing lists.
+
+## Installation
+
+<RegistryInstall registryName="resource-status" />
+
+## Import
+
+```tsx
+import {
+  ResourceStatusBadge,
+  type ResourceStatusBadgeProps,
+  type ResourceStatusTone,
+} from "@/registry/blocks/resource-status"
+```
+
+## Resource status badges
+
+<ShowcaseDemo registryName="resource-status" title="Resource status badges" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={320} />
+
+## Usage
+
+Pass semantic `tone` and localized `label`. Tone controls icon and color, while label keeps status from being color-only.
+
+## Public Exports and Props
+
+Exports include `ResourceStatusBadge`, `ResourceStatusBadgeProps`, and `ResourceStatusTone`. Tone can be `ready`, `processing`, `failed`, or `neutral`.
+
+## Loading, Empty, Error, and Status
+
+The component has no internal state; processing tone shows a spinner icon. The demo cycles current state and displays every tone.
+
+## Accessibility
+
+Always include a text label for status; do not rely on icon color alone inside tables or cards.
+
+## Dependencies
+
+<RegistryDependencies registryName="resource-status" />
+

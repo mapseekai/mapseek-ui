@@ -1,0 +1,23 @@
+{
+  "name": "map-switcher",
+  "type": "registry:block",
+  "registryDependencies": ["@mapseek/utils"],
+  "files": [
+    {
+      "path": "map-switcher/MapSwitcher.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/map-switcher/MapSwitcher.tsx"
+    },
+    {
+      "path": "map-switcher/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/map-switcher/index.ts"
+    },
+    {
+      "path": "map-switcher/types.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/map-switcher/types.ts"
+    }
+  ],
+  "dependencies": ["@tabler/icons-react"]
+}

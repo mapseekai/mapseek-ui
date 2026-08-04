@@ -1,0 +1,44 @@
+---
+title: "Input"
+registryName: input
+category: primitive
+stability: stable
+showcase: input
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Input 是单行文本输入基础组件，用于名称、坐标系、文件名和短标识符。它继承 Base UI Input，同时应用 Mapseek 的 32px 控件节奏。
+
+## 安装
+
+<RegistryInstall registryName="input" />
+
+## 导入
+
+```tsx
+import { Input } from "@/registry/ui/input"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="input" demo="overview" title="输入状态" description="覆盖默认、受控、有值、readOnly、disabled 和 aria-invalid 状态，展示输入边界。" minHeight={440} />
+
+## 导出
+
+`input.tsx` 导出 `Input`。组件继承原生 `input` props，可使用 `value/onChange`、`defaultValue`、`readOnly`、`disabled`、`aria-invalid` 和 `type`。
+
+## 状态
+
+受控输入由 `value/onChange` 驱动；只读字段使用 `readOnly` 保留可聚焦和可复制文本；禁用字段仅用于不可交互状态。错误态使用 `aria-invalid`。
+
+## 无障碍
+
+每个输入应有 `Label`、`aria-label` 或 `aria-labelledby`。错误说明应和字段就近显示，不要只依赖红色边框。
+
+## 依赖
+
+<RegistryDependencies registryName="input" />
+

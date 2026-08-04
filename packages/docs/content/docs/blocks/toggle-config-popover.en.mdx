@@ -1,0 +1,51 @@
+---
+title: "ToggleConfigPopover"
+registryName: toggle-config-popover
+category: block
+stability: stable
+showcase: toggle-config-popover
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ToggleConfigPopover combines a switch button and settings popover in one toolbar unit for map snapping, measuring, and editing controls.
+
+## Installation
+
+<RegistryInstall registryName="toggle-config-popover" />
+
+## Import
+
+```tsx
+import {
+  ToggleConfigPopover,
+  type ToggleConfigPopoverProps,
+} from "@/registry/blocks/toggle-config-popover"
+```
+
+## Toggle and Configuration
+
+<ShowcaseDemo registryName="toggle-config-popover" title="Toggle and configuration" description="The demo covers switch state, popover settings, slider, checkbox, and disabled coupling." minHeight={420} />
+
+## Usage
+
+Control `checked` and `onCheckedChange` from the caller, and render threshold, target, or other configuration fields as children. `open` can be controlled or left to internal popover state.
+
+## Public Exports and Props
+
+Exports include `ToggleConfigPopover`, `ToggleConfigPopoverProps`, and labels types. Pass a Tabler icon component as the `icon` prop.
+
+## Loading, Empty, Error, and Status
+
+The component does not handle async saving. Disabled state disables both the main switch and settings trigger. Loading, error, and save status inside the configuration form belong to the child content.
+
+## Accessibility
+
+The main button uses `role="switch"` and `aria-checked`. Provide `toggleLabel`, `triggerLabel`, `switchLabel`, and tooltip text so icon buttons have readable names.
+
+## Dependencies
+
+<RegistryDependencies registryName="toggle-config-popover" />
+

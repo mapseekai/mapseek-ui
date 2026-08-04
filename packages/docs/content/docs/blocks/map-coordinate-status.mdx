@@ -1,0 +1,53 @@
+---
+title: "MapCoordinateStatus"
+registryName: map-coordinate-status
+category: block
+stability: stable
+showcase: map-coordinate-status
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+MapCoordinateStatus 是地图画布上的 CRS 切换与坐标读数组件。它渲染当前 CRS、中心点、zoom 或 scale，并把 CRS 选择交给 CrsPicker；地图 view、投影转换和重新加载由调用方处理。
+
+## 安装
+
+<RegistryInstall registryName="map-coordinate-status" />
+
+## 导入
+
+```tsx
+import {
+  MapCoordinateStatus,
+  type MapCoordinateStatusLabels,
+  type MapCoordinateStatusProps,
+  type MapCoordinateStatusReadout,
+} from "@/registry/blocks/map-coordinate-status"
+```
+
+## 受控 CRS 与 View
+
+<ShowcaseDemo registryName="map-coordinate-status" title="受控 CRS 与 View" description="示例展示 EPSG:3857 / EPSG:4326 切换、外部 view 更新和右下角状态条。" minHeight={300} />
+
+## 用法
+
+传入受控 `crs`、当前 `center` 和 `zoom`。如果地图只提供比例尺，可以传 `scale` 作为 fallback。需要完全自定义展示时传入 `readouts`，它会替代默认中心点和层级读数。`allowedEpsgs` 和 `extraItems` 会透传给内部 CrsPicker。
+
+## 公开导出与 Props
+
+导出 `MapCoordinateStatus`、`MapCoordinateStatusProps`、`MapCoordinateStatusReadout` 和 `MapCoordinateStatusLabels`。关键 props 是 `crs`、`center`、`zoom`、`scale`、`readouts`、`onCrsChange`、`allowedEpsgs`、`extraItems`、`labels`、`className` 和 `pickerClassName`。
+
+## 受控状态
+
+组件只拥有 popover 打开状态。`crs` 和 `view` 必须由调用方更新；示例中的 `applyCrs` 同时切换 CRS 和示例坐标，模拟真实地图在投影改变后刷新中心点。
+
+## 无障碍
+
+CRS 触发按钮使用 `labels.switchCrs`，读数项使用本地化 label。经纬度和投影坐标应保留单位或方向信息。弹出的 CRS 列表继承 CrsPicker 的搜索、列表标签和空结果行为。
+
+## 依赖
+
+<RegistryDependencies registryName="map-coordinate-status" />
+

@@ -1,0 +1,48 @@
+---
+title: "PlaceholderGlyph"
+registryName: placeholder-glyph
+category: block
+stability: stable
+showcase: placeholder-glyph
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+PlaceholderGlyph hashes a seed into a stable monochrome SVG for resource grids, drawers, and sprite previews before real icons are uploaded.
+
+## Installation
+
+<RegistryInstall registryName="placeholder-glyph" />
+
+## Import
+
+```tsx
+import { PlaceholderGlyph, type PlaceholderGlyphProps } from "@/registry/blocks/placeholder-glyph"
+```
+
+## Deterministic resource placeholder glyphs
+
+<ShowcaseDemo registryName="placeholder-glyph" title="Deterministic resource placeholder glyphs" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={520} />
+
+## Usage
+
+Pass a stable `seed` for each resource, control pixel size with `size`, and use `mono` for lower visual weight.
+
+## Public Exports and Props
+
+Exports include `PlaceholderGlyph` and `PlaceholderGlyphProps`. Key props are `seed`, `size`, `mono`, and `className`.
+
+## Loading, Empty, Error, and Status
+
+The component has no internal state; callers usually fall back to it when real SVG, sprite, or font previews are missing.
+
+## Accessibility
+
+The SVG includes a title; when used inside buttons or image semantics, provide the specific resource name from the wrapper.
+
+## Dependencies
+
+<RegistryDependencies registryName="placeholder-glyph" />
+

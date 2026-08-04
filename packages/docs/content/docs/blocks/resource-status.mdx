@@ -1,0 +1,52 @@
+---
+title: "ResourceStatusBadge"
+registryName: resource-status
+category: block
+stability: stable
+showcase: resource-status
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ResourceStatusBadge 为资源库、详情和处理列表提供统一状态标记。
+
+## 安装
+
+<RegistryInstall registryName="resource-status" />
+
+## 导入
+
+```tsx
+import {
+  ResourceStatusBadge,
+  type ResourceStatusBadgeProps,
+  type ResourceStatusTone,
+} from "@/registry/blocks/resource-status"
+```
+
+## 资源状态 badge
+
+<ShowcaseDemo registryName="resource-status" title="资源状态 badge" description="示例复用同一个 TSX 模块作为预览和源码，覆盖原示例的核心状态与交互。" minHeight={320} />
+
+## 用法
+
+传入语义 `tone` 和已本地化 `label`。tone 控制图标和色调，label 保证状态不是 color-only。
+
+## 公开导出与 Props
+
+导出 `ResourceStatusBadge`、`ResourceStatusBadgeProps` 和 `ResourceStatusTone`。tone 可为 `ready`、`processing`、`failed` 或 `neutral`。
+
+## 加载、空态、错误与状态
+
+组件无内部状态；processing tone 会显示旋转图标。示例切换当前状态并展示全部 tone。
+
+## 无障碍
+
+状态必须始终带文本 label；不要只在表格或卡片中依赖图标颜色。
+
+## 依赖
+
+<RegistryDependencies registryName="resource-status" />
+

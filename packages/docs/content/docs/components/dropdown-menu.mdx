@@ -1,0 +1,49 @@
+---
+title: "Dropdown Menu"
+registryName: dropdown-menu
+category: primitive
+stability: stable
+showcase: dropdown-menu
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Dropdown Menu 用于按钮触发的动作集合，适合工具栏、图层操作、导出格式和带分组的次级命令。
+
+## 安装
+
+<RegistryInstall registryName="dropdown-menu" />
+
+## 导入
+
+```tsx
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/registry/ui/dropdown-menu"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="dropdown-menu" demo="overview" title="动作菜单" description="覆盖基础动作、标签分组、对齐、disabled、destructive、checkbox、radio 与 submenu。" minHeight={420} />
+
+## 导出
+
+`dropdown-menu.tsx` 导出根、触发器、portal、内容、分组、标签、普通项、checkbox 项、radio 组、submenu、分隔线和快捷键组件。
+
+## 状态
+
+使用 `align`、`side` 和 offset 控制 portal 位置。用 `disabled` 表示当前不可用项，用 `variant="destructive"` 标记危险动作。
+
+## 无障碍
+
+触发器使用真实按钮并提供可读名称。菜单打开后应支持方向键、Home/End、Enter 选择、Escape 关闭和触发器焦点返回。
+
+## 依赖
+
+<RegistryDependencies registryName="dropdown-menu" />
+

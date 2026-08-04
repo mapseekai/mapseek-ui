@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/ui/*": ["../../registry/ui/*"],
+      "@/components/blocks/*": ["../../registry/blocks/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/utils": ["../../registry/lib/utils.ts"],
+      "@/lib/mapseek-labels": ["../../registry/lib/labels.ts"],
+      "@/lib/svg-data-uri": ["../../registry/lib/svg-data-uri.ts"],
+      "@/registry/*": ["../../registry/*"],
+      "@registry/*": ["../../registry/*"],
+      "@showcase/*": ["../../showcase/src/*"],
+      "@/*": ["./*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "allowJs": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".source",
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

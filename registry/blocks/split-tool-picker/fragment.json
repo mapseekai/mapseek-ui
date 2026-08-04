@@ -1,0 +1,34 @@
+{
+  "name": "split-tool-picker",
+  "type": "registry:block",
+  "registryDependencies": [
+    "@mapseek/button",
+    "@mapseek/popover",
+    "@mapseek/tooltip",
+    "@mapseek/utils",
+    "@mapseek/labels"
+  ],
+  "files": [
+    {
+      "path": "split-tool-picker/SplitToolPicker.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/split-tool-picker/SplitToolPicker.tsx"
+    },
+    {
+      "path": "split-tool-picker/defaults.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/split-tool-picker/defaults.ts"
+    },
+    {
+      "path": "split-tool-picker/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/split-tool-picker/index.ts"
+    },
+    {
+      "path": "split-tool-picker/labels.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/split-tool-picker/labels.ts"
+    }
+  ],
+  "dependencies": ["@tabler/icons-react"]
+}

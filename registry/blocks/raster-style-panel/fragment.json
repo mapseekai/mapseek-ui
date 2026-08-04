@@ -1,0 +1,74 @@
+{
+  "name": "raster-style-panel",
+  "type": "registry:block",
+  "registryDependencies": [
+    "@mapseek/input",
+    "@mapseek/select",
+    "@mapseek/tooltip",
+    "@mapseek/utils",
+    "@mapseek/labels"
+  ],
+  "files": [
+    {
+      "path": "raster-style-panel/ColormapPicker.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/ColormapPicker.tsx"
+    },
+    {
+      "path": "raster-style-panel/CustomColormapEditor.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/CustomColormapEditor.tsx"
+    },
+    {
+      "path": "raster-style-panel/RasterStylePanel.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/RasterStylePanel.tsx"
+    },
+    {
+      "path": "raster-style-panel/Segmented.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/Segmented.tsx"
+    },
+    {
+      "path": "raster-style-panel/StretchControl.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/StretchControl.tsx"
+    },
+    {
+      "path": "raster-style-panel/colormaps.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/colormaps.ts"
+    },
+    {
+      "path": "raster-style-panel/defaults.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/defaults.ts"
+    },
+    {
+      "path": "raster-style-panel/gradient.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/gradient.ts"
+    },
+    {
+      "path": "raster-style-panel/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/index.ts"
+    },
+    {
+      "path": "raster-style-panel/labels.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/labels.ts"
+    },
+    {
+      "path": "raster-style-panel/presets.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/presets.ts"
+    },
+    {
+      "path": "raster-style-panel/types.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/types.ts"
+    }
+  ],
+  "dependencies": ["@tabler/icons-react"]
+}

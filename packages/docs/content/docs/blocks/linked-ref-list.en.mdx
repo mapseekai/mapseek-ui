@@ -1,0 +1,53 @@
+---
+title: "LinkedRefList"
+registryName: linked-ref-list
+category: block
+stability: stable
+showcase: linked-ref-list
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+LinkedRefList summarizes dataset, mapset, and workflow references so users can see what consumes or derives from a resource.
+
+## Installation
+
+<RegistryInstall registryName="linked-ref-list" />
+
+## Import
+
+```tsx
+import {
+  LinkedRefList,
+  type LinkedRefGroup,
+  type LinkedRefKind,
+  type LinkedRefListProps,
+} from "@/registry/blocks/linked-ref-list"
+```
+
+## Linked reference groups
+
+<ShowcaseDemo registryName="linked-ref-list" title="Linked reference groups" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={520} />
+
+## Usage
+
+Pass grouped `LinkedRefGroup[]` plus icons for each kind. Summary cards own counts, while rows show names, IDs, times, and status.
+
+## Public Exports and Props
+
+Exports include `LinkedRefList`, `LinkedRefGroup`, `LinkedRefItem`, `LinkedRefKind`, and `LinkedRefStatusTone`. `openLabel` names pending open/copy actions.
+
+## Loading, Empty, Error, and Status
+
+The list owns only the selected group; data loading, empty groups, and errors are controlled by the caller deciding whether to render this block.
+
+## Accessibility
+
+Summary cards are buttons and support keyboard switching. Status pills include text and structure, not color-only meaning.
+
+## Dependencies
+
+<RegistryDependencies registryName="linked-ref-list" />
+

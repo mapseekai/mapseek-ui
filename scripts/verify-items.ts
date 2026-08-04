@@ -1,16 +1,22 @@
+import { spawn } from "node:child_process"
 import { access, cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
-import { tmpdir } from "node:os"
-import { fileURLToPath } from "node:url"
-import { join, resolve } from "node:path"
-import { withRegistryServer } from "./registry-server"
+import { join } from "node:path"
+import { fileURLToPath, pathToFileURL } from "node:url"
+import { dlxCommand, pnpmCommand } from "./pnpm-command"
 import { loadCatalog } from "./registry-model"
-import { bunCommand } from "./bun-command"
+import { withRegistryServer } from "./registry-server"
 
 const repoRoot = fileURLToPath(new URL("..", import.meta.url))
 
 async function run(cwd: string, command: string[]): Promise<void> {
-  const process = Bun.spawn(command, { cwd, stdout: "inherit", stderr: "inherit" })
-  if ((await process.exited) !== 0) throw new Error(`${command.join(" ")} failed`)
+  const [executable, ...args] = command
+  if (!executable) throw new Error("Missing command executable")
+  const child = spawn(executable, args, { cwd, stdio: "inherit" })
+  const exitCode = await new Promise<number | null>((resolve, reject) => {
+    child.once("error", reject)
+    child.once("exit", resolve)
+  })
+  if (exitCode !== 0) throw new Error(`${command.join(" ")} failed`)
 }
 
 async function exists(path: string): Promise<boolean> {
@@ -29,8 +35,10 @@ async function requiresUtils(name: string): Promise<boolean> {
     if (seen.has(itemName)) return false
     seen.add(itemName)
     const dependencies = byName.get(itemName)?.registryDependencies ?? []
-    return dependencies.includes("@mapseek/utils") ||
+    return (
+      dependencies.includes("@mapseek/utils") ||
       dependencies.some((dependency) => visit(dependency.slice("@mapseek/".length), seen))
+    )
   }
   return visit(name)
 }
@@ -39,9 +47,10 @@ export async function assertInstalledItemDestination(fixture: string, name: stri
   if (await exists(join(fixture, "@"))) throw new Error(`top-level @ directory created for ${name}`)
 
   const item = (await loadCatalog(repoRoot)).find((candidate) => candidate.name === name)
-  const expectedSources = item?.type === "registry:block"
-    ? [join(fixture, "src", "components", "blocks", name, "index.ts")]
-    : [join(fixture, "src", "components", "ui", `${name}.tsx`)]
+  const expectedSources =
+    item?.type === "registry:block"
+      ? [join(fixture, "src", "components", "blocks", name, "index.ts")]
+      : [join(fixture, "src", "components", "ui", `${name}.tsx`)]
   if (await requiresUtils(name)) expectedSources.push(join(fixture, "src", "lib", "utils.ts"))
   for (const source of expectedSources) {
     if (!(await exists(source))) throw new Error(`installed ${name} source outside src: ${source}`)
@@ -55,12 +64,18 @@ export async function verifyItems(names: readonly string[]): Promise<void> {
       try {
         await cp(join(repoRoot, "fixtures/vite-react-template"), fixture, { recursive: true })
         const componentsPath = join(fixture, "components.json")
-        await writeFile(componentsPath, (await readFile(componentsPath, "utf8")).replace("__REGISTRY_ENDPOINT__", "http://127.0.0.1:4174/r/{name}.json"))
-        await run(fixture, bunCommand("install"))
-        await run(fixture, bunCommand("x", "shadcn@4.8.0", "add", `@mapseek/${name}`, "--yes"))
+        await writeFile(
+          componentsPath,
+          (await readFile(componentsPath, "utf8")).replace(
+            "__REGISTRY_ENDPOINT__",
+            "http://127.0.0.1:4174/r/{name}.json",
+          ),
+        )
+        await run(fixture, pnpmCommand("install"))
+        await run(fixture, dlxCommand("shadcn@4.8.0", "add", `@mapseek/${name}`, "--yes"))
         await assertInstalledItemDestination(fixture, name)
-        await run(fixture, bunCommand("run", "typecheck"))
-        await run(fixture, bunCommand("run", "build"))
+        await run(fixture, pnpmCommand("run", "typecheck"))
+        await run(fixture, pnpmCommand("run", "build"))
       } finally {
         await rm(fixture, { recursive: true, force: true })
       }
@@ -68,4 +83,5 @@ export async function verifyItems(names: readonly string[]): Promise<void> {
   })
 }
 
-if (import.meta.main) await verifyItems(Bun.argv.slice(2))
+if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href)
+  await verifyItems(process.argv.slice(2))

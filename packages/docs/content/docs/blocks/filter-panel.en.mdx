@@ -1,0 +1,54 @@
+---
+title: "FilterPanel"
+registryName: filter-panel
+category: block
+stability: stable
+showcase: filter-panel
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+FilterPanel is a controlled filter builder. It composes builder rows, SQL text, mode switching, estimate display, clear, and apply actions into one compact panel; the caller stores and executes the filter expression.
+
+## Installation
+
+<RegistryInstall registryName="filter-panel" />
+
+## Import
+
+```tsx
+import {
+  EMPTY_FILTER,
+  FilterPanel,
+  type FilterCondition,
+  type FilterPanelLabels,
+  type FilterValue,
+} from "@/registry/blocks/filter-panel"
+```
+
+## Builder and SQL Modes
+
+<ShowcaseDemo registryName="filter-panel" title="Builder and SQL modes" description="Shows mode switching, condition rows, SQL editing, keywords, estimate, clear, apply, and an external controlled clear." minHeight={560} />
+
+## Usage
+
+Store the current filter as `FilterValue`, pass available fields to `fields`, and compose `ModeToggle`, `Builder`, `Sql`, `Footer`, `Estimate`, `ClearButton`, and `ApplyButton`. Apply usually triggers an outer query or map-layer filter.
+
+## Public Exports and Props
+
+Exports include `FilterPanel`, `EMPTY_FILTER`, `FilterCondition`, `FilterMode`, `FilterPanelProps`, `FilterPanelLabels`, and `FilterValue`. Key props are `fields`, `value`, `onChange`, `labels`, and `children`; Builder operators and SQL keywords are caller-provided.
+
+## States and Validation
+
+The block allows builder and SQL modes and keeps each draft. Business validity for fields, operators, and values belongs to the caller before applying. `EMPTY_FILTER` resets the panel.
+
+## Accessibility
+
+Mode toggle, clear, and apply are buttons. Field, operator, and value controls expose text. Put result counts and applied state in readable text instead of relying on color alone.
+
+## Dependencies
+
+<RegistryDependencies registryName="filter-panel" />
+

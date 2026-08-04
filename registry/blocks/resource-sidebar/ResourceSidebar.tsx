@@ -37,7 +37,7 @@ export function ResourceSidebar({
   className,
 }: ResourceSidebarProps) {
   const leafBase =
-    "relative flex cursor-pointer items-center gap-2 text-[12.5px] text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-muted"
+    "relative flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-[13px] text-foreground [font:inherit] before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-muted"
   const activeLeaf = "bg-primary/10 text-primary before:opacity-100"
 
   function leafClass(active: boolean, extra: string) {
@@ -51,14 +51,14 @@ export function ResourceSidebar({
         className,
       )}
     >
-      <div className="px-3.5 pt-3 pb-2 font-mono text-[10.5px] tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="px-3.5 pt-3 pb-2 font-mono text-[11px] tracking-[0.06em] text-muted-foreground uppercase">
         {labels.typeSection}
       </div>
 
       <div className="px-1.5 pt-0.5">
         <div
           className={cn(
-            "flex items-center gap-2 px-2.5 py-[7px] text-[12.5px] font-semibold",
+            "flex items-center gap-2 px-2.5 py-[7px] text-[13px] font-semibold",
             tab === "icon" || tab === "sprite"
               ? "text-primary [&_svg]:text-primary"
               : "text-foreground [&_svg]:text-muted-foreground",
@@ -96,7 +96,7 @@ export function ResourceSidebar({
 
       <div className="mx-2 my-1.5 h-px bg-border" />
 
-      <div className="px-3.5 pt-1 pb-2 font-mono text-[10.5px] tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="px-3.5 pt-1 pb-2 font-mono text-[11px] tracking-[0.06em] text-muted-foreground uppercase">
         {labels.categoriesSection}
       </div>
 
@@ -183,18 +183,18 @@ function TypeRow({
   onClick: () => void
 }) {
   return (
-    <div className={className} onClick={onClick}>
+    <button type="button" className={className} onClick={onClick}>
       {icon}
       <span>{label}</span>
       <span
         className={cn(
-          "ml-auto font-mono text-[10.5px]",
+          "ml-auto font-mono text-[11px]",
           active ? "text-primary" : "text-muted-foreground",
         )}
       >
         {count}
       </span>
-    </div>
+    </button>
   )
 }
 
@@ -214,34 +214,32 @@ function CategoryRow({
   actions?: React.ReactNode
 }) {
   return (
-    <div
-      className={cn(
-        "group/cat relative flex h-[34px] cursor-pointer items-center gap-2 px-2.5 text-[12.5px] text-foreground hover:bg-muted",
-        active && "bg-primary/10 font-medium text-primary",
-      )}
-      onClick={onClick}
-    >
-      {icon}
-      <span className="min-w-0 flex-1 truncate">{label}</span>
-      <div className="relative ml-auto h-6 w-[50px] shrink-0">
-        <span
-          className={cn(
-            "absolute inset-y-0 right-0 flex items-center font-mono text-[10.5px] text-muted-foreground",
-            active && "text-primary",
-            actions && "group-hover/cat:hidden",
-          )}
-        >
-          {count}
-        </span>
-        {actions && (
-          <div
-            className="absolute inset-y-0 right-0 hidden items-center gap-0.5 group-hover/cat:flex"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {actions}
-          </div>
+    <div className="group/cat relative h-[34px]">
+      <button
+        type="button"
+        className={cn(
+          "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-[13px] text-foreground [font:inherit] hover:bg-muted",
+          active && "bg-primary/10 font-medium text-primary",
         )}
-      </div>
+        onClick={onClick}
+      >
+        {icon}
+        <span className="min-w-0 flex-1 truncate">{label}</span>
+      </button>
+      <span
+        className={cn(
+          "pointer-events-none absolute inset-y-0 right-2 flex items-center font-mono text-[11px] text-muted-foreground",
+          active && "text-primary",
+          actions && "group-hover/cat:hidden",
+        )}
+      >
+        {count}
+      </span>
+      {actions && (
+        <div className="absolute inset-y-0 right-2 hidden items-center gap-0.5 group-hover/cat:flex">
+          {actions}
+        </div>
+      )}
     </div>
   )
 }

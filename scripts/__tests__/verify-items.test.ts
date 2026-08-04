@@ -1,4 +1,4 @@
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises"
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
@@ -33,13 +33,17 @@ describe("assertInstalledItemDestination", () => {
   it("rejects aliases written outside src", async () => {
     await writeFixture("components/ui/button.tsx")
     await writeFixture("lib/utils.ts")
-    await expect(assertInstalledItemDestination(fixtureRoot, "button")).rejects.toThrow("outside src")
+    await expect(assertInstalledItemDestination(fixtureRoot, "button")).rejects.toThrow(
+      "outside src",
+    )
   })
 
   it("rejects a top-level alias directory even when sources are present", async () => {
     await writeFixture("src/components/ui/button.tsx")
     await writeFixture("src/lib/utils.ts")
     await writeFixture("@/components/ui/other.tsx")
-    await expect(assertInstalledItemDestination(fixtureRoot, "button")).rejects.toThrow("top-level @ directory")
+    await expect(assertInstalledItemDestination(fixtureRoot, "button")).rejects.toThrow(
+      "top-level @ directory",
+    )
   })
 })

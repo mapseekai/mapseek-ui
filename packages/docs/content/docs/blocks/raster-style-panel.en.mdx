@@ -1,0 +1,52 @@
+---
+title: "RasterStylePanel"
+registryName: raster-style-panel
+category: block
+stability: stable
+showcase: raster-style-panel
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+RasterStylePanel provides a controlled TiTiler raster-style form for bands, colormaps, stretch, NoData, resampling, tile size, and output format.
+
+## Installation
+
+<RegistryInstall registryName="raster-style-panel" />
+
+## Import
+
+```tsx
+import {
+  RasterStylePanel,
+  type RasterStylePanelProps,
+  type RasterStyleValue,
+} from "@/registry/blocks/raster-style-panel"
+```
+
+## Raster Style Editing
+
+<ShowcaseDemo registryName="raster-style-panel" title="Raster style editing" description="The demo uses a real controlled value and covers save, reset, validation, and source fidelity." minHeight={680} />
+
+## Usage
+
+Keep `value` in caller state and write drafts back through `onChange`. Pass `bandCount`, `stats`, `autoRange`, and complete `labels` so the panel can switch available controls for single-band and RGB rendering.
+
+## Public Exports and Props
+
+Exports include `RasterStylePanel`, `ColormapPicker`, `StretchControl`, colormap helpers, default presets, and types such as `RasterStyleValue`, `RasterStyleLabels`, and `RasterStylePanelProps`.
+
+## Loading, Empty, Error, and Status
+
+The block does not fetch raster metadata. The wrapper owns loading and error states. Use `onValidityChange` to disable save controls and `resetKey` to reset draft inputs when authoritative data changes.
+
+## Accessibility
+
+Provide localized labels for every form control. Validation should not be color-only; pair it with visible status text or disabled save semantics.
+
+## Dependencies
+
+<RegistryDependencies registryName="raster-style-panel" />
+

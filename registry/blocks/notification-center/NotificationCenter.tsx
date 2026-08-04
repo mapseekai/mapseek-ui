@@ -65,6 +65,7 @@ export function NotificationCenter({
 }: NotificationCenterProps) {
   const total = items.length
   const counts = getCounts(items)
+  const newestItems = [...items].reverse()
 
   return (
     <DropdownMenu>
@@ -97,7 +98,13 @@ export function NotificationCenter({
             </div>
           </div>
           {total > 0 ? (
-            <Button variant="ghost" size="xs" onClick={onClearAll} disabled={!onClearAll}>
+            <Button
+              variant="ghost"
+              size="xs"
+              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+              onClick={onClearAll}
+              disabled={!onClearAll}
+            >
               <IconTrash size={12} stroke={1.75} />
               {labels.clearAll}
             </Button>
@@ -120,7 +127,7 @@ export function NotificationCenter({
           <EmptyState labels={labels} />
         ) : (
           <ul className="max-h-[420px] overflow-y-auto">
-            {items.map((item) => (
+            {newestItems.map((item) => (
               <NotificationRow
                 key={item.key}
                 item={item}
@@ -146,7 +153,7 @@ function SummaryCell({ label, value }: { label: string; value: number }) {
 
 function LoadingState({ label }: { label: string }) {
   return (
-    <div className="space-y-3 p-3" aria-label={label}>
+    <div className="space-y-3 p-3" role="status" aria-label={label}>
       {[0, 1, 2].map((i) => (
         <div key={i} className="grid grid-cols-[3px_24px_minmax(0,1fr)] gap-2">
           <Skeleton className="h-12 w-[3px]" />
@@ -208,7 +215,7 @@ function NotificationRow({
   onClearItem?: NotificationCenterProps["onClearItem"]
 }) {
   return (
-    <li className="group grid grid-cols-[24px_minmax(0,1fr)_auto] gap-2 px-3 py-2 hover:bg-muted/40">
+    <li className="group grid grid-cols-[24px_minmax(0,1fr)_auto] gap-2 px-3 py-2 hover:bg-destructive/5">
       <span className="mt-0.5 grid size-6 place-items-center border border-border bg-background text-muted-foreground">
         {item.sourceType === "TILESET" ? (
           <IconMap2 size={14} stroke={1.75} />
@@ -230,7 +237,7 @@ function NotificationRow({
       <Button
         variant="ghost"
         size="xs"
-        className="self-start opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100"
+        className="self-start text-destructive opacity-0 transition-opacity hover:bg-destructive/10 hover:text-destructive group-focus-within:opacity-100 group-hover:opacity-100"
         onClick={() => onClearItem?.(item)}
         disabled={!onClearItem}
       >

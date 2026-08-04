@@ -20,6 +20,7 @@ export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimel
     <ol className="space-y-4">
       {steps.map((step, i) => {
         const state = step.state ?? "done"
+        const eventRows = getEventRows(step.events)
         return (
           <li key={step.key} className="flex gap-3">
             <div className="relative flex w-5 flex-col items-center">
@@ -40,22 +41,22 @@ export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimel
               )}
             </div>
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-sm font-medium">{step.label}</span>
                 {step.status && (
-                  <span className="inline-flex items-center gap-1 border border-primary/25 bg-primary/10 px-1.5 py-0.5 text-[11px] text-primary">
+                  <span className="inline-flex items-center gap-1 whitespace-nowrap border border-primary/25 bg-primary/10 px-1.5 py-0.5 text-[11px] text-primary">
                     <IconCheck size={11} stroke={2} />
                     {step.status}
                   </span>
                 )}
                 {step.retry && (
-                  <span className="inline-flex items-center gap-1 border border-warning/25 bg-warning/10 px-1.5 py-0.5 text-[11px] text-warning">
+                  <span className="inline-flex items-center gap-1 whitespace-nowrap border border-warning/25 bg-warning/10 px-1.5 py-0.5 text-[11px] text-warning">
                     <IconRefresh size={11} stroke={2} />
                     {step.retry}
                   </span>
                 )}
                 {(step.time || step.duration) && (
-                  <span className="mono ml-auto flex items-center gap-3 text-xs text-muted-foreground">
+                  <span className="mono flex w-full items-center gap-3 text-xs text-muted-foreground sm:ml-auto sm:w-auto">
                     {step.time && <span>{step.time}</span>}
                     {step.duration && <span>{step.duration}</span>}
                   </span>
@@ -63,8 +64,13 @@ export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimel
               </div>
               {step.events.length > 0 && (
                 <div className="mt-2 space-y-2">
-                  {step.events.map((ev, j) => (
-                    <EventCard key={j} event={ev} labels={labels} onCopyLog={onCopyLog} />
+                  {eventRows.map((row) => (
+                    <EventCard
+                      key={row.key}
+                      event={row.event}
+                      labels={labels}
+                      onCopyLog={onCopyLog}
+                    />
                   ))}
                 </div>
               )}
@@ -78,6 +84,18 @@ export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimel
       })}
     </ol>
   )
+}
+
+function getEventRows(events: TimelineEvent[]) {
+  const counts = new Map<string, number>()
+  return events.map((event) => {
+    const signature = [event.time, event.tone, event.log, event.title, event.text]
+      .filter((part): part is string => typeof part === "string")
+      .join("|")
+    const occurrence = counts.get(signature) ?? 0
+    counts.set(signature, occurrence + 1)
+    return { event, key: `${signature}:${occurrence}` }
+  })
 }
 
 function ProgressDetail({ step }: { step: TimelineStep }) {
@@ -118,9 +136,11 @@ function EventCard({
   labels: ProcessingTimelineProps["labels"]
   onCopyLog: ProcessingTimelineProps["onCopyLog"]
 }) {
+  const log = event.log
+
   if (event.tone === "error") {
     return (
-      <div className="flex gap-3 border border-destructive/30 bg-destructive/5 p-3">
+      <div className="flex flex-col gap-3 border border-destructive/30 bg-destructive/5 p-3 sm:flex-row">
         {event.icon && <span className="mt-0.5 shrink-0 text-destructive">{event.icon}</span>}
         <div className="min-w-0 flex-1">
           {event.title && <div className="text-xs font-medium text-destructive">{event.title}</div>}
@@ -129,16 +149,16 @@ function EventCard({
           )}
           {event.hint && <div className="mt-1 text-[11px] text-muted-foreground">{event.hint}</div>}
         </div>
-        <div className="flex shrink-0 flex-col items-end gap-1">
+        <div className="flex shrink-0 items-center justify-between gap-1 sm:flex-col sm:items-end">
           {event.time && (
             <span className="mono text-[11px] text-muted-foreground">{event.time}</span>
           )}
-          {event.log != null && (
+          {log != null && (
             <div className="flex gap-1">
               <Button variant="ghost" size="xs">
                 {labels.log}
               </Button>
-              <Button variant="ghost" size="xs" onClick={() => onCopyLog?.(event.log!)}>
+              <Button variant="ghost" size="xs" onClick={() => onCopyLog?.(log)}>
                 <IconCopy />
                 {labels.copy}
               </Button>

@@ -1,8 +1,8 @@
 import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { IconCheck, IconChevronDown } from "@tabler/icons-react"
-import { cn } from "@/registry/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
 import * as React from "react"
+import { cn } from "@/registry/lib/utils"
 
 const selectTriggerVariants = cva(
   "inline-flex w-full cursor-pointer items-center justify-between border border-border bg-background text-xs font-medium text-foreground transition-colors outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-[popup-open]:bg-muted dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40",

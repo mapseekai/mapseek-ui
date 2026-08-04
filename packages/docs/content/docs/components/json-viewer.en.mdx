@@ -1,0 +1,44 @@
+---
+title: "JsonViewer"
+registryName: json-viewer
+category: primitive
+stability: stable
+showcase: json-viewer
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+JsonViewer displays structured JSON in docs, debug panels, and data detail views. It supports node collapse, expand all, collapse all, copy, and optional colored indentation.
+
+## Installation
+
+<RegistryInstall registryName="json-viewer" />
+
+## Import
+
+```tsx
+import { JsonViewer } from "@/registry/ui/json-viewer"
+```
+
+## GeoJSON Preview
+
+<ShowcaseDemo registryName="json-viewer" demo="overview" title="GeoJSON preview" description="Shows title, default expansion, and colored indent, with expand, collapse, and copy interactions." minHeight={360} />
+
+## Exports
+
+`json-viewer.tsx` exports `JsonViewer`. It accepts `data`, `title`, `defaultExpanded`, `showLineNumbers`, `showColorIndent`, `collapseOn`, and copy-feedback props.
+
+## States and Behavior
+
+`defaultExpanded` can be a boolean or expansion depth number. Object and array nodes can be collapsed, and toolbar buttons expand all, collapse to the root, or copy formatted JSON.
+
+## Accessibility
+
+Give the JSON region a clear title. Copy controls need readable labels, and deeply nested data should have nearby context for source and important fields.
+
+## Dependencies
+
+<RegistryDependencies registryName="json-viewer" />
+

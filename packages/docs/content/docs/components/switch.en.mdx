@@ -1,0 +1,44 @@
+---
+title: "Switch"
+registryName: switch
+category: primitive
+stability: stable
+showcase: switch
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Switch represents immediate on/off settings such as cache, visibility, and sync state. Its rounded track and thumb are an intentional exception to Mapseek's square control rule.
+
+## Installation
+
+<RegistryInstall registryName="switch" />
+
+## Import
+
+```tsx
+import { Switch } from "@/registry/ui/switch"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="switch" demo="overview" title="Switch states" description="Covers sm/default sizes, checked/unchecked, disabled checked, invalid, and controlled state." minHeight={340} />
+
+## Exports
+
+`switch.tsx` exports `Switch`. The component inherits Base UI Switch root props and adds `size="sm" | "default"`.
+
+## States
+
+Use `checked/onCheckedChange` to control the switch, or `defaultChecked` for initial state. `disabled` marks it unavailable; `aria-invalid` marks an invalid setting.
+
+## Accessibility
+
+Switch needs an accessible name. Use it for immediate toggles, not form choices that require a Save action; those are usually better as Checkbox.
+
+## Dependencies
+
+<RegistryDependencies registryName="switch" />
+

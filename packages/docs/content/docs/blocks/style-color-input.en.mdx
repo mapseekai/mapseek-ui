@@ -1,0 +1,51 @@
+---
+title: "StyleColorInput"
+registryName: style-color-input
+category: block
+stability: stable
+showcase: style-color-input
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+StyleColorInput combines a color swatch, text field, and replaceable picker into one controlled color field.
+
+## Installation
+
+<RegistryInstall registryName="style-color-input" />
+
+## Import
+
+```tsx
+import {
+  StyleColorInput,
+  type StyleColorInputProps,
+} from "@/registry/blocks/style-color-input"
+```
+
+## Color Input Modes
+
+<ShowcaseDemo registryName="style-color-input" title="Color input modes" description="The demo covers button, input, combined layouts, and a replaceable picker." minHeight={440} />
+
+## Usage
+
+Use `value`, `open`, `onTextChange`, and `onOpenChange` for fully controlled input. Pass `renderPicker` for product-specific pickers and call `close` when the picker action is complete.
+
+## Public Exports and Props
+
+Exports include `StyleColorInput`, the lower-level `ColorPicker` parts, and types such as `StyleColorInputMode`, `StyleColorInputLayout`, and `StyleColorInputProps`.
+
+## Loading, Empty, Error, and Status
+
+The block does not validate color syntax. Callers should validate before saving and expose invalid input through error text or status messaging.
+
+## Accessibility
+
+Pass `aria-label` for the text field and `swatchLabel` for the swatch trigger. After the popover closes, focus should remain in the same editing context.
+
+## Dependencies
+
+<RegistryDependencies registryName="style-color-input" />
+

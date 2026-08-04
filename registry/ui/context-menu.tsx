@@ -1,6 +1,6 @@
-import * as React from "react"
 import { ContextMenu as ContextMenuPrimitive } from "@base-ui/react/context-menu"
 import { IconCheck, IconChevronRight } from "@tabler/icons-react"
+import type * as React from "react"
 import { cn } from "@/registry/lib/utils"
 
 function ContextMenu({ ...props }: ContextMenuPrimitive.Root.Props) {
@@ -210,17 +210,17 @@ function ContextMenuShortcut({ className, ...props }: React.ComponentProps<"span
 
 export {
   ContextMenu,
-  ContextMenuTrigger,
+  ContextMenuCheckboxItem,
   ContextMenuContent,
   ContextMenuGroup,
-  ContextMenuLabel,
   ContextMenuItem,
-  ContextMenuSub,
-  ContextMenuSubTrigger,
-  ContextMenuSubContent,
-  ContextMenuCheckboxItem,
+  ContextMenuLabel,
   ContextMenuRadioGroup,
   ContextMenuRadioItem,
   ContextMenuSeparator,
   ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
 }

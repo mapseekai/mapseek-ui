@@ -1,0 +1,44 @@
+---
+title: "CopyButton"
+registryName: copy-button
+category: primitive
+stability: stable
+showcase: copy-button
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+CopyButton 用于复制标识、路径等短文本，提供图标和文字两种形态。复制成功后切换为对勾确认态，并在短暂延时后恢复。
+
+## 安装
+
+<RegistryInstall registryName="copy-button" />
+
+## 导入
+
+```tsx
+import { CopyButton } from "@/registry/ui/copy-button"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="copy-button" demo="overview" title="复制按钮形态" description="图标形态用于紧凑工具栏，文字形态用于独立操作；复制成功后短暂显示确认态。" minHeight={120} />
+
+## 导出
+
+`copy-button.tsx` 导出 `CopyButton`。组件接受 `content`（待复制文本）、`variant="icon" | "text"`、`label`、`copiedLabel`、`duration` 以及 `onCopy` / `onCopyError` 回调。
+
+## 状态
+
+默认显示复制图标或 `label` 文案；复制成功后显示对勾与 `copiedLabel`，`duration` 毫秒后恢复。剪贴板不可用时触发 `onCopyError`。
+
+## 无障碍
+
+图标形态必须提供 `aria-label` 说明复制目标；确认态同时更新可访问名称，屏幕阅读器可感知复制结果。
+
+## 依赖
+
+<RegistryDependencies registryName="copy-button" />
+

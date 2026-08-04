@@ -1,0 +1,48 @@
+---
+title: "ServiceEndpointRow"
+registryName: service-endpoint-row
+category: block
+stability: stable
+showcase: service-endpoint-row
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+ServiceEndpointRow displays one GET endpoint, highlights URL template parameters, and provides copy/open actions.
+
+## Installation
+
+<RegistryInstall registryName="service-endpoint-row" />
+
+## Import
+
+```tsx
+import { ServiceEndpointRow, type ServiceEndpointRowProps } from "@/registry/blocks/service-endpoint-row"
+```
+
+## Service endpoints and copy action
+
+<ShowcaseDemo registryName="service-endpoint-row" title="Service endpoints and copy action" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={520} />
+
+## Usage
+
+Pass title, subtitle, URL, icon, and callbacks. When real tokens or auth are required, disable open and explain it with a tooltip.
+
+## Public Exports and Props
+
+Exports include `ServiceEndpointRow` and `ServiceEndpointRowProps`. Key props are `title`, `subtitle`, `method`, `url`, `copyLabel`, `onCopy`, `openDisabled`, `openTooltip`, and `onOpen`.
+
+## Loading, Empty, Error, and Status
+
+The block does not touch clipboard or windows directly; copy, open, disabled, and error messaging are controlled by callbacks and props.
+
+## Accessibility
+
+Copy and open buttons must provide `copyLabel` and `openLabel`. The URL is rendered in a code area with horizontal scrolling.
+
+## Dependencies
+
+<RegistryDependencies registryName="service-endpoint-row" />
+

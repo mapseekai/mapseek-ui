@@ -1,0 +1,53 @@
+---
+title: "LoadingScreen"
+registryName: loading-screen
+category: block
+stability: stable
+showcase: loading-screen
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+LoadingScreen is a fullscreen or container-scoped loading placeholder for map initialization, resource refreshes, and long-running jobs.
+
+## Installation
+
+<RegistryInstall registryName="loading-screen" />
+
+## Import
+
+```tsx
+import {
+  LoadingScreen,
+  DEFAULT_LOADING_SCREEN_LABELS,
+  type LoadingScreenLabels,
+  type LoadingScreenProps,
+  type LoadingScreenVariant,
+} from "@/registry/blocks/loading-screen"
+```
+
+## Scoped loading screen
+
+<ShowcaseDemo registryName="loading-screen" title="Scoped loading screen" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={420} />
+
+## Usage
+
+Pass `text` for the primary message and `description` for the second line; `fullscreen` switches to viewport sizing. `variant` supports `spinner`, `refresh`, and `pulse` for initialization, resource refreshes, and service waits.
+
+## Public Exports and Props
+
+Exports include `LoadingScreen`, `LoadingScreenProps`, `LoadingScreenVariant`, `LoadingScreenLabels`, and `DEFAULT_LOADING_SCREEN_LABELS`. Key props are `text`, `description`, `variant`, `fullscreen`, `labels`, and `className`.
+
+## Loading, Empty, Error, and Status
+
+This is the loading branch; empty and error branches should switch to Empty or error panels instead of leaving the spinner visible.
+
+## Accessibility
+
+The root uses `role="status"` and `aria-live="polite"`, suitable for non-blocking status updates.
+
+## Dependencies
+
+<RegistryDependencies registryName="loading-screen" />

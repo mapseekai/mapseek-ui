@@ -1,0 +1,44 @@
+---
+title: "Empty"
+registryName: empty
+category: primitive
+stability: stable
+showcase: empty
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Empty renders the zero-content state for lists, panels, or search results. It combines icon, title, description, and optional action so every page does not invent its own empty state.
+
+## Installation
+
+<RegistryInstall registryName="empty" />
+
+## Import
+
+```tsx
+import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/registry/ui/empty"
+```
+
+## Empty States
+
+<ShowcaseDemo registryName="empty" demo="overview" title="Empty states" description="Shows default state, action state, and no-action search state." minHeight={340} />
+
+## Exports
+
+`Empty` is the root. `EmptyHeader` groups media, title, and description; `EmptyMedia` supports `default` and `icon`; `EmptyContent` holds actions or supporting content.
+
+## States and Behavior
+
+Choose actions based on why the state is empty. Recoverable empty lists usually need a primary action; search misses are better served by guidance to adjust filters.
+
+## Accessibility
+
+The title should state what is missing, and the description should explain why or what to do next. Do not rely on the icon alone or hide the primary action in an icon-only button.
+
+## Dependencies
+
+<RegistryDependencies registryName="empty" />
+

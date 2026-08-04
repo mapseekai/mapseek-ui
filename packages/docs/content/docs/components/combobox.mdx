@@ -1,0 +1,44 @@
+---
+title: "Combobox"
+registryName: combobox
+category: primitive
+stability: stable
+showcase: combobox
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Combobox 用于可搜索的单值选择，例如格式、坐标系或资源名称。它组合 input-group、portal list、empty state、清除按钮和触发按钮。
+
+## 安装
+
+<RegistryInstall registryName="combobox" />
+
+## 导入
+
+```tsx
+import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@/registry/ui/combobox"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="combobox" demo="overview" title="可搜索选择" description="展示格式选择、CRS 选择、过滤、clear、trigger 和 empty state。" minHeight={300} />
+
+## 导出
+
+`combobox.tsx` 导出 `Combobox`、`ComboboxInput`、`ComboboxContent`、`ComboboxList`、`ComboboxItem`、`ComboboxEmpty`、`ComboboxGroup`、`ComboboxLabel`、`ComboboxValue`、`ComboboxTrigger`、`ComboboxClear` 以及 chips 相关组件。
+
+## 状态
+
+使用 `value/onValueChange` 控制输入与选中值，过滤结果为空时显示 `ComboboxEmpty`。`showTrigger` 显示下拉按钮，`showClear` 显示清除按钮，`disabled` 会传到输入和按钮。
+
+## 无障碍
+
+为输入提供清晰的 `aria-label` 或可见 label。列表项必须使用稳定的 `value`；键盘用户应能通过输入、方向键、Enter 和 Escape 完成选择和关闭。
+
+## 依赖
+
+<RegistryDependencies registryName="combobox" />
+

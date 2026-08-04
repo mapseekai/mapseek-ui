@@ -20,6 +20,8 @@ export function ServiceEndpointRow({
   openLabel,
   onOpen,
 }: ServiceEndpointRowProps) {
+  const urlSegments = getUrlSegments(url)
+
   return (
     <div className="flex flex-col gap-2 border border-border p-3">
       <div className="flex items-center justify-between gap-2">
@@ -36,20 +38,17 @@ export function ServiceEndpointRow({
       </div>
       <div className="flex items-center gap-1.5">
         <code className="mono min-w-0 flex-1 overflow-x-auto whitespace-nowrap border border-border bg-muted/40 px-2 py-1.5 text-[11px]">
-          {url
-            .split(/(\{[^}]+\})/g)
-            .filter((part) => part.length > 0)
-            .map((part, i) =>
-              /^\{.+\}$/.test(part) ? (
-                <span key={i} className="font-medium text-warning">
-                  {part}
-                </span>
-              ) : (
-                <span key={i} className="text-muted-foreground">
-                  {part}
-                </span>
-              ),
-            )}
+          {urlSegments.map((segment) =>
+            /^\{.+\}$/.test(segment.part) ? (
+              <span key={segment.key} className="font-medium text-warning">
+                {segment.part}
+              </span>
+            ) : (
+              <span key={segment.key} className="text-muted-foreground">
+                {segment.part}
+              </span>
+            ),
+          )}
         </code>
         <IconButton size="sm" title={copyLabel} aria-label={copyLabel} onClick={onCopy}>
           <IconCopy size={12} stroke={1.5} />
@@ -68,4 +67,16 @@ export function ServiceEndpointRow({
       </div>
     </div>
   )
+}
+
+function getUrlSegments(url: string) {
+  const counts = new Map<string, number>()
+  return url
+    .split(/(\{[^}]+\})/g)
+    .filter((part) => part.length > 0)
+    .map((part) => {
+      const occurrence = counts.get(part) ?? 0
+      counts.set(part, occurrence + 1)
+      return { key: `${part}:${occurrence}`, part }
+    })
 }

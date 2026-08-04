@@ -1,0 +1,60 @@
+---
+title: "Button"
+registryName: button
+category: primitive
+stability: stable
+showcase: button
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+Button is the foundational Mapseek UI action trigger for submitting forms, running map queries, confirming settings, or opening the next step in a workflow. It is installed as source, so your application owns the styling and behavior directly.
+
+## Installation
+
+<RegistryInstall registryName="button" />
+
+## Import
+
+```tsx
+import { Button } from "@/registry/ui/button"
+```
+
+If your project uses a shadcn target path, import from the alias that points to the installed `@ui/button.tsx` file.
+
+## Basic Usage
+
+<ShowcaseDemo registryName="button" demo="basic" title="Basic usage" description="The default Button is the primary action; disabled buttons remove pointer interaction and lower opacity." minHeight={180} />
+
+## Variants
+
+<ShowcaseDemo registryName="button" demo="variants" title="Variants" description="Six variants cover every level from primary action to inline link; keep a single primary per area." minHeight={120} />
+
+## Sizes
+
+<ShowcaseDemo registryName="button" demo="sizes" title="Sizes" description="xs/sm/default/lg map to 24/28/32/36px control heights; keep one height per toolbar." minHeight={120} />
+
+## API
+
+`Button` exports the `Button` component and the `buttonVariants` style helper. The component inherits Base UI `Button` props and adds `variant` and `size` variant props.
+
+```tsx
+import { Button, buttonVariants } from "@/registry/ui/button"
+```
+
+`Button` is built on `@base-ui/react/button`, so it keeps native button semantics, keyboard activation, focus behavior, and common button attributes. `disabled` is passed through to Base UI, while the style layer applies `pointer-events-none` and `opacity-50`.
+
+## Button vs IconButton
+
+Use `Button` for explicit text commands such as “Save”, “Run query”, or “Delete layer”. Use `IconButton` for icon-only tool actions and provide an accessible name; the `icon`, `icon-xs`, `icon-sm`, and `icon-lg` Button sizes are only appropriate when you intentionally need Button semantics with icon sizing.
+
+## Accessibility
+
+Button text should describe the result of the action, not just say “OK” or “Click”. Use the `destructive` variant for dangerous actions, and provide confirmation or undo at the workflow layer. Disabled buttons need nearby context that explains why the action is unavailable; do not rely on the disabled state alone to communicate business rules.
+
+## Dependencies
+
+<RegistryDependencies registryName="button" />
+

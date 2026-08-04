@@ -1,0 +1,64 @@
+---
+title: "Install Mapseek UI"
+registryName: theme
+category: primitive
+stability: stable
+showcase: none
+---
+
+
+Mapseek UI installs source through the shadcn registry. Components, blocks, utilities, and theme tokens are copied into your application repository, where your team owns the code after installation.
+
+## components.json
+
+Add the Mapseek UI registry to the application's `components.json`. The `@mapseek` namespace points to same-domain registry JSON:
+
+```json
+{
+  "registries": {
+    "@mapseek": "https://mapseek-ui.local/r/{name}.json"
+  }
+}
+```
+
+For local previews or internal deployments, replace only the host. Keep the registry path as `/r/{name}.json`.
+
+## Install Commands
+
+Install one component or block at a time with shadcn:
+
+```bash
+bunx shadcn@4.8.0 add @mapseek/button
+bunx shadcn@4.8.0 add @mapseek/layer-panel
+```
+
+Install theme and utility dependencies the same way:
+
+```bash
+bunx shadcn@4.8.0 add @mapseek/theme
+bunx shadcn@4.8.0 add @mapseek/utils
+```
+
+## Destinations
+
+Primitive components install into the shadcn UI target, such as `@ui/button.tsx`. Complex blocks install into the application component area, such as `@components/blocks/layer-panel/LayerPanel.tsx`, `@components/blocks/layer-panel/types.ts`, and the same-directory `index.ts`.
+
+Common imports after installation:
+
+```tsx
+import { Button } from "@/components/ui/button"
+import { LayerPanel, type LayerData } from "@/components/blocks/layer-panel"
+```
+
+If your project uses different aliases, keep the installed file destinations and adjust only the import paths.
+
+## Source Ownership
+
+Mapseek UI is not a runtime component package. shadcn copies source into the application, and the application team owns review, commits, edits, and upgrades for those files. To upgrade later, rerun `bunx shadcn@4.8.0 add @mapseek/<name>` and review the resulting patch against local changes.
+
+## Next
+
+- [Theming](/en/getting-started/theming)
+- [Registry](/en/getting-started/registry)
+- [Components](/en/components)
+- [Blocks](/en/blocks)

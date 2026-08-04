@@ -40,5 +40,9 @@ export const BASEMAPS: BasemapPreset[] = [
 ]
 
 export function findBasemap(id: BasemapId): BasemapPreset {
-  return BASEMAPS.find((b) => b.id === id) ?? BASEMAPS[0]!
+  const fallback = BASEMAPS[0]
+  if (fallback === undefined) {
+    throw new Error("No basemaps configured")
+  }
+  return BASEMAPS.find((b) => b.id === id) ?? fallback
 }

@@ -3,12 +3,14 @@ import Image from "next/image"
 
 import { LocaleSwitcher } from "@/src/components/LocaleSwitcher"
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 export function baseOptions(): BaseLayoutProps {
   return {
     nav: {
       title: (
         <>
-          <Image src="/img/mapseek.png" alt="Mapseek UI" width={24} height={24} />
+          <Image src={`${basePath}/img/mapseek.png`} alt="Mapseek UI" width={24} height={24} />
           Mapseek UI
         </>
       ),
@@ -18,9 +20,9 @@ export function baseOptions(): BaseLayoutProps {
       { text: "Guides", url: "/getting-started/installation", active: "nested-url" },
       { text: "Components", url: "/components", active: "nested-url" },
       { text: "Blocks", url: "/blocks", active: "nested-url" },
-      { text: "Showcase", url: "/showcase/", external: true },
+      { text: "Showcase", url: `${basePath}/showcase/`, external: true },
       { type: "custom", children: <LocaleSwitcher /> },
     ],
-    githubUrl: "https://github.com/mapseek/mapseek-ui",
+    githubUrl: "https://github.com/mapseekai/mapseek-ui",
   }
 }

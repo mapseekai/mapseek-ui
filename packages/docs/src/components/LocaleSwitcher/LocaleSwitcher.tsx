@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 function normalize(pathname: string): string {
   if (pathname.length > 1 && pathname.endsWith("/")) return pathname.slice(0, -1)
   return pathname
@@ -30,14 +32,14 @@ export function LocaleSwitcher() {
           {isEnglish ? (
             <a
               className="block px-2 py-1.5 text-sm text-fd-popover-foreground hover:bg-fd-accent"
-              href={zhPath}
+              href={`${basePath}${zhPath}`}
             >
               简体中文
             </a>
           ) : (
             <a
               className="block px-2 py-1.5 text-sm text-fd-popover-foreground hover:bg-fd-accent"
-              href={enPath}
+              href={`${basePath}${enPath}`}
             >
               English
             </a>

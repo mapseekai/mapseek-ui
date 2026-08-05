@@ -52,11 +52,11 @@ export function LoomLayerGroup({
     <section className="mb-3">
       <div className="flex items-center gap-1">
         <Button
-          variant="ghost"
+          variant="link"
           size="sm"
           type="button"
           aria-expanded={!collapsed}
-          className="h-auto min-w-0 justify-start gap-2 rounded-none py-1.5 text-start"
+          className="h-auto min-w-0 justify-start gap-2 rounded-none py-1.5 text-start text-foreground hover:no-underline"
           onClick={() => onGroupCollapsedChange?.(group, !collapsed)}
         >
           {collapsed ? (
@@ -96,11 +96,11 @@ export function LoomLayerGroup({
                 )}
               >
                 <Button
-                  variant="ghost"
+                  variant="link"
                   size="sm"
                   type="button"
                   aria-label={labels.selectLayer(layer.name)}
-                  className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start"
+                  className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start text-foreground hover:no-underline"
                   onClick={() => onSelectLayer(layer.id)}
                 >
                   <GeometryIcon className="size-3.5 shrink-0 text-primary" />

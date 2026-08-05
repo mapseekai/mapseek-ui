@@ -116,10 +116,10 @@ export function ToolList({
                   <div key={tool.id} className="border border-border p-2.5">
                     <div className="mb-2 flex items-center gap-2">
                       <Button
-                        variant="ghost"
+                        variant="link"
                         size="sm"
                         type="button"
-                        className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start"
+                        className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start text-foreground hover:no-underline"
                         onClick={() => onOpenTool(tool.id)}
                       >
                         <span className="flex size-7 items-center justify-center bg-primary/10 text-primary">
@@ -159,13 +159,13 @@ export function ToolList({
               return (
                 <div
                   key={tool.id}
-                  className="flex items-center gap-2 border border-transparent px-2 py-1.5 hover:border-border hover:bg-muted/40"
+                  className="flex items-center gap-2 border border-transparent px-2 py-1.5 transition-colors hover:border-primary"
                 >
                   <Button
-                    variant="ghost"
+                    variant="link"
                     size="sm"
                     type="button"
-                    className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start"
+                    className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start text-foreground hover:no-underline"
                     onClick={() => onOpenTool(tool.id)}
                   >
                     <span className="flex size-6 items-center justify-center bg-muted text-muted-foreground">

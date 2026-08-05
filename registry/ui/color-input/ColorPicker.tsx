@@ -266,11 +266,11 @@ export const ColorPickerSelection = memo(({ className, ...props }: ColorPickerSe
       {...props}
     >
       <div
-        className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary"
+        className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary"
         style={{
           left: `${positionX * 100}%`,
           top: `${positionY * 100}%`,
-          boxShadow: "0 0 0 1px rgba(0,0,0,0.5), inset 0 0 0 2px white",
+          boxShadow: "inset 0 0 0 2px white",
         }}
       />
     </div>

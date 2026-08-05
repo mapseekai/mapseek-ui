@@ -45,7 +45,13 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon
-        render={<IconSelector className="pointer-events-none text-muted-foreground" />}
+        render={
+          <IconSelector
+            size={16}
+            stroke={1.5}
+            className="pointer-events-none text-muted-foreground"
+          />
+        }
       />
     </SelectPrimitive.Trigger>
   )
@@ -121,7 +127,7 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
           <span className="pointer-events-none absolute end-2 flex size-4 items-center justify-center" />
         }
       >
-        <IconCheck />
+        <IconCheck size={16} stroke={1.5} />
       </SelectPrimitive.ItemIndicator>
     </SelectPrimitive.Item>
   )
@@ -146,7 +152,7 @@ function SelectScrollUpButton({ className, ...props }: SelectPrimitive.ScrollUpA
       )}
       {...props}
     >
-      <IconChevronUp />
+      <IconChevronUp size={16} stroke={1.5} />
     </SelectPrimitive.ScrollUpArrow>
   )
 }
@@ -160,7 +166,7 @@ function SelectScrollDownButton({ className, ...props }: SelectPrimitive.ScrollD
       )}
       {...props}
     >
-      <IconChevronDown />
+      <IconChevronDown size={16} stroke={1.5} />
     </SelectPrimitive.ScrollDownArrow>
   )
 }

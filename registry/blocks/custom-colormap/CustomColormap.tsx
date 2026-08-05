@@ -14,6 +14,7 @@ export type CustomColormapProps = {
   readonly open: boolean
   readonly labels?: CustomColormapDialogLabels
   readonly className?: string
+  readonly showTrigger?: boolean
   readonly onOpenChange: (open: boolean) => void
   readonly onDraftChange: (value: CustomColormapValue) => void
   readonly onApply: (value: CustomColormapValue) => void
@@ -25,24 +26,27 @@ export function CustomColormap({
   open,
   labels = CUSTOM_COLORMAP_LABELS_ZH_CN,
   className,
+  showTrigger = true,
   onOpenChange,
   onDraftChange,
   onApply,
 }: CustomColormapProps) {
   return (
     <div data-slot="custom-colormap" className={cn("flex flex-col gap-4", className)}>
-      <div className="flex flex-wrap items-center gap-3">
-        <span
-          className="h-6 min-w-40 flex-1 sm:max-w-64"
-          style={{ background: buildColormapGradient(value) }}
-        />
-        <span className="font-mono text-[11px] text-muted-foreground">
-          {labels.summary(value.stops.length, value.interpolation, value.colorSpace)}
-        </span>
-        <Button size="sm" onClick={() => onOpenChange(true)}>
-          {labels.edit}
-        </Button>
-      </div>
+      {showTrigger ? (
+        <div className="flex flex-wrap items-center gap-3">
+          <span
+            className="h-6 min-w-40 flex-1 sm:max-w-64"
+            style={{ background: buildColormapGradient(value) }}
+          />
+          <span className="font-mono text-[11px] text-muted-foreground">
+            {labels.summary(value.stops.length, value.interpolation, value.colorSpace)}
+          </span>
+          <Button size="sm" onClick={() => onOpenChange(true)}>
+            {labels.edit}
+          </Button>
+        </div>
+      ) : null}
 
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent width={460} title={labels.title} description={labels.description}>

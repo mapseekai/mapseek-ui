@@ -116,10 +116,8 @@ function SummaryCard({
       type="button"
       onClick={onSelect}
       className={cn(
-        "flex h-auto min-w-0 flex-col gap-2 border-r border-b-2 border-border px-4 py-3 text-left transition-colors last:border-r-0",
-        selected
-          ? "border-b-primary bg-[oklch(0.627_0.194_149_/_0.06)]"
-          : "border-b-transparent bg-background hover:bg-muted/20",
+        "flex h-auto min-w-0 flex-col gap-2 border-0 border-r border-border px-4 py-3 text-left transition-colors last:border-r-0",
+        selected ? "bg-selection-bg" : "bg-background hover:bg-muted/20",
       )}
     >
       <span className="flex items-center gap-2 text-sm font-medium text-foreground">

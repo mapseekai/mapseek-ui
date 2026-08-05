@@ -69,13 +69,12 @@ export type RasterSelector =
 export type RasterCanonicalColormap =
   | { kind: "none" }
   | { kind: "named"; name: Exclude<ColormapName, "custom"> }
-  | {
-      kind: "custom"
-      value: {
-        entries: Array<{ value: number; color: string }>
-        nodataColor?: string
-      }
-    }
+  | { kind: "custom"; value: RasterCustomColormap }
+
+export interface RasterCustomColormap {
+  entries: Array<{ value: number; color: string }>
+  nodataColor?: string
+}
 
 export interface RasterStyleValue {
   mode: "SINGLE" | "MOSAIC"
@@ -142,6 +141,8 @@ export interface RasterStylePanelProps {
   /** Band/size/min/max readout shown above the form. Omit to hide. */
   stats?: RasterStat[]
   labels: RasterStyleLabels & Partial<RasterStylePanelLabels>
+  /** Opens an externally composed custom-colormap dialog. Omit to keep inline editing. */
+  onEditCustomColormap?: (value: RasterCustomColormap) => void
   /** Pre-fill target for the custom-stretch "Auto" button. */
   autoRange?: [number, number]
   mosaic?: {

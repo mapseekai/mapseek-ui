@@ -129,6 +129,7 @@ export function RasterStylePanel({
   bandCount = 1,
   stats,
   labels,
+  onEditCustomColormap,
   autoRange,
   mosaic,
   className,
@@ -203,6 +204,16 @@ export function RasterStylePanel({
   }
   const setColormap = (colormap: typeof value.colormap) => onChange({ ...panelValue, colormap })
   const custom = value.colormap.kind === "custom" ? value.colormap.value : null
+  const editCustomColormap = () => {
+    const next = custom ?? {
+      entries: [
+        { value: 0, color: "#000000" },
+        { value: 1, color: "#ffffff" },
+      ],
+    }
+    if (!custom) setColormap({ kind: "custom", value: next })
+    onEditCustomColormap?.(next)
+  }
   const customEntryIds = useStableIds(custom?.entries.length ?? 0, "custom-entry")
   const numberValid = (raw: string) => raw.trim() !== "" && Number.isFinite(Number(raw))
   const updateEntry = (index: number, patch: Partial<{ value: number; color: string }>) =>
@@ -294,21 +305,11 @@ export function RasterStylePanel({
                 ]}
                 value={value.colormap.kind}
                 buttonClassName="whitespace-nowrap"
-                onChange={(kind) =>
-                  kind === "none"
-                    ? setColormap({ kind: "none" })
-                    : kind === "named"
-                      ? setColormap({ kind: "named", name: "viridis" })
-                      : setColormap({
-                          kind: "custom",
-                          value: {
-                            entries: [
-                              { value: 0, color: "#000000" },
-                              { value: 1, color: "#ffffff" },
-                            ],
-                          },
-                        })
-                }
+                onChange={(kind) => {
+                  if (kind === "none") setColormap({ kind: "none" })
+                  else if (kind === "named") setColormap({ kind: "named", name: "viridis" })
+                  else editCustomColormap()
+                }}
               />
               {value.colormap.kind === "named" ? (
                 <ColormapPicker
@@ -317,7 +318,7 @@ export function RasterStylePanel({
                   customLabel={labels.customColormap}
                 />
               ) : null}
-              {custom ? (
+              {custom && !onEditCustomColormap ? (
                 <>
                   {custom.entries.map((entry, index) => (
                     <div key={customEntryIds[index]} className="grid grid-cols-2 gap-1">

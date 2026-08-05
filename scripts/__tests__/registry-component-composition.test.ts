@@ -90,6 +90,16 @@ describe("registry component composition", () => {
     )
   })
 
+  it("uses a primary hover border without a background for loom toolbox tool rows", async () => {
+    const toolList = await readFile("registry/blocks/loom-toolbox/ToolList.tsx", "utf8")
+
+    expect(toolList.match(/variant="link"/g)).toHaveLength(2)
+    expect(toolList.match(/text-foreground hover:no-underline/g)).toHaveLength(2)
+    expect(toolList).toContain("border border-transparent")
+    expect(toolList).toContain("transition-colors hover:border-primary")
+    expect(toolList).not.toContain("hover:bg-selection-bg")
+  })
+
   it("uses Empty for loom toolbox and layer-panel empty states", async () => {
     const [toolList, layerPanel] = await Promise.all([
       readFile("registry/blocks/loom-toolbox/ToolList.tsx", "utf8"),
@@ -102,6 +112,35 @@ describe("registry component composition", () => {
     expect(layerPanel).toContain("Empty")
     expect(layerPanel).toContain("EmptyTitle")
     expect(layerPanel).not.toContain("text-center text-xs text-muted-foreground")
+  })
+
+  it("uses background-free buttons for loom layer groups and selections", async () => {
+    const layerGroup = await readFile("registry/blocks/loom-layer-panel/LoomLayerGroup.tsx", "utf8")
+
+    expect(layerGroup.match(/variant="link"/g)).toHaveLength(2)
+    expect(layerGroup.match(/text-foreground hover:no-underline/g)).toHaveLength(2)
+  })
+
+  it("renders the loom toolbar with a border and no shadow", async () => {
+    const toolbar = await readFile("registry/blocks/loom-toolbar/LoomToolbar.tsx", "utf8")
+    const floatingToolbar = toolbar.match(/<div className="max-w-full[^"]+">/)?.[0]
+
+    expect(floatingToolbar).toContain("border border-border bg-card")
+    expect(floatingToolbar).not.toContain("shadow")
+  })
+
+  it("composes raster custom-colormap editing through the existing dialog block", async () => {
+    const [panel, dialog, showcase] = await Promise.all([
+      readFile("registry/blocks/raster-style-panel/RasterStylePanel.tsx", "utf8"),
+      readFile("registry/blocks/custom-colormap/CustomColormap.tsx", "utf8"),
+      readFile("showcase/src/showcases/RasterStylePanelShowcase.tsx", "utf8"),
+    ])
+
+    expect(panel).toContain("onEditCustomColormap?.(next)")
+    expect(panel).toContain("custom && !onEditCustomColormap")
+    expect(dialog).toContain("showTrigger = true")
+    expect(showcase).toContain("<CustomColormap")
+    expect(showcase).toContain("showTrigger={false}")
   })
 
   it("exposes Select as standard named composition pieces", async () => {

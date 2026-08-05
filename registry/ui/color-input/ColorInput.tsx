@@ -1,6 +1,6 @@
 "use client"
 
-import { useId, useRef, useState } from "react"
+import { useCallback, useEffect, useId, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -16,23 +16,6 @@ import {
   ColorPickerSelection,
 } from "./ColorPicker"
 import type { ColorInputPopoverOpenChangeDetails, ColorInputProps } from "./types"
-
-function shouldKeepPopoverOpenForColorInput(
-  isOpen: boolean,
-  eventDetails: ColorInputPopoverOpenChangeDetails | undefined,
-  input: HTMLInputElement | null,
-) {
-  if (isOpen || !input) return false
-  if (eventDetails?.reason !== "outside-press" && eventDetails?.reason !== "focus-out") {
-    return false
-  }
-
-  const target = eventDetails.event?.target
-  const eventStartedFromInput = target instanceof Node && input.contains(target)
-  const inputStillHasFocus = input.ownerDocument.activeElement === input
-
-  return eventStartedFromInput || inputStillHasFocus
-}
 
 export function ColorInput({
   value,
@@ -55,6 +38,9 @@ export function ColorInput({
 }: ColorInputProps) {
   const reactId = useId()
   const inputRef = useRef<HTMLInputElement>(null)
+  const pickerRef = useRef<HTMLDivElement>(null)
+  const swatchRef = useRef<HTMLButtonElement>(null)
+  const inputPointerStartedOpenRef = useRef(false)
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
   const displayValue = value || defaultValue
   const isControlled = open !== undefined
@@ -63,20 +49,41 @@ export function ColorInput({
   const hasButton = mode === "button" || mode === "button-input"
   const hasInput = mode === "input" || mode === "button-input"
 
-  const setOpen = (nextOpen: boolean, details?: ColorInputPopoverOpenChangeDetails) => {
-    if (disabled) {
-      details?.cancel?.()
-      return
+  const setOpen = useCallback(
+    (nextOpen: boolean, details?: ColorInputPopoverOpenChangeDetails) => {
+      if (disabled) {
+        details?.cancel?.()
+        return
+      }
+
+      if (!isControlled) setUncontrolledOpen(nextOpen)
+      onOpenChange?.(nextOpen, details)
+    },
+    [disabled, isControlled, onOpenChange],
+  )
+
+  useEffect(() => {
+    if (!effectiveOpen) return
+
+    const ownerDocument = inputRef.current?.ownerDocument ?? swatchRef.current?.ownerDocument
+    if (!ownerDocument) return
+
+    const closeAfterOutsidePress = (event: MouseEvent) => {
+      const target = event.target
+      if (
+        !(target instanceof Node) ||
+        pickerRef.current?.contains(target) ||
+        swatchRef.current?.contains(target)
+      ) {
+        return
+      }
+
+      setOpen(false)
     }
 
-    if (shouldKeepPopoverOpenForColorInput(nextOpen, details, inputRef.current)) {
-      details?.cancel?.()
-      return
-    }
-
-    if (!isControlled) setUncontrolledOpen(nextOpen)
-    onOpenChange?.(nextOpen, details)
-  }
+    ownerDocument.addEventListener("click", closeAfterOutsidePress)
+    return () => ownerDocument.removeEventListener("click", closeAfterOutsidePress)
+  }, [effectiveOpen, setOpen])
 
   const handlePickerChange = (nextValue: unknown, formatted?: string) => {
     if (onPickerChange) {
@@ -110,6 +117,7 @@ export function ColorInput({
     <PopoverTrigger
       render={
         <Button
+          ref={swatchRef}
           variant="ghost"
           size="icon-xs"
           type="button"
@@ -122,7 +130,7 @@ export function ColorInput({
     />
   ) : null
 
-  const renderInput = (openPickerOnInteract: boolean) => (
+  const renderInput = (openPickerOnClick: boolean) => (
     <Input
       id={reactId}
       ref={inputRef}
@@ -139,12 +147,15 @@ export function ColorInput({
       placeholder={inputPlaceholder ?? defaultValue}
       value={displayValue}
       onChange={(event) => onTextChange?.(event.target.value)}
-      onFocus={() => {
-        onTextFocus?.()
-        if (openPickerOnInteract) setOpen(true)
+      onPointerDown={() => {
+        inputPointerStartedOpenRef.current = effectiveOpen
       }}
+      onFocus={onTextFocus}
       onClick={() => {
-        if (openPickerOnInteract) setOpen(true)
+        if (!openPickerOnClick) return
+
+        setOpen(!inputPointerStartedOpenRef.current)
+        inputPointerStartedOpenRef.current = false
       }}
       onBlur={onTextBlur}
     />
@@ -170,7 +181,7 @@ export function ColorInput({
             />
             {renderInput(true)}
           </div>
-          <PopoverContent className="w-auto p-4" align="start">
+          <PopoverContent ref={pickerRef} className="w-auto p-4" align="start">
             {picker}
           </PopoverContent>
         </Popover>
@@ -185,7 +196,7 @@ export function ColorInput({
         {input}
         <Popover open={effectiveOpen} onOpenChange={setOpen}>
           {swatch}
-          <PopoverContent className="w-auto p-4" align="start">
+          <PopoverContent ref={pickerRef} className="w-auto p-4" align="start">
             {picker}
           </PopoverContent>
         </Popover>
@@ -194,7 +205,7 @@ export function ColorInput({
       <>
         <Popover open={effectiveOpen} onOpenChange={setOpen}>
           {swatch}
-          <PopoverContent className="w-auto p-4" align="start">
+          <PopoverContent ref={pickerRef} className="w-auto p-4" align="start">
             {picker}
           </PopoverContent>
         </Popover>

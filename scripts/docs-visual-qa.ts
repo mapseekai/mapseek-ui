@@ -4,7 +4,14 @@ import { extname, resolve, sep } from "node:path"
 import { type Browser, chromium, expect, type Locator, type Page } from "@playwright/test"
 import { SHADCN_PACKAGE } from "../shared/shadcn"
 
-type DocsVisualCase = "smoke" | "button" | "dialog" | "pilots" | "onboarding" | "release"
+type DocsVisualCase =
+  | "smoke"
+  | "button"
+  | "dialog"
+  | "color-input"
+  | "pilots"
+  | "onboarding"
+  | "release"
 type DocsVisualCategory = "block" | "primitive"
 type DocsTheme = "dark" | "light"
 type DocsViewportName = "desktop" | "mobile"
@@ -46,6 +53,7 @@ function readCliOptions(): CliOptions {
     caseName !== "smoke" &&
     caseName !== "button" &&
     caseName !== "dialog" &&
+    caseName !== "color-input" &&
     caseName !== "pilots" &&
     caseName !== "onboarding" &&
     caseName !== "release"
@@ -209,6 +217,26 @@ async function runButtonCase(baseUrl: string, browserChannel?: string) {
 
     await page.goto("/components/button")
     await assertButtonPilot(page, "/components/button")
+  } finally {
+    await browser.close()
+  }
+}
+
+async function runColorInputCase(baseUrl: string, browserChannel?: string) {
+  await assertPreviewIsAvailable(baseUrl)
+
+  const browser = await launchBrowser(browserChannel)
+
+  try {
+    const page = await (
+      await browser.newContext({
+        baseURL: baseUrl,
+        viewport: { width: 1280, height: 720 },
+      })
+    ).newPage()
+
+    await page.goto("/components/color-input")
+    await assertPrimitiveInteraction(page, "color-input", "/components/color-input")
   } finally {
     await browser.close()
   }
@@ -1153,8 +1181,21 @@ export async function assertPrimitiveInteraction(
 
   if (primitive === "color-input") {
     const controlled = page.locator('[data-demo="color-input-controlled"]')
+    const colorInput = controlled.getByLabel(localized(path, "图层颜色", "Layer color"))
+    const picker = page.locator('[data-slot="popover-content"]:visible')
+
     await expect(controlled.locator('input[type="color"]')).toHaveCount(0)
-    await controlled.getByLabel(localized(path, "图层颜色", "Layer color")).fill("#dc2626")
+    await colorInput.click()
+    await expect(picker).toHaveCount(1)
+    await colorInput.click()
+    await expect(picker).toHaveCount(0)
+
+    await colorInput.click()
+    await expect(picker).toHaveCount(1)
+    await controlled.getByRole("heading", { level: 4 }).click()
+    await expect(picker).toHaveCount(0)
+
+    await colorInput.fill("#dc2626")
     await expect(controlled.locator('[data-demo="color-input-value"]')).toContainText("#dc2626")
 
     await page.evaluate(() => {
@@ -2749,6 +2790,9 @@ async function main() {
     }
     if (options.caseName === "dialog") {
       await runDialogCase(baseUrl, options.browserChannel)
+    }
+    if (options.caseName === "color-input") {
+      await runColorInputCase(baseUrl, options.browserChannel)
     }
     if (options.caseName === "pilots") {
       await runPilotsCase(baseUrl, options.browserChannel)

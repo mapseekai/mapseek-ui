@@ -51,7 +51,7 @@ export function ColormapPicker({
               if (c === "custom") onEditCustom?.()
             }}
             data-selected={active}
-            className="flex cursor-pointer flex-col gap-1 border border-transparent"
+            className="flex h-auto cursor-pointer flex-col gap-1 border border-transparent p-1"
           >
             <span
               className={cn(

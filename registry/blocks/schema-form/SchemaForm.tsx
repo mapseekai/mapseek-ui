@@ -54,7 +54,7 @@ export function SchemaForm({
               <FieldLegend variant="label" className="mb-0 text-xs">
                 {label}
               </FieldLegend>
-              <FieldGroup className="max-h-[140px] gap-0 overflow-auto border border-border bg-background">
+              <FieldGroup className="max-h-[140px] gap-0 overflow-auto border border-border bg-background py-1">
                 {f.options.length === 0 ? (
                   <FieldDescription className="px-2 py-1.5">{f.emptyHint}</FieldDescription>
                 ) : (

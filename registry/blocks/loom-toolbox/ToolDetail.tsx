@@ -45,10 +45,10 @@ export function ToolDetail({
     <>
       <header className="flex items-center gap-2 border-b border-border px-3 py-2.5">
         <Button
-          variant="ghost"
+          variant="link"
           size="sm"
           type="button"
-          className="h-auto gap-1 rounded-none p-0 text-xs text-primary"
+          className="h-auto gap-1 rounded-none p-0 text-xs text-primary hover:no-underline"
           onClick={onBack}
         >
           <IconArrowLeft className="size-3.5" /> {labels.back}

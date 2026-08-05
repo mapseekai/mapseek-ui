@@ -1,4 +1,11 @@
 import {
+  CUSTOM_COLORMAP_LABELS_EN,
+  CUSTOM_COLORMAP_LABELS_ZH_CN,
+  CustomColormap,
+} from "@registry/blocks/custom-colormap"
+import {
+  type CustomColormap as CustomColormapValue,
+  DEFAULT_CUSTOM_COLORMAP,
   type RasterStat,
   type RasterStyleLabels,
   RasterStylePanel,
@@ -136,7 +143,11 @@ function rasterStats(demoLabels: (typeof labels)[keyof typeof labels]): RasterSt
 
 export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
+  const customLabels = locale === "en" ? CUSTOM_COLORMAP_LABELS_EN : CUSTOM_COLORMAP_LABELS_ZH_CN
   const [value, setValue] = useState<RasterStyleValue>(initialStyle)
+  const [customColormap, setCustomColormap] = useState<CustomColormapValue>(DEFAULT_CUSTOM_COLORMAP)
+  const [customDraft, setCustomDraft] = useState<CustomColormapValue>(DEFAULT_CUSTOM_COLORMAP)
+  const [customOpen, setCustomOpen] = useState(false)
   const [valid, setValid] = useState(true)
   const [revision, setRevision] = useState(0)
   const [status, setStatus] = useState<string>(demoLabels.valid)
@@ -165,11 +176,42 @@ export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
               )
             }}
             onValidityChange={setValid}
+            onEditCustomColormap={(current) => {
+              const next = { ...customColormap, stops: current.entries.map((entry) => entry.color) }
+              setCustomColormap(next)
+              setCustomDraft(next)
+              setCustomOpen(true)
+            }}
             resetKey={revision}
             bandCount={13}
             stats={rasterStats(demoLabels)}
             labels={demoLabels.labels}
             autoRange={[0, 3842]}
+          />
+          <CustomColormap
+            value={customColormap}
+            draft={customDraft}
+            open={customOpen}
+            labels={customLabels}
+            showTrigger={false}
+            onOpenChange={setCustomOpen}
+            onDraftChange={setCustomDraft}
+            onApply={(next) => {
+              setCustomColormap(next)
+              setValue((current) => ({
+                ...current,
+                colormap: {
+                  kind: "custom",
+                  value: {
+                    entries: next.stops.map((color, index) => ({
+                      value: index / Math.max(1, next.stops.length - 1),
+                      color,
+                    })),
+                  },
+                },
+              }))
+              setCustomOpen(false)
+            }}
           />
         </div>
       </div>
@@ -203,7 +245,7 @@ export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         </p>
         <div className="min-w-0 overflow-hidden border border-border bg-background p-2">
           <p className="m-0 mb-2 text-xs font-medium text-muted-foreground">{demoLabels.summary}</p>
-          <pre className="m-0 max-h-64 max-w-full overflow-auto whitespace-pre-wrap break-words font-mono !text-[10px] !leading-4">
+          <pre className="m-0 max-w-full whitespace-pre-wrap break-words font-mono !text-[10px] !leading-4">
             {JSON.stringify(value, null, 2)}
           </pre>
         </div>

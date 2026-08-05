@@ -66,7 +66,7 @@ export function LoomToolbar({
       <div className="absolute start-[8%] top-[36%] h-36 w-[46%] border-2 border-primary/45 bg-primary/10 [clip-path:polygon(8%_14%,78%_0,100%_56%,68%_100%,0_82%)]" />
 
       <div className="absolute inset-x-3 top-4 flex justify-center">
-        <div className="max-w-full overflow-x-auto border border-border bg-card shadow-(--shadow-map-float)">
+        <div className="max-w-full overflow-x-auto border border-border bg-card">
           <div className="flex h-11 min-w-max items-center gap-1 px-1.5">
             <Button
               size="sm"

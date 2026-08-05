@@ -32,6 +32,7 @@ it("uses shared controls and square themed scrollbars", async () => {
   expect(schemaTable).not.toContain("IconCopy")
   expect(virtualTable).toContain("[scrollbar-color:var(--border)_transparent]")
   expect(virtualTable).toContain("[&::-webkit-scrollbar-thumb]:rounded-none")
+  expect(virtualTable).toContain("justify-start gap-0")
   expect(
     JSON.parse(registry).items.find((item: { name: string }) => item.name === "attr-table"),
   ).toHaveProperty(

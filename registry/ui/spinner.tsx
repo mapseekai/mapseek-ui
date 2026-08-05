@@ -1,0 +1,18 @@
+import { IconLoader } from "@tabler/icons-react"
+import type * as React from "react"
+
+import { cn } from "@/registry/lib/utils"
+
+function Spinner({ className, ...props }: React.ComponentProps<typeof IconLoader>) {
+  return (
+    <IconLoader
+      data-slot="spinner"
+      role="status"
+      aria-label="Loading"
+      className={cn("size-4 animate-spin", className)}
+      {...props}
+    />
+  )
+}
+
+export { Spinner }

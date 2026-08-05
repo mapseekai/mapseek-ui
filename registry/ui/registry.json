@@ -467,6 +467,22 @@
       ]
     },
     {
+      "name": "button-radio-group",
+      "type": "registry:ui",
+      "title": "Button Radio Group",
+      "description": "Single-choice radio controls presented as wrapped buttons.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [
+        {
+          "path": "button-radio-group.tsx",
+          "type": "registry:ui",
+          "target": "@ui/button-radio-group.tsx"
+        }
+      ]
+    },
+    {
       "name": "select",
       "type": "registry:ui",
       "title": "Select",
@@ -713,6 +729,140 @@
           "target": "@ui/table.tsx"
         }
       ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "Confirmation dialog for consequential actions.",
+      "categories": ["overlay"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils", "@mapseek/button"],
+      "dependencies": ["@base-ui/react"],
+      "files": [
+        { "path": "alert-dialog.tsx", "type": "registry:ui", "target": "@ui/alert-dialog.tsx" }
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "title": "Aspect Ratio",
+      "description": "Container that preserves a chosen aspect ratio.",
+      "categories": ["layout"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "files": [
+        { "path": "aspect-ratio.tsx", "type": "registry:ui", "target": "@ui/aspect-ratio.tsx" }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Hierarchical navigation trail.",
+      "categories": ["navigation"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react"],
+      "files": [{ "path": "breadcrumb.tsx", "type": "registry:ui", "target": "@ui/breadcrumb.tsx" }]
+    },
+    {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button Group",
+      "description": "Adjacent controls treated as one compact group.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils", "@mapseek/separator"],
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        { "path": "button-group.tsx", "type": "registry:ui", "target": "@ui/button-group.tsx" }
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover Card",
+      "description": "Preview content revealed on hover or focus.",
+      "categories": ["overlay"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "hover-card.tsx", "type": "registry:ui", "target": "@ui/hover-card.tsx" }]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "Composable compact list item layout.",
+      "categories": ["display"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils", "@mapseek/separator"],
+      "dependencies": ["class-variance-authority"],
+      "files": [{ "path": "item.tsx", "type": "registry:ui", "target": "@ui/item.tsx" }]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "Keyboard shortcut keycap.",
+      "categories": ["display"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "files": [{ "path": "kbd.tsx", "type": "registry:ui", "target": "@ui/kbd.tsx" }]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "Desktop-style menu bar built from Base UI menus.",
+      "categories": ["navigation"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils", "@mapseek/dropdown-menu"],
+      "dependencies": ["@base-ui/react"],
+      "files": [{ "path": "menubar.tsx", "type": "registry:ui", "target": "@ui/menubar.tsx" }]
+    },
+    {
+      "name": "native-select",
+      "type": "registry:ui",
+      "title": "Native Select",
+      "description": "Styled native select control.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react"],
+      "files": [
+        { "path": "native-select.tsx", "type": "registry:ui", "target": "@ui/native-select.tsx" }
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation Menu",
+      "description": "Disclosure navigation for grouped destinations.",
+      "categories": ["navigation"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [
+        {
+          "path": "navigation-menu.tsx",
+          "type": "registry:ui",
+          "target": "@ui/navigation-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "Custom scrollbar for contained overflow.",
+      "categories": ["layout"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [
+        { "path": "scroll-area.tsx", "type": "registry:ui", "target": "@ui/scroll-area.tsx" }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "Compact loading indicator.",
+      "categories": ["feedback"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react"],
+      "files": [{ "path": "spinner.tsx", "type": "registry:ui", "target": "@ui/spinner.tsx" }]
     }
   ]
 }

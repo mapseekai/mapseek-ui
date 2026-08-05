@@ -160,6 +160,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "button-radio-group",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "separator",
     {
       category: "primitive",

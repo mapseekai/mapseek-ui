@@ -44,7 +44,10 @@ function TooltipContent({
           {...props}
         >
           {children}
-          <TooltipPrimitive.Arrow className="size-2.5 translate-y-[calc(-50%-2px)] rotate-45 bg-foreground fill-foreground" />
+          <TooltipPrimitive.Arrow
+            data-slot="tooltip-arrow"
+            className="relative z-50 block h-1.5 w-3 overflow-clip before:absolute before:bottom-0 before:left-1/2 before:size-[8.485px] before:-translate-x-1/2 before:translate-y-1/2 before:rotate-45 before:bg-foreground before:content-[''] data-[side=top]:-bottom-1.5 data-[side=top]:rotate-180 data-[side=bottom]:-top-1.5 data-[side=left]:-right-[9px] data-[side=left]:rotate-90 data-[side=right]:-left-[9px] data-[side=right]:-rotate-90"
+          />
         </TooltipPrimitive.Popup>
       </TooltipPrimitive.Positioner>
     </TooltipPrimitive.Portal>

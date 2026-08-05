@@ -1,95 +1,92 @@
 ---
 version: alpha
 name: Mapseek UI
-description: A compact, precision-first design system for geospatial analysis, map styling, data inspection, and resource-management tools.
+description: "A compact, zero-radius design system for GIS analysis, map styling, data inspection, and resource management. It uses neutral OKLCH surfaces, a reserved green action color, and a single monospaced interface voice."
 colors:
-  primary: "oklch(0.6270 0.1940 149)"
-  on-primary: "oklch(1 0 0)"
   background: "oklch(0.9900 0.0020 149)"
-  on-background: "oklch(0.2500 0.0100 149)"
-  surface: "oklch(1 0 0)"
-  on-surface: "oklch(0.2500 0.0100 149)"
+  foreground: "oklch(0.2500 0.0100 149)"
+  card: "oklch(1 0 0)"
+  card-foreground: "oklch(0.2500 0.0100 149)"
+  popover: "oklch(1 0 0)"
+  popover-foreground: "oklch(0.2500 0.0100 149)"
+  primary: "oklch(0.6270 0.1940 149)"
+  primary-foreground: "oklch(1 0 0)"
   secondary: "oklch(0.9600 0.0050 149)"
-  on-secondary: "oklch(0.3000 0.0500 149)"
+  secondary-foreground: "oklch(0.3000 0.0500 149)"
   muted: "oklch(0.9700 0.0020 149)"
-  on-muted: "oklch(0.5000 0.0200 149)"
+  muted-foreground: "oklch(0.5000 0.0200 149)"
   accent: "oklch(0.9600 0.0100 149)"
-  on-accent: "oklch(0.3000 0.1000 149)"
+  accent-foreground: "oklch(0.3000 0.1000 149)"
+  destructive: "oklch(0.6000 0.1800 25)"
+  warning: "oklch(0.769 0.188 70.08)"
+  info: "oklch(0.623 0.17 245)"
   border: "oklch(0.9200 0.0050 149)"
   border-strong: "oklch(0.8500 0.0080 149)"
   input: "oklch(0.9400 0.0050 149)"
   input-surface: "transparent"
   ring: "oklch(0.6270 0.1940 149)"
-  destructive: "oklch(0.6000 0.1800 25)"
-  warning: "oklch(0.769 0.188 70.08)"
-  info: "oklch(0.623 0.17 245)"
-  selection: "oklch(0.9500 0.0300 149)"
-  dark-primary: "oklch(0.6800 0.1940 149)"
-  dark-on-primary: "oklch(0.1500 0.0100 149)"
-  dark-background: "oklch(0.1500 0.0100 149)"
-  dark-on-background: "oklch(0.9500 0.0050 149)"
-  dark-surface: "oklch(0.2000 0.0100 149)"
-  dark-on-surface: "oklch(0.9500 0.0050 149)"
-  dark-muted: "oklch(0.2400 0.0080 149)"
-  dark-on-muted: "oklch(0.6500 0.0200 149)"
-  dark-input: "oklch(1 0 0 / 15%)"
-  dark-input-surface: "oklch(1 0 0 / 4.5%)"
-  dark-destructive: "oklch(0.7000 0.1800 25)"
+  selection-bg: "oklch(0.9500 0.0300 149)"
+  selection-bg-mid: "oklch(0.9200 0.0500 149)"
+  selection-bg-deep: "oklch(0.8800 0.0700 149)"
 typography:
   headline-lg:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 18px
     fontWeight: 600
     lineHeight: 1.2
-    letterSpacing: -0.02em
+    letterSpacing: "-0.02em"
   headline-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 15px
     fontWeight: 600
     lineHeight: 1.25
+    letterSpacing: "-0.02em"
   headline-sm:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 14px
     fontWeight: 500
     lineHeight: 1.3
+    letterSpacing: "-0.01em"
   body-base:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 16px
     fontWeight: 400
     lineHeight: 1.5
+    letterSpacing: 0px
   body-lg:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 13px
     fontWeight: 400
     lineHeight: 1.5
+    letterSpacing: 0px
   body-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 12px
     fontWeight: 400
     lineHeight: 1.5
+    letterSpacing: 0px
   body-sm:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 11px
     fontWeight: 400
     lineHeight: 1.5
+    letterSpacing: 0px
   label-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 10px
     fontWeight: 500
     lineHeight: 1.2
-    letterSpacing: 0.06em
+    letterSpacing: "0.06em"
+    fontFeature: '"tnum" 1, "zero" 1'
   data-display:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 42px
     fontWeight: 600
     lineHeight: 1
-    letterSpacing: -0.02em
+    letterSpacing: "-0.02em"
+    fontFeature: '"tnum" 1, "zero" 1'
 rounded:
   none: 0px
-  sm: 0px
-  md: 0px
-  lg: 0px
-  xl: 0px
   full: 9999px
 spacing:
   hairline: 1px
@@ -104,57 +101,66 @@ spacing:
 components:
   app-shell:
     backgroundColor: "{colors.background}"
-    textColor: "{colors.on-background}"
+    textColor: "{colors.foreground}"
     typography: "{typography.body-md}"
-    rounded: "{rounded.none}"
-  surface:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.on-surface}"
-    rounded: "{rounded.none}"
-  surface-muted:
-    backgroundColor: "{colors.muted}"
-    textColor: "{colors.on-muted}"
-    rounded: "{rounded.none}"
-  surface-accent:
-    backgroundColor: "{colors.accent}"
-    textColor: "{colors.on-accent}"
     rounded: "{rounded.none}"
   button-primary:
     backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
+    textColor: "{colors.primary-foreground}"
     typography: "{typography.body-md}"
     rounded: "{rounded.none}"
     height: 32px
-    padding: 10px
+    padding: 0px 10px
+  button-primary-hover:
+    backgroundColor: "color-mix(in oklch, {colors.primary}, transparent 20%)"
+    textColor: "{colors.primary-foreground}"
   button-secondary:
     backgroundColor: "{colors.secondary}"
-    textColor: "{colors.on-secondary}"
+    textColor: "{colors.secondary-foreground}"
     typography: "{typography.body-md}"
     rounded: "{rounded.none}"
     height: 32px
-    padding: 10px
+    padding: 0px 10px
+  button-outline:
+    backgroundColor: "{colors.background}"
+    textColor: "{colors.foreground}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.none}"
+    height: 32px
+    padding: 0px 10px
+  button-destructive:
+    backgroundColor: "color-mix(in oklch, {colors.destructive}, transparent 90%)"
+    textColor: "{colors.destructive}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.none}"
+    height: 32px
+    padding: 0px 10px
   button-xs:
     typography: "{typography.body-md}"
     rounded: "{rounded.none}"
     height: 24px
-    padding: 8px
+    padding: 0px 8px
   button-sm:
     typography: "{typography.body-md}"
     rounded: "{rounded.none}"
     height: 28px
-    padding: 10px
+    padding: 0px 10px
   button-lg:
     typography: "{typography.body-md}"
     rounded: "{rounded.none}"
     height: 36px
-    padding: 10px
+    padding: 0px 10px
+  accent-surface:
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.accent-foreground}"
+    rounded: "{rounded.none}"
   input:
     backgroundColor: "{colors.input-surface}"
-    textColor: "{colors.on-background}"
+    textColor: "{colors.foreground}"
     typography: "{typography.body-md}"
     rounded: "{rounded.none}"
     height: 32px
-    padding: 10px
+    padding: 0px 10px
   input-border:
     backgroundColor: "{colors.input}"
     height: 1px
@@ -167,43 +173,43 @@ components:
   focus-ring:
     backgroundColor: "{colors.ring}"
     size: 3px
-  selection:
-    backgroundColor: "{colors.selection}"
-    textColor: "{colors.on-background}"
-  destructive-action:
-    textColor: "{colors.destructive}"
+  selected-surface:
+    backgroundColor: "{colors.selection-bg}"
+    textColor: "{colors.foreground}"
+  selected-surface-emphasized:
+    backgroundColor: "{colors.selection-bg-mid}"
+    textColor: "{colors.foreground}"
+  selected-surface-strong:
+    backgroundColor: "{colors.selection-bg-deep}"
+    textColor: "{colors.foreground}"
   warning-status:
     textColor: "{colors.warning}"
   info-status:
     textColor: "{colors.info}"
+  card:
+    backgroundColor: "{colors.card}"
+    textColor: "{colors.card-foreground}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.none}"
+    padding: 16px
+  popover:
+    backgroundColor: "{colors.popover}"
+    textColor: "{colors.popover-foreground}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.none}"
+    padding: 10px
   badge:
+    backgroundColor: "{colors.muted}"
+    textColor: "{colors.foreground}"
     typography: "{typography.body-md}"
     rounded: "{rounded.none}"
     height: 20px
-    padding: 8px
+    padding: 0px 8px
   table-header:
     backgroundColor: "{colors.muted}"
-    textColor: "{colors.on-muted}"
+    textColor: "{colors.muted-foreground}"
     typography: "{typography.body-md}"
     height: 40px
-  dark-app-shell:
-    backgroundColor: "{colors.dark-background}"
-    textColor: "{colors.dark-on-background}"
-  dark-surface:
-    backgroundColor: "{colors.dark-surface}"
-    textColor: "{colors.dark-on-surface}"
-  dark-muted-surface:
-    backgroundColor: "{colors.dark-muted}"
-    textColor: "{colors.dark-on-muted}"
-  dark-button-primary:
-    backgroundColor: "{colors.dark-primary}"
-    textColor: "{colors.dark-on-primary}"
-  dark-input:
-    backgroundColor: "{colors.dark-input-surface}"
-  dark-input-control:
-    backgroundColor: "{colors.dark-input}"
-  dark-destructive-action:
-    textColor: "{colors.dark-destructive}"
 ---
 
 # Mapseek UI Design Rules
@@ -212,279 +218,182 @@ components:
 
 ## Overview
 
-Mapseek UI is a component registry for GIS analysis, map styling, data inspection, and resource-management products. Its visual language is **precision-first technical minimalism**: dense without feeling cramped, explicit about state, quiet around data, and optimized for long desktop sessions.
+Mapseek UI is the working interface for GIS analysis, map styling, data inspection, and resource management. Its character is **precision-first technical minimalism**: compact, calm, and explicit about state. It should feel like a calibrated professional instrument, not a marketing site. Maps, rasters, charts, coordinates, schemas, and resource metadata are the visual content; chrome exists to organize and operate on that content.
 
-The interface should resemble a calibrated professional instrument rather than a marketing site. Maps, rasters, charts, coordinates, schemas, and resource metadata are the visual content; chrome exists to organize and operate on that content. Green signals the current action or selection, hairlines establish structure, and a single monospaced voice keeps values easy to scan and compare.
+The defining visual rhythm is a near-neutral canvas, square 1px-bounded surfaces, and a restrained green that only signals the current action, focus, or selection. A single monospaced typeface keeps coordinates, identifiers, counts, and data values easy to scan and compare during long desktop sessions.
 
 **Key characteristics:**
 
-- Near-white and near-black neutral canvases with a restrained green action color.
-- Geist Mono Variable for interface copy, labels, identifiers, coordinates, and numeric data.
+- Neutral light and dark canvases; green is functional rather than decorative.
+- Geist Mono Variable for all UI text and technical data.
 - Zero-radius rectangular controls, panels, cards, menus, and dialogs.
-- Compact 24-36px control heights and a 4px spacing baseline.
-- One-pixel borders and surface shifts as the primary depth devices; shadows are reserved for floating layers.
-- Clear selected, loading, empty, error, and disabled states that never depend on color alone.
-- Desktop-first panel and data-grid layouts that remain operable on narrow viewports.
+- Compact 24px, 28px, 32px, and 36px control sizes on a 4px spacing rhythm.
+- Borders and small surface changes establish hierarchy; shadows belong to floating layers only.
+- Selected, loading, empty, error, and disabled states never rely on color alone.
+- Desktop-first data and panel layouts remain understandable when space narrows.
 
 ### Source of Truth
 
-- `registry/theme/registry.json` owns runtime colors, typography, radii, shadows, motion, and Tailwind mappings.
-- `registry/ui/` owns reusable primitives, variants, sizes, states, and accessibility behavior.
-- `registry/blocks/` composes primitives into geospatial and resource-management patterns.
-- `packages/docs/` and `showcase/` are the visual and interaction acceptance surfaces.
-- The YAML front matter is the normative contract for the tokens it lists. `registry/theme/registry.json` remains the source of truth for runtime extensions such as chart, category, sidebar, and derived opacity colors. The prose explains why and when to apply both sets.
-
-### Design Principles
-
-1. **Precision before decoration.** Alignment, boundaries, data legibility, and state clarity take precedence over visual effects.
-2. **Dense, not cramped.** Use compact controls and short gaps, but preserve consistent grouping and a readable scan path.
-3. **Data before chrome.** UI surfaces remain neutral so maps, charts, color ramps, and resource previews carry the visual emphasis.
-4. **Semantic tokens only.** Consume `primary`, `muted`, `border`, and other semantic roles instead of copying color literals into components.
-5. **Reuse before invention.** Compose existing primitives first; create a block only when a domain pattern repeats.
-6. **State is never color-only.** Pair color with text, icons, borders, progress, or structural change.
+- `registry/theme/registry.json` owns the runtime theme variables, including dark-theme values, shadows, motion, charts, categories, and sidebar tokens.
+- `registry/ui/` owns primitive variants, sizing, keyboard behavior, and accessibility.
+- `registry/blocks/` composes primitives into GIS and resource-management patterns.
+- `packages/docs/` and `showcase/` are the visual acceptance surfaces.
+- This front matter mirrors the primary light-theme variables consumed by components. When a runtime extension is not represented here, use `registry/theme/registry.json`; do not create a competing token.
 
 ## Colors
 
-The palette uses a green-axis OKLCH system surrounded by low-chroma neutrals. The green is functional, not decorative: it identifies the primary action, focus, selection, and limited progress emphasis. Large surfaces stay neutral so spatial and scientific data remain dominant.
+Mapseek uses a green-axis OKLCH palette surrounded by low-chroma neutrals. The primary green identifies a meaningful active state, while maps, raster previews, charts, and symbology remain the visual emphasis.
 
-### Brand & Action
+### Action, State, and Text
 
-- **Primary** (`{colors.primary}`): Current primary action, selected navigation item, focus ring, and key progress. Avoid multiple competing primary buttons within one local task.
-- **On Primary** (`{colors.on-primary}`): Foreground for solid primary surfaces in the light theme. Icons and `currentColor` SVGs inherit this value.
-- **Secondary / Accent** (`{colors.secondary}`, `{colors.accent}`): Low-emphasis actions, hover fills, grouped choices, and selected backgrounds where a solid primary surface would be too strong.
-- **Selection** (`{colors.selection}`): Persistent selection fill. Combine it with a primary border, indicator bar, checkmark, or selected semantics.
+- **Primary** (`{colors.primary}`) is the single high-emphasis action, selected navigation treatment, keyboard focus source, and limited progress accent. Its foreground is `{colors.primary-foreground}`.
+- **Secondary** (`{colors.secondary}`) and **accent** (`{colors.accent}`) provide lower-emphasis actions, grouped choices, and quiet hover fills. Their foregrounds are the matching `*-foreground` tokens.
+- **Selection** progresses from `{colors.selection-bg}` to `{colors.selection-bg-deep}`. Pair it with selected semantics, an edge, a checkmark, or another persistent indicator.
+- **Destructive**, **warning**, and **info** are semantic signals, not decorative categories. Pair them with text or an icon; destructive actions remain tinted rather than solid red.
 
-### Surfaces & Text
+### Surfaces, Borders, and Dark Theme
 
-- **Background** (`{colors.background}`): Application floor and the default map-adjacent workspace.
-- **Surface** (`{colors.surface}`): Cards, popovers, dialogs, and discrete panels.
-- **Muted** (`{colors.muted}`): Table headers, secondary bands, subdued hover states, and empty-state scaffolding.
-- **On Background / On Surface** (`{colors.on-background}`, `{colors.on-surface}`): Primary interface text.
-- **On Muted** (`{colors.on-muted}`): Metadata, descriptions, counts, and secondary labels. Do not use it for essential instructions at small sizes.
+- **Background** (`{colors.background}`) is the application floor; **card** and **popover** are discrete elevated surfaces with their matching foreground tokens.
+- **Muted** supports table headers, subdued hover states, metadata bands, and empty-state scaffolding. Do not use `{colors.muted-foreground}` for essential small text.
+- **Border** is the default 1px structure; **border-strong** is reserved for emphasized boundaries and active drop targets.
+- Inputs use `{colors.input}` for their border and `{colors.input-surface}` for their fill. The light theme deliberately keeps the fill transparent.
+- Dark mode reuses the same semantic names with the `.dark` values in the runtime theme; it is not a mechanical inversion. Dark panels remain only slightly lighter than the application floor, and editable inputs use a quiet translucent fill.
 
-### Borders & Inputs
+### Data Palettes
 
-- **Border** (`{colors.border}`): Default 1px separators, panel edges, card rings, and table rules.
-- **Border Strong** (`{colors.border-strong}`): Emphasized structure, active drop zones, and input boundaries that need more contrast.
-- **Input** (`{colors.input}`): Input borders, disabled fills, and the dark-theme field tint. Editable fields stay transparent in the light theme so they remain visually integrated with the surrounding panel.
-- **Ring** (`{colors.ring}`): Keyboard focus. Focus treatment must remain visible in both themes and must not be replaced by hover styling.
-
-### Semantic & Data Colors
-
-- **Destructive** (`{colors.destructive}`): Irreversible actions and errors. Destructive buttons use a tinted background plus destructive text rather than a large solid-red surface.
-- **Warning** (`{colors.warning}`) and **Info** (`{colors.info}`): Status accents accompanied by a label or icon.
-- Chart colors use this runtime order: `--chart-1` green, `--chart-2` dark green, `--chart-3` cyan-green, `--chart-4` pale green, and `--chart-5` muted green.
-- Category colors use this runtime order: `--cat-1` green, `--cat-2` blue, `--cat-3` amber, `--cat-4` red, `--cat-5` violet, and `--cat-6` cyan. Preserve the order unless the data domain defines a stable semantic mapping.
-- Color ramps, satellite imagery, raster previews, and map symbology are content palettes. They do not redefine the interface palette.
-
-### Dark Mode
-
-Dark mode uses the matching `dark-*` semantic values rather than mechanically inverting light colors. Panels are only slightly lighter than the application background, borders stay translucent, and primary foreground changes to a dark value for readable contrast. Editable text fields use `{colors.dark-input-surface}`, derived from 30% of `{colors.dark-input}`, as a quiet surface tint. Preserve the same hierarchy and component states across themes.
+Chart and category palettes are runtime extensions. Preserve their declared order in `registry/theme/registry.json` unless the data domain supplies a stable semantic mapping. Color ramps, satellite imagery, and map symbology are content palettes and never redefine the interface palette.
 
 ## Typography
 
-Mapseek uses **Geist Mono Variable** as both its sans and mono runtime family. A single monospaced voice reinforces the product's technical character and makes coordinates, identifiers, layer names, counts, and code-like values directly comparable.
+Mapseek uses **Geist Mono Variable** as its UI and data family. This single technical voice makes coordinates, filenames, field names, timestamps, storage figures, and code-like values comparable without switching visual language.
 
 ### Hierarchy
 
-| Token | Size | Weight | Line height | Use |
-|---|---:|---:|---:|---|
-| `{typography.headline-lg}` | 18px | 600 | 1.2 | Page and major panel titles |
-| `{typography.headline-md}` | 15px | 600 | 1.25 | Dialog and section titles |
-| `{typography.headline-sm}` | 14px | 500 | 1.3 | Card titles and grouped controls |
-| `{typography.body-base}` | 16px | 400 | 1.5 | Root document scale and prose-oriented surfaces |
-| `{typography.body-lg}` | 13px | 400 | 1.5 | Prominent interface copy and resource names |
-| `{typography.body-md}` | 12px | 400 | 1.5 | Default controls, tables, fields, and panels |
-| `{typography.body-sm}` | 11px | 400 | 1.5 | Metadata, counts, and compact status text |
-| `{typography.label-md}` | 10px | 500 | 1.2 | Uppercase taxonomy and section labels |
-| `{typography.data-display}` | 42px | 600 | 1 | Font specimens and exceptional data previews |
+| Token | Size | Weight | Line height | Letter spacing | Use |
+|---|---:|---:|---:|---:|---|
+| `{typography.headline-lg}` | 18px | 600 | 1.2 | -0.02em | Page and major panel titles |
+| `{typography.headline-md}` | 15px | 600 | 1.25 | -0.02em | Dialog and section titles |
+| `{typography.headline-sm}` | 14px | 500 | 1.3 | -0.01em | Card titles and grouped controls |
+| `{typography.body-base}` | 16px | 400 | 1.5 | 0 | Root document scale and prose-oriented surfaces |
+| `{typography.body-lg}` | 13px | 400 | 1.5 | 0 | Prominent interface copy and resource names |
+| `{typography.body-md}` | 12px | 400 | 1.5 | 0 | Default controls, tables, fields, and panels |
+| `{typography.body-sm}` | 11px | 400 | 1.5 | 0 | Metadata, counts, and compact status text |
+| `{typography.label-md}` | 10px | 500 | 1.2 | 0.06em | Short taxonomy and section labels |
+| `{typography.data-display}` | 42px | 600 | 1 | -0.02em | Exceptional data or specimen previews |
 
-### Principles
+### Type Rules
 
-- Use weights 400, 500, and 600 for most UI. Reserve 700 for the product mark or an exceptional display need.
-- Use uppercase and `0.04em-0.06em` tracking only for short taxonomy labels and section eyebrows, never for sentences or buttons.
-- Enable tabular numerals for coordinates, statistics, storage, timestamps, and counts.
-- Keep identifiers, endpoints, code, and long data values monospaced; allow truncation with a discoverable full value or horizontal scrolling.
-- The 42px data display is a specimen treatment, not a general page-heading style.
-- Do not introduce a contrasting editorial or geometric display family. Hierarchy comes from size, weight, spacing, and structure.
+- Use weights 400, 500, and 600. The data-display token is an exception, not a general page-heading style.
+- Apply uppercase tracking only to brief taxonomy or eyebrow labels, never to sentences or buttons.
+- Use tabular numerals for coordinates, statistics, storage, timestamps, and counts.
+- Long identifiers and data values must truncate with a discoverable full value or scroll horizontally; never shrink them into unreadability.
+- Do not introduce a contrasting editorial or geometric display face. Hierarchy comes from size, weight, spacing, and structure.
 
 ## Layout
 
-The layout system is built on a 4px baseline with 2px and 6px intermediate steps for compact alignment. Controls commonly use 4-8px gaps, containers use 8-16px padding, and major panels use 16-24px separation.
+The layout system is desktop-first and built on a 4px baseline, with 2px and 6px intermediate steps for exact alignment. Keep related controls close and preserve breathing room between independent groups.
 
 ### Spacing System
 
-- `{spacing.hairline}` 1px: rules and borders.
-- `{spacing.micro}` 2px: icon corrections and tightly coupled state details.
-- `{spacing.xs}` 4px and `{spacing.sm}` 6px: compact control and toolbar gaps.
-- `{spacing.md}` 8px and `{spacing.lg}` 12px: field groups, row padding, and small containers.
-- `{spacing.xl}` 16px: standard card, dialog, and panel padding.
-- `{spacing.2xl}` 24px and `{spacing.3xl}` 32px: major sections and spacious empty states.
+- `{spacing.hairline}` (1px): rules and borders.
+- `{spacing.micro}` (2px): icon correction and tightly-coupled state details.
+- `{spacing.xs}` (4px) and `{spacing.sm}` (6px): compact toolbar and control gaps.
+- `{spacing.md}` (8px) and `{spacing.lg}` (12px): field groups, row padding, and small containers.
+- `{spacing.xl}` (16px): standard card, dialog, and panel padding.
+- `{spacing.2xl}` (24px) and `{spacing.3xl}` (32px): major separations and spacious empty states.
 
 ### Application Structure
 
-- The primary shell follows **top bar -> navigation or resource rail -> working canvas -> contextual panel or overlay**.
-- Toolbars stay one row where possible and use one control height per cluster.
-- Sidebars and editing panels use stable widths, a 1px boundary, and independent scrolling. The resource sidebar baseline is 220px.
-- The main area may host a map, virtualized table, adaptive resource grid, schema form, or editor. It owns remaining width and must keep `min-width: 0` behavior.
-- Persistent actions belong in the top bar or panel footer. Destructive actions must not receive the same visual weight as the primary action.
+- The common shell is **top bar → navigation or resource rail → working canvas → contextual panel or overlay**.
+- Toolbars use one control height per cluster. Keep persistent actions in the top bar or a panel footer.
+- Sidebars and editors have stable widths, a 1px boundary, and independent scrolling. The primary working area owns remaining width and must retain `min-width: 0` behavior.
+- Resource grids use `auto-fill` with domain-specific minimum card widths. Tables use an explicit bounded container and horizontal overflow rather than compressed columns.
+- Field rows can be vertical, inline, or responsive, but editor layouts retain a stable label column and a flexible content column when space permits.
 
-### Grids, Tables & Forms
+### Responsive Behavior
 
-- Resource grids use `auto-fill` with domain-specific minimum card widths. Preserve shared gaps, borders, and selection rules across icon, sprite, and font modes.
-- Tables live in an explicit bordered container with horizontal overflow. Headers are approximately 40px high; cells remain compact and whitespace is intentional.
-- Field layouts may be vertical, inline, or responsive. Default editor rows use a stable label column, optional action column, and flexible content column.
-- Dialogs cap width against the viewport and retain at least 16px outer space on narrow screens. Use sheets for long forms or detail inspection and popovers for local choices.
-- Use logical direction properties (`start`, `end`, `ps`, `pe`, `ms`, `me`) so layouts remain RTL-compatible.
+- Below 640px, stack dialog actions, preserve 16px viewport margins, collapse multi-column grids, and move secondary panel content behind an explicit trigger.
+- Between 640px and 1023px, preserve the working canvas first; collapse or overlay secondary rails when they would make the map, table, or editor unusable.
+- At 1024px and above, use the complete desktop shell with persistent sidebars, toolbars, working canvas, and contextual panels.
+- Toolbars may wrap only at meaningful action-group boundaries. Prefer an overflow menu for low-frequency actions.
 
 ## Elevation & Depth
 
-Mapseek is **border-first and surface-first**. Most hierarchy comes from 1px rules, small neutral surface shifts, and overlays. Static cards and panels do not float above the workspace.
+Mapseek is **border-first and surface-first**. Static panels do not float above the workspace. Depth comes from 1px rules, subtle neutral surface changes, and explicit overlays.
 
 | Level | Treatment | Use |
 |---|---|---|
 | Flat | Background only | App shell, map canvas, content regions |
 | Structured | 1px `{colors.border}` | Panels, tables, cards, grouped controls |
-| Selected | `{colors.selection}` plus primary edge or indicator | Current row, resource, layer, or navigation item |
-| Floating | Surface plus theme shadow | Menus, popovers, tooltips, dialogs, toasts |
-| Map floating | `--shadow-map-float` | Controls that sit directly above map content |
+| Selected | Selection fill plus primary edge or indicator | Current row, resource, layer, or navigation item |
+| Floating | Popover surface, 1px ring, and a theme shadow | Menus, popovers, tooltips, dialogs, toasts |
+| Map floating | `--shadow-map-float` | Controls directly above map content |
 
-- Avoid shadows on ordinary cards, toolbars, sidebars, table rows, and form sections.
-- Use the existing theme shadow scale only for components that detach from document flow.
-- Dialog backdrops stay light (`black/10`) with a small blur so spatial context remains visible.
-- Motion is fast and functional: 120ms for immediate feedback, 180ms for standard transitions, and 260ms for larger reveals. Prefer opacity, color, and short transform changes; honor reduced motion.
-- Maintain deliberate z-index tiers for app chrome, map controls, menus/tooltips, and modal layers. Do not increment z-index ad hoc.
+- Do not shadow ordinary cards, toolbars, sidebars, table rows, or form sections.
+- Dialog scrims are light (`black/10`) and may use a small blur so spatial context remains visible.
+- Existing primitives use short, functional transitions. Prefer opacity, color, and small transforms; honor reduced motion and do not invent long choreography for routine UI.
+- Use established z-index tiers for app chrome, map controls, floating choices, and modal layers. Do not increment z-index ad hoc.
 
 ## Shapes
 
-Zero radius is a defining Mapseek characteristic. All rectangular controls, fields, cards, tables, menus, popovers, dialogs, sheets, and panels use `{rounded.none}`. Do not allow framework defaults to reintroduce rounded corners.
+Zero radius is a defining Mapseek characteristic. Rectangular controls, fields, cards, tables, menus, popovers, dialogs, sheets, and panels use `{rounded.none}`. Do not reintroduce framework corner radii.
 
-### Shape Rules
-
-- `{rounded.full}` is reserved for naturally circular status dots, avatar masks, and switch tracks or thumbs.
-- Icon-only controls are square. Standard icon-button sizes follow the 24px, 28px, 32px, and 36px control scale.
-- Tabler Icons are the default icon language. Typical interface icons are 12-16px with a 1.5-1.75 stroke.
-- Use a consistent icon size and stroke within each toolbar or data row.
-- Separators are 1px. Do not create hierarchy with stacked outlines, thick strokes, or decorative frames.
-- The official product asset is `public/img/mapseek.png`. Preserve its transparency, aspect ratio, and full mark; do not recolor, crop, or redraw it.
-- Data previews may use checkerboards, color ramps, glyph samples, or map thumbnails, but those treatments stay inside a clearly bounded preview region.
+- `{rounded.full}` is reserved for naturally circular status dots, avatar masks, switch tracks, and switch thumbs.
+- Icon-only controls are square and follow the 24px, 28px, 32px, and 36px size scale.
+- Tabler Icons are the default icon language. Within a toolbar or row, keep icon size and stroke consistent.
+- Separators are 1px; do not stack outlines, use thick strokes, or add decorative frames to create hierarchy.
+- Preserve `public/img/mapseek.png` in its full, transparent, unmodified form.
+- Checkerboards, color ramps, glyph samples, and map thumbnails belong only inside clearly bounded data-preview regions.
 
 ## Components
 
-Components follow a fixed ownership model: theme -> primitives -> domain blocks -> product screens. The theme defines tokens, primitives define reusable behavior, blocks define domain composition, and product screens supply data and business actions.
+Components follow a fixed ownership model: theme → primitives → domain blocks → product screens. The theme defines semantic values, primitives define reusable behavior, blocks define GIS composition, and products supply data and business actions.
 
-### Buttons & Actions
+### Buttons and Actions
 
-**`button-primary`** - Green primary action, 32px high, 12px interface type, zero radius. Use one dominant primary action per local task. Hover lowers intensity; press may translate by 1px; focus adds a ring.
+- **`button-primary`** is a 32px green action with 12px type and 10px horizontal padding. Use one dominant primary action per local task. Hover lowers primary intensity; press can translate by 1px; focus adds a visible ring.
+- **Outline, secondary, ghost, and link variants** preserve hierarchy without creating a new action color. `link` is for genuine inline navigation or low-chrome actions.
+- **`button-destructive`** uses a tinted destructive surface and text. Ask for confirmation when an action is irreversible or difficult to recover.
+- **Icon buttons** are square and sized 24–36px. They need an accessible name and, where the symbol is not self-evident, a tooltip.
 
-**Secondary variants** - Outline, secondary, and ghost treatments preserve hierarchy without inventing another action color. Use `link` only for genuine inline navigation or low-chrome actions.
+### Forms and Selection
 
-**Destructive action** - Destructive text is normative in front matter; the runtime button derives its background from the same token at 10% opacity (20% in dark mode). Require confirmation when the outcome is irreversible or difficult to recover.
+- **`input`** is 32px high, square, uses 12px type, a 1px input border, 10px horizontal padding, and a transparent light-theme fill. Placeholder text supports, but never replaces, a label.
+- **Transparent input contrast contract.** `input`, `textarea`, and `input-group` use `{colors.input-surface}`, so evaluate their text contrast after compositing with the host surface. They may appear only on `background`, `card`, or `popover`, and each supported theme must meet a 4.5:1 text contrast ratio. Do not place them on primary, destructive, imagery, maps, data visualizations, or any unlisted colored surface. `muted` is not an approved host until it is explicitly added to the contrast matrix.
+- **`field`** composes label, description, control, and error. Invalid controls expose `aria-invalid` and visible error copy; `FieldError` announces with `role="alert"`.
+- **Checkbox, switch, slider, select, combobox, toggle, and tabs** keep their existing Base UI keyboard semantics. Checked and selected states require a persistent indicator beyond hover.
 
-**Icon button** - Square 24-36px action with a 12-16px icon. Provide an accessible name and, when meaning is not obvious, a tooltip. Never use an unlabeled icon as the only description of a critical action.
+### Containers and Overlays
 
-### Forms & Selection
+- **`card`** groups related content with a square 1px ring, 16px default spacing, and a 12px compact variant.
+- **`dialog`** uses `DialogContent → DialogHeader / DialogBody / DialogFooter`, 16px padding, a readable title, and end-aligned footer actions that stack on narrow screens.
+- **`sheet`** serves long editing or detail workflows; **popover**, **dropdown**, **context menu**, **command**, and **tooltip** offer local floating choices without obscuring the active task.
 
-**`input`** - 32px high, zero radius, 12px text, 10px horizontal padding, explicit border, transparent light-theme surface, 30% `{colors.dark-input}` dark-theme tint, and a 3px translucent focus ring. Placeholder text is secondary; it does not replace a label. `textarea` and `input-group` use the same surface treatment.
+### Data and Domain Blocks
 
-**`field`** - Composes label, description, control, and error. Invalid controls use both `aria-invalid` and visible error copy; `FieldError` announces with `role="alert"`.
-
-**Checkbox, switch, slider, select, combobox, toggle, and tabs** - Keep their Base UI semantics and existing keyboard behavior. Selected and checked states require a persistent visual indicator beyond hover.
-
-### Containers & Overlays
-
-**`card`** - Group related content only. Default cards use 16px padding and gap; small cards use 12px. The default ring is subtle and corners stay square.
-
-**`dialog`** - Uses `DialogContent -> DialogHeader / DialogBody / DialogFooter`, 16px padding, 16px section gaps, and a readable title. Footer actions stack on narrow screens and align to the end at `sm` and above.
-
-**`sheet`** - Long editing or detail workflows that need more vertical room than a dialog.
-
-**Popover, dropdown, context menu, command, and tooltip** - Local floating choices. Match the trigger's alignment, retain keyboard navigation, and keep the surrounding task visible.
-
-### Data & Status
-
-**`table`** - Bordered, horizontally scrollable, 12px data type, 40px header, 8px cell padding. Hover and selected states must remain distinguishable.
-
-**`badge`** - 20px high with 8px horizontal padding. Use for concise state or category labels, not for paragraph-like copy.
-
-**Progress, skeleton, empty, sonner, and notification center** - Match feedback scope: local work stays near its source; global or background work may use notifications. Persistent state must not exist only in a temporary toast.
-
-**JSON viewer/editor and chart** - Preserve monospaced alignment and data semantics. Large datasets need scrolling, virtualization, or incremental rendering rather than smaller unreadable type.
-
-### Domain Blocks
-
-- **AppTopBar**: Compact application chrome with navigation, identity, document state, central tools, and end-aligned primary action.
-- **ResourceSidebar / ResourceGrid**: Stable navigation rail paired with adaptive resource cards; selected state combines tinted fill, green text or edge, and semantic state.
-- **LayerPanel / LayerStyleEditor / StylePanel**: Dense inspector structures built from reusable fields and grouped sections.
-- **LoomLayerPanel / LoomToolbox / LoomToolbar / CustomColormap**: Controlled map-editing surfaces for project layers, spatial tools, editing modes, and committed-versus-draft color schemes.
-- **MapControls / MapCoordinateStatus / MapSwitcher**: Small floating map tools that use the dedicated map elevation and keep labels or tooltips discoverable.
-- **AttrTable / AttrInspector / GeoJSONView / JSONEditor**: Data-first inspection surfaces with overflow and long-value handling.
-- **ProcessingTimeline / ServiceStatus / ResourceStatus / NotificationCenter**: Explicit progress and status patterns with text, icon, and color working together.
-- Blocks receive data, labels, and handlers through props. They must not embed a product engine, network request, or non-injectable business copy.
+- **`table`** is bordered and horizontally scrollable. Its header is 40px high; compact cells preserve readable 12px data type.
+- **`badge`** is 20px high with 8px horizontal padding and holds short state or category labels only.
+- **Progress, skeleton, empty, sonner, and notification center** match feedback scope. Persistent state must not live only in a temporary toast.
+- **MapControls, MapCoordinateStatus, and MapSwitcher** use map-specific floating elevation and retain labels or tooltips.
+- **ResourceSidebar, ResourceGrid, LayerPanel, LayerStyleEditor, AttrTable, AttrInspector, GeoJSONView, and JSONEditor** keep data density, injected labels, overflow handling, and state visibility consistent with the primitives.
 
 ## Do's and Don'ts
 
 ### Do
 
-- Use semantic theme tokens and existing primitive variants before adding styles.
-- Keep controls compact and align neighboring controls to one height.
-- Preserve the green primary color for current action, focus, selection, and limited high-value emphasis.
-- Use 1px borders and small surface shifts to establish structure.
-- Keep rectangular components at zero radius.
-- Use Geist Mono and tabular numerals for technical values.
-- Pair every state color with text, an icon, a border, progress, or a structural change.
-- Keep icon-only actions square, accessible, and discoverable.
-- Test light mode, dark mode, keyboard navigation, RTL, narrow widths, overflow, and reduced motion.
+- Use semantic theme tokens and existing primitive variants before adding local styles.
+- Keep neighboring controls aligned to one established height and preserve the 4px spacing rhythm.
+- Use green only for primary action, current focus, selection, and high-value progress.
+- Pair state color with text, an icon, a border, progress, or another structural change.
+- Verify light mode, dark mode, keyboard navigation, RTL, narrow widths, overflow, reduced motion, and loading/empty/error states.
+- Update the theme, this document, bilingual documentation, and the relevant showcase together when a public visual contract changes.
 
 ### Don't
 
-- Don't introduce marketing-page whitespace, oversized hero typography, gradients, glassmorphism, or decorative blur.
-- Don't round cards, controls, panels, dialogs, or menus.
-- Don't add shadows to static surfaces or use elevation as decoration.
-- Don't use primary green for unrelated categories, every chart series, or passive decoration.
-- Don't copy hex or OKLCH literals into components when a semantic token exists.
-- Don't shrink data type below the documented compact scale to make content fit.
-- Don't use hover as the only signal for selection or availability.
-- Don't duplicate primitive behavior inside domain blocks.
-- Don't hide essential actions behind an unlabeled icon or color-only affordance.
-
-## Responsive Behavior
-
-Mapseek is desktop-first, but every component must remain understandable and operable on narrower screens. Responsive behavior should preserve task priority rather than simply scaling everything down.
-
-### Breakpoints
-
-| Range | Expected behavior |
-|---|---|
-| `< 640px` | Stack dialog actions, keep 16px viewport margins, collapse multi-column grids to one column, and move secondary panel content behind an explicit trigger. |
-| `640-767px` | Allow two-column resource grids when minimum card width is preserved; keep compact controls but enlarge touch hit areas when required by the product shell. |
-| `768-1023px` | Collapse or overlay secondary rails when the working canvas would become unusable; preserve the primary map, table, or editor. |
-| `>= 1024px` | Use the full desktop shell with persistent sidebars, toolbars, working canvas, and contextual panels. |
-
-### Collapsing Strategy
-
-- Preserve the working canvas first, then the primary action, then current context; collapse secondary navigation and metadata after those.
-- Toolbars may wrap only at meaningful action-group boundaries. Prefer overflow menus for low-frequency actions.
-- Resource grids adapt through `auto-fill/minmax`; tables scroll horizontally instead of compressing columns into unreadable values.
-- Sidebars become sheets or explicitly triggered overlays on narrow layouts.
-- Touch products may expand the visual control's hit region toward 44px without changing the desktop density contract.
-
-## Iteration Guide
-
-1. Start with the nearest existing primitive or block; do not begin from raw HTML and local literals.
-2. Keep token changes in `registry/theme/registry.json`, then regenerate or synchronize consuming surfaces and this document.
-3. Use the existing 24/28/32/36px control scale, 4px spacing baseline, zero-radius geometry, and Tabler icon language.
-4. Add component variants through the established CVA or `data-*` pattern; keep state names semantic.
-5. Keep visible block copy injectable through `labels` and behavioral data injectable through props.
-6. Verify loading, empty, error, disabled, selected, long-content, overflow, dark, RTL, keyboard, and reduced-motion cases.
-7. Provide or update bilingual documentation and a deep-linkable showcase for every public primitive or block.
-8. Run `pnpm run lint`, `pnpm run typecheck`, `pnpm test`, `pnpm run registry:validate`, and `pnpm run design:lint` after relevant changes.
-
-## Known Gaps
-
-- Light-theme `{components.button-primary}` currently has a 3.22:1 white-on-green contrast ratio. This passes for large text and many non-text indicators but is below WCAG AA's 4.5:1 target for normal text; the design-system owner must resolve the primary or foreground value.
-- `{components.input}` is intentionally transparent in the light theme and inherits its containing background or surface. Contrast must be evaluated against that composed surface; automated checks that compare text directly with transparent black do not represent the rendered result.
-- Full mobile editing flows are product-shell decisions. The registry defines narrow-layout behavior, but it does not promise that every desktop GIS workflow is touch-first.
-- Chart and category token order exists at runtime, but a color-vision-safe pairing and sequencing policy is not yet documented.
-- Motion tokens are defined, but complex map transitions, timeline choreography, and editor reveal sequences remain product-specific.
-- Some data-heavy blocks rely on the consuming product to supply virtualization, paging, or streaming boundaries.
+- Do not introduce marketing-page whitespace, hero typography, gradients, glassmorphism, or decorative blur.
+- Do not round rectangular cards, controls, panels, dialogs, menus, or fields.
+- Do not add shadows to static surfaces or use elevation as decoration.
+- Do not use primary green for unrelated categories, every chart series, or passive ornament.
+- Do not copy color literals into components when a semantic token exists.
+- Do not hide essential actions behind an unlabeled icon, hover-only treatment, or color-only affordance.
+- Do not duplicate primitive behavior or embed non-injectable product copy and network behavior inside domain blocks.

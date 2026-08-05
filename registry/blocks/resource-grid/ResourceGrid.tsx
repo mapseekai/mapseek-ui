@@ -121,7 +121,7 @@ export function ResourceGrid({
                   {it.name}
                 </div>
                 {it.categoryLabel && (
-                  <div className="max-w-full truncate font-mono text-[9.5px] tracking-[0.04em] text-muted-foreground uppercase">
+                  <div className="max-w-full truncate font-mono text-[10px] tracking-[0.04em] text-muted-foreground uppercase">
                     {it.categoryLabel}
                   </div>
                 )}

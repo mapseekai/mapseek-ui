@@ -375,7 +375,7 @@ const CollapseTrigger: React.FC<{
     <button
       type="button"
       className={cn(
-        "group -ml-1 inline-flex h-6 w-full cursor-pointer appearance-none items-center rounded-sm border-0 bg-transparent px-1 text-left font-[inherit] leading-6 select-none",
+        "group -ml-1 inline-flex h-6 w-full cursor-pointer appearance-none items-center rounded-none border-0 bg-transparent px-1 text-left font-[inherit] leading-6 select-none",
         isOpen && "hover:bg-muted-foreground/20",
       )}
       onDoubleClick={collapseOn === "doubleClick" ? onToggle : undefined}
@@ -471,7 +471,7 @@ const JsonObject: React.FC<{
                 <div
                   key={key}
                   className={cn(
-                    "group rounded-md",
+                    "group rounded-none",
                     !isChildCollapsible && "flex min-h-6 items-start",
                     isChildOpen ? "" : "hover:bg-muted-foreground/20",
                   )}
@@ -566,7 +566,7 @@ const JsonArray: React.FC<{
                 <div
                   key={childPath}
                   className={cn(
-                    "group rounded-md",
+                    "group rounded-none",
                     !isChildCollapsible && "flex min-h-6 items-start",
                     isChildOpen ? "" : "hover:bg-muted-foreground/20",
                   )}

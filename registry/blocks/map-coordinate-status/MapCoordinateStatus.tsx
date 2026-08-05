@@ -157,7 +157,7 @@ export function MapCoordinateStatus({
             side="top"
             align="start"
             sideOffset={8}
-            className="w-auto gap-0 p-0 shadow-(--shadow-lg)"
+            className="w-auto gap-0 p-0 shadow-(--shadow-map-float)"
           >
             <CrsPicker
               value={crs}

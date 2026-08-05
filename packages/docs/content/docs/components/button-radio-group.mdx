@@ -1,0 +1,54 @@
+---
+title: "Button Radio Group"
+registryName: button-radio-group
+category: primitive
+stability: stable
+showcase: button-radio-group
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Button Radio Group 是紧密连接的单选按钮组。它保留 Base UI 的 Radio Group 键盘、焦点和表单语义，默认要求选择一个值，并能在空间不足时自动换行。
+
+## 安装
+
+<RegistryInstall registryName="button-radio-group" />
+
+## 导入
+
+```tsx
+import { ButtonRadioGroup, ButtonRadioGroupItem } from "@/registry/ui/button-radio-group"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="button-radio-group" demo="overview" title="可动态添加的按钮单选" description="选择一个活动图层，或添加更多选项。容器变窄时，选项会自动换行，同时始终保留单选行为。" minHeight={300} />
+
+```tsx
+const [value, setValue] = useState("layer-1")
+const [options, setOptions] = useState([
+  { label: "图层 1", value: "layer-1" },
+  { label: "图层 2", value: "layer-2" },
+])
+
+<ButtonRadioGroup value={value} onValueChange={setValue} aria-label="选择活动图层">
+  {options.map((option) => (
+    <ButtonRadioGroupItem key={option.value} value={option.value}>
+      {option.label}
+    </ButtonRadioGroupItem>
+  ))}
+</ButtonRadioGroup>
+```
+
+## 行为
+
+`ButtonRadioGroup` 默认设置 `required`。为保证初始即有一个选项被选中，请传入 `defaultValue` 或受控的 `value`。动态添加选项只需更新 children；已选项会保持不变。同一行的按钮会均分容器可用空间，标签保持单行并按自身最小宽度显示。
+
+## 无障碍
+
+为 `ButtonRadioGroup` 提供 `aria-label` 或 `aria-labelledby`。`ButtonRadioGroupItem` 保持 radio 角色，支持方向键导航，且再次点击当前项不会取消选择。
+
+## 依赖
+
+<RegistryDependencies registryName="button-radio-group" />

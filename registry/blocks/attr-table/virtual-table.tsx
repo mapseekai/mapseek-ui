@@ -161,7 +161,7 @@ export function VirtualTable<TRow>({
                   height: ROW_HEIGHT,
                 }
                 const rowClassName = cn(
-                  "flex border-x-0 border-t-0 border-b border-border/60 bg-transparent p-0 text-left font-inherit text-inherit transition-colors",
+                  "flex justify-start gap-0 border-x-0 border-t-0 border-b border-border/60 bg-transparent p-0 text-left font-inherit text-inherit transition-colors",
                   row ? "cursor-pointer hover:bg-muted/40" : "pointer-events-none",
                   isSelected &&
                     "bg-primary/15 ring-1 ring-primary/40 ring-inset hover:bg-primary/20",

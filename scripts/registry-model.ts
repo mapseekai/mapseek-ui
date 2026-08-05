@@ -49,6 +49,7 @@ export const BASE_COMPONENTS = [
   "popover",
   "progress",
   "radio-group",
+  "button-radio-group",
   "select",
   "separator",
   "sheet",

@@ -50,7 +50,12 @@ export function MapControls({
   className,
 }: MapControlsProps) {
   return (
-    <div className={cn("flex flex-col border border-border bg-card", className)}>
+    <div
+      className={cn(
+        "flex flex-col border border-border bg-card shadow-(--shadow-map-float)",
+        className,
+      )}
+    >
       <MapControlButton label={labels.zoomIn} onClick={onZoomIn}>
         <IconPlus size={14} stroke={1.5} />
       </MapControlButton>

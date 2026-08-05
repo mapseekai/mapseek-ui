@@ -51,11 +51,12 @@ export type MapSearchProps = {
   defaultTab?: "place" | "coordinates"
   defaultCollapsed?: boolean
   searchDelay?: number
+  labels?: Partial<MapSearchLabels>
   className?: string
 }
 ```
 
-默认 Tab 为 `place`，默认展开，默认搜索防抖时间为 300ms。
+`MapSearchLabels` 覆盖所有用户可见文案，组件提供中文默认值，Showcase 分别注入中英文标签。默认 Tab 为 `place`，默认展开，默认搜索防抖时间为 300ms。
 
 ## 地名搜索流程
 

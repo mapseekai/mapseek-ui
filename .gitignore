@@ -20,3 +20,4 @@ test-results/
 docs/provenance.md
 docs/superpowers/
 task-*-report.md
+/.worktrees/

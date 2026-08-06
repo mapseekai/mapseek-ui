@@ -9,11 +9,11 @@ import {
 } from "@tabler/icons-react"
 import { useEffect, useId, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { ButtonRadioGroup, ButtonRadioGroupItem } from "@/components/ui/button-radio-group"
 import { ColorInput } from "@/components/ui/color-input"
 import { cn } from "@/lib/utils"
 import { buildColormapGradient } from "./gradient"
 import { DEFAULT_COLORMAP_PRESETS } from "./presets"
-import { Segmented } from "./Segmented"
 import type { ColormapColorSpace, ColormapInterpolation, CustomColormapEditorProps } from "./types"
 
 const INTERPOLATIONS: ColormapInterpolation[] = ["linear", "step", "smooth"]
@@ -150,15 +150,21 @@ export function CustomColormapEditor({
       {/* Interpolation */}
       <section className="flex flex-col gap-1.5">
         <SectionHead icon={IconWaveSine} title={labels.interpolation} />
-        <Segmented<ColormapInterpolation>
-          options={INTERPOLATIONS.map((m) => ({
-            value: m,
-            label: labels.interpolationModes[m],
-          }))}
+        <ButtonRadioGroup
+          aria-label={labels.interpolation}
+          size="xs"
+          variant="soft"
           value={value.interpolation}
-          onChange={(interpolation) => set({ interpolation })}
-          buttonClassName="font-sans text-[11px]"
-        />
+          onValueChange={(interpolation) =>
+            set({ interpolation: interpolation as ColormapInterpolation })
+          }
+        >
+          {INTERPOLATIONS.map((interpolation) => (
+            <ButtonRadioGroupItem key={interpolation} value={interpolation}>
+              {labels.interpolationModes[interpolation]}
+            </ButtonRadioGroupItem>
+          ))}
+        </ButtonRadioGroup>
       </section>
 
       {/* Color space */}
@@ -168,15 +174,19 @@ export function CustomColormapEditor({
           title={labels.colorSpace}
           trailing={<span className="font-sans normal-case">{labels.colorSpaceHint}</span>}
         />
-        <Segmented<ColormapColorSpace>
-          options={COLOR_SPACES.map((s) => ({
-            value: s,
-            label: labels.colorSpaceModes[s],
-          }))}
+        <ButtonRadioGroup
+          aria-label={labels.colorSpace}
+          size="xs"
+          variant="soft"
           value={value.colorSpace}
-          onChange={(colorSpace) => set({ colorSpace })}
-          buttonClassName="font-sans text-[11px]"
-        />
+          onValueChange={(colorSpace) => set({ colorSpace: colorSpace as ColormapColorSpace })}
+        >
+          {COLOR_SPACES.map((colorSpace) => (
+            <ButtonRadioGroupItem key={colorSpace} value={colorSpace}>
+              {labels.colorSpaceModes[colorSpace]}
+            </ButtonRadioGroupItem>
+          ))}
+        </ButtonRadioGroup>
       </section>
 
       {/* Presets */}
@@ -194,7 +204,7 @@ export function CustomColormapEditor({
               key={p.id}
               type="button"
               onClick={() => importPreset(p.stops)}
-              className="flex h-auto min-h-12 cursor-pointer flex-col gap-1 border border-border bg-background p-1 hover:bg-muted"
+              className="flex h-auto min-h-12 cursor-pointer flex-col gap-1 border border-border bg-background p-1 hover:bg-accent/50"
             >
               <span
                 aria-hidden="true"

@@ -162,9 +162,9 @@ export function VirtualTable<TRow>({
                 }
                 const rowClassName = cn(
                   "flex justify-start gap-0 border-x-0 border-t-0 border-b border-border/60 bg-transparent p-0 text-left font-inherit text-inherit transition-colors",
-                  row ? "cursor-pointer hover:bg-muted/40" : "pointer-events-none",
+                  row ? "cursor-pointer hover:bg-accent/50" : "pointer-events-none",
                   isSelected &&
-                    "bg-primary/15 ring-1 ring-primary/40 ring-inset hover:bg-primary/20",
+                    "bg-selection-bg text-primary ring-1 ring-primary/40 ring-inset hover:bg-selection-bg hover:text-primary [&>div>span]:text-primary",
                 )
                 const rowCells = (
                   <>

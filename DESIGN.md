@@ -228,13 +228,13 @@ The defining visual rhythm is a near-neutral canvas, square 1px-bounded surfaces
 - Geist Mono Variable for all UI text and technical data.
 - Zero-radius rectangular controls, panels, cards, menus, and dialogs.
 - Compact 24px, 28px, 32px, and 36px control sizes on a 4px spacing rhythm.
-- Borders and small surface changes establish hierarchy; shadows belong to floating layers only.
+- Borders and small surface changes establish hierarchy; components are shadowless by default.
 - Selected, loading, empty, error, and disabled states never rely on color alone.
 - Desktop-first data and panel layouts remain understandable when space narrows.
 
 ### Source of Truth
 
-- `registry/theme/registry.json` owns the runtime theme variables, including dark-theme values, shadows, motion, charts, categories, and sidebar tokens.
+- `registry/theme/registry.json` owns the runtime theme variables, including dark-theme values, shadowless compatibility tokens, motion, charts, categories, and sidebar tokens.
 - `registry/ui/` owns primitive variants, sizing, keyboard behavior, and accessibility.
 - `registry/blocks/` composes primitives into GIS and resource-management patterns.
 - `packages/docs/` and `showcase/` are the visual acceptance surfaces.
@@ -247,14 +247,14 @@ Mapseek uses a green-axis OKLCH palette surrounded by low-chroma neutrals. The p
 ### Action, State, and Text
 
 - **Primary** (`{colors.primary}`) is the single high-emphasis action, selected navigation treatment, keyboard focus source, and limited progress accent. Its foreground is `{colors.primary-foreground}`.
-- **Secondary** (`{colors.secondary}`) and **accent** (`{colors.accent}`) provide lower-emphasis actions, grouped choices, and quiet hover fills. Their foregrounds are the matching `*-foreground` tokens.
-- **Selection** progresses from `{colors.selection-bg}` to `{colors.selection-bg-deep}`. Pair it with selected semantics, an edge, a checkmark, or another persistent indicator.
+- **Secondary** (`{colors.secondary}`) and **accent** (`{colors.accent}`) provide lower-emphasis actions and grouped choices. Their foregrounds are the matching `*-foreground` tokens.
+- **Interaction and selection** use separate surfaces: ordinary interactive elements use `{colors.accent}` at 50% opacity, matching the documentation sidebar hover treatment. Persistent selections use the full `{colors.selection-bg}` token with `{colors.primary}` text and may progress toward `{colors.selection-bg-deep}`; selected, expanded, and active elements retain both their state surface and primary text on hover instead of applying the ordinary hover treatment. They must also use selected semantics, an edge, a checkmark, or another lasting indicator.
 - **Destructive**, **warning**, and **info** are semantic signals, not decorative categories. Pair them with text or an icon; destructive actions remain tinted rather than solid red.
 
 ### Surfaces, Borders, and Dark Theme
 
 - **Background** (`{colors.background}`) is the application floor; **card** and **popover** are discrete elevated surfaces with their matching foreground tokens.
-- **Muted** supports table headers, subdued hover states, metadata bands, and empty-state scaffolding. Do not use `{colors.muted-foreground}` for essential small text.
+- **Muted** supports table headers, metadata bands, and empty-state scaffolding; it is not the default interactive hover fill. Do not use `{colors.muted-foreground}` for essential small text.
 - **Border** is the default 1px structure; **border-strong** is reserved for emphasized boundaries and active drop targets.
 - Inputs use `{colors.input}` for their border and `{colors.input-surface}` for their fill. The light theme deliberately keeps the fill transparent.
 - Dark mode reuses the same semantic names with the `.dark` values in the runtime theme; it is not a mechanical inversion. Dark panels remain only slightly lighter than the application floor, and editable inputs use a quiet translucent fill.
@@ -326,10 +326,10 @@ Mapseek is **border-first and surface-first**. Static panels do not float above 
 | Flat | Background only | App shell, map canvas, content regions |
 | Structured | 1px `{colors.border}` | Panels, tables, cards, grouped controls |
 | Selected | Selection fill plus primary edge or indicator | Current row, resource, layer, or navigation item |
-| Floating | Popover surface, 1px ring, and a theme shadow | Menus, popovers, tooltips, dialogs, toasts |
-| Map floating | `--shadow-map-float` | Controls directly above map content |
+| Floating | Popover surface with a 1px border or ring | Menus, popovers, tooltips, dialogs, toasts |
+| Map floating | Bordered surface with clear contrast | Controls directly above map content |
 
-- Do not shadow ordinary cards, toolbars, sidebars, table rows, or form sections.
+- All component shadow tokens resolve to `none` by default; use borders, outlines, and surface contrast to establish separation.
 - Dialog scrims are light (`black/10`) and may use a small blur so spatial context remains visible.
 - Existing primitives use short, functional transitions. Prefer opacity, color, and small transforms; honor reduced motion and do not invent long choreography for routine UI.
 - Use established z-index tiers for app chrome, map controls, floating choices, and modal layers. Do not increment z-index ad hoc.
@@ -392,7 +392,7 @@ Components follow a fixed ownership model: theme → primitives → domain block
 
 - Do not introduce marketing-page whitespace, hero typography, gradients, glassmorphism, or decorative blur.
 - Do not round rectangular cards, controls, panels, dialogs, menus, or fields.
-- Do not add shadows to static surfaces or use elevation as decoration.
+- Do not add shadows to UI components or use elevation as decoration.
 - Do not use primary green for unrelated categories, every chart series, or passive ornament.
 - Do not copy color literals into components when a semantic token exists.
 - Do not hide essential actions behind an unlabeled icon, hover-only treatment, or color-only affordance.

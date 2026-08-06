@@ -1,0 +1,58 @@
+---
+title: "Input Number"
+registryName: input-number
+category: primitive
+stability: stable
+showcase: input-number
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Input Number 是带步进控制的数字输入组件。未聚焦时，它在最右侧显示单位；聚焦后，单位切换为减号和加号按钮。
+
+## 安装
+
+<RegistryInstall registryName="input-number" />
+
+## 导入
+
+```tsx
+import { InputNumber } from "@/registry/ui/input-number"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="input-number" demo="overview" title="单位与步进控制" description="展示单位、聚焦态按钮、范围、步长、受控值和禁用状态。" minHeight={430} />
+
+```tsx
+const [distance, setDistance] = useState<number | null>(12)
+
+<InputNumber
+  aria-label="距离"
+  value={distance}
+  min={0}
+  max={100}
+  step={0.5}
+  unit="km"
+  onValueChange={setDistance}
+/>
+```
+
+## API
+
+`InputNumber` 支持 Base UI Number Field 的 `value`、`defaultValue`、`onValueChange`、`onValueCommitted`、`min`、`max`、`step`、`disabled`、`readOnly`、`required`、`name` 和格式化属性。`unit` 接受任意 React 节点；`step` 默认值为 `1`，空值为 `null`。
+
+可使用 `decrementLabel` 和 `incrementLabel` 自定义两个图标按钮的无障碍名称。
+
+## 状态
+
+未聚焦时显示 `unit`。输入框或任一步进按钮获得焦点时，单位隐藏并显示两个按钮；焦点离开整个组件后恢复单位。按钮和键盘方向键都会遵守 `min`、`max` 与 `step`。
+
+## 无障碍
+
+使用关联的 `label`、`aria-label` 或 `aria-labelledby` 为输入框提供名称。不要只依赖单位说明输入含义。只读值使用 `readOnly`，完全不可交互的值使用 `disabled`。
+
+## 依赖
+
+<RegistryDependencies registryName="input-number" />

@@ -240,7 +240,7 @@ it("maps the docs shell to the generated Mapseek UI tokens", async () => {
     /\.searchInput\s*\{[^}]*height:\s*2rem;[^}]*padding:\s*0 0\.75rem;/su,
   )
   expect(componentCss.join("\n")).toMatch(
-    /\.card:hover,\s*\.card:focus-visible\s*\{[^}]*background-color:\s*color-mix\(in oklab, var\(--accent\) 80%, transparent\);[^}]*color:\s*var\(--accent-foreground\);/su,
+    /\.card:hover,\s*\.card:focus-visible\s*\{[^}]*background-color:\s*color-mix\(in oklch, var\(--accent\) 50%, transparent\);[^}]*color:\s*var\(--accent-foreground\);/su,
   )
   expect(componentCss.join("\n")).toMatch(
     /\.actions\s*\{[^}]*flex:\s*none;[^}]*flex-wrap:\s*nowrap;/su,
@@ -341,6 +341,8 @@ it("uses the theme primary color for active Tabs states", async () => {
   const source = await readFile("registry/ui/tabs.tsx", "utf8")
 
   expect(source).toContain("data-active:text-primary")
+  expect(source).toContain("data-active:hover:text-primary")
+  expect(source).toContain("data-active:hover:text-primary-foreground")
   expect(source).toContain("after:bg-primary")
   expect(source).not.toContain("data-active:text-foreground")
   expect(source).not.toContain("after:bg-foreground")

@@ -33,7 +33,7 @@ import {
 
 ## 用法
 
-传入分组后的 `LinkedRefGroup[]` 和每类图标。分组 summary 负责概览数量，条目行负责名称、ID、时间和状态。
+传入分组后的 `LinkedRefGroup[]` 和每类图标。顶部使用 Card Tabs 展示各分组数量，选中的内容区负责名称、ID、时间和状态。
 
 ## 公开导出与 Props
 
@@ -45,9 +45,8 @@ import {
 
 ## 无障碍
 
-summary 卡片是按钮，可键盘切换。状态 pill 包含文字和结构，不依赖颜色单独表达。
+分组概览使用标准 tab/tabpanel 语义，可通过方向键切换。状态 pill 包含文字和结构，不依赖颜色单独表达。
 
 ## 依赖
 
 <RegistryDependencies registryName="linked-ref-list" />
-

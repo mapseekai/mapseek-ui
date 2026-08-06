@@ -226,7 +226,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
             void copyToClipboard()
           }}
           className={cn(
-            "h-7 rounded-none bg-transparent text-foreground hover:bg-muted",
+            "h-7 rounded-none bg-transparent text-foreground hover:bg-accent/50",
             copied ? "gap-1.5 px-2" : "w-7 px-0",
           )}
           title={copied ? "已复制" : "复制"}
@@ -376,7 +376,7 @@ const CollapseTrigger: React.FC<{
       type="button"
       className={cn(
         "group -ml-1 inline-flex h-6 w-full cursor-pointer appearance-none items-center rounded-none border-0 bg-transparent px-1 text-left font-[inherit] leading-6 select-none",
-        isOpen && "hover:bg-muted-foreground/20",
+        isOpen && "hover:bg-accent/50",
       )}
       onDoubleClick={collapseOn === "doubleClick" ? onToggle : undefined}
       onClick={collapseOn === "doubleClick" ? undefined : onToggle}
@@ -473,7 +473,7 @@ const JsonObject: React.FC<{
                   className={cn(
                     "group rounded-none",
                     !isChildCollapsible && "flex min-h-6 items-start",
-                    isChildOpen ? "" : "hover:bg-muted-foreground/20",
+                    isChildOpen ? "" : "hover:bg-accent/50",
                   )}
                 >
                   {isChildCollapsible ? (
@@ -568,7 +568,7 @@ const JsonArray: React.FC<{
                   className={cn(
                     "group rounded-none",
                     !isChildCollapsible && "flex min-h-6 items-start",
-                    isChildOpen ? "" : "hover:bg-muted-foreground/20",
+                    isChildOpen ? "" : "hover:bg-accent/50",
                   )}
                 >
                   <JsonNode

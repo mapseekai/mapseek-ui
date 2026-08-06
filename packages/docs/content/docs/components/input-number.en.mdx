@@ -1,0 +1,58 @@
+---
+title: "Input Number"
+registryName: input-number
+category: primitive
+stability: stable
+showcase: input-number
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Input Number is a numeric input with step controls. It displays a unit at the right edge while idle and replaces the unit with decrement and increment buttons while focused.
+
+## Installation
+
+<RegistryInstall registryName="input-number" />
+
+## Import
+
+```tsx
+import { InputNumber } from "@/registry/ui/input-number"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="input-number" demo="overview" title="Units and step controls" description="Demonstrates units, focused controls, bounds, step size, controlled values, and disabled state." minHeight={430} />
+
+```tsx
+const [distance, setDistance] = useState<number | null>(12)
+
+<InputNumber
+  aria-label="Distance"
+  value={distance}
+  min={0}
+  max={100}
+  step={0.5}
+  unit="km"
+  onValueChange={setDistance}
+/>
+```
+
+## API
+
+`InputNumber` supports Base UI Number Field props including `value`, `defaultValue`, `onValueChange`, `onValueCommitted`, `min`, `max`, `step`, `disabled`, `readOnly`, `required`, `name`, and formatting options. `unit` accepts any React node; `step` defaults to `1`, and an empty value is `null`.
+
+Use `decrementLabel` and `incrementLabel` to customize the accessible names of the icon buttons.
+
+## States
+
+The component displays `unit` while focus is outside. Focusing the input or either step control hides the unit and shows both buttons; leaving the entire component restores the unit. Buttons and keyboard arrow keys honor `min`, `max`, and `step`.
+
+## Accessibility
+
+Give the input an accessible name using an associated `label`, `aria-label`, or `aria-labelledby`. Do not rely on the unit alone to describe the input. Use `readOnly` for focusable values and `disabled` for fully non-interactive values.
+
+## Dependencies
+
+<RegistryDependencies registryName="input-number" />

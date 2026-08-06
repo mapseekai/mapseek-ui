@@ -51,7 +51,7 @@ export function StorageMeter({
             variant="outline"
             aria-label={`${labels.used} ${formatBytes(data.usage)} / ${formatBytes(data.quota)} (${pct}%)`}
             className={cn(
-              "inline-flex h-6 cursor-pointer items-center gap-1.5 rounded-none border-border bg-background px-2 font-sans text-[11px] leading-none text-foreground hover:bg-muted aria-expanded:border-primary aria-expanded:bg-selection-bg",
+              "inline-flex h-6 cursor-pointer items-center gap-1.5 rounded-none border-border bg-background px-2 font-sans text-[11px] leading-none text-foreground hover:bg-accent/50 aria-expanded:border-primary aria-expanded:bg-selection-bg aria-expanded:text-primary aria-expanded:hover:bg-selection-bg aria-expanded:hover:text-primary aria-expanded:[&_span]:text-primary aria-expanded:[&_strong]:text-primary aria-expanded:[&_svg]:text-primary",
               className,
             )}
           >

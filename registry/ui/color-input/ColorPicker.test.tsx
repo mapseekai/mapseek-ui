@@ -22,6 +22,7 @@ describe("ColorPickerSelection", () => {
     expect(html).toContain("top:8.681055155875306%")
     expect(html).toContain("border border-primary")
     expect(html).not.toContain("bg-white")
-    expect(html).toContain("inset 0 0 0 2px white")
+    expect(html).toContain("outline-2 -outline-offset-3 outline-white")
+    expect(html).not.toContain("box-shadow")
   })
 })

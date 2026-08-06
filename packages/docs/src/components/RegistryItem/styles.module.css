@@ -24,6 +24,7 @@
 }
 
 .managerTab:hover {
+  background: color-mix(in oklch, var(--accent) 50%, transparent);
   color: var(--foreground);
 }
 

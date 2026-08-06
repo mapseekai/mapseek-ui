@@ -1,24 +1,29 @@
 import { RadioGroup as RadioGroupPrimitive, Radio as RadioPrimitive } from "@base-ui/react"
+import type { ReactNode } from "react"
 
 import { cn } from "@/registry/lib/utils"
 
-function ButtonRadioGroup({ className, required = true, ...props }: RadioGroupPrimitive.Props) {
+type ButtonRadioGroupSize = "xs" | "sm" | "default" | "lg"
+type ButtonRadioGroupVariant = "default" | "soft"
+
+function ButtonRadioGroup({
+  className,
+  required = true,
+  size = "default",
+  variant = "default",
+  ...props
+}: RadioGroupPrimitive.Props & {
+  size?: ButtonRadioGroupSize
+  variant?: ButtonRadioGroupVariant
+}) {
   return (
     <RadioGroupPrimitive
       data-slot="button-radio-group"
+      data-size={size}
+      data-variant={variant}
       required={required}
-      className={cn("flex flex-wrap gap-px overflow-hidden rounded-md bg-border p-px", className)}
-      {...props}
-    />
-  )
-}
-
-function ButtonRadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
-  return (
-    <RadioPrimitive.Root
-      data-slot="button-radio-group-item"
       className={cn(
-        "inline-flex min-h-9 min-w-max flex-1 cursor-pointer items-center justify-center whitespace-nowrap bg-background px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 data-checked:bg-primary data-checked:text-primary-foreground",
+        "group/button-radio-group flex flex-wrap gap-px overflow-hidden rounded-md bg-border p-px",
         className,
       )}
       {...props}
@@ -26,4 +31,34 @@ function ButtonRadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props
   )
 }
 
-export { ButtonRadioGroup, ButtonRadioGroupItem }
+type ButtonRadioGroupItemProps = RadioPrimitive.Root.Props & {
+  icon?: ReactNode
+}
+
+function ButtonRadioGroupItem({ children, className, icon, ...props }: ButtonRadioGroupItemProps) {
+  return (
+    <RadioPrimitive.Root
+      data-slot="button-radio-group-item"
+      className={cn(
+        "inline-flex min-w-max flex-1 cursor-pointer items-center justify-center gap-1 whitespace-nowrap bg-background text-xs font-medium text-foreground outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 group-data-[size=default]/button-radio-group:h-8 group-data-[size=default]/button-radio-group:px-2.5 group-data-[size=default]/button-radio-group:[&_svg:not([class*='size-'])]:size-4 group-data-[size=lg]/button-radio-group:h-9 group-data-[size=lg]/button-radio-group:px-2.5 group-data-[size=lg]/button-radio-group:[&_svg:not([class*='size-'])]:size-4 group-data-[size=sm]/button-radio-group:h-7 group-data-[size=sm]/button-radio-group:px-2.5 group-data-[size=sm]/button-radio-group:[&_svg:not([class*='size-'])]:size-3.5 group-data-[size=xs]/button-radio-group:h-6 group-data-[size=xs]/button-radio-group:px-2 group-data-[size=xs]/button-radio-group:[&_svg:not([class*='size-'])]:size-3 [&_svg]:pointer-events-none [&_svg]:shrink-0 group-data-[variant=default]/button-radio-group:data-checked:bg-primary group-data-[variant=default]/button-radio-group:data-checked:text-primary-foreground group-data-[variant=soft]/button-radio-group:data-checked:bg-selection-bg group-data-[variant=soft]/button-radio-group:data-checked:text-primary group-data-[variant=soft]/button-radio-group:data-checked:hover:bg-selection-bg group-data-[variant=soft]/button-radio-group:data-checked:hover:text-primary",
+        className,
+      )}
+      {...props}
+    >
+      {icon ? (
+        <span data-slot="button-radio-group-item-icon" aria-hidden="true" className="inline-flex">
+          {icon}
+        </span>
+      ) : null}
+      {children}
+    </RadioPrimitive.Root>
+  )
+}
+
+export {
+  ButtonRadioGroup,
+  ButtonRadioGroupItem,
+  type ButtonRadioGroupItemProps,
+  type ButtonRadioGroupSize,
+  type ButtonRadioGroupVariant,
+}

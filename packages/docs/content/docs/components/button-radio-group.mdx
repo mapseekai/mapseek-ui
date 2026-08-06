@@ -9,7 +9,7 @@ showcase: button-radio-group
 import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
-Button Radio Group 是紧密连接的单选按钮组。它保留 Base UI 的 Radio Group 键盘、焦点和表单语义，默认要求选择一个值，并能在空间不足时自动换行。
+Button Radio Group 是紧密连接的单选按钮组。它保留 Base UI 的 Radio Group 键盘、焦点和表单语义，支持图标、四档高度，并能在空间不足时自动换行。
 
 ## 安装
 
@@ -23,31 +23,22 @@ import { ButtonRadioGroup, ButtonRadioGroupItem } from "@/registry/ui/button-rad
 
 ## 用法
 
-<ShowcaseDemo registryName="button-radio-group" demo="overview" title="可动态添加的按钮单选" description="选择一个活动图层，或添加更多选项。容器变窄时，选项会自动换行，同时始终保留单选行为。" minHeight={300} />
+<ShowcaseDemo registryName="button-radio-group" demo="overview" title="动态选项、图标、选中态与四档尺寸" description="展示图标加文字和仅图标选项，对比 Default 深色实底与 Soft 浅色选中态，并展示四档高度。" minHeight={940} />
 
 ```tsx
-const [value, setValue] = useState("layer-1")
-const [options, setOptions] = useState([
-  { label: "图层 1", value: "layer-1" },
-  { label: "图层 2", value: "layer-2" },
-])
-
-<ButtonRadioGroup value={value} onValueChange={setValue} aria-label="选择活动图层">
-  {options.map((option) => (
-    <ButtonRadioGroupItem key={option.value} value={option.value}>
-      {option.label}
-    </ButtonRadioGroupItem>
-  ))}
+<ButtonRadioGroup size="sm" variant="soft" defaultValue="layer-1" aria-label="选择活动图层">
+  <ButtonRadioGroupItem value="layer-1" icon={<IconStack2 />}>图层 1</ButtonRadioGroupItem>
+  <ButtonRadioGroupItem value="layer-2">图层 2</ButtonRadioGroupItem>
 </ButtonRadioGroup>
 ```
 
 ## 行为
 
-`ButtonRadioGroup` 默认设置 `required`。为保证初始即有一个选项被选中，请传入 `defaultValue` 或受控的 `value`。动态添加选项只需更新 children；已选项会保持不变。同一行的按钮会均分容器可用空间，标签保持单行并按自身最小宽度显示。
+`ButtonRadioGroupItem` 的 `icon` 可与现有 `variant`、`size` 和状态组合使用，图标会自动跟随尺寸缩放。`variant` 支持深色实底的 `default` 和使用项目统一 `selection-bg` 选中背景的 `soft`；`soft` 与 Segmented、FilterPanel、Table 等组件共享选中态颜色。`size` 支持 `xs`、`sm`、`default`、`lg`，高度依次为 24px、28px、32px、36px，未设置时使用 32px 的 `default`。组件默认设置 `required`；请传入 `defaultValue` 或受控的 `value` 以提供初始选择。
 
 ## 无障碍
 
-为 `ButtonRadioGroup` 提供 `aria-label` 或 `aria-labelledby`。`ButtonRadioGroupItem` 保持 radio 角色，支持方向键导航，且再次点击当前项不会取消选择。
+为 `ButtonRadioGroup` 提供 `aria-label` 或 `aria-labelledby`。仅显示图标的 `ButtonRadioGroupItem` 还必须提供描述该选项的 `aria-label`；传入的图标本身按装饰元素处理。`ButtonRadioGroupItem` 保持 radio 角色，支持方向键导航，且再次点击当前项不会取消选择。
 
 ## 依赖
 

@@ -29,7 +29,7 @@ export function StyleEditorModal({
       <DialogContent
         hideClose
         className={cn(
-          "flex max-h-[90vh] max-w-2xl flex-col overflow-hidden border bg-background p-0 shadow-lg",
+          "flex max-h-[90vh] max-w-2xl flex-col overflow-hidden border bg-background p-0",
           className,
         )}
         data-wd-key={dataWdKey}
@@ -119,7 +119,7 @@ export function StyleEditorModalTile({
       size="sm"
       type="button"
       className={cn(
-        "group flex w-full cursor-pointer flex-col overflow-hidden border border-border bg-background text-left transition-colors hover:border-primary hover:bg-muted/50",
+        "group flex w-full cursor-pointer flex-col overflow-hidden border border-border bg-background text-left transition-colors hover:border-primary hover:bg-accent/50",
         className,
       )}
       aria-label={typeof title === "string" ? title : undefined}

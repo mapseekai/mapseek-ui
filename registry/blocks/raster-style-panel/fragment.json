@@ -2,6 +2,7 @@
   "name": "raster-style-panel",
   "type": "registry:block",
   "registryDependencies": [
+    "@mapseek/button-radio-group",
     "@mapseek/input",
     "@mapseek/select",
     "@mapseek/tooltip",

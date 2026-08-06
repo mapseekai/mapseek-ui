@@ -56,7 +56,7 @@ export function ToggleConfigPopoverDemo({ locale = "zh-CN" }: LocalizedDemoProps
 
   return (
     <section className="space-y-3">
-      <div className="inline-flex h-10 items-center border border-border bg-card px-1 shadow-[var(--shadow-map-float)]">
+      <div className="inline-flex h-10 items-center border border-border bg-card px-1">
         <ToggleConfigPopover
           icon={IconMagnet}
           label={demoLabels.label}

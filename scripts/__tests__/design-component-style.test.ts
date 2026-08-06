@@ -48,6 +48,57 @@ it("keeps dialog titles on the headline-md typography token", async () => {
   expect(dialog).toContain('className={cn("font-heading text-headline-md", className)}')
 })
 
+it("maps button radio group sizes to the Button height scale", async () => {
+  const [component, showcase] = await Promise.all([
+    readComponent("button-radio-group"),
+    readFile("showcase/src/showcases/ButtonRadioGroupShowcase.tsx", "utf8"),
+  ])
+
+  expect(component).toContain('size = "default"')
+  expect(component).toContain("data-size={size}")
+  expect(component).toContain("group-data-[size=xs]/button-radio-group:h-6")
+  expect(component).toContain("group-data-[size=sm]/button-radio-group:h-7")
+  expect(component).toContain("group-data-[size=default]/button-radio-group:h-8")
+  expect(component).toContain("group-data-[size=lg]/button-radio-group:h-9")
+
+  for (const size of ["xs", "sm", "default", "lg"]) {
+    expect(showcase).toContain(`value: "${size}"`)
+  }
+  expect(showcase).toContain("size={size}")
+})
+
+it("keeps the dynamic button radio group example beside the size comparison", async () => {
+  const showcase = await readFile("showcase/src/showcases/ButtonRadioGroupShowcase.tsx", "utf8")
+
+  expect(showcase).toContain('data-demo="button-radio-group-controlled"')
+  expect(showcase).toContain('data-demo-action="button-radio-group-add"')
+  expect(showcase).toContain('data-demo="button-radio-group-sizes"')
+})
+
+it("provides a soft button radio selected state without replacing the default variant", async () => {
+  const [component, showcase] = await Promise.all([
+    readComponent("button-radio-group"),
+    readFile("showcase/src/showcases/ButtonRadioGroupShowcase.tsx", "utf8"),
+  ])
+
+  expect(component).toContain('variant = "default"')
+  expect(component).toContain("data-variant={variant}")
+  expect(component).toContain(
+    "group-data-[variant=soft]/button-radio-group:data-checked:bg-selection-bg",
+  )
+  expect(component).toContain(
+    "group-data-[variant=soft]/button-radio-group:data-checked:text-primary",
+  )
+  expect(component).toContain(
+    "group-data-[variant=soft]/button-radio-group:data-checked:hover:bg-selection-bg",
+  )
+  expect(component).not.toContain(
+    "group-data-[variant=soft]/button-radio-group:data-checked:bg-primary/10",
+  )
+  expect(showcase).toContain('{ label: "Soft", value: "soft" }')
+  expect(showcase).toContain("variant={variant}")
+})
+
 it("exports component design tokens through the runtime theme", async () => {
   const theme = await readFile("registry/theme/registry.json", "utf8")
 

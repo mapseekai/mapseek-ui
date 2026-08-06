@@ -30,7 +30,7 @@ import {
 
 ## 用法
 
-<ShowcaseDemo registryName="select" demo="overview" title="选择器状态" description="覆盖受控选择、预选值、小尺寸和 disabled，展示四组可见状态。" minHeight={440} />
+<ShowcaseDemo registryName="select" demo="overview" title="选择器状态" description="覆盖受控选择、预选值、四档尺寸、两种宽度和 disabled。" minHeight={720} />
 
 ## 导出
 
@@ -38,7 +38,7 @@ import {
 
 ## 状态
 
-受控值使用 `value/onValueChange`；静态默认值使用 `defaultValue`。`SelectTrigger size="sm"` 提供紧凑触发器；根组件的 `disabled` 阻止打开列表。
+受控值使用 `value/onValueChange`；静态默认值使用 `defaultValue`。`SelectTrigger` 支持 `xs`、`sm`、`default` 和 `lg` 四档高度，展开框中的每个 item 会与对应 trigger 等高。trigger 默认使用 `width="fixed"` 保持固定宽度；使用 `width="content"` 时，外部宽度会跟随当前选中内容变化。展开框始终根据最长选项自适应宽度；根组件的 `disabled` 阻止打开列表。
 
 ## 无障碍
 

@@ -9,7 +9,7 @@ showcase: button-radio-group
 import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
-Button Radio Group presents a radio group as a connected segmented control. It retains Base UI keyboard, focus, and form semantics, requires a choice by default, and wraps options when horizontal space runs out.
+Button Radio Group presents a radio group as a connected segmented control. It retains Base UI keyboard, focus, and form semantics, supports icons and four heights, and wraps options when horizontal space runs out.
 
 ## Installation
 
@@ -23,31 +23,22 @@ import { ButtonRadioGroup, ButtonRadioGroupItem } from "@/registry/ui/button-rad
 
 ## Usage
 
-<ShowcaseDemo registryName="button-radio-group" demo="overview" title="Dynamically added button choices" description="Choose one active layer or add more options. Buttons wrap in a narrow container while the group retains single-selection behavior." minHeight={300} />
+<ShowcaseDemo registryName="button-radio-group" demo="overview" title="Dynamic options, icons, selected states, and four sizes" description="Show icon-and-label and icon-only options, compare the solid Default and tinted Soft selected states, and show all four heights." minHeight={940} />
 
 ```tsx
-const [value, setValue] = useState("layer-1")
-const [options, setOptions] = useState([
-  { label: "Layer 1", value: "layer-1" },
-  { label: "Layer 2", value: "layer-2" },
-])
-
-<ButtonRadioGroup value={value} onValueChange={setValue} aria-label="Choose an active layer">
-  {options.map((option) => (
-    <ButtonRadioGroupItem key={option.value} value={option.value}>
-      {option.label}
-    </ButtonRadioGroupItem>
-  ))}
+<ButtonRadioGroup size="sm" variant="soft" defaultValue="layer-1" aria-label="Choose an active layer">
+  <ButtonRadioGroupItem value="layer-1" icon={<IconStack2 />}>Layer 1</ButtonRadioGroupItem>
+  <ButtonRadioGroupItem value="layer-2">Layer 2</ButtonRadioGroupItem>
 </ButtonRadioGroup>
 ```
 
 ## Behavior
 
-`ButtonRadioGroup` sets `required` by default. Pass `defaultValue` or a controlled `value` to ensure an option is selected on first render. Add options by updating its children; the selected item remains selected. Items share the available width on each row, while their labels remain on one line at their natural minimum width.
+The `ButtonRadioGroupItem` `icon` prop composes with every existing `variant`, `size`, and state, and scales the icon with the group size. `variant` accepts a solid `default` selected state or a `soft` state using the shared `selection-bg` token. The soft treatment matches selected states in Segmented, FilterPanel, and Table. `size` accepts `xs`, `sm`, `default`, or `lg`, mapping to 24px, 28px, 32px, and 36px heights. It defaults to the 32px `default` size. The component sets `required` by default; pass `defaultValue` or a controlled `value` to provide an initial selection.
 
 ## Accessibility
 
-Give `ButtonRadioGroup` an `aria-label` or `aria-labelledby`. `ButtonRadioGroupItem` keeps the radio role and arrow-key navigation; clicking the selected item again does not clear it.
+Give `ButtonRadioGroup` an `aria-label` or `aria-labelledby`. An icon-only `ButtonRadioGroupItem` also needs an `aria-label` describing the option; the supplied icon is treated as decorative. `ButtonRadioGroupItem` keeps the radio role and arrow-key navigation; clicking the selected item again does not clear it.
 
 ## Dependencies
 

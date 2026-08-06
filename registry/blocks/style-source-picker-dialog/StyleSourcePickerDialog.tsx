@@ -294,7 +294,7 @@ function SourceOptionCardGrid({
               "group flex min-h-32 w-full flex-col items-stretch justify-start border bg-background p-3 text-left transition-colors",
               selected
                 ? "border-primary bg-primary/5"
-                : "border-border hover:border-primary/50 hover:bg-muted/40",
+                : "border-border hover:border-primary/50 hover:bg-accent/50",
               alreadyAdded && "cursor-not-allowed opacity-55",
             )}
           >

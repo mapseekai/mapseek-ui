@@ -85,7 +85,9 @@ function ToggleConfigPopover({
               onClick={() => onCheckedChange(!checked)}
               className={cn(
                 "relative size-8 rounded-none",
-                checked ? "bg-selection-bg text-primary" : "bg-transparent text-muted-foreground",
+                checked
+                  ? "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
+                  : "bg-transparent text-muted-foreground",
                 toggleClassName,
               )}
             >
@@ -116,7 +118,8 @@ function ToggleConfigPopover({
                   aria-label={resolvedTriggerLabel}
                   className={cn(
                     "h-8 w-[18px] rounded-none text-muted-foreground",
-                    actualOpen && "bg-selection-bg text-primary",
+                    actualOpen &&
+                      "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary",
                     triggerClassName,
                   )}
                 >
@@ -131,7 +134,7 @@ function ToggleConfigPopover({
           side="bottom"
           align="center"
           sideOffset={4}
-          className={cn("w-[280px] gap-0 p-0 shadow-(--shadow-lg)", contentClassName)}
+          className={cn("w-[280px] gap-0 p-0", contentClassName)}
         >
           <header className="flex h-9 items-center gap-2 border-b border-border px-3">
             <Icon size={14} className={checked ? "text-primary" : "text-muted-foreground"} />

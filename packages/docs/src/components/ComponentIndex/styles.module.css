@@ -22,14 +22,13 @@
   font: inherit;
   padding: 0 0.75rem;
   outline: none;
-  transition:
-    border-color var(--dur-fast) var(--ease-out),
-    box-shadow var(--dur-fast) var(--ease-out);
+  transition: border-color var(--dur-fast) var(--ease-out);
 }
 
 .searchInput:focus {
   border-color: var(--ring);
-  box-shadow: 0 0 0 2px color-mix(in oklch, var(--ring) 20%, transparent);
+  outline: 2px solid color-mix(in oklch, var(--ring) 20%, transparent);
+  outline-offset: 1px;
 }
 
 .grid {
@@ -64,7 +63,7 @@
 .card:hover,
 .card:focus-visible {
   border-color: var(--primary);
-  background-color: color-mix(in oklab, var(--accent) 80%, transparent);
+  background-color: color-mix(in oklch, var(--accent) 50%, transparent);
   color: var(--accent-foreground);
   text-decoration: none;
 }

@@ -228,13 +228,13 @@ Mapseek UI 是 GIS 分析、地图样式配置、数据检查与资源管理的�
 - Geist Mono Variable 用于所有 UI 文字和技术数据。
 - 控件、面板、卡片、菜单和弹窗均为零圆角矩形。
 - 控件高度使用 24px、28px、32px、36px，并遵循 4px 间距节奏。
-- 通过边界和轻微底色变化建立层级；阴影仅属于浮动层。
+- 通过边界和轻微底色变化建立层级；组件默认不使用阴影。
 - 选中、加载、空、错误和禁用状态绝不只依赖颜色。
 - 桌面优先的数据与面板布局在空间收窄时仍可理解。
 
 ### Source of Truth
 
-- `registry/theme/registry.json` 拥有运行时主题变量，包括深色值、阴影、动效、图表、分类和侧栏令牌。
+- `registry/theme/registry.json` 拥有运行时主题变量，包括深色值、无阴影兼容令牌、动效、图表、分类和侧栏令牌。
 - `registry/ui/` 拥有基础组件的变体、尺寸、键盘行为和可访问性。
 - `registry/blocks/` 将基础组件组合为 GIS 与资源管理模式。
 - `packages/docs/` 与 `showcase/` 是视觉验收面。
@@ -247,14 +247,14 @@ Mapseek 使用由低彩度中性色包围的绿色轴 OKLCH 调色板。主绿�
 ### Action, State, and Text
 
 - **Primary**（`{colors.primary}`）是唯一高强调动作、选中导航样式、键盘焦点来源和有限的进度强调；其前景色为 `{colors.primary-foreground}`。
-- **Secondary**（`{colors.secondary}`）和 **accent**（`{colors.accent}`）用于低强调动作、成组选项和安静的 hover 填充；前景色使用对应的 `*-foreground` 令牌。
-- **Selection** 从 `{colors.selection-bg}` 递进至 `{colors.selection-bg-deep}`；必须搭配选中语义、边缘、勾选或其他持续性标识。
+- **Secondary**（`{colors.secondary}`）和 **accent**（`{colors.accent}`）用于低强调动作和成组选项；前景色使用对应的 `*-foreground` 令牌。
+- **交互与选择** 使用不同表面：普通可交互元素默认使用 50% 透明度的 `{colors.accent}`，与文档侧栏 hover 处理保持一致。持续选中状态使用完整的 `{colors.selection-bg}` token 和 `{colors.primary}` 文字，并可递进至 `{colors.selection-bg-deep}`；选中、展开和激活元素在 hover 时保持原状态表面与主色文字，不再应用普通 hover 处理。同时必须搭配选中语义、边缘、勾选或其他持续性标识。
 - **Destructive**、**warning** 与 **info** 是语义信号，不是装饰分类；必须搭配文字或图标，破坏性动作使用浅色调而非实心红色。
 
 ### Surfaces, Borders, and Dark Theme
 
 - **Background**（`{colors.background}`）是应用底面；**card** 和 **popover** 是使用对应前景令牌的独立表面。
-- **Muted** 支持表头、低调 hover、元数据带和空状态骨架；关键小号文字不得使用 `{colors.muted-foreground}`。
+- **Muted** 支持表头、元数据带和空状态骨架，不再作为默认交互 hover 填充；关键小号文字不得使用 `{colors.muted-foreground}`。
 - **Border** 是默认 1px 结构；**border-strong** 仅用于强调边界和活动拖放目标。
 - 输入框的边界使用 `{colors.input}`，填充使用 `{colors.input-surface}`；亮色主题有意保持透明填充。
 - 深色模式通过运行时主题的 `.dark` 值复用相同语义名，而非机械反相。深色面板只略亮于应用底面，可编辑输入框使用克制的半透明填充。
@@ -326,10 +326,10 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 | Flat | 仅背景 | 应用框架、地图画布、内容区域 |
 | Structured | 1px `{colors.border}` | 面板、表格、卡片、成组控件 |
 | Selected | 选中填充加主色边缘或指示器 | 当前行、资源、图层或导航项 |
-| Floating | Popover 表面、1px ring 与主题阴影 | 菜单、popover、tooltip、dialog、toast |
-| Map floating | `--shadow-map-float` | 直接位于地图内容上方的控件 |
+| Floating | 带 1px 边界或 ring 的 Popover 表面 | 菜单、popover、tooltip、dialog、toast |
+| Map floating | 带边界且对比清晰的表面 | 直接位于地图内容上方的控件 |
 
-- 普通卡片、工具栏、侧栏、表格行和表单章节不得使用阴影。
+- 所有组件阴影令牌默认解析为 `none`；使用边界、轮廓和表面对比建立层级。
 - Dialog 遮罩保持轻量（`black/10`），可使用小幅 blur 以保留空间上下文。
 - 既有基础组件使用短促、功能性的过渡；优先透明度、颜色和小位移，并尊重 reduced motion，常规 UI 不得加入冗长动画。
 - 应用框架、地图控件、浮动选择和模态层使用既定 z-index 层级；不得临时递增 z-index。
@@ -392,7 +392,7 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 
 - 不引入营销页式留白、hero 字体、渐变、玻璃拟态或装饰性 blur。
 - 不为矩形卡片、控件、面板、dialog、菜单或字段增加圆角。
-- 不为静态表面添加阴影，也不把层级当作装饰。
+- 不为 UI 组件添加阴影，也不把层级当作装饰。
 - 不将主绿色用于无关分类、每个图表序列或被动装饰。
 - 存在语义令牌时，不在组件中复制颜色字面量。
 - 不通过无标签图标、仅 hover 处理或仅颜色可供性隐藏关键动作。

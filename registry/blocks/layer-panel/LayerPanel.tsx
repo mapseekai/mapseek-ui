@@ -164,7 +164,7 @@ function LayerPanelHeader({
     <header
       data-slot="layer-panel-header"
       className={cn(
-        "relative flex h-8 shrink-0 select-none items-center border-b border-border bg-card hover:bg-muted/40",
+        "relative flex h-8 shrink-0 select-none items-center border-b border-border bg-card hover:bg-accent/50",
         collapsed && "border-b-transparent",
         className,
       )}
@@ -266,7 +266,7 @@ function LayerPanelAddButton({
       aria-label={labels.addLayer}
       title={labels.addLayer}
       className={cn(
-        "inline-flex h-6 items-center gap-1.5 bg-transparent px-2.5 text-[11px] font-medium leading-none text-foreground hover:bg-muted disabled:opacity-50",
+        "inline-flex h-6 items-center gap-1.5 bg-transparent px-2.5 text-[11px] font-medium leading-none text-foreground hover:bg-accent/50 disabled:opacity-50",
         className,
       )}
     >
@@ -429,10 +429,8 @@ function LayerPanelItem({
         data-testid="layer-item"
         data-selected={isSelected ? "true" : undefined}
         className={cn(
-          "group relative flex select-none items-center gap-2 border-b border-l-2 border-b-border px-2.5 py-2 transition-colors",
-          isSelected
-            ? "border-l-primary bg-selection-bg"
-            : "border-l-transparent hover:bg-muted/50",
+          "group relative flex select-none items-center gap-2 border-b border-l-2 border-b-border border-l-transparent px-2.5 py-2 transition-colors before:pointer-events-none before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-transparent before:content-['']",
+          isSelected ? "bg-selection-bg before:bg-primary" : "hover:bg-accent/50",
           className,
         )}
       >
@@ -478,7 +476,10 @@ function LayerPanelItem({
           onDragOver={handleDragOver}
           onDrop={handleDrop}
           onClick={() => ctx.onSelectChange(layer.id)}
-          className="relative z-0 h-auto min-w-0 flex-1 cursor-pointer justify-start rounded-none p-0 text-left"
+          className={cn(
+            "relative z-0 h-auto min-w-0 flex-1 cursor-pointer justify-start rounded-none p-0 text-left",
+            isSelected && "text-primary hover:text-primary [&>div]:text-primary",
+          )}
           aria-label={layer.name}
         >
           <div className="truncate text-[13px] font-medium leading-tight text-foreground">
@@ -519,7 +520,7 @@ function LayerPanelItem({
               onClick={() => ctx.onLocate?.(layer.id)}
               aria-label={ctx.labels.locate}
               title={ctx.labels.zoomToLayer}
-              className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-card hover:text-foreground"
+              className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-accent/50 hover:text-foreground"
             >
               <IconCurrentLocation />
             </Button>
@@ -532,7 +533,7 @@ function LayerPanelItem({
               onClick={() => ctx.onOpenTable?.(layer.id)}
               aria-label={ctx.labels.attributeTable}
               title={ctx.labels.attributeTable}
-              className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-card hover:text-foreground"
+              className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-accent/50 hover:text-foreground"
             >
               <IconTable />
             </Button>
@@ -545,7 +546,7 @@ function LayerPanelItem({
               onClick={() => ctx.onRemove?.(layer.id)}
               aria-label={`Remove ${layer.name}`}
               title={ctx.labels.delete}
-              className="size-6 text-muted-foreground hover:bg-card hover:text-destructive"
+              className="size-6 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
             >
               <IconTrash />
             </Button>

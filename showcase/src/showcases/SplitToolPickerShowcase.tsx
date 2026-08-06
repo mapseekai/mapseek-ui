@@ -163,7 +163,7 @@ export function SplitToolPickerDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {demoLabels.title}
         </h3>
         <div className="flex flex-wrap items-center gap-3">
-          <div className="inline-flex h-10 items-center gap-2 border border-border bg-card px-1 shadow-[var(--shadow-map-float)]">
+          <div className="inline-flex h-10 items-center gap-2 border border-border bg-card px-1">
             <span data-demo-action="split-tool-picker-select">
               <SplitToolPicker
                 label={demoLabels.selectTool}

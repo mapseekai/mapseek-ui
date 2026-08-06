@@ -1,0 +1,47 @@
+---
+title: "Card Tabs"
+registryName: card-tabs
+category: primitive
+stability: stable
+showcase: card-tabs
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Card Tabs places the tab list and content in one bordered surface for summary cards, resource groups, and vertical detail navigation.
+
+## Installation
+
+<RegistryInstall registryName="card-tabs" />
+
+## Import
+
+```tsx
+import {
+  CardTabs,
+  CardTabsContent,
+  CardTabsList,
+  CardTabsTrigger,
+} from "@/registry/ui/card-tabs"
+```
+
+## Usage
+
+<ShowcaseDemo registryName="card-tabs" demo="overview" title="Controlled and vertical Card Tabs" description="Shows full-item selected backgrounds, item separators, a bottom horizontal indicator, and a right-side vertical indicator." minHeight={620} />
+
+## Exports
+
+`card-tabs.tsx` exports `CardTabs`, `CardTabsList`, `CardTabsTrigger`, and `CardTabsContent`.
+
+## States
+
+Use `defaultValue` for uncontrolled state or `value/onValueChange` for controlled selection. Horizontal layouts draw vertical separators between items and a 2px primary indicator below the active item. Vertical layouts use horizontal separators and place the indicator on the right edge facing the content. The content area accepts arbitrary React content.
+
+## Accessibility
+
+The component uses standard tab/tabpanel semantics with arrow-key navigation, Enter/Space activation, and disabled triggers. Keyboard focus reuses the content-edge primary line instead of changing the card boundary.
+
+## Dependencies
+
+<RegistryDependencies registryName="card-tabs" />

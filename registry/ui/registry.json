@@ -113,6 +113,22 @@
       ]
     },
     {
+      "name": "card-tabs",
+      "type": "registry:ui",
+      "title": "Card Tabs",
+      "description": "Bordered tab navigation with full-item selection states.",
+      "categories": ["navigation"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
+      "files": [
+        {
+          "path": "card-tabs.tsx",
+          "type": "registry:ui",
+          "target": "@ui/card-tabs.tsx"
+        }
+      ]
+    },
+    {
       "name": "collapsible",
       "type": "registry:ui",
       "title": "Collapsible",
@@ -403,6 +419,22 @@
       ]
     },
     {
+      "name": "input-number",
+      "type": "registry:ui",
+      "title": "Input Number",
+      "description": "Numeric input with idle units and focused step controls.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [
+        {
+          "path": "input-number.tsx",
+          "type": "registry:ui",
+          "target": "@ui/input-number.tsx"
+        }
+      ]
+    },
+    {
       "name": "pagination",
       "type": "registry:ui",
       "title": "Pagination",
@@ -470,7 +502,7 @@
       "name": "button-radio-group",
       "type": "registry:ui",
       "title": "Button Radio Group",
-      "description": "Single-choice radio controls presented as wrapped buttons.",
+      "description": "Single-choice radio controls presented as wrapped text or icon buttons.",
       "categories": ["input"],
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@base-ui/react"],

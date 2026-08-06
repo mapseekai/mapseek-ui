@@ -33,6 +33,9 @@ it("uses shared controls and square themed scrollbars", async () => {
   expect(virtualTable).toContain("[scrollbar-color:var(--border)_transparent]")
   expect(virtualTable).toContain("[&::-webkit-scrollbar-thumb]:rounded-none")
   expect(virtualTable).toContain("justify-start gap-0")
+  expect(virtualTable).toContain(
+    "bg-selection-bg text-primary ring-1 ring-primary/40 ring-inset hover:bg-selection-bg hover:text-primary [&>div>span]:text-primary",
+  )
   expect(
     JSON.parse(registry).items.find((item: { name: string }) => item.name === "attr-table"),
   ).toHaveProperty(

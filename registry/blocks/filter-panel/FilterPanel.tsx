@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
@@ -40,7 +41,7 @@ function patch(
   onChange({ ...value, ...delta })
 }
 
-const miniSelect = "h-6 rounded-none border-border bg-background px-2 font-mono text-[11px]"
+const miniSelect = "rounded-none border-border bg-background px-2 font-mono text-[11px]"
 
 // ---------------------------------------------------------------------------
 // Root
@@ -62,7 +63,17 @@ function FilterPanelRoot({
   return (
     <FilterPanelContext.Provider value={ctx}>
       <div data-slot="filter-panel" className={cn("flex flex-col", className)}>
-        {children}
+        <Tabs
+          value={value.mode}
+          onValueChange={(mode) => {
+            if (mode === "builder" || mode === "sql") {
+              patch(value, onChange, { mode })
+            }
+          }}
+          className="gap-0"
+        >
+          {children}
+        </Tabs>
       </div>
     </FilterPanelContext.Provider>
   )
@@ -73,40 +84,25 @@ function FilterPanelRoot({
 // ---------------------------------------------------------------------------
 
 function FilterPanelModeToggle({ className }: { className?: string }) {
-  const { value, onChange, labels } = useFilterPanelContext()
+  const { labels } = useFilterPanelContext()
   const modes = [
     { id: "builder" as const, label: labels.builder, Icon: IconAdjustmentsAlt },
     { id: "sql" as const, label: "SQL", Icon: IconCode },
   ]
   return (
-    <div className={cn("mb-2.5 flex", className)}>
-      {modes.map((m, i) => {
-        const isCur = value.mode === m.id
-        return (
-          <Button
-            key={m.id}
-            variant="ghost"
-            onClick={() => patch(value, onChange, { mode: m.id })}
-            className={cn(
-              "h-6 flex-1 gap-1.5 rounded-none border border-border-strong px-2 text-[11px] font-medium leading-none shadow-none",
-              i > 0 && "-ml-px",
-              isCur
-                ? "bg-selection-bg text-primary hover:text-primary"
-                : "bg-background text-foreground",
-            )}
-          >
-            <m.Icon data-icon="inline-start" />
-            {m.label}
-          </Button>
-        )
-      })}
-    </div>
+    <TabsList variant="primary" className={cn("mb-2.5 grid h-7 w-full grid-cols-2", className)}>
+      {modes.map((mode) => (
+        <TabsTrigger key={mode.id} value={mode.id} className="text-[11px]">
+          <mode.Icon data-icon="inline-start" />
+          {mode.label}
+        </TabsTrigger>
+      ))}
+    </TabsList>
   )
 }
 
 function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: string }) {
   const { fields, value, onChange, labels } = useFilterPanelContext()
-  if (value.mode !== "builder") return null
 
   const updateRow = (id: number, delta: Partial<FilterCondition>) => {
     patch(value, onChange, {
@@ -133,7 +129,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
   }
 
   return (
-    <div className={cn("flex flex-col", className)}>
+    <TabsContent value="builder" className={cn("flex flex-col", className)}>
       <div className="flex flex-col gap-1.5">
         {value.rows.length === 0 && (
           <div className="py-2.5 text-center text-[11px] leading-[1.5] text-muted-foreground">
@@ -155,7 +151,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                         "h-5 rounded-none border border-border px-1.5 font-mono text-[10px] font-semibold leading-none tracking-[0.04em]",
                         ci > 0 && "-ml-px",
                         isCur
-                          ? "bg-selection-bg text-primary hover:text-primary"
+                          ? "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
                           : "bg-background text-muted-foreground",
                       )}
                     >
@@ -170,7 +166,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 value={f.field}
                 onValueChange={(val) => val != null && updateRow(f.id, { field: val })}
               >
-                <SelectTrigger className={miniSelect}>
+                <SelectTrigger size="xs" className={miniSelect}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -187,7 +183,10 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 value={f.op}
                 onValueChange={(val) => val != null && updateRow(f.id, { op: val })}
               >
-                <SelectTrigger className={cn(miniSelect, "w-max min-w-12 whitespace-nowrap")}>
+                <SelectTrigger
+                  size="xs"
+                  className={cn(miniSelect, "w-max min-w-12 whitespace-nowrap")}
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -228,15 +227,14 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
           <IconPlus data-icon="inline-start" /> {labels.addCondition}
         </Button>
       </div>
-    </div>
+    </TabsContent>
   )
 }
 
 function FilterPanelSql({ keywords, className }: { keywords: string[]; className?: string }) {
   const { value, onChange } = useFilterPanelContext()
-  if (value.mode !== "sql") return null
   return (
-    <div className={cn("flex flex-col", className)}>
+    <TabsContent value="sql" className={cn("flex flex-col", className)}>
       <Textarea
         value={value.sql}
         spellCheck={false}
@@ -259,7 +257,7 @@ function FilterPanelSql({ keywords, className }: { keywords: string[]; className
           </Button>
         ))}
       </div>
-    </div>
+    </TabsContent>
   )
 }
 

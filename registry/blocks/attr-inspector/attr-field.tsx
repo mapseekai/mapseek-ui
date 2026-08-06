@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils"
 import { inferAttrFieldKind } from "./infer-hint"
 import type { AttrFieldKind, AttrFieldMeta } from "./types"
 
-const inputBase = "h-7 w-full rounded-none border-border bg-background px-2 text-xs"
+const inputBase = "w-full rounded-none border-border bg-background px-2 text-xs"
 
 type Resolved = {
   kind: AttrFieldKind
@@ -88,7 +88,6 @@ function DateEditField({
           <Button
             type="button"
             variant="outline"
-            size="sm"
             aria-label={name}
             className={cn(inputBase, "justify-between font-mono font-normal")}
           >

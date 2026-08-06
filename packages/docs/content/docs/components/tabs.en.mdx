@@ -29,7 +29,7 @@ import {
 
 ## Usage
 
-<ShowcaseDemo registryName="tabs" demo="overview" title="Tab states" description="Covers default value, controlled value, line variant, vertical orientation, and disabled trigger." minHeight={560} />
+<ShowcaseDemo registryName="tabs" demo="overview" title="Tab states" description="Covers a default value, the primary variant, and a disabled trigger." minHeight={420} />
 
 ## Exports
 
@@ -37,7 +37,7 @@ import {
 
 ## States
 
-Use `defaultValue` for static tabs and `value/onValueChange` for controlled tabs. `TabsList variant="line"` fits editor tab bars, while `orientation="vertical"` fits side navigation.
+Use `defaultValue` for static tabs and `value/onValueChange` for controlled tabs. `TabsList variant="primary"` fills the active trigger with the theme color when the current view needs stronger emphasis. `variant="line"` fits editor tab bars, while `orientation="vertical"` fits side navigation. Use the standalone Card Tabs component for a bordered surface with full-item selected backgrounds.
 
 ## Accessibility
 
@@ -46,4 +46,3 @@ Trigger text should describe the target panel. Keyboard users should be able to 
 ## Dependencies
 
 <RegistryDependencies registryName="tabs" />
-

@@ -98,7 +98,6 @@ const appJsonEditorTheme = EditorView.theme({
     border: "1px solid var(--border)",
     backgroundColor: "var(--popover)",
     color: "var(--popover-foreground)",
-    boxShadow: "var(--shadow-lg)",
   },
   ".cm-tooltip-autocomplete ul li[aria-selected]": {
     backgroundColor: "var(--selection-bg)",

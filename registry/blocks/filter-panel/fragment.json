@@ -5,6 +5,7 @@
     "@mapseek/button",
     "@mapseek/input",
     "@mapseek/select",
+    "@mapseek/tabs",
     "@mapseek/textarea",
     "@mapseek/utils",
     "@mapseek/labels"

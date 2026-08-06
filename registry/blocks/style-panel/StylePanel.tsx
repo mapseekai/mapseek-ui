@@ -82,11 +82,13 @@ function StylePanelFill({
             key={c}
             onClick={() => patch(value, onChange, { fill: c })}
             aria-label={`${labels.fillColor} ${c}`}
-            className="size-[18px] cursor-pointer border"
+            className={cn(
+              "size-[18px] cursor-pointer border",
+              c === current && "outline-2 outline-offset-1 outline-primary",
+            )}
             style={{
               background: c,
               borderColor: "color-mix(in oklch, currentColor 30%, var(--border))",
-              boxShadow: c === current ? "0 0 0 1px var(--card), 0 0 0 2px var(--primary)" : "none",
             }}
           />
         ))}
@@ -184,8 +186,8 @@ function StylePanelMarker({ shapes }: { shapes: MarkerShape[] }) {
               className={cn(
                 "inline-flex size-6 items-center justify-center border font-mono text-[10px]",
                 isCur
-                  ? "border-primary bg-selection-bg text-primary"
-                  : "border-border bg-background text-muted-foreground hover:bg-muted",
+                  ? "border-primary bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
+                  : "border-border bg-background text-muted-foreground hover:bg-accent/50",
               )}
               aria-label={s}
               title={s}

@@ -128,7 +128,7 @@ export function AttrTableSheet({
       aria-label={ariaLabel}
       style={{ height: s.height }}
       className={cn(
-        "pointer-events-auto absolute right-0 bottom-0 left-0 z-30 flex flex-col border-t border-border bg-card shadow-(--shadow-lg)",
+        "pointer-events-auto absolute right-0 bottom-0 left-0 z-30 flex flex-col border-t border-border bg-card",
         // Only animate height for programmatic transitions (open/close,
         // fullscreen toggle) — never during a drag, otherwise the
         // cursor races ahead of the easing curve.

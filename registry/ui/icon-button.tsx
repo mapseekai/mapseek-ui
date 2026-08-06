@@ -25,7 +25,7 @@ function IconButton({
           : "size-8 [&_svg:not([class*='size-'])]:size-4",
         danger
           ? "text-destructive hover:bg-destructive/10"
-          : "text-muted-foreground hover:bg-muted hover:text-foreground",
+          : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
         "disabled:pointer-events-none disabled:opacity-50",
         className,
       )}

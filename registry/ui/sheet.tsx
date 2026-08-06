@@ -27,7 +27,7 @@ function SheetBackdrop({
 }
 
 const sheetVariants = cva(
-  "fixed z-[1060] flex flex-col border-border bg-background shadow-lg outline-none transition-[opacity,transform] duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+  "fixed z-[1060] flex flex-col border-border bg-background outline-none transition-[opacity,transform] duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
   {
     variants: {
       side: {
@@ -68,7 +68,7 @@ function SheetContent({
         {children}
         {!hideClose && (
           <DialogPrimitive.Close
-            className="absolute top-3 right-3 grid size-8 cursor-pointer place-items-center text-muted-foreground hover:bg-muted hover:text-foreground"
+            className="absolute top-3 right-3 grid size-8 cursor-pointer place-items-center text-muted-foreground hover:bg-accent/50 hover:text-foreground"
             aria-label="关闭"
           >
             <IconX size={14} />

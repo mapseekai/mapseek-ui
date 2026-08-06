@@ -2,7 +2,7 @@ import { IconExternalLink, IconLink } from "@tabler/icons-react"
 import type { ReactNode } from "react"
 import { useState } from "react"
 
-import { Button } from "@/components/ui/button"
+import { CardTabs, CardTabsContent, CardTabsList, CardTabsTrigger } from "@/components/ui/card-tabs"
 import { IconButton } from "@/components/ui/icon-button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
@@ -43,84 +43,64 @@ const STATUS_TONE: Record<LinkedRefStatusTone, { pill: string; dot: string | nul
  * 无 i18n、无副作用。action 按钮恒为 disabled（尚未接入 API）。
  */
 export function LinkedRefList({ groups, kindIcons, openLabel }: LinkedRefListProps) {
-  const [selected, setSelected] = useState(0)
-  const active = groups[selected]
+  const [selected, setSelected] = useState(groups[0]?.key ?? "")
+  const selectedValue = groups.some((group) => group.key === selected)
+    ? selected
+    : (groups[0]?.key ?? "")
 
   return (
-    <div className="flex flex-col gap-3">
-      <div
-        className="grid border border-border bg-background"
+    <CardTabs value={selectedValue} onValueChange={setSelected}>
+      <CardTabsList
+        className="grid h-auto gap-0"
         style={{ gridTemplateColumns: `repeat(${groups.length}, minmax(0, 1fr))` }}
       >
-        {groups.map((group, i) => (
-          <SummaryCard
-            key={group.key}
-            group={group}
-            icon={kindIcons[group.kind]}
-            selected={i === selected}
-            onSelect={() => setSelected(i)}
-          />
+        {groups.map((group) => (
+          <SummaryCard key={group.key} group={group} icon={kindIcons[group.kind]} />
         ))}
-      </div>
+      </CardTabsList>
 
-      {active ? (
-        <div className="border border-border">
+      {groups.map((group) => (
+        <CardTabsContent key={group.key} value={group.key} className="p-0!">
           <div className="flex items-center gap-2 bg-muted/30 px-4 py-2.5">
-            <span className="shrink-0">{kindIcons[active.kind]}</span>
-            <span className="text-sm font-medium text-foreground">{active.title}</span>
+            <span className="shrink-0">{kindIcons[group.kind]}</span>
+            <span className="text-sm font-medium text-foreground">{group.title}</span>
             <span className="mono border border-border bg-background px-1.5 text-[11px] text-muted-foreground">
-              {active.count}
+              {group.count}
             </span>
-            {active.summary ? (
+            {group.summary ? (
               <span className="ml-auto truncate text-[11px] text-muted-foreground">
-                {active.summary}
+                {group.summary}
               </span>
             ) : null}
           </div>
 
-          {active.items.length > 0 ? (
+          {group.items.length > 0 ? (
             <ul className="flex flex-col">
-              {active.items.map((item) => (
+              {group.items.map((item) => (
                 <ItemRow
                   key={item.key}
                   item={item}
-                  kind={active.kind}
-                  icon={kindIcons[active.kind]}
+                  kind={group.kind}
+                  icon={kindIcons[group.kind]}
                   openLabel={openLabel}
                 />
               ))}
             </ul>
           ) : null}
-        </div>
-      ) : null}
-    </div>
+        </CardTabsContent>
+      ))}
+    </CardTabs>
   )
 }
 
-function SummaryCard({
-  group,
-  icon,
-  selected,
-  onSelect,
-}: {
-  group: LinkedRefGroup
-  icon: ReactNode
-  selected: boolean
-  onSelect: () => void
-}) {
+function SummaryCard({ group, icon }: { group: LinkedRefGroup; icon: ReactNode }) {
   const unit = group.summaryLabel.replace(/^\s*\d[\d,]*\s*/, "")
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      type="button"
-      onClick={onSelect}
-      className={cn(
-        "flex h-auto min-w-0 flex-col gap-2 border-0 border-r border-border px-4 py-3 text-left transition-colors last:border-r-0",
-        selected ? "bg-selection-bg" : "bg-background hover:bg-muted/20",
-      )}
+    <CardTabsTrigger
+      value={group.key}
+      className="group/ref-tab h-auto min-w-0 flex-col gap-2 px-4 py-3 text-left"
     >
-      <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+      <span className="flex items-center gap-2 text-sm font-medium text-foreground group-data-active/ref-tab:text-primary">
         <span
           className={cn("flex size-9 items-center justify-center border", KIND_BOX[group.kind])}
         >
@@ -130,9 +110,11 @@ function SummaryCard({
       </span>
       <span>
         <span className="mono text-xl font-medium">{group.count}</span>{" "}
-        <span className="text-[11px] text-muted-foreground">{unit}</span>
+        <span className="text-[11px] text-muted-foreground group-data-active/ref-tab:text-primary">
+          {unit}
+        </span>
       </span>
-    </Button>
+    </CardTabsTrigger>
   )
 }
 

@@ -29,6 +29,42 @@ async function violations(pattern: RegExp, files?: readonly string[]): Promise<s
 }
 
 describe("registry style syntax", () => {
+  it("keeps every component shadowless by default", async () => {
+    expect(await violations(/(?:^|[\s"'`])!?shadow-(?!none\b)[^\s"'`]+/g)).toEqual([])
+    expect(await violations(/\bboxShadow\s*:\s*(?:["'](?!none["'])|[^\s"'])/g)).toEqual([])
+    expect(await violations(/["']--shadow["']\s*:\s*["'](?!none["'])/g)).toEqual([])
+
+    const themeRegistry = JSON.parse(await readFile("registry/theme/registry.json", "utf8")) as {
+      items: Array<{
+        name: string
+        cssVars: { theme: Record<string, string> }
+      }>
+    }
+    const theme = themeRegistry.items.find((item) => item.name === "theme")
+    const shadowValues = Object.entries(theme?.cssVars.theme ?? {})
+      .filter(([name]) => name.startsWith("--shadow-"))
+      .map(([, value]) => value)
+
+    expect(shadowValues.length).toBeGreaterThan(0)
+    expect(new Set(shadowValues)).toEqual(new Set(["none"]))
+  })
+
+  it("uses the accent surface at 50% opacity for ordinary pointer highlights", async () => {
+    expect(
+      await violations(
+        /(?:hover:!?bg|focus:bg|data-(?:highlighted|selected):bg)-(?:muted(?:-foreground)?|card|background|input|secondary)(?:\/\d+)?|hover:bg-\[color-mix\(in_oklch,var\(--secondary\)/g,
+      ),
+    ).toEqual([])
+    expect(
+      await violations(
+        /(?:hover:!?bg|focus:bg|data-(?:highlighted|selected):bg)-selection-bg\/\d+/g,
+      ),
+    ).toEqual([])
+    expect(
+      await violations(/(?:hover:!?bg|focus:bg|data-(?:highlighted|selected):bg)-accent(?!\/50)/g),
+    ).toEqual([])
+  })
+
   it("uses Tailwind v4 CSS-variable shorthand utilities", async () => {
     expect(await violations(/\b[\w!:-]+-\[(?:length:)?var\(--[\w-]+\)\]/g)).toEqual([])
   })

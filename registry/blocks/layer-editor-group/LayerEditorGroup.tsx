@@ -57,7 +57,7 @@ export function LayerEditorGroup({
                   section.dataWdKey ? `layer-editor-group:${section.dataWdKey}` : undefined
                 }
                 className={cn(
-                  "flex h-full w-full items-center border-0 px-3 py-0 text-sm leading-5 font-medium hover:bg-muted [&_[data-slot=accordion-trigger-icon]]:ms-auto [&_[data-slot=accordion-trigger-icon]]:self-center",
+                  "flex h-full w-full items-center border-0 px-3 py-0 text-sm leading-5 font-medium hover:bg-accent/50 [&_[data-slot=accordion-trigger-icon]]:ms-auto [&_[data-slot=accordion-trigger-icon]]:self-center",
                   triggerClassName,
                   section.triggerClassName,
                 )}

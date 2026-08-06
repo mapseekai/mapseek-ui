@@ -177,7 +177,7 @@ export function LoomToolbar({
         </div>
       </div>
 
-      <div className="absolute bottom-4 end-4 flex items-center gap-2 border border-border bg-card/95 px-3 py-2 text-xs shadow-(--shadow-map-float)">
+      <div className="absolute bottom-4 end-4 flex items-center gap-2 border border-border bg-card/95 px-3 py-2 text-xs">
         <span className="text-muted-foreground">{labels.currentMode}</span>
         <Badge>{activeTool?.label ?? activeMode}</Badge>
         {dirty && <span className="text-warning">{labels.unsaved}</span>}

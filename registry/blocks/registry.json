@@ -249,6 +249,7 @@
         "@mapseek/button",
         "@mapseek/input",
         "@mapseek/select",
+        "@mapseek/tabs",
         "@mapseek/textarea",
         "@mapseek/utils",
         "@mapseek/labels"
@@ -530,7 +531,12 @@
     {
       "name": "linked-ref-list",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/icon-button", "@mapseek/tooltip", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/card-tabs",
+        "@mapseek/icon-button",
+        "@mapseek/tooltip",
+        "@mapseek/utils"
+      ],
       "files": [
         {
           "path": "linked-ref-list/LinkedRefList.tsx",
@@ -916,6 +922,7 @@
       "type": "registry:block",
       "registryDependencies": [
         "@mapseek/button",
+        "@mapseek/button-radio-group",
         "@mapseek/color-input",
         "@mapseek/input",
         "@mapseek/select",

@@ -90,7 +90,12 @@ export function CalendarOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
             render={
               <Button
                 variant="outline"
-                className={cn("w-56 justify-start", !picked && "text-muted-foreground")}
+                className={cn(
+                  "w-56 justify-start aria-expanded:bg-background aria-expanded:hover:bg-accent/50",
+                  picked
+                    ? "aria-expanded:text-foreground aria-expanded:hover:text-foreground"
+                    : "text-muted-foreground aria-expanded:text-muted-foreground aria-expanded:hover:text-muted-foreground",
+                )}
               />
             }
           >

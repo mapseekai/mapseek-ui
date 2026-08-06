@@ -29,7 +29,7 @@ import {
 
 ## 用法
 
-<ShowcaseDemo registryName="tabs" demo="overview" title="标签页状态" description="覆盖默认值、受控值、line 变体、vertical 方向和 disabled trigger。" minHeight={560} />
+<ShowcaseDemo registryName="tabs" demo="overview" title="标签页状态" description="覆盖默认值、primary 变体和 disabled trigger。" minHeight={420} />
 
 ## 导出
 
@@ -37,7 +37,7 @@ import {
 
 ## 状态
 
-静态场景使用 `defaultValue`；受控场景使用 `value/onValueChange`。`TabsList variant="line"` 适合编辑器顶部标签，`orientation="vertical"` 适合侧向导航。
+静态场景使用 `defaultValue`；受控场景使用 `value/onValueChange`。`TabsList variant="primary"` 使用主题色填充选中项，适合需要突出当前视图的场景；`variant="line"` 适合编辑器顶部标签，`orientation="vertical"` 适合侧向导航。带边框和完整项选中背景的场景请使用独立的 Card Tabs 组件。
 
 ## 无障碍
 
@@ -46,4 +46,3 @@ Trigger 文案应说明目标内容。键盘用户应能通过方向键移动、
 ## 依赖
 
 <RegistryDependencies registryName="tabs" />
-

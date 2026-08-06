@@ -33,7 +33,7 @@ import {
 
 ## Usage
 
-Pass grouped `LinkedRefGroup[]` plus icons for each kind. Summary cards own counts, while rows show names, IDs, times, and status.
+Pass grouped `LinkedRefGroup[]` plus icons for each kind. Card tabs summarize each group, while the selected panel shows names, IDs, times, and status.
 
 ## Public Exports and Props
 
@@ -45,9 +45,8 @@ The list owns only the selected group; data loading, empty groups, and errors ar
 
 ## Accessibility
 
-Summary cards are buttons and support keyboard switching. Status pills include text and structure, not color-only meaning.
+Group summaries use standard tab/tabpanel semantics and support arrow-key navigation. Status pills include text and structure, not color-only meaning.
 
 ## Dependencies
 
 <RegistryDependencies registryName="linked-ref-list" />
-

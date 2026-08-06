@@ -23,7 +23,7 @@ export function LocaleSwitcher() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="inline-flex items-center gap-1 px-2 py-1.5 text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground">
+      <DropdownMenuTrigger className="inline-flex items-center gap-1 px-2 py-1.5 text-sm text-fd-muted-foreground transition-colors hover:bg-fd-accent/50 hover:text-fd-accent-foreground/80">
         {isEnglish ? "English" : "简体中文"}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-28">

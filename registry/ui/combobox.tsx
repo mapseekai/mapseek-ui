@@ -136,7 +136,7 @@ function ComboboxContent({
           data-slot="combobox-content"
           data-chips={!!anchor}
           className={cn(
-            "max-h-72 min-w-36 overflow-hidden border border-border bg-popover text-popover-foreground shadow-md outline-none",
+            "max-h-72 min-w-36 overflow-hidden border border-border bg-popover text-popover-foreground outline-none",
             "max-h-(--available-height) w-(--anchor-width) max-w-(--available-width) min-w-[calc(var(--anchor-width)+(--spacing(7)))]",
             "transition-opacity duration-100 data-ending-style:opacity-0 data-starting-style:opacity-0",
             className,
@@ -168,7 +168,7 @@ function ComboboxItem({ className, children, ...props }: ComboboxPrimitive.Item.
       data-slot="combobox-item"
       className={cn(
         "relative flex w-full cursor-pointer select-none items-center justify-between gap-2 px-2 py-2 text-xs outline-hidden",
-        "data-highlighted:bg-muted",
+        "data-highlighted:bg-accent/50",
         "data-disabled:pointer-events-none data-disabled:opacity-50",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
         className,

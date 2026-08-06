@@ -1,0 +1,47 @@
+---
+title: "Card Tabs"
+registryName: card-tabs
+category: primitive
+stability: stable
+showcase: card-tabs
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Card Tabs 将标签列表和内容收进同一个带边框的容器，适合概览卡片、资源分组和侧向详情导航。
+
+## 安装
+
+<RegistryInstall registryName="card-tabs" />
+
+## 导入
+
+```tsx
+import {
+  CardTabs,
+  CardTabsContent,
+  CardTabsList,
+  CardTabsTrigger,
+} from "@/registry/ui/card-tabs"
+```
+
+## 用法
+
+<ShowcaseDemo registryName="card-tabs" demo="overview" title="受控与纵向 Card Tabs" description="展示完整项选中背景、项间分割线、横向底部指示线和纵向右侧指示线。" minHeight={620} />
+
+## 导出
+
+`card-tabs.tsx` 导出 `CardTabs`、`CardTabsList`、`CardTabsTrigger` 和 `CardTabsContent`。
+
+## 状态
+
+使用 `defaultValue` 创建非受控状态，或通过 `value/onValueChange` 控制选中项。横向布局在项目之间显示竖分割线，并在选中项底部显示 2px 主题色指示线；纵向布局显示横分割线，并将指示线放在内容侧的右边。内容区可放置任意 React 内容。
+
+## 无障碍
+
+组件使用标准 tab/tabpanel 语义，支持方向键导航、Enter/Space 激活和 disabled trigger。键盘焦点复用内容侧主题线，不会额外改变卡片边界。
+
+## 依赖
+
+<RegistryDependencies registryName="card-tabs" />

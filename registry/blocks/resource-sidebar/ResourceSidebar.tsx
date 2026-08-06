@@ -37,7 +37,7 @@ export function ResourceSidebar({
   className,
 }: ResourceSidebarProps) {
   const leafBase =
-    "relative flex h-[34px] w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-xs text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-muted"
+    "relative flex h-[34px] w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-xs text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-accent/50"
   const activeLeaf = "bg-primary/10 text-primary before:opacity-100"
 
   function leafClass(active: boolean, extra: string) {
@@ -233,7 +233,7 @@ function CategoryRow({
         variant="ghost"
         size="sm"
         className={cn(
-          "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-xs text-foreground hover:bg-muted",
+          "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-xs text-foreground hover:bg-accent/50",
           active && "bg-primary/10 font-medium text-primary",
         )}
         onClick={onClick}

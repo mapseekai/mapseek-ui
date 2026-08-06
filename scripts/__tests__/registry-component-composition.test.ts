@@ -26,6 +26,17 @@ function namedExports(source: string): Set<string> {
 }
 
 describe("registry component composition", () => {
+  it("keeps the Select trigger surface unchanged on hover", async () => {
+    const select = await readFile("registry/ui/select.tsx", "utf8")
+    const trigger = select.slice(
+      select.indexOf("function SelectTrigger"),
+      select.indexOf("function SelectValue"),
+    )
+
+    expect(trigger).not.toContain("hover:bg-")
+    expect(select).toContain("data-highlighted:bg-accent/50")
+  })
+
   it("renders one Base UI slider thumb for scalar values", async () => {
     const slider = await readFile("registry/ui/slider.tsx", "utf8")
 
@@ -75,6 +86,22 @@ describe("registry component composition", () => {
     )
   })
 
+  it("uses one typography style for add-field form labels", async () => {
+    const addFieldForm = await readFile("registry/blocks/add-field-form/AddFieldForm.tsx", "utf8")
+
+    expect(addFieldForm.match(/<FieldLabel[^>]*className="font-medium"/g)).toHaveLength(4)
+    expect(addFieldForm).toContain('className="cursor-pointer font-medium leading-none"')
+    expect(addFieldForm).toContain('<FieldLegend variant="label" className="mb-0">')
+    expect(addFieldForm).not.toContain("text-[11px] uppercase tracking-[0.06em]")
+  })
+
+  it("lets attr-inspector edit controls use their default heights", async () => {
+    const attrField = await readFile("registry/blocks/attr-inspector/attr-field.tsx", "utf8")
+
+    expect(attrField).not.toMatch(/const inputBase = "[^"]*\bh-/)
+    expect(attrField).not.toContain('size="sm"')
+  })
+
   it("composes loom toolbox detail with Separator Alert and Field", async () => {
     const toolDetail = await readFile("registry/blocks/loom-toolbox/ToolDetail.tsx", "utf8")
     const registryItem = await blockRegistryItem("loom-toolbox")
@@ -90,14 +117,34 @@ describe("registry component composition", () => {
     )
   })
 
-  it("uses a primary hover border without a background for loom toolbox tool rows", async () => {
+  it("uses a primary hover border with the reference accent background for tool rows", async () => {
     const toolList = await readFile("registry/blocks/loom-toolbox/ToolList.tsx", "utf8")
 
     expect(toolList.match(/variant="link"/g)).toHaveLength(2)
     expect(toolList.match(/text-foreground hover:no-underline/g)).toHaveLength(2)
     expect(toolList).toContain("border border-transparent")
-    expect(toolList).toContain("transition-colors hover:border-primary")
-    expect(toolList).not.toContain("hover:bg-selection-bg")
+    expect(toolList).toContain("transition-colors hover:border-primary hover:bg-accent/50")
+  })
+
+  it("marks selected split-tool options on the left edge only", async () => {
+    const splitToolPicker = await readFile(
+      "registry/blocks/split-tool-picker/SplitToolPicker.tsx",
+      "utf8",
+    )
+
+    expect(splitToolPicker).toContain("border-y-0 border-r-0 border-l-2 border-l-transparent")
+    expect(splitToolPicker).toContain(
+      "border-l-primary bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary",
+    )
+    expect(splitToolPicker).not.toContain("border-selection-bg")
+  })
+
+  it("uses a flat-ended selection bar for layer-panel items", async () => {
+    const layerPanel = await readFile("registry/blocks/layer-panel/LayerPanel.tsx", "utf8")
+
+    expect(layerPanel).toContain("before:inset-y-0 before:left-0 before:w-0.5")
+    expect(layerPanel).toContain("bg-selection-bg before:bg-primary")
+    expect(layerPanel).not.toContain('? "border-l-primary bg-selection-bg"')
   })
 
   it("uses Empty for loom toolbox and layer-panel empty states", async () => {
@@ -141,6 +188,22 @@ describe("registry component composition", () => {
     expect(dialog).toContain("showTrigger = true")
     expect(showcase).toContain("<CustomColormap")
     expect(showcase).toContain("showTrigger={false}")
+  })
+
+  it("uses ButtonRadioGroup for custom colormap interpolation and color space", async () => {
+    const editor = await readFile(
+      "registry/blocks/raster-style-panel/CustomColormapEditor.tsx",
+      "utf8",
+    )
+    const registryItem = await blockRegistryItem("raster-style-panel")
+
+    expect(editor.match(/<ButtonRadioGroup\b/g)).toHaveLength(2)
+    expect(editor).toContain('size="xs"')
+    expect(editor).toContain('variant="soft"')
+    expect(editor).toContain("ButtonRadioGroupItem")
+    expect(editor).not.toContain("<Segmented<ColormapInterpolation>")
+    expect(editor).not.toContain("<Segmented<ColormapColorSpace>")
+    expect(registryItem.registryDependencies).toContain("@mapseek/button-radio-group")
   })
 
   it("exposes Select as standard named composition pieces", async () => {

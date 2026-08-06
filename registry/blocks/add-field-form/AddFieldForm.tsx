@@ -40,7 +40,7 @@ export function AddFieldForm({
     <FieldGroup className={cn("gap-3", className)}>
       <Field className="gap-1.5">
         <div className="flex items-center justify-between">
-          <FieldLabel htmlFor={nameId} className="text-[11px] uppercase tracking-[0.06em]">
+          <FieldLabel htmlFor={nameId} className="font-medium">
             {labels.nameLabel}
           </FieldLabel>
           <span className={fieldOptional}>{labels.nameRequiredHint}</span>
@@ -56,7 +56,7 @@ export function AddFieldForm({
       </Field>
 
       <FieldSet className="gap-1.5">
-        <FieldLegend variant="label" className="mb-0 text-[11px] uppercase tracking-[0.06em]">
+        <FieldLegend variant="label" className="mb-0">
           {labels.typeLabel}
         </FieldLegend>
         <ToggleGroup
@@ -88,7 +88,7 @@ export function AddFieldForm({
       {selectedType?.hasOptions && (
         <Field className="gap-1.5">
           <div className="flex items-center justify-between">
-            <FieldLabel htmlFor={enumId} className="text-[11px] uppercase tracking-[0.06em]">
+            <FieldLabel htmlFor={enumId} className="font-medium">
               {labels.enumLabel}
             </FieldLabel>
             <span className={fieldOptional}>{labels.enumOptionalHint}</span>
@@ -105,7 +105,7 @@ export function AddFieldForm({
 
       <Field className="gap-1.5">
         <div className="flex items-center justify-between">
-          <FieldLabel htmlFor={defaultId} className="text-[11px] uppercase tracking-[0.06em]">
+          <FieldLabel htmlFor={defaultId} className="font-medium">
             {labels.defaultLabel}
           </FieldLabel>
           <span className={fieldOptional}>{labels.defaultOptionalHint}</span>
@@ -125,10 +125,7 @@ export function AddFieldForm({
           checked={value.nullable}
           onCheckedChange={(c) => set({ nullable: c === true })}
         />
-        <FieldLabel
-          htmlFor={nullableId}
-          className="cursor-pointer text-xs font-medium leading-none"
-        >
+        <FieldLabel htmlFor={nullableId} className="cursor-pointer font-medium leading-none">
           {labels.nullableLabel}
         </FieldLabel>
         <FieldDescription className="leading-none">{labels.nullableHint}</FieldDescription>
@@ -136,7 +133,7 @@ export function AddFieldForm({
 
       <Field className="gap-1.5">
         <div className="flex items-center justify-between">
-          <FieldLabel htmlFor={descId} className="text-[11px] uppercase tracking-[0.06em]">
+          <FieldLabel htmlFor={descId} className="font-medium">
             {labels.descLabel}
           </FieldLabel>
           <span className={fieldOptional}>{labels.descOptionalHint}</span>

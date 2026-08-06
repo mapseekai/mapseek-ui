@@ -58,8 +58,8 @@ export function JsonEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
                 "h-7 rounded-none border border-border px-3 font-mono text-[11px] leading-none",
                 index > 0 ? "-ml-px" : "",
                 theme === item
-                  ? "bg-selection-bg text-primary hover:text-primary"
-                  : "bg-background text-muted-foreground hover:text-foreground",
+                  ? "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
+                  : "bg-background text-muted-foreground hover:bg-accent/50 hover:text-foreground",
               ].join(" ")}
             >
               {item}

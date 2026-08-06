@@ -81,7 +81,7 @@ it("installs the Mapseek theme with its tokens and dependencies", async () => {
   expect(css).toContain("--color-primary")
   expect(css).toContain(".dark")
   expect(css).toContain("--radius: 0rem")
-  expect(css).toContain("--shadow-map-float")
+  expect(css).toContain("--shadow-map-float: none")
   expect(css).toContain("::-webkit-scrollbar-thumb")
   expect(css).toContain('@import "@fontsource-variable/geist"')
   expect(css).toContain('@import "@fontsource-variable/geist-mono"')

@@ -45,9 +45,9 @@ export const InputMultiInput: FC<InputMultiInputProps> = ({
             key={val}
             htmlFor={optionId}
             className={cn(
-              "z-0 -ml-px flex h-7 flex-1 cursor-pointer items-center justify-center border border-input px-3 text-xs font-medium whitespace-nowrap transition-colors first:ml-0 hover:bg-muted focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none",
+              "z-0 -ml-px flex h-7 flex-1 cursor-pointer items-center justify-center border border-input px-3 text-xs font-medium whitespace-nowrap transition-colors first:ml-0 hover:bg-accent/50 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none",
               isSelected
-                ? "z-10 border-primary bg-primary text-primary-foreground hover:bg-primary/90"
+                ? "z-10 border-primary bg-primary text-primary-foreground hover:bg-primary"
                 : "bg-background text-muted-foreground",
             )}
           >

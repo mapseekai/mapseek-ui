@@ -19,8 +19,12 @@ const labels = {
     preselected: "预选",
     defaultFormatAriaLabel: "默认格式",
     selectFormat: "选择格式...",
-    small: "小尺寸",
-    smallFormatAriaLabel: "小尺寸格式",
+    sizes: "尺寸变体",
+    sizeAriaLabel: (size: string) => `${size} 尺寸格式`,
+    widths: "宽度变体",
+    fixedWidth: "固定宽度（默认）",
+    contentWidth: "跟随选中内容",
+    widthAriaLabel: (width: string) => `${width} 宽度格式`,
     disabled: "禁用",
     disabledSelectAriaLabel: "禁用选择",
     select: "选择...",
@@ -36,8 +40,12 @@ const labels = {
     preselected: "Preselected",
     defaultFormatAriaLabel: "Default format",
     selectFormat: "Select format...",
-    small: "Small",
-    smallFormatAriaLabel: "Small format",
+    sizes: "Sizes",
+    sizeAriaLabel: (size: string) => `${size} format`,
+    widths: "Widths",
+    fixedWidth: "Fixed width (default)",
+    contentWidth: "Fit selected content",
+    widthAriaLabel: (width: string) => `${width} width format`,
     disabled: "Disabled",
     disabledSelectAriaLabel: "Disabled select",
     select: "Select...",
@@ -102,21 +110,57 @@ export function SelectOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
 
       <section className="space-y-3" data-demo="select-small">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
-          {demoLabels.small}
+          {demoLabels.sizes}
         </h4>
-        <div className="max-w-xs">
-          <Select defaultValue="geojson">
-            <SelectTrigger size="sm" aria-label={demoLabels.smallFormatAriaLabel}>
-              <SelectValue placeholder={demoLabels.selectFormat} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="geojson">GeoJSON</SelectItem>
-                <SelectItem value="topojson">TopoJSON</SelectItem>
-                <SelectItem value="shapefile">Shapefile</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+        <div className="grid max-w-xs gap-2">
+          {(["xs", "sm", "default", "lg"] as const).map((size) => (
+            <Select key={size} defaultValue="geojson">
+              <SelectTrigger
+                size={size}
+                width="content"
+                aria-label={demoLabels.sizeAriaLabel(size)}
+              >
+                <SelectValue placeholder={demoLabels.selectFormat} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="geojson">GeoJSON</SelectItem>
+                  <SelectItem value="topojson">TopoJSON</SelectItem>
+                  <SelectItem value="shapefile">Shapefile</SelectItem>
+                  <SelectItem value="cloud-optimized-geotiff">Cloud Optimized GeoTIFF</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-3" data-demo="select-widths">
+        <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
+          {demoLabels.widths}
+        </h4>
+        <div className="grid max-w-xs gap-3">
+          {(["fixed", "content"] as const).map((width) => (
+            <div key={width} className="grid gap-1.5">
+              <span className="text-xs text-muted-foreground">
+                {width === "fixed" ? demoLabels.fixedWidth : demoLabels.contentWidth}
+              </span>
+              <Select defaultValue="geojson">
+                <SelectTrigger
+                  width={width === "content" ? "content" : undefined}
+                  aria-label={demoLabels.widthAriaLabel(width)}
+                >
+                  <SelectValue placeholder={demoLabels.selectFormat} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="geojson">GeoJSON</SelectItem>
+                    <SelectItem value="cloud-optimized-geotiff">Cloud Optimized GeoTIFF</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+          ))}
         </div>
       </section>
 

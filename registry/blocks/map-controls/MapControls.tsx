@@ -32,7 +32,7 @@ function MapControlButton({
       </Button>
       <span
         role="tooltip"
-        className="pointer-events-none absolute top-1/2 right-[calc(100%+6px)] z-50 -translate-y-1/2 whitespace-nowrap bg-foreground px-2 py-1 text-xs text-background opacity-0 shadow-sm transition-opacity after:absolute after:top-1/2 after:right-[-4px] after:size-2 after:-translate-y-1/2 after:rotate-45 after:bg-foreground group-hover:opacity-100 group-focus-within:opacity-100"
+        className="pointer-events-none absolute top-1/2 right-[calc(100%+6px)] z-50 -translate-y-1/2 whitespace-nowrap bg-foreground px-2 py-1 text-xs text-background opacity-0 transition-opacity after:absolute after:top-1/2 after:right-[-4px] after:size-2 after:-translate-y-1/2 after:rotate-45 after:bg-foreground group-hover:opacity-100 group-focus-within:opacity-100"
       >
         {label}
       </span>
@@ -50,12 +50,7 @@ export function MapControls({
   className,
 }: MapControlsProps) {
   return (
-    <div
-      className={cn(
-        "flex flex-col border border-border bg-card shadow-(--shadow-map-float)",
-        className,
-      )}
-    >
+    <div className={cn("flex flex-col border border-border bg-card", className)}>
       <MapControlButton label={labels.zoomIn} onClick={onZoomIn}>
         <IconPlus size={14} stroke={1.5} />
       </MapControlButton>

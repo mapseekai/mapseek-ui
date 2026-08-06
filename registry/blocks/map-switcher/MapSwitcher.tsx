@@ -158,7 +158,7 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
         <div
           className={cn(
             "flex h-[52px] w-[76px] items-center justify-center overflow-hidden",
-            isActive && "shadow-[inset_0_0_0_2px_var(--primary)]",
+            isActive && "outline-2 -outline-offset-2 outline-primary",
           )}
         >
           {image ? (
@@ -190,8 +190,8 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
       className={cn(
         "flex w-full items-center justify-start gap-2 border-0 border-l-2 bg-transparent px-2 py-1.5 text-left text-sm cursor-pointer",
         isActive
-          ? "border-l-primary bg-selection-bg text-primary font-semibold"
-          : "border-l-transparent hover:bg-muted text-foreground",
+          ? "border-l-primary bg-selection-bg text-primary font-semibold hover:bg-selection-bg hover:text-primary"
+          : "border-l-transparent hover:bg-accent/50 text-foreground",
       )}
     >
       {/* Color dot */}
@@ -298,7 +298,7 @@ function MapSwitcherPanel({
       data-slot="map-switcher-panel"
       role="listbox"
       className={cn(
-        "absolute right-0 bottom-[calc(100%+4px)] z-10 overflow-hidden border border-border bg-card shadow-(--shadow-map-float)",
+        "absolute right-0 bottom-[calc(100%+4px)] z-10 overflow-hidden border border-border bg-card",
         mode === "image"
           ? "grid w-[174px] grid-cols-2 gap-1.5 p-2"
           : "flex min-w-[130px] flex-col items-stretch p-1",

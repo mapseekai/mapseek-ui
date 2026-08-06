@@ -62,7 +62,7 @@ function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "inline-flex h-8 items-center justify-center gap-1 border border-transparent px-2 text-xs font-medium outline-none hover:bg-muted focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/50",
+        "inline-flex h-8 items-center justify-center gap-1 border border-transparent px-2 text-xs font-medium outline-none hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/50",
         className,
       )}
       {...props}
@@ -112,7 +112,7 @@ function NavigationMenuPositioner({
       >
         <NavigationMenuPrimitive.Popup
           data-slot="navigation-menu-popup"
-          className="relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) border border-border bg-popover text-popover-foreground shadow-md transition-[opacity,transform,width,height] duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0"
+          className="relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) border border-border bg-popover text-popover-foreground transition-[opacity,transform,width,height] duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0"
         >
           <NavigationMenuPrimitive.Viewport className="relative size-full overflow-hidden" />
         </NavigationMenuPrimitive.Popup>
@@ -126,7 +126,7 @@ function NavigationMenuLink({ className, ...props }: NavigationMenuPrimitive.Lin
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "block px-3 py-2 text-xs outline-none hover:bg-muted focus:bg-muted",
+        "block px-3 py-2 text-xs outline-none hover:bg-accent/50 focus:bg-accent/50",
         className,
       )}
       {...props}

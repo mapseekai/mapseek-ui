@@ -66,7 +66,7 @@ export function SchemaForm({
                       <Field
                         key={o.value}
                         orientation="horizontal"
-                        className="h-7 items-center gap-2 px-2 hover:bg-muted"
+                        className="h-7 items-center gap-2 px-2 py-1.5 hover:bg-accent/50"
                       >
                         <Checkbox
                           id={optionId}

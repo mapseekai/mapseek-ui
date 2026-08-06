@@ -153,12 +153,7 @@ export function MapCoordinateStatus({
               </Button>
             }
           />
-          <PopoverContent
-            side="top"
-            align="start"
-            sideOffset={8}
-            className="w-auto gap-0 p-0 shadow-(--shadow-map-float)"
-          >
+          <PopoverContent side="top" align="start" sideOffset={8} className="w-auto gap-0 p-0">
             <CrsPicker
               value={crs}
               allowedEpsgs={allowedEpsgs}

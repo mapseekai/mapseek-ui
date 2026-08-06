@@ -75,7 +75,7 @@ export function ResourceGrid({
       <div
         data-testid="resource-icon-grid"
         className={cn(
-          "grid w-full min-w-0 grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-px border border-border bg-border",
+          "grid w-full min-w-0 grid-cols-[repeat(auto-fit,minmax(96px,1fr))] border-t border-l border-border",
           className,
         )}
       >
@@ -89,7 +89,7 @@ export function ResourceGrid({
               data-testid="resource-icon-card"
               data-selected={selected}
               className={cn(
-                "group relative isolate aspect-square min-w-0 bg-background ring-inset transition-colors before:pointer-events-none before:absolute before:inset-0 before:-z-10 hover:before:bg-primary/5 hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
+                "group relative isolate aspect-square min-w-0 border-r border-b border-border bg-background ring-inset transition-colors before:pointer-events-none before:absolute before:inset-0 before:-z-10 hover:before:bg-primary/5 hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
                 selected && "before:bg-primary/5 ring-1 ring-primary",
               )}
             >

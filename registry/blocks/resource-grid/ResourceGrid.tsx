@@ -117,11 +117,11 @@ export function ResourceGrid({
                 onContextMenu={(e) => onContextMenu(e, "icon", it.id)}
               >
                 {renderIconPreview?.(it) ?? <PlaceholderGlyph size={28} seed={it.seed} />}
-                <div className="w-full min-w-0 truncate text-center text-[11px] font-medium text-foreground">
+                <div className="w-full min-w-0 truncate text-center text-body-sm-medium text-foreground">
                   {it.name}
                 </div>
                 {it.categoryLabel && (
-                  <div className="max-w-full truncate font-mono text-[10px] tracking-[0.04em] text-muted-foreground uppercase">
+                  <div className="max-w-full truncate font-mono text-label-md text-muted-foreground uppercase">
                     {it.categoryLabel}
                   </div>
                 )}
@@ -153,7 +153,7 @@ export function ResourceGrid({
                 </div>
               )
             }
-            title={<span className="font-mono text-[13px] font-medium">{s.name}</span>}
+            title={<span className="font-mono text-body-lg-medium">{s.name}</span>}
             status={s.status}
             meta={s.metaParts}
           />
@@ -170,11 +170,11 @@ export function ResourceGrid({
           onOpen={() => onOpen("font", f.id)}
           onContextMenu={(e) => onContextMenu(e, "font", f.id)}
           thumbClassName={cn(
-            "min-h-[120px] text-[42px] leading-none font-semibold tracking-[-0.02em] text-foreground",
+            "min-h-[120px] text-data-display text-foreground",
             fontClass(f.family),
           )}
           thumb={<span>{resolvedLabels.fontSpecimen}</span>}
-          title={<span className="font-semibold">{f.name}</span>}
+          title={<span className="text-body-lg-medium">{f.name}</span>}
           status={f.status}
           meta={f.metaParts}
         />
@@ -219,11 +219,11 @@ function ResourceCard({
         {thumb}
       </div>
       <div className="flex flex-col gap-1 px-3 py-2.5">
-        <div className="flex items-center gap-2 text-[13px]">
+        <div className="flex items-center gap-2 text-body-lg">
           {title}
           <StatusBadge status={status} />
         </div>
-        <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
+        <div className="flex items-center gap-1.5 font-mono text-body-sm text-muted-foreground">
           {meta.map((part, i) => (
             <span key={part} className="flex items-center gap-1.5">
               {i > 0 && <span className="opacity-50">·</span>}

@@ -66,7 +66,7 @@ function PlaceResult({
       <IconMapPin data-icon="inline-start" />
       <span className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="truncate font-medium">{place.name}</span>
-        <span className="truncate text-[11px] text-muted-foreground">
+        <span className="truncate text-body-sm text-muted-foreground">
           {place.description ?? `${place.longitude}, ${place.latitude}`}
         </span>
       </span>
@@ -304,7 +304,7 @@ function MapSearch({
           </InputGroup>
         </Field>
 
-        <div aria-live="polite" className="min-h-4 text-xs text-muted-foreground">
+        <div aria-live="polite" className="min-h-4 text-body-md text-muted-foreground">
           {searchState === "loading" && labels.searchLoading}
           {searchState === "success" && results.length === 0 && labels.noResults}
           {searchState === "error" && (

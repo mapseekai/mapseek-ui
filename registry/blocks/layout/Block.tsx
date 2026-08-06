@@ -55,7 +55,7 @@ export const Block: React.FC<BlockProps> = (props) => {
 
   const labelNode = props.labelSlot ?? (
     <Label
-      className={cn("text-xs leading-tight font-medium text-muted-foreground", {
+      className={cn("text-body-md-medium leading-tight text-muted-foreground", {
         "text-destructive": props.error,
       })}
     >

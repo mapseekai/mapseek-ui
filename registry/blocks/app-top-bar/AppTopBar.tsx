@@ -52,7 +52,7 @@ export function AppTopBar({
         {brand}
         {brand && <span className="mx-0.5 h-3.5 w-px bg-border" />}
 
-        <span className="truncate text-[13px] leading-none font-semibold text-foreground">
+        <span className="truncate text-body-lg-medium leading-none text-foreground">
           {projectName}
         </span>
 
@@ -71,7 +71,7 @@ export function AppTopBar({
             disabled={saveDisabled || savePending}
             aria-busy={savePending || undefined}
             onClick={() => void onSave()}
-            className="m-0 gap-1.5 rounded-none border-primary bg-primary text-[11px] font-medium text-primary-foreground hover:bg-primary/90"
+            className="m-0 gap-1.5 rounded-none border-primary bg-primary text-body-sm-medium text-primary-foreground hover:bg-primary/90"
           >
             <IconDeviceFloppy data-icon="inline-start" /> {labels.save}
           </Button>

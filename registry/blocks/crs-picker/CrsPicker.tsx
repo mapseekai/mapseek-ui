@@ -55,12 +55,12 @@ export function CrsPicker({
   return (
     <div
       data-slot="crs-picker"
-      className={cn("w-[280px] border border-border bg-background text-sm", className)}
+      className={cn("w-[280px] border border-border bg-background text-body-lg", className)}
     >
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-border px-3 py-2">
         <IconWorld size={13} strokeWidth={1.75} className="shrink-0 text-muted-foreground" />
-        <span className="text-xs font-semibold text-foreground">{labels.title}</span>
+        <span className="text-body-md-strong text-foreground">{labels.title}</span>
       </div>
 
       {/* Search */}
@@ -80,14 +80,14 @@ export function CrsPicker({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={labels.searchPlaceholder}
-          className="h-8 w-full border-0 bg-transparent px-0 text-xs text-foreground placeholder:text-muted-foreground shadow-none outline-none focus-visible:ring-0"
+          className="h-8 w-full border-0 bg-transparent px-0 text-body-md text-foreground placeholder:text-muted-foreground shadow-none outline-none focus-visible:ring-0"
         />
       </div>
 
       {/* Items */}
       <div role="listbox" aria-label={labels.listLabel} className="p-1.5">
         {visibleItems.length === 0 ? (
-          <div className="px-3 py-5 text-center text-xs text-muted-foreground">
+          <div className="px-3 py-5 text-center text-body-md text-muted-foreground">
             {labels.noResults}
           </div>
         ) : hasQuery ? (
@@ -150,7 +150,7 @@ function GroupLabel({
   return (
     <div
       className={cn(
-        "mb-1 flex items-center gap-1.5 bg-muted px-2 py-1 text-[10px] font-semibold uppercase tracking-[0.07em] text-muted-foreground",
+        "mb-1 flex items-center gap-1.5 bg-muted px-2 py-1 text-label-md uppercase text-muted-foreground",
         className,
       )}
     >
@@ -195,19 +195,19 @@ function CrsRow({
       <div className="min-w-0">
         <div
           className={cn(
-            "font-mono text-[12px] font-semibold leading-snug",
+            "font-mono text-body-md-strong leading-snug",
             selected ? "text-primary" : "text-foreground",
           )}
         >
           {item.epsg}
         </div>
-        <div className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+        <div className="mt-0.5 text-body-sm leading-snug text-muted-foreground">
           {item.description}
         </div>
       </div>
       <div
         className={cn(
-          "shrink-0 pl-2 font-mono text-[12px] font-medium leading-snug",
+          "shrink-0 pl-2 font-mono text-body-md-medium leading-snug",
           selected ? "text-primary" : "text-muted-foreground",
         )}
       >

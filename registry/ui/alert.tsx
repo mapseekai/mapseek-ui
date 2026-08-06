@@ -4,7 +4,7 @@ import type * as React from "react"
 import { cn } from "@/registry/lib/utils"
 
 const alertVariants = cva(
-  "relative grid w-full grid-cols-[auto_1fr] items-start gap-x-2 gap-y-0.5 border px-3 py-2 text-xs [&>svg]:mt-0.5 [&>svg]:size-4 [&>svg]:shrink-0",
+  "relative grid w-full grid-cols-[auto_1fr] items-start gap-x-2 gap-y-0.5 border px-3 py-2 text-body-md [&>svg]:mt-0.5 [&>svg]:size-4 [&>svg]:shrink-0",
   {
     variants: {
       variant: {
@@ -43,7 +43,7 @@ function AlertDescription({ className, ...props }: React.ComponentProps<"div">) 
   return (
     <div
       data-slot="alert-description"
-      className={cn("text-[11px] leading-normal", className)}
+      className={cn("text-body-sm leading-normal", className)}
       {...props}
     />
   )

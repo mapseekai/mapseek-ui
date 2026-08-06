@@ -77,7 +77,7 @@ function ConfirmProvider({ children }: { children: React.ReactNode }) {
             }
           >
             {options.description && (
-              <DialogBody className={cn("text-xs text-muted-foreground")}>
+              <DialogBody className={cn("text-body-md text-muted-foreground")}>
                 {options.description}
               </DialogBody>
             )}

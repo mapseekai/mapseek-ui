@@ -138,7 +138,7 @@ export function ColorInput({
       spellCheck="false"
       autoComplete="off"
       className={cn(
-        "h-7 w-full bg-transparent px-2 text-xs focus-visible:outline-none",
+        "h-7 w-full bg-transparent px-2 text-body-md focus-visible:outline-none",
         "border border-input focus-visible:ring-1 focus-visible:ring-ring",
       )}
       style={style}

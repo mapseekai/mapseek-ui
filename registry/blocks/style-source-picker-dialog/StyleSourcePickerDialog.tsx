@@ -182,7 +182,7 @@ export function StyleSourcePickerDialog({
         </div>
 
         {confirmErrorMessage ? (
-          <p className="border-b bg-destructive/5 px-5 py-2 text-xs text-destructive">
+          <p className="border-b bg-destructive/5 px-5 py-2 text-body-md text-destructive">
             {confirmErrorMessage}
           </p>
         ) : null}
@@ -190,7 +190,7 @@ export function StyleSourcePickerDialog({
         <div className="min-h-0 flex-1 overflow-auto bg-muted/20 p-5">
           {loadErrorMessage && !loading ? (
             <div className="flex flex-col items-start gap-3 border border-destructive/25 bg-background p-4">
-              <p className="text-sm text-destructive">{loadErrorMessage}</p>
+              <p className="text-body-lg text-destructive">{loadErrorMessage}</p>
               {onRetryLoad ? (
                 <Button type="button" variant="outline" size="sm" onClick={onRetryLoad}>
                   {labels.retry}
@@ -219,7 +219,7 @@ export function StyleSourcePickerDialog({
         </div>
 
         <div className="flex items-center justify-between gap-3 border-t bg-background px-5 py-3">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-body-md text-muted-foreground">
             {labels.selectedCount(selectedOptions.length)}
           </p>
 
@@ -266,11 +266,11 @@ function SourceOptionCardGrid({
   onToggle,
 }: SourceOptionRenderProps) {
   if (loading) {
-    return <p className="text-sm text-muted-foreground">{labels.loading}</p>
+    return <p className="text-body-lg text-muted-foreground">{labels.loading}</p>
   }
 
   if (options.length === 0) {
-    return <p className="text-sm text-muted-foreground">{labels.empty}</p>
+    return <p className="text-body-lg text-muted-foreground">{labels.empty}</p>
   }
 
   return (
@@ -315,9 +315,9 @@ function SourceOptionCardGrid({
                 )}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm leading-tight font-semibold">{item.sourceName}</p>
+                <p className="truncate text-headline-sm leading-tight">{item.sourceName}</p>
                 <p
-                  className="mt-1 truncate font-mono text-[11px] leading-tight text-muted-foreground"
+                  className="mt-1 truncate font-mono text-body-sm leading-tight text-muted-foreground"
                   title={item.subtitle || item.sourceUID}
                 >
                   {item.subtitle || item.sourceUID}

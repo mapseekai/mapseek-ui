@@ -46,8 +46,7 @@ function normalizeSelector(selector: RasterSelector): Extract<RasterSelector, { 
   return { kind: "bands", bands: [band], assignments: {} }
 }
 
-const labelCls =
-  "self-center font-sans text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground"
+const labelCls = "self-center font-sans text-label-sm uppercase text-muted-foreground"
 const colorPattern = /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i
 
 type DraftReporter = (key: string, valid: boolean | null) => void
@@ -104,8 +103,8 @@ function StatGrid({ stats }: { stats: RasterStat[] }) {
     <div className="mb-2 grid grid-cols-2 gap-1.5 border border-border bg-muted p-2">
       {stats.map((s) => (
         <div key={s.label}>
-          <div className="font-mono text-[10px] text-muted-foreground">{s.label}</div>
-          <div className="font-mono text-[11px]">
+          <div className="font-mono text-body-sm text-muted-foreground">{s.label}</div>
+          <div className="font-mono text-body-sm">
             {s.value}
             {s.unit}
           </div>
@@ -262,7 +261,7 @@ export function RasterStylePanel({
           <div className="flex flex-col gap-1.5">
             {CHANNELS.map((key) => (
               <div key={key} className="grid grid-cols-[42px_minmax(0,1fr)] items-center gap-1">
-                <span className="font-mono text-[10px]">{CHANNEL_LABEL[key]}</span>
+                <span className="font-mono text-body-sm">{CHANNEL_LABEL[key]}</span>
                 {selectBand(`${CHANNEL_LABEL[key]} ${labels.band}`, assignments[key], (band) => {
                   const next = { ...assignments, [key]: band }
                   const rgbBands = CHANNELS.map((channel) => next[channel]).filter(

@@ -59,7 +59,7 @@ export function SchemaTable({
             className="pointer-events-none absolute left-2 text-muted-foreground"
           />
           <Input
-            className="h-7 w-[200px] rounded-none pl-7 text-xs"
+            className="h-7 w-[200px] rounded-none pl-7 text-body-md"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={searchPlaceholder}

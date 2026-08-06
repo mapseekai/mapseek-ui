@@ -39,7 +39,7 @@ export function CustomColormap({
             className="h-6 min-w-40 flex-1 sm:max-w-64"
             style={{ background: buildColormapGradient(value) }}
           />
-          <span className="font-mono text-[11px] text-muted-foreground">
+          <span className="font-mono text-body-sm text-muted-foreground">
             {labels.summary(value.stops.length, value.interpolation, value.colorSpace)}
           </span>
           <Button size="sm" onClick={() => onOpenChange(true)}>

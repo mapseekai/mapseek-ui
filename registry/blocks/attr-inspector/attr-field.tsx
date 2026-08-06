@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils"
 import { inferAttrFieldKind } from "./infer-hint"
 import type { AttrFieldKind, AttrFieldMeta } from "./types"
 
-const inputBase = "w-full rounded-none border-border bg-background px-2 text-xs"
+const inputBase = "w-full rounded-none border-border bg-background px-2 text-body-md"
 
 type Resolved = {
   kind: AttrFieldKind
@@ -125,10 +125,8 @@ function FieldHeader({
 }) {
   return (
     <div className="mb-[3px] flex items-center gap-1.5">
-      <span className="font-mono text-[10px] uppercase tracking-[0.04em] text-muted-foreground">
-        {name}
-      </span>
-      <span className="border border-border bg-muted px-1 py-px font-mono text-[10px] uppercase tracking-[0.04em] text-muted-foreground">
+      <span className="font-mono text-label-md uppercase text-muted-foreground">{name}</span>
+      <span className="border border-border bg-muted px-1 py-px font-mono text-label-md uppercase text-muted-foreground">
         {badge}
       </span>
       {readOnly && <span className="flex-1" />}
@@ -169,7 +167,7 @@ export function ReadField({
       />
       <div
         className={cn(
-          "min-h-7 w-full border border-border bg-muted/40 px-2 py-1 text-xs break-words",
+          "min-h-7 w-full border border-border bg-muted/40 px-2 py-1 text-body-md break-words",
           mono && "font-mono tabular-nums",
         )}
       >
@@ -241,7 +239,7 @@ export function EditField({
             onChange={(e) => onChange(name, e.target.value)}
           />
           {unit && (
-            <span className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 font-mono text-[10px] text-muted-foreground group-focus-within:hidden">
+            <span className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 font-mono text-body-sm text-muted-foreground group-focus-within:hidden">
               {unit}
             </span>
           )}

@@ -66,7 +66,7 @@ export function VirtualTable<TRow>({
     return (
       <div
         className={cn(
-          "flex h-full flex-col items-center justify-center gap-2 text-xs text-muted-foreground",
+          "flex h-full flex-col items-center justify-center gap-2 text-body-md text-muted-foreground",
           className,
         )}
       >
@@ -89,7 +89,7 @@ export function VirtualTable<TRow>({
     return (
       <div
         className={cn(
-          "flex h-full items-center justify-center text-xs text-muted-foreground",
+          "flex h-full items-center justify-center text-body-md text-muted-foreground",
           className,
         )}
       >
@@ -109,7 +109,7 @@ export function VirtualTable<TRow>({
         className,
       )}
     >
-      <div style={{ minWidth: tableMinWidth }} className="relative w-full font-mono text-[12px]">
+      <div style={{ minWidth: tableMinWidth }} className="relative w-full font-mono text-body-md">
         {/* Sticky header */}
         <div className="sticky top-0 z-[1] flex border-b border-border bg-muted">
           <HeaderCell width={INDEX_COL_WIDTH} className="justify-end text-muted-foreground">
@@ -236,7 +236,7 @@ function HeaderCell({
     <div
       style={{ width, minWidth: width }}
       className={cn(
-        "flex h-9 items-center border-r border-border/60 px-3 text-[11px] font-medium text-muted-foreground last:border-r-0",
+        "flex h-9 items-center border-r border-border/60 px-3 text-body-sm-medium text-muted-foreground last:border-r-0",
         className,
       )}
     >

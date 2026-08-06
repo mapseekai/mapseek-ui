@@ -30,17 +30,17 @@ export function ServiceEndpointRow({
         <div className="flex min-w-0 items-center gap-2">
           {icon}
           <div className="flex min-w-0 flex-col">
-            <span className="text-sm font-medium">{title}</span>
-            <span className="mono text-[11px] uppercase text-muted-foreground">{subtitle}</span>
+            <span className="text-headline-sm">{title}</span>
+            <span className="mono text-body-sm uppercase text-muted-foreground">{subtitle}</span>
           </div>
         </div>
-        <span className="mono shrink-0 border border-info/25 bg-info/10 px-1.5 py-0.5 text-[11px] text-info">
+        <span className="mono shrink-0 border border-info/25 bg-info/10 px-1.5 py-0.5 text-body-sm text-info">
           {method}
         </span>
       </div>
       <div className="flex min-w-0 items-center gap-1.5">
         <InputGroup className="h-auto min-h-8 w-auto flex-1 overflow-hidden bg-muted/40">
-          <InputGroupText className="mono min-w-0 max-w-full flex-1 gap-0 overflow-x-auto whitespace-nowrap px-2 py-1.5 text-[11px]">
+          <InputGroupText className="mono min-w-0 max-w-full flex-1 gap-0 overflow-x-auto whitespace-nowrap px-2 py-1.5 text-body-sm">
             {urlSegments.map((segment) =>
               /^\{.+\}$/.test(segment.part) ? (
                 <span key={segment.key} className="font-medium text-warning">

@@ -119,7 +119,7 @@ function SplitToolPicker({
           sideOffset={4}
           className={cn("w-47.5 gap-0 p-0", contentClassName)}
         >
-          <div className="px-3 pt-2 pb-1 text-[11px] leading-none font-medium tracking-[0.06em] text-muted-foreground uppercase">
+          <div className="px-3 pt-2 pb-1 text-label-sm leading-none text-muted-foreground uppercase">
             {resolvedLabel}
           </div>
           <div role="listbox" aria-label={resolvedLabel} className="flex flex-col gap-1 p-1.5">
@@ -151,15 +151,15 @@ function SplitToolPicker({
                     className={selected ? "text-primary" : "text-muted-foreground"}
                   />
                   <span className="min-w-0 flex-1">
-                    <span className="block text-xs leading-none font-medium">{item.label}</span>
+                    <span className="block text-body-md-medium leading-none">{item.label}</span>
                     {item.description ? (
-                      <span className="mt-1 block truncate text-[11px] leading-none text-muted-foreground">
+                      <span className="mt-1 block truncate text-body-sm leading-none text-muted-foreground">
                         {item.description}
                       </span>
                     ) : null}
                   </span>
                   {item.hint ? (
-                    <span className="font-mono text-[10px] font-medium text-muted-foreground">
+                    <span className="font-mono text-body-sm-medium text-muted-foreground">
                       {item.hint}
                     </span>
                   ) : null}

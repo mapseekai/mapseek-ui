@@ -93,7 +93,7 @@ function SheetTitle({ className, ...props }: React.ComponentProps<typeof DialogP
   return (
     <DialogPrimitive.Title
       data-slot="sheet-title"
-      className={cn("text-sm font-semibold tracking-[-0.01em]", className)}
+      className={cn("text-headline-md", className)}
       {...props}
     />
   )
@@ -106,7 +106,7 @@ function SheetDescription({
   return (
     <DialogPrimitive.Description
       data-slot="sheet-description"
-      className={cn("text-xs text-muted-foreground", className)}
+      className={cn("text-body-md text-muted-foreground", className)}
       {...props}
     />
   )

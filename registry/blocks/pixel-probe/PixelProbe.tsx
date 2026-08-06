@@ -16,29 +16,27 @@ function FieldRow({ field }: { field: PixelField }) {
   return (
     <div className="flex flex-col gap-[3px]">
       <div className="flex items-center gap-1.5">
-        <span className="font-mono text-[10px] uppercase tracking-[0.04em] text-muted-foreground">
-          {field.key}
-        </span>
-        <span className="border border-border bg-muted px-1 py-px font-mono text-[10px] uppercase tracking-[0.04em] text-muted-foreground">
+        <span className="font-mono text-label-md uppercase text-muted-foreground">{field.key}</span>
+        <span className="border border-border bg-muted px-1 py-px font-mono text-label-md uppercase text-muted-foreground">
           {field.type}
         </span>
         {field.locked && <IconLock size={11} className="ml-auto text-muted-foreground" />}
       </div>
       <div
         className={cn(
-          "flex h-7 items-center border border-border bg-muted px-2 text-xs text-foreground select-text",
+          "flex h-7 items-center border border-border bg-muted px-2 text-body-md text-foreground select-text",
           !isBadge && "font-mono tabular-nums",
         )}
       >
         {isBadge ? (
-          <span className="inline-flex h-5 items-center border border-border bg-card px-1.5 font-mono text-[10px] tracking-[0.04em] text-muted-foreground">
+          <span className="inline-flex h-5 items-center border border-border bg-card px-1.5 font-mono text-label-md text-muted-foreground">
             {field.value}
           </span>
         ) : (
           field.value
         )}
         {field.unit && (
-          <span className="ml-auto font-mono text-[10px] text-muted-foreground">{field.unit}</span>
+          <span className="ml-auto font-mono text-body-sm text-muted-foreground">{field.unit}</span>
         )}
       </div>
     </div>
@@ -69,11 +67,11 @@ export function PixelProbe({
       {/* Header */}
       <div className="flex h-9 shrink-0 items-center gap-2 border-b border-border px-3">
         <IconColorPicker size={13} className="text-muted-foreground" />
-        <span className="font-sans text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">
+        <span className="font-sans text-label-sm uppercase text-muted-foreground">
           {labels.title}
         </span>
         {count != null && (
-          <span className="inline-flex h-5 items-center border border-primary/25 bg-primary/10 px-1.5 font-mono text-[10px] tracking-[0.04em] text-primary">
+          <span className="inline-flex h-5 items-center border border-primary/25 bg-primary/10 px-1.5 font-mono text-label-md text-primary">
             {count}
           </span>
         )}
@@ -116,7 +114,7 @@ export function PixelProbe({
             <TooltipContent>{labels.prev}</TooltipContent>
           </Tooltip>
           {index != null && (
-            <span className="font-mono text-[10px] tracking-[0.04em] text-muted-foreground">
+            <span className="font-mono text-label-md text-muted-foreground">
               {labels.pointPrefix} {index}
             </span>
           )}

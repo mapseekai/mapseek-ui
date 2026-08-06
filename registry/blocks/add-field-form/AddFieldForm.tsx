@@ -13,8 +13,8 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { cn } from "@/lib/utils"
 import type { AddFieldFormProps } from "./types"
 
-const fieldOptional = "text-[10px] text-muted-foreground"
-const formInput = "h-7 w-full rounded-none border-border bg-background px-2 text-xs"
+const fieldOptional = "text-body-sm text-muted-foreground"
+const formInput = "h-7 w-full rounded-none border-border bg-background px-2 text-body-md"
 
 /**
  * Controlled "add attribute field" form body — no dialog chrome or footer.
@@ -75,7 +75,7 @@ export function AddFieldForm({
               <ToggleGroupItem
                 key={t.id}
                 value={t.id}
-                className="h-14 w-full flex-col gap-1 px-1 py-1.5 text-[11px] leading-none"
+                className="h-14 w-full flex-col gap-1 px-1 py-1.5 text-body-sm leading-none"
               >
                 <TypeIcon />
                 <span className="font-medium">{t.label}</span>

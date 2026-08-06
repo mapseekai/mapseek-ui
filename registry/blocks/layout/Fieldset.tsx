@@ -24,7 +24,7 @@ export const Fieldset: React.FC<FieldsetProps> = (props) => {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
           {props.labelSlot ?? (
-            <legend className="block text-xs leading-tight font-medium text-muted-foreground">
+            <legend className="block text-body-md-medium leading-tight text-muted-foreground">
               {props.label}
             </legend>
           )}

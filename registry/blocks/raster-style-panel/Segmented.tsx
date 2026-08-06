@@ -60,7 +60,7 @@ export function Segmented<T extends string>({
             onClick={() => onChange(opt.value)}
             data-active={active}
             className={cn(
-              "inline-flex h-6 cursor-pointer items-center justify-center gap-1 bg-background px-2 font-mono text-[11px] text-foreground",
+              "inline-flex h-6 cursor-pointer items-center justify-center gap-1 bg-background px-2 font-mono text-body-sm text-foreground",
               grid ? "min-w-0 border-0" : "-ml-px border border-border first:ml-0",
               !grid && grow && "flex-1",
               active &&

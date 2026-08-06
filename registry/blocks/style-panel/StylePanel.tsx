@@ -54,7 +54,7 @@ function StylePanelRoot({
 // ---------------------------------------------------------------------------
 
 const FieldLabel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span className="self-center text-[11px] leading-[14px] font-medium tracking-[0.06em] text-muted-foreground uppercase">
+  <span className="self-center text-label-sm leading-[14px] text-muted-foreground uppercase">
     {children}
   </span>
 )
@@ -114,7 +114,7 @@ function StylePanelOpacity({ min = 0, max = 100 }: { min?: number; max?: number 
             })
           }
         />
-        <span className="min-w-8 text-right font-mono text-[11px] text-foreground tabular-nums">
+        <span className="min-w-8 text-right font-mono text-body-sm text-foreground tabular-nums">
           {v}%
         </span>
       </div>
@@ -153,7 +153,7 @@ function StylePanelStroke({
             })
           }
         />
-        <span className="min-w-8 text-right font-mono text-[11px] text-foreground tabular-nums">
+        <span className="min-w-8 text-right font-mono text-body-sm text-foreground tabular-nums">
           {v.toFixed(1)} px
         </span>
       </div>
@@ -184,7 +184,7 @@ function StylePanelMarker({ shapes }: { shapes: MarkerShape[] }) {
                 })
               }
               className={cn(
-                "inline-flex size-6 items-center justify-center border font-mono text-[10px]",
+                "inline-flex size-6 items-center justify-center border font-mono text-body-sm",
                 isCur
                   ? "border-primary bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
                   : "border-border bg-background text-muted-foreground hover:bg-accent/50",

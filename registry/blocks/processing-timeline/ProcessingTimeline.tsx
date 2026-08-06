@@ -44,7 +44,7 @@ export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimel
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm font-medium">{step.label}</span>
+                <span className="text-headline-sm">{step.label}</span>
                 {step.status && (
                   <Badge variant="outline" className="border-primary/25 bg-primary/10 text-primary">
                     <IconCheck stroke={2} />
@@ -58,7 +58,7 @@ export function ProcessingTimeline({ steps, labels, onCopyLog }: ProcessingTimel
                   </Badge>
                 )}
                 {(step.time || step.duration) && (
-                  <span className="mono flex w-full items-center gap-3 text-xs text-muted-foreground sm:ml-auto sm:w-auto">
+                  <span className="mono flex w-full items-center gap-3 text-body-md text-muted-foreground sm:ml-auto sm:w-auto">
                     {step.time && <span>{step.time}</span>}
                     {step.duration && <span>{step.duration}</span>}
                   </span>
@@ -105,7 +105,7 @@ function ProgressDetail({ step }: { step: TimelineStep }) {
 
   return (
     <div className="mt-2 flex flex-col gap-1.5">
-      {step.message && <div className="text-xs text-muted-foreground">{step.message}</div>}
+      {step.message && <div className="text-body-md text-muted-foreground">{step.message}</div>}
       {step.progressKind === "percent" && percent != null && (
         <div className="flex items-center gap-2">
           <div
@@ -120,7 +120,7 @@ function ProgressDetail({ step }: { step: TimelineStep }) {
               style={{ width: `${percent}%` }}
             />
           </div>
-          <span className="mono w-16 shrink-0 text-right text-xs text-muted-foreground">
+          <span className="mono w-16 shrink-0 text-right text-body-md text-muted-foreground">
             {percent.toFixed(2)}%
           </span>
         </div>
@@ -145,15 +145,17 @@ function EventCard({
       <div className="flex flex-col gap-3 border border-destructive/30 bg-destructive/5 p-3 sm:flex-row">
         {event.icon && <span className="mt-0.5 shrink-0 text-destructive">{event.icon}</span>}
         <div className="min-w-0 flex-1">
-          {event.title && <div className="text-xs font-medium text-destructive">{event.title}</div>}
+          {event.title && <div className="text-body-md-medium text-destructive">{event.title}</div>}
           {event.errorText && (
-            <div className="mono mt-1 text-[11px] text-destructive">{event.errorText}</div>
+            <div className="mono mt-1 text-body-sm text-destructive">{event.errorText}</div>
           )}
-          {event.hint && <div className="mt-1 text-[11px] text-muted-foreground">{event.hint}</div>}
+          {event.hint && (
+            <div className="mt-1 text-body-sm text-muted-foreground">{event.hint}</div>
+          )}
         </div>
         <div className="flex shrink-0 items-center justify-between gap-1 sm:flex-col sm:items-end">
           {event.time && (
-            <span className="mono text-[11px] text-muted-foreground">{event.time}</span>
+            <span className="mono text-body-sm text-muted-foreground">{event.time}</span>
           )}
           {log != null && (
             <div className="flex items-center gap-1">
@@ -177,11 +179,13 @@ function EventCard({
     <div className="flex gap-3 border border-border p-3">
       {event.icon && <span className="mt-0.5 shrink-0 text-muted-foreground">{event.icon}</span>}
       <div className="min-w-0 flex-1">
-        {event.title && <div className="text-xs">{event.title}</div>}
-        {event.text && <div className="mt-0.5 text-xs text-muted-foreground">{event.text}</div>}
+        {event.title && <div className="text-body-md">{event.title}</div>}
+        {event.text && (
+          <div className="mt-0.5 text-body-md text-muted-foreground">{event.text}</div>
+        )}
       </div>
       {event.time && (
-        <span className="mono shrink-0 text-[11px] text-muted-foreground">{event.time}</span>
+        <span className="mono shrink-0 text-body-sm text-muted-foreground">{event.time}</span>
       )}
     </div>
   )

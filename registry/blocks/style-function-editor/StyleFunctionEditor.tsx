@@ -12,7 +12,7 @@ export function StyleFunctionPanel({ title, children, className }: StyleFunction
       data-slot="style-function-panel"
       className={cn("flex flex-col gap-4 border border-border bg-card p-4", className)}
     >
-      <h3 className="m-0 text-xs leading-tight font-semibold text-muted-foreground">{title}</h3>
+      <h3 className="m-0 text-body-md-strong leading-tight text-muted-foreground">{title}</h3>
       <div className="flex flex-col gap-4">{children}</div>
     </section>
   )
@@ -27,15 +27,15 @@ export function StyleFunctionStopsTable({
   return (
     <div className={cn("mt-6", className)}>
       <table data-slot="style-function-stops-table" className="w-full table-fixed border-collapse">
-        <caption className="mb-2 text-left text-xs font-bold tracking-wider text-muted-foreground uppercase">
+        <caption className="mb-2 text-left text-body-md-strong tracking-[0.04em] text-muted-foreground uppercase">
           {caption}
         </caption>
         <thead>
-          <tr className="border-b border-border text-[11px] text-muted-foreground uppercase">
+          <tr className="border-b border-border text-body-sm text-muted-foreground uppercase">
             {columns.map((column) => (
               <th
                 key={column.id}
-                className={cn("pb-1 text-left font-bold", column.className)}
+                className={cn("pb-1 text-left font-semibold", column.className)}
                 colSpan={column.colSpan}
               >
                 {column.label}

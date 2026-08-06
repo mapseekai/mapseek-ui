@@ -64,7 +64,7 @@ export const InputSelect: React.FC<InputSelectProps> = ({
           {(options as [string, React.ReactNode][]).map(([val, label]) => {
             const itemValue = val === "" ? EMPTY_VALUE : val
             return (
-              <SelectItem key={itemValue} value={itemValue} className="text-xs">
+              <SelectItem key={itemValue} value={itemValue} className="text-body-md">
                 {label}
               </SelectItem>
             )

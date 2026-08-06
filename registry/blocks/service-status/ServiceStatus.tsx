@@ -29,7 +29,7 @@ export function ServiceStatus({
   return (
     <div
       className={cn(
-        "inline-flex items-center font-sans text-xs transition-colors",
+        "inline-flex items-center font-sans text-body-md transition-colors",
         variant === "framed" && [
           "h-6 gap-1.5 border px-2",
           running ? "border-primary bg-primary/5" : "border-border bg-background",

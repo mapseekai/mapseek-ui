@@ -62,7 +62,7 @@ export function ColormapPicker({
             />
             <span
               className={cn(
-                "font-mono text-[10px] lowercase tracking-[0.04em] text-muted-foreground",
+                "font-mono text-label-md lowercase text-muted-foreground",
                 active && "text-primary",
               )}
             >

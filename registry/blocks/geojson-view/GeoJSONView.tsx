@@ -101,7 +101,7 @@ function ViewShell({
       )}
     >
       <div className="flex h-8 shrink-0 items-center border-b border-border px-3">
-        <span className="font-mono text-[11px] leading-none font-semibold tracking-[0.06em] text-muted-foreground uppercase">
+        <span className="font-mono text-label-sm leading-none text-muted-foreground uppercase">
           {title}
         </span>
       </div>
@@ -126,7 +126,7 @@ function PreView({
   return (
     <pre
       className={cn(
-        "m-0 min-h-0 flex-1 overflow-auto bg-muted/50 px-3.5 py-3 font-mono text-[11px] leading-[1.6] font-medium text-foreground [tab-size:2]",
+        "m-0 min-h-0 flex-1 overflow-auto bg-muted/50 px-3.5 py-3 font-mono text-body-sm-medium leading-[1.6] text-foreground [tab-size:2]",
         className,
       )}
     >

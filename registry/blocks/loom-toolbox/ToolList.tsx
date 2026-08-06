@@ -64,7 +64,7 @@ export function ToolList({
         <span className="flex size-7 items-center justify-center bg-primary text-primary-foreground">
           <IconTools className="size-4" />
         </span>
-        <span className="flex-1 text-sm font-semibold">{labels.title}</span>
+        <span className="flex-1 text-headline-sm">{labels.title}</span>
         <Button
           variant="ghost"
           size="icon"
@@ -108,7 +108,7 @@ export function ToolList({
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
         {tab === "all" && query.trim().length === 0 && tools.length > 0 && (
           <section className="mb-4">
-            <h3 className="mb-2 text-xs font-semibold">{labels.quickAccess}</h3>
+            <h3 className="mb-2 text-body-md-strong">{labels.quickAccess}</h3>
             <div className="grid grid-cols-2 gap-2">
               {tools.slice(0, 2).map((tool) => {
                 const ToolIcon = tool.icon
@@ -125,7 +125,7 @@ export function ToolList({
                         <span className="flex size-7 items-center justify-center bg-primary/10 text-primary">
                           <ToolIcon className="size-3.5" />
                         </span>
-                        <span className="truncate text-xs font-semibold">{tool.label}</span>
+                        <span className="truncate text-body-md-strong">{tool.label}</span>
                       </Button>
                       <FavoriteButton
                         tool={tool}
@@ -134,7 +134,7 @@ export function ToolList({
                         onFavoriteChange={onFavoriteChange}
                       />
                     </div>
-                    <p className="line-clamp-2 text-[11px] text-muted-foreground">
+                    <p className="line-clamp-2 text-body-sm text-muted-foreground">
                       {tool.description}
                     </p>
                   </div>
@@ -146,10 +146,10 @@ export function ToolList({
 
         <section>
           <div className="mb-2 flex items-center justify-between">
-            <h3 className="text-xs font-semibold">
+            <h3 className="text-body-md-strong">
               {tab === "all" ? labels.categories : labels.tabs[tab]}
             </h3>
-            <span className="text-[11px] text-muted-foreground">
+            <span className="text-body-sm text-muted-foreground">
               {labels.toolCount(tools.length)}
             </span>
           </div>
@@ -172,8 +172,8 @@ export function ToolList({
                       <ToolIcon className="size-3.5" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-xs font-medium">{tool.label}</span>
-                      <span className="block truncate text-[11px] text-muted-foreground">
+                      <span className="block text-body-md-medium">{tool.label}</span>
+                      <span className="block truncate text-body-sm text-muted-foreground">
                         {tool.group} · {tool.description}
                       </span>
                     </span>

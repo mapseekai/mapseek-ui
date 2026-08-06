@@ -45,7 +45,7 @@ export function LayerStyleEditor({
           headerClassName,
         )}
       >
-        <h2 className="m-0 grow truncate pr-2 text-[13px] leading-none font-semibold">{title}</h2>
+        <h2 className="m-0 grow truncate pr-2 text-body-lg-medium leading-none">{title}</h2>
         <div className="flex items-center gap-1.5">
           {actions.length > 0 ? (
             <DropdownMenu>
@@ -130,7 +130,7 @@ export function LayerStyleEditor({
                 key={tab.id}
                 value={tab.id}
                 className={cn(
-                  "h-7 text-xs font-medium text-muted-foreground",
+                  "h-7 text-body-md-medium text-muted-foreground",
                   "hover:text-foreground active:border-primary active:bg-primary active:text-primary-foreground",
                   "data-active:border-primary data-active:bg-primary data-active:font-semibold data-active:text-primary-foreground data-active:hover:text-primary-foreground",
                 )}

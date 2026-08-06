@@ -99,7 +99,7 @@ export function LoomLayerPanel({
         <span className="flex size-7 items-center justify-center bg-primary text-primary-foreground">
           <IconStack2 className="size-4" />
         </span>
-        <span className="text-sm font-semibold">{labels.title}</span>
+        <span className="text-headline-sm">{labels.title}</span>
         <Badge variant="outline">{layers.length}</Badge>
         <span className="flex-1" />
         {onCreateGroup && (

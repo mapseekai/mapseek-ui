@@ -79,7 +79,18 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            render={<Button variant="ghost" className="absolute top-2 inset-e-4" size="icon-sm" />}
+            render={
+              <Button
+                variant="ghost"
+                className={cn(
+                  "absolute inset-e-4",
+                  // Legacy header is a ~35px strip (py-2 + 15px/1.25 title);
+                  // 3.5px centers the 28px icon button on the title row.
+                  title ? "top-[3.5px]" : "top-2",
+                )}
+                size="icon-sm"
+              />
+            }
           >
             <IconX />
             <span className="sr-only">Close</span>

@@ -83,7 +83,9 @@ function DialogContent({
               <Button
                 variant="ghost"
                 className={cn(
-                  "absolute inset-e-4",
+                  // e-2.5 puts the 16px glyph's right edge at 16px (matching the
+                  // px-4 inset and shadcn's right-4 close), not the button box's.
+                  "absolute inset-e-2.5",
                   // Legacy header is a ~35px strip (py-2 + 15px/1.25 title);
                   // 3.5px centers the 28px icon button on the title row.
                   title ? "top-[3.5px]" : "top-2",

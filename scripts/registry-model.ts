@@ -87,6 +87,7 @@ export const BLOCKS = [
   "loom-toolbar",
   "map-controls",
   "map-coordinate-status",
+  "map-search",
   "map-switcher",
   "notification-center",
   "number-range-input",

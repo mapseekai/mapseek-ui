@@ -1,0 +1,27 @@
+import type { MapSearchLabels } from "./labels"
+
+export const DEFAULT_MAP_SEARCH_LABELS = {
+  placeTab: "地名搜索",
+  coordinatesTab: "经纬度搜索",
+  collapse: "收起搜索",
+  expand: "展开搜索",
+  placeInputLabel: "地名",
+  placePlaceholder: "搜索地点",
+  locatePlace: "定位地名",
+  clearPlace: "清除地名",
+  searchLoading: "正在搜索…",
+  noResults: "未找到匹配地点",
+  searchFailed: "地名搜索失败，请重试",
+  locateFailed: "定位失败，请重试",
+  resultsLabel: "地名搜索结果",
+  longitudeLabel: "经度",
+  longitudePlaceholder: "-180 至 180",
+  latitudeLabel: "纬度",
+  latitudePlaceholder: "-90 至 90",
+  locateCoordinates: "定位坐标",
+  clearCoordinates: "清除坐标",
+  coordinateRequired: "请输入坐标",
+  coordinateInvalid: "请输入有效数字",
+  longitudeRange: "经度必须在 -180 至 180 之间",
+  latitudeRange: "纬度必须在 -90 至 90 之间",
+} satisfies MapSearchLabels

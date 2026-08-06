@@ -1,0 +1,49 @@
+{
+  "name": "map-search",
+  "type": "registry:block",
+  "registryDependencies": [
+    "@mapseek/button",
+    "@mapseek/field",
+    "@mapseek/icon-button",
+    "@mapseek/input",
+    "@mapseek/input-group",
+    "@mapseek/labels",
+    "@mapseek/spinner",
+    "@mapseek/tabs",
+    "@mapseek/tooltip",
+    "@mapseek/utils"
+  ],
+  "files": [
+    {
+      "path": "map-search/MapSearch.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/map-search/MapSearch.tsx"
+    },
+    {
+      "path": "map-search/coordinates.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/map-search/coordinates.ts"
+    },
+    {
+      "path": "map-search/defaults.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/map-search/defaults.ts"
+    },
+    {
+      "path": "map-search/index.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/map-search/index.ts"
+    },
+    {
+      "path": "map-search/labels.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/map-search/labels.ts"
+    },
+    {
+      "path": "map-search/types.ts",
+      "type": "registry:block",
+      "target": "@components/blocks/map-search/types.ts"
+    }
+  ],
+  "dependencies": ["@tabler/icons-react"]
+}

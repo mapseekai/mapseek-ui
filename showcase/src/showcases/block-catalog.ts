@@ -30,6 +30,7 @@ export const blockShowcases = [
   block("layout", "Layout 布局原子", () => import("./LayoutShowcase")),
   block("linked-ref-list", "LinkedRefList 关联引用", () => import("./LinkedRefListShowcase")),
   block("map-controls", "MapControls 地图控件", () => import("./MapControlsShowcase")),
+  block("map-search", "MapSearch 地图搜索", () => import("./MapSearchShowcase")),
   block(
     "map-coordinate-status",
     "MapCoordinateStatus 坐标状态",

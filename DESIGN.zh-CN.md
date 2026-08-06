@@ -59,6 +59,12 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: 0px
+  body-lg-medium:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 13px
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: 0px
   body-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 12px
@@ -71,12 +77,30 @@ typography:
     fontWeight: 500
     lineHeight: 1.5
     letterSpacing: 0px
+  body-md-strong:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 12px
+    fontWeight: 600
+    lineHeight: 1.5
+    letterSpacing: 0px
   body-sm:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 11px
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: 0px
+  body-sm-medium:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: 0px
+  label-sm:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 1.2
+    letterSpacing: "0.04em"
   label-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 10px
@@ -280,10 +304,14 @@ Mapseek 将 **Geist Mono Variable** 同时作为 UI 与数据字体。统一的�
 | `{typography.headline-md}` | 15px | 600 | 1.25 | -0.02em | 弹窗和章节标题 |
 | `{typography.headline-sm}` | 14px | 500 | 1.3 | -0.01em | 卡片标题和成组控件 |
 | `{typography.body-base}` | 16px | 400 | 1.5 | 0 | 根文档尺度和偏正文表面 |
-| `{typography.body-lg}` | 13px | 400 | 1.5 | 0 | 重要界面文案和资源名 |
+| `{typography.body-lg}` | 13px | 400 | 1.5 | 0 | 显著界面文案和资源名称 |
+| `{typography.body-lg-medium}` | 13px | 500 | 1.5 | 0 | 强调的资源名称和标识符 |
 | `{typography.body-md}` | 12px | 400 | 1.5 | 0 | 表格、字段和面板中的内容文字 |
 | `{typography.body-md-medium}` | 12px | 500 | 1.5 | 0 | 交互控件、标签页、徽章和表头 |
-| `{typography.body-sm}` | 11px | 400 | 1.5 | 0 | 元数据、计数和紧凑状态文字 |
+| `{typography.body-md-strong}` | 12px | 600 | 1.5 | 0 | 密集面板中的面板和区块标题 |
+| `{typography.body-sm}` | 11px | 400 | 1.5 | 0 | 元数据、计数和紧凑状态文本 |
+| `{typography.body-sm-medium}` | 11px | 500 | 1.5 | 0 | 强调的元数据和紧凑表头 |
+| `{typography.label-sm}` | 11px | 500 | 1.2 | 0.04em | 紧凑分类和眉线标签 |
 | `{typography.label-md}` | 10px | 500 | 1.2 | 0.04em | 简短分类和章节标签 |
 | `{typography.data-display}` | 42px | 600 | 1 | -0.02em | 特殊数据或样张预览 |
 

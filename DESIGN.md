@@ -59,6 +59,12 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: 0px
+  body-lg-medium:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 13px
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: 0px
   body-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 12px
@@ -71,12 +77,30 @@ typography:
     fontWeight: 500
     lineHeight: 1.5
     letterSpacing: 0px
+  body-md-strong:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 12px
+    fontWeight: 600
+    lineHeight: 1.5
+    letterSpacing: 0px
   body-sm:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 11px
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: 0px
+  body-sm-medium:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: 0px
+  label-sm:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 1.2
+    letterSpacing: "0.04em"
   label-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 10px
@@ -281,9 +305,13 @@ Mapseek uses **Geist Mono Variable** as its UI and data family. This single tech
 | `{typography.headline-sm}` | 14px | 500 | 1.3 | -0.01em | Card titles and grouped controls |
 | `{typography.body-base}` | 16px | 400 | 1.5 | 0 | Root document scale and prose-oriented surfaces |
 | `{typography.body-lg}` | 13px | 400 | 1.5 | 0 | Prominent interface copy and resource names |
+| `{typography.body-lg-medium}` | 13px | 500 | 1.5 | 0 | Emphasized resource names and identifiers |
 | `{typography.body-md}` | 12px | 400 | 1.5 | 0 | Content text in tables, fields, and panels |
 | `{typography.body-md-medium}` | 12px | 500 | 1.5 | 0 | Interactive controls, tabs, badges, and table headers |
+| `{typography.body-md-strong}` | 12px | 600 | 1.5 | 0 | Panel and section titles within dense surfaces |
 | `{typography.body-sm}` | 11px | 400 | 1.5 | 0 | Metadata, counts, and compact status text |
+| `{typography.body-sm-medium}` | 11px | 500 | 1.5 | 0 | Emphasized metadata and compact table headers |
+| `{typography.label-sm}` | 11px | 500 | 1.2 | 0.04em | Compact taxonomy and eyebrow labels |
 | `{typography.label-md}` | 10px | 500 | 1.2 | 0.04em | Short taxonomy and section labels |
 | `{typography.data-display}` | 42px | 600 | 1 | -0.02em | Exceptional data or specimen previews |
 

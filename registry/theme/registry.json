@@ -5,11 +5,7 @@
       "name": "theme",
       "type": "registry:theme",
       "files": [],
-      "dependencies": [
-        "@fontsource-variable/geist",
-        "@fontsource-variable/geist-mono",
-        "tw-animate-css"
-      ],
+      "dependencies": ["@fontsource-variable/geist-mono", "tw-animate-css"],
       "cssVars": {
         "theme": {
           "--font-heading": "var(--font-sans)",
@@ -275,38 +271,71 @@
       },
       "css": {
         "@import \"tw-animate-css\"": {},
-        "@import \"@fontsource-variable/geist\"": {},
         "@import \"@fontsource-variable/geist-mono\"": {},
         "@custom-variant dark (&:is(.dark *))": {},
         "@layer base": {
-          "*": { "@apply border-border outline-ring/50": {} },
+          "*": {
+            "@apply border-border outline-ring/50": {}
+          },
           "body": {
             "@apply bg-background text-[16px] text-foreground": {},
             "-webkit-font-smoothing": "antialiased"
           },
-          "::-webkit-scrollbar": { "width": "6px", "height": "6px" },
-          "::-webkit-scrollbar-track": { "background": "transparent" },
-          "::-webkit-scrollbar-thumb": { "background": "var(--border)", "border-radius": "0" }
+          "::-webkit-scrollbar": {
+            "width": "6px",
+            "height": "6px"
+          },
+          "::-webkit-scrollbar-track": {
+            "background": "transparent",
+            "border-radius": "0"
+          },
+          "::-webkit-scrollbar-thumb": {
+            "background": "var(--border)",
+            "border-radius": "0"
+          },
+          "::-webkit-scrollbar-corner": {
+            "border-radius": "0"
+          }
         },
         "@layer utilities": {
-          ".bg-primary": { "color": "var(--primary-foreground)" },
+          ".bg-primary": {
+            "color": "var(--primary-foreground)"
+          },
           ".mono": {
             "font-family": "var(--font-mono)",
             "font-feature-settings": "\"tnum\" 1, \"zero\" 1"
           },
-          ".tnum": { "font-variant-numeric": "tabular-nums" }
+          ".tnum": {
+            "font-variant-numeric": "tabular-nums"
+          }
         },
         "@keyframes accordion-down": {
-          "from": { "height": "0", "opacity": "0" },
-          "to": { "height": "var(--accordion-panel-height)", "opacity": "1" }
+          "from": {
+            "height": "0",
+            "opacity": "0"
+          },
+          "to": {
+            "height": "var(--accordion-panel-height)",
+            "opacity": "1"
+          }
         },
         "@keyframes accordion-up": {
-          "from": { "height": "var(--accordion-panel-height)", "opacity": "1" },
-          "to": { "height": "0", "opacity": "0" }
+          "from": {
+            "height": "var(--accordion-panel-height)",
+            "opacity": "1"
+          },
+          "to": {
+            "height": "0",
+            "opacity": "0"
+          }
         },
         "@keyframes progress-indeterminate": {
-          "from": { "transform": "translateX(-120%)" },
-          "to": { "transform": "translateX(340%)" }
+          "from": {
+            "transform": "translateX(-120%)"
+          },
+          "to": {
+            "transform": "translateX(340%)"
+          }
         }
       }
     }

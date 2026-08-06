@@ -1,19 +1,11 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
-@import "@fontsource-variable/geist-mono";
 @import "./theme.generated.css";
 
-@custom-variant dark (&:is(.dark *));
 @source "../../registry/**/*.{ts,tsx}";
 @source "./**/*.{ts,tsx}";
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
   html {
     color-scheme: light;
   }
@@ -23,45 +15,6 @@
   }
 
   body {
-    @apply m-0 bg-background text-[16px] text-foreground;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  button,
-  input,
-  textarea,
-  select {
-    font: inherit;
-  }
-
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 0;
-  }
-}
-
-@layer utilities {
-  .bg-primary {
-    color: var(--primary-foreground);
-  }
-
-  .mono {
-    font-family: var(--font-mono);
-    font-feature-settings:
-      "tnum" 1,
-      "zero" 1;
-  }
-
-  .tnum {
-    font-variant-numeric: tabular-nums;
+    @apply m-0;
   }
 }

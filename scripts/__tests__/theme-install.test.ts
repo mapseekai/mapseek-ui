@@ -83,15 +83,15 @@ it("installs the Mapseek theme with its tokens and dependencies", async () => {
   expect(css).toContain("--radius: 0rem")
   expect(css).toContain("--shadow-map-float: none")
   expect(css).toContain("::-webkit-scrollbar-thumb")
-  expect(css).toContain('@import "@fontsource-variable/geist"')
+  expect(css).not.toContain('@import "@fontsource-variable/geist"')
   expect(css).toContain('@import "@fontsource-variable/geist-mono"')
 
   const packageJson = JSON.parse(await readFile(join(fixture, "package.json"), "utf8")) as {
     dependencies?: Record<string, string>
   }
   expect(packageJson.dependencies).toMatchObject({
-    "@fontsource-variable/geist": expect.any(String),
     "@fontsource-variable/geist-mono": expect.any(String),
     "tw-animate-css": expect.any(String),
   })
+  expect(packageJson.dependencies).not.toHaveProperty("@fontsource-variable/geist")
 }, 360_000)

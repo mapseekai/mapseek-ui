@@ -7,10 +7,10 @@
 
 ### 主题 / token 层
 
-- [ ] **1. 排版 token 名存实亡**：DESIGN 定义 9 个 typography token，`registry/theme/registry.json:16-18,87-89` 仅实现 `headline-md` 一个（且缺 `-0.02em` letter-spacing 变量；唯一消费者 `registry/ui/dialog.tsx:142` 也未应用 tracking）。其余 8 个 token 无运行时变量，各文件靠硬编码 Tailwind 类维持。
-- [ ] **2. dark 主题缺 `cat-*` 覆盖**：`--chart-1..5` 在 dark 段有覆盖（`registry/theme/registry.json:155-159`），`--cat-1..6` 仅 light 定义（`:117-122`），dark 下回退浅色值。DESIGN："Dark mode reuses the same semantic names with the .dark values"。
-- [ ] **3. docs 站丢失 theme `css` 块**：`scripts/generate-docs-theme.ts` 只序列化 cssVars，`.mono`/`.tnum` 与 `body text-[16px]` 未进入 `packages/docs/app/theme.generated.css`；`globals.css:75-79` body 规则也无 font-size。后果：BandStat / NotificationCenter / LinkedRefList / StatStrip 等的 `mono tnum` 类在 docs 验收面上为空操作。showcase 靠 `showcase/src/app.css:57-66` 手工复制幸免。
-- [ ] **4. 死字体导入**：`@fontsource-variable/geist`（非 Mono）出现在 theme 依赖（`registry/theme/registry.json:9,182`）、`packages/docs/app/globals.css:6`、`showcase/src/app.css`，但无任何 token 引用，与 "single monospaced voice" 矛盾。
+- [x] **1. 排版 token 名存实亡**：✅ 已修复（739cda8 起）：14 个 typography token 全部落地运行时变量（含 headline 系列 `-0.02em` tracking 变量），registry 全库改用令牌类。~~DESIGN 定义 9 个 typography token，`registry/theme/registry.json:16-18,87-89` 仅实现 `headline-md` 一个~~
+- [x] **2. dark 主题缺 `cat-*` 覆盖**：✅ 已修复（739cda8）：`--cat-1..6` 已在 dark 段定义（cat-1 保持品牌绿，cat-2..6 提亮适配暗底），showcase/docs 生成 CSS 的 `.dark` 块均已输出。~~`--cat-1..6` 仅 light 定义，dark 下回退浅色值~~
+- [x] **3. docs 站丢失 theme `css` 块**：✅ 已修复（工作区未提交）：`generate-docs-theme.ts` 现序列化完整 `css` 块（imports / custom-variant / base / utilities / keyframes），docs 编译 CSS 实测获得 `.mono`/`.tnum`/`body 16px`/滚动条/keyframes 等规则，docs `globals.css` 与 showcase `app.css` 的手工拷贝已收编为单一来源。原问题：~~`.mono`/`.tnum` 与 `body text-[16px]` 未进入 `theme.generated.css`~~：`scripts/generate-docs-theme.ts` 只序列化 cssVars，`.mono`/`.tnum` 与 `body text-[16px]` 未进入 `packages/docs/app/theme.generated.css`；`globals.css:75-79` body 规则也无 font-size。后果：BandStat / NotificationCenter / LinkedRefList / StatStrip 等的 `mono tnum` 类在 docs 验收面上为空操作。showcase 靠 `showcase/src/app.css:57-66` 手工复制幸免。
+- [x] **4. 死字体导入**：✅ 已修复：`@fontsource-variable/geist`（非 Mono）从 theme dependencies、registry `css` 导入、根与 docs `package.json`（含 lockfile）全部移除；docs/showcase 手写 CSS 的字体导入收编进生成 CSS（仅 geist-mono）；`--font-sans`/`--font-mono` 均指向等宽栈，8 处 `font-sans` 消费者不受影响。安装契约测试加反向断言防回归。~~无任何 token 引用，与 "single monospaced voice" 矛盾~~
 
 ### 选中 / hover 契约（Colors 章节）
 

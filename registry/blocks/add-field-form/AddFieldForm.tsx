@@ -13,7 +13,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { cn } from "@/lib/utils"
 import type { AddFieldFormProps } from "./types"
 
-const fieldOptional = "text-body-sm text-muted-foreground"
+const fieldOptional = "text-[10px] text-muted-foreground"
 const formInput = "h-7 w-full rounded-none border-border bg-background px-2 text-body-md"
 
 /**

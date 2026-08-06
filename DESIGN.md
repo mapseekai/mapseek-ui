@@ -69,19 +69,19 @@ typography:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 12px
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.3333
     letterSpacing: 0px
   body-md-medium:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 12px
     fontWeight: 500
-    lineHeight: 1.5
+    lineHeight: 1.3333
     letterSpacing: 0px
   body-md-strong:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 12px
     fontWeight: 600
-    lineHeight: 1.5
+    lineHeight: 1.3333
     letterSpacing: 0px
   body-sm:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
@@ -287,6 +287,7 @@ Mapseek uses a green-axis OKLCH palette surrounded by low-chroma neutrals. The p
 - **Border** is the default 1px structure; **border-strong** is reserved for emphasized boundaries and active drop targets.
 - Inputs use `{colors.input}` for their border and `{colors.input-surface}` for their fill. The light theme deliberately keeps the fill transparent.
 - Dark mode reuses the same semantic names with the `.dark` values in the runtime theme; it is not a mechanical inversion. Dark panels remain only slightly lighter than the application floor, and editable inputs use a quiet translucent fill.
+- **Emphasis fills invert their foreground, not their base.** In dark mode, `{colors.primary}`, `{colors.destructive}`, and sidebar-primary keep their brand hues (slightly brightened), while their foregrounds switch to dark text (`oklch(0.1500 0.0100 149)` / `oklch(0.1000 0 0)`). This is deliberate: white text on the brightened fills falls below a 3:1 contrast ratio, while dark text holds roughly 7:1. Do not "fix" the inversion back to white without darkening the base color.
 
 ### Data Palettes
 

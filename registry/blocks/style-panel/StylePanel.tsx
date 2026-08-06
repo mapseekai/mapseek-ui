@@ -184,7 +184,7 @@ function StylePanelMarker({ shapes }: { shapes: MarkerShape[] }) {
                 })
               }
               className={cn(
-                "inline-flex size-6 items-center justify-center border font-mono text-body-sm",
+                "inline-flex size-6 items-center justify-center border font-mono text-[10px]",
                 isCur
                   ? "border-primary bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
                   : "border-border bg-background text-muted-foreground hover:bg-accent/50",

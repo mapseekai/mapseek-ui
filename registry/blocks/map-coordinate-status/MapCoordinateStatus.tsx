@@ -143,7 +143,7 @@ export function MapCoordinateStatus({
                 variant="ghost"
                 aria-label={labels.switchCrs}
                 className={cn(
-                  "h-5 gap-[3px] rounded-none border border-primary/25 px-1.5 font-mono text-label-md text-primary hover:text-primary",
+                  "h-5 gap-[3px] rounded-none border border-primary/25 px-1.5 font-mono text-[10px] tracking-[0.04em] text-primary hover:text-primary",
                   open ? "bg-primary/[0.18]" : "bg-primary/10",
                 )}
               >
@@ -169,7 +169,9 @@ export function MapCoordinateStatus({
           key={item.key}
           className="flex min-h-7 items-center border-l border-border px-1.5 whitespace-nowrap sm:min-h-0 sm:px-2.5"
         >
-          <span className="mr-1.5 text-label-md text-muted-foreground uppercase">{item.label}</span>
+          <span className="mr-1.5 text-[10px] tracking-[0.04em] text-muted-foreground uppercase">
+            {item.label}
+          </span>
           {item.value}
         </div>
       ))}

@@ -72,7 +72,7 @@ export function NotificationCenter({
       <DropdownMenuTrigger render={<IconButton className="relative" aria-label={labels.trigger} />}>
         <IconBell stroke={1.75} />
         {total > 0 ? (
-          <span className="mono pointer-events-none absolute top-0.5 right-0.5 h-3 min-w-3 border border-primary bg-background px-px text-center text-label-md leading-[11px] text-primary">
+          <span className="mono pointer-events-none absolute top-0.5 right-0.5 h-3 min-w-3 border border-primary bg-background px-px text-center text-[8px] font-bold leading-[11px] text-primary">
             {total > 9 ? "9+" : total}
           </span>
         ) : null}
@@ -84,7 +84,7 @@ export function NotificationCenter({
               <span className="text-body-md-strong">{labels.title}</span>
               <span
                 className={cn(
-                  "mono border px-1.5 py-0.5 text-body-sm leading-none",
+                  "mono border px-1.5 py-0.5 text-[10px] leading-none",
                   streamActive
                     ? "border-primary/25 bg-primary/10 text-primary"
                     : "border-border bg-background text-muted-foreground",

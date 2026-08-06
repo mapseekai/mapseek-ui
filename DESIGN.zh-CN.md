@@ -69,19 +69,19 @@ typography:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 12px
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.3333
     letterSpacing: 0px
   body-md-medium:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 12px
     fontWeight: 500
-    lineHeight: 1.5
+    lineHeight: 1.3333
     letterSpacing: 0px
   body-md-strong:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 12px
     fontWeight: 600
-    lineHeight: 1.5
+    lineHeight: 1.3333
     letterSpacing: 0px
   body-sm:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
@@ -287,6 +287,7 @@ Mapseek 使用由低彩度中性色包围的绿色轴 OKLCH 调色板。主绿�
 - **Border** 是默认 1px 结构；**border-strong** 仅用于强调边界和活动拖放目标。
 - 输入框的边界使用 `{colors.input}`，填充使用 `{colors.input-surface}`；亮色主题有意保持透明填充。
 - 深色模式通过运行时主题的 `.dark` 值复用相同语义名，而非机械反相。深色面板只略亮于应用底面，可编辑输入框使用克制的半透明填充。
+- **强调填充反转前景而非底色。** 深色模式下，`{colors.primary}`、`{colors.destructive}` 与 sidebar-primary 保持品牌色相（略微提亮），前景切换为深色文字（`oklch(0.1500 0.0100 149)` / `oklch(0.1000 0 0)`）。此为有意为之：白字在提亮后的底色上对比度不足 3:1，深字可保持约 7:1。如不同时加深底色，不要将白字"改回"。
 
 ### Data Palettes
 

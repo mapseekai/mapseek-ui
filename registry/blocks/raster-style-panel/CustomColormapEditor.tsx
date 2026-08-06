@@ -29,11 +29,11 @@ function SectionHead({
   trailing?: React.ReactNode
 }) {
   return (
-    <div className="flex items-center gap-1.5 font-mono text-label-md uppercase text-muted-foreground">
+    <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.06em] uppercase text-muted-foreground">
       <Icon size={11} stroke={1.75} />
       <span>{title}</span>
       {trailing != null && (
-        <span className="ml-auto text-body-sm tracking-normal normal-case">{trailing}</span>
+        <span className="ml-auto text-[10px] tracking-normal normal-case">{trailing}</span>
       )}
     </div>
   )
@@ -213,7 +213,7 @@ export function CustomColormapEditor({
                   background: `linear-gradient(to right, ${p.stops.join(", ")})`,
                 }}
               />
-              <span className="text-center font-mono text-body-sm text-muted-foreground">
+              <span className="text-center font-mono text-[10px] text-muted-foreground">
                 {p.name}
               </span>
             </Button>

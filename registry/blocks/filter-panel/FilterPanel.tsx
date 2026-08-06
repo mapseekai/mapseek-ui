@@ -148,7 +148,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                       variant="ghost"
                       onClick={() => updateRow(f.id, { conn: c })}
                       className={cn(
-                        "h-5 rounded-none border border-border px-1.5 font-mono text-label-md leading-none",
+                        "h-5 rounded-none border border-border px-1.5 font-mono text-[10px] tracking-[0.04em] leading-none",
                         ci > 0 && "-ml-px",
                         isCur
                           ? "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
@@ -251,7 +251,7 @@ function FilterPanelSql({ keywords, className }: { keywords: string[]; className
                 sql: value.sql ? `${value.sql} ${kw} ` : `${kw} `,
               })
             }
-            className="h-5 rounded-none border border-border bg-background px-[5px] font-mono text-body-sm-medium leading-none text-primary hover:text-primary"
+            className="h-5 rounded-none border border-border bg-background px-[5px] font-mono text-[10px] font-medium leading-none text-primary hover:text-primary"
           >
             {kw}
           </Button>
@@ -287,7 +287,10 @@ function FilterPanelEstimate({
   const { labels } = useFilterPanelContext()
   return (
     <span
-      className={cn("flex-1 font-mono text-label-md uppercase text-muted-foreground", className)}
+      className={cn(
+        "flex-1 font-mono text-[10px] tracking-[0.04em] uppercase text-muted-foreground",
+        className,
+      )}
     >
       <IconEye size={11} className="mr-1 align-[-1px]" />
       {labels.estimate} <span className="text-primary">{count}</span> / {total} {labels.rows}

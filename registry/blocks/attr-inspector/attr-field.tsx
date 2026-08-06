@@ -125,7 +125,9 @@ function FieldHeader({
 }) {
   return (
     <div className="mb-[3px] flex items-center gap-1.5">
-      <span className="font-mono text-label-md uppercase text-muted-foreground">{name}</span>
+      <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-muted-foreground">
+        {name}
+      </span>
       <span className="border border-border bg-muted px-1 py-px font-mono text-label-md uppercase text-muted-foreground">
         {badge}
       </span>
@@ -239,7 +241,7 @@ export function EditField({
             onChange={(e) => onChange(name, e.target.value)}
           />
           {unit && (
-            <span className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 font-mono text-body-sm text-muted-foreground group-focus-within:hidden">
+            <span className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 font-mono text-[10px] text-muted-foreground group-focus-within:hidden">
               {unit}
             </span>
           )}

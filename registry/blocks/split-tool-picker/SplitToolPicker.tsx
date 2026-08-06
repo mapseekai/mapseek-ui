@@ -159,7 +159,7 @@ function SplitToolPicker({
                     ) : null}
                   </span>
                   {item.hint ? (
-                    <span className="font-mono text-body-sm-medium text-muted-foreground">
+                    <span className="font-mono text-[10px] font-medium text-muted-foreground">
                       {item.hint}
                     </span>
                   ) : null}

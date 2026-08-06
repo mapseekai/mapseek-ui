@@ -165,7 +165,7 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
             <img src={image} alt={label} className="h-full w-full object-cover" />
           ) : (
             <div
-              className="flex h-full w-full items-center justify-center text-body-sm text-foreground"
+              className="flex h-full w-full items-center justify-center text-[10px] text-foreground"
               style={{ background: color ?? "var(--muted)" }}
             >
               {label}
@@ -173,7 +173,7 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
           )}
         </div>
         {/* Label below thumbnail */}
-        <span className="text-body-sm text-foreground truncate max-w-[76px] px-0.5">{label}</span>
+        <span className="text-[10px] text-foreground truncate max-w-[76px] px-0.5">{label}</span>
       </Button>
     )
   }
@@ -258,7 +258,7 @@ function MapSwitcherTrigger() {
               />
             ) : (
               <div
-                className="flex h-full w-full items-center justify-center text-body-sm text-foreground"
+                className="flex h-full w-full items-center justify-center text-[10px] text-foreground"
                 style={{ background: item?.color ?? "var(--muted)" }}
               >
                 {item?.label ?? ""}

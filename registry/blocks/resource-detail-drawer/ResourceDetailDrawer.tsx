@@ -33,7 +33,9 @@ function fontClass(family: FontDetail["family"]): string {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-2 font-mono text-label-md text-muted-foreground uppercase">{children}</div>
+    <div className="mb-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+      {children}
+    </div>
   )
 }
 
@@ -147,7 +149,7 @@ function IconBody({
               ) : (
                 <PlaceholderGlyph size={s} seed={detail.seed} />
               )}
-              <span className="font-mono text-body-sm-medium text-muted-foreground uppercase">
+              <span className="font-mono text-[10px] font-medium text-muted-foreground uppercase">
                 {s}px
               </span>
             </div>
@@ -237,7 +239,7 @@ function SpriteBody({
             >
               <div className="min-w-0 flex-1">
                 <div className="font-mono text-body-md">{f.name}</div>
-                <div className="text-body-sm text-muted-foreground">{f.desc}</div>
+                <div className="text-[10px] text-muted-foreground">{f.desc}</div>
               </div>
             </div>
           ))}
@@ -329,13 +331,13 @@ function FontBody({
       )}
       {slicing && open && (
         <div className="px-4 py-3.5">
-          <div className="mb-2 flex items-center font-mono text-label-md text-muted-foreground uppercase">
+          <div className="mb-2 flex items-center font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
             <span>{slicing.panelTitle}</span>
             <Button
               variant="ghost"
               size="sm"
               type="button"
-              className="ml-auto cursor-pointer text-body-sm tracking-normal text-muted-foreground normal-case"
+              className="ml-auto cursor-pointer text-[10px] tracking-normal text-muted-foreground normal-case"
               onClick={() => setOpen(false)}
             >
               {slicing.collapseLabel}
@@ -363,16 +365,16 @@ function FontBody({
                   />
                   <div className="min-w-0 flex-1">
                     <div className="text-body-md-medium">{c.name}</div>
-                    <div className="font-mono text-body-sm text-muted-foreground">
+                    <div className="font-mono text-[10px] text-muted-foreground">
                       {c.range} · {c.glyphs.toLocaleString()}
                     </div>
                   </div>
-                  <span className="font-mono text-body-sm text-muted-foreground">{c.size}</span>
+                  <span className="font-mono text-[10px] text-muted-foreground">{c.size}</span>
                 </label>
               )
             })}
           </div>
-          <div className="mt-3 mb-2 font-mono text-label-md text-muted-foreground uppercase">
+          <div className="mt-3 mb-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
             {slicing.customTitle}
           </div>
           <Textarea

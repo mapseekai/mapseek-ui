@@ -210,7 +210,7 @@ function LayerPanelCount({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "inline-flex h-5 items-center border border-primary/25 bg-primary/10 px-[5px] font-mono text-label-md text-primary",
+        "inline-flex h-5 items-center border border-primary/25 bg-primary/10 px-[5px] font-mono text-[10px] font-medium tracking-[0.04em] text-primary",
         className,
       )}
     >
@@ -493,7 +493,7 @@ function LayerPanelItem({
             )}
             <span>{getGeomLabel(ctx.labels, layer.geometryType)}</span>
             {layer.crsLabel && (
-              <span className="ml-0.5 inline-flex min-w-0 items-center truncate border border-primary/25 bg-primary/10 px-1 font-mono text-label-md uppercase text-primary">
+              <span className="ml-0.5 inline-flex min-w-0 items-center truncate border border-primary/25 bg-primary/10 px-1 font-mono text-[10px] font-medium tracking-[0.04em] uppercase text-primary">
                 {layer.crsLabel}
               </span>
             )}

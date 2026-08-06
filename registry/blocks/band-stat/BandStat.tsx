@@ -94,7 +94,7 @@ export function BandStat({ data, labels }: BandStatProps) {
         </div>
         <div className="mt-2 grid grid-cols-[20px_minmax(0,1fr)] gap-2">
           <div className="flex items-center justify-center">
-            <span className="mono -rotate-90 text-label-md whitespace-nowrap text-muted-foreground uppercase">
+            <span className="mono -rotate-90 text-[10px] tracking-[0.04em] whitespace-nowrap text-muted-foreground uppercase">
               {labels.histogramYAxis}
             </span>
           </div>
@@ -143,7 +143,7 @@ export function BandStat({ data, labels }: BandStatProps) {
             </BarChart>
           </ChartContainer>
         </div>
-        <div className="mono mt-1 ml-7 text-center text-label-md text-muted-foreground uppercase">
+        <div className="mono mt-1 ml-7 text-center text-[10px] tracking-[0.04em] text-muted-foreground uppercase">
           {labels.histogramXAxis}
         </div>
       </div>

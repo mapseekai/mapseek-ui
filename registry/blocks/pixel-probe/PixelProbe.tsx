@@ -16,7 +16,9 @@ function FieldRow({ field }: { field: PixelField }) {
   return (
     <div className="flex flex-col gap-[3px]">
       <div className="flex items-center gap-1.5">
-        <span className="font-mono text-label-md uppercase text-muted-foreground">{field.key}</span>
+        <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-muted-foreground">
+          {field.key}
+        </span>
         <span className="border border-border bg-muted px-1 py-px font-mono text-label-md uppercase text-muted-foreground">
           {field.type}
         </span>
@@ -29,14 +31,14 @@ function FieldRow({ field }: { field: PixelField }) {
         )}
       >
         {isBadge ? (
-          <span className="inline-flex h-5 items-center border border-border bg-card px-1.5 font-mono text-label-md text-muted-foreground">
+          <span className="inline-flex h-5 items-center border border-border bg-card px-1.5 font-mono text-[10px] tracking-[0.04em] text-muted-foreground">
             {field.value}
           </span>
         ) : (
           field.value
         )}
         {field.unit && (
-          <span className="ml-auto font-mono text-body-sm text-muted-foreground">{field.unit}</span>
+          <span className="ml-auto font-mono text-[10px] text-muted-foreground">{field.unit}</span>
         )}
       </div>
     </div>
@@ -71,7 +73,7 @@ export function PixelProbe({
           {labels.title}
         </span>
         {count != null && (
-          <span className="inline-flex h-5 items-center border border-primary/25 bg-primary/10 px-1.5 font-mono text-label-md text-primary">
+          <span className="inline-flex h-5 items-center border border-primary/25 bg-primary/10 px-1.5 font-mono text-[10px] tracking-[0.04em] text-primary">
             {count}
           </span>
         )}
@@ -114,7 +116,7 @@ export function PixelProbe({
             <TooltipContent>{labels.prev}</TooltipContent>
           </Tooltip>
           {index != null && (
-            <span className="font-mono text-label-md text-muted-foreground">
+            <span className="font-mono text-[10px] tracking-[0.04em] text-muted-foreground">
               {labels.pointPrefix} {index}
             </span>
           )}

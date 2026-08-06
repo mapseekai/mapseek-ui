@@ -67,19 +67,19 @@ typography:
     letterSpacing: 0px
   body-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
-    fontSize: 12px
+    fontSize: 13px
     fontWeight: 400
     lineHeight: 1.3333
     letterSpacing: 0px
   body-md-medium:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
-    fontSize: 12px
+    fontSize: 13px
     fontWeight: 500
     lineHeight: 1.3333
     letterSpacing: 0px
   body-md-strong:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
-    fontSize: 12px
+    fontSize: 13px
     fontWeight: 600
     lineHeight: 1.3333
     letterSpacing: 0px

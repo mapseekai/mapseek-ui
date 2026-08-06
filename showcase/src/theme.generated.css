@@ -123,7 +123,7 @@
   --headline-md-line-height: 1.25;
   --headline-md-font-weight: 600;
   --headline-md-letter-spacing: -0.02em;
-  --body-md-medium-font-size: 12px;
+  --body-md-medium-font-size: 13px;
   --body-md-medium-line-height: 1.3333;
   --body-md-medium-font-weight: 500;
   --headline-lg-font-size: 18px;
@@ -143,10 +143,10 @@
   --body-lg-medium-font-size: 13px;
   --body-lg-medium-line-height: 1.5;
   --body-lg-medium-font-weight: 500;
-  --body-md-font-size: 12px;
+  --body-md-font-size: 13px;
   --body-md-line-height: 1.3333;
   --body-md-font-weight: 400;
-  --body-md-strong-font-size: 12px;
+  --body-md-strong-font-size: 13px;
   --body-md-strong-line-height: 1.3333;
   --body-md-strong-font-weight: 600;
   --body-sm-font-size: 11px;

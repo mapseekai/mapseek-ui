@@ -109,7 +109,7 @@ function SummaryCard({ group, icon }: { group: LinkedRefGroup; icon: ReactNode }
         {group.title}
       </span>
       <span>
-        <span className="mono text-headline-lg">{group.count}</span>{" "}
+        <span className="mono text-xl font-medium">{group.count}</span>{" "}
         <span className="text-body-sm text-muted-foreground group-data-active/ref-tab:text-primary">
           {unit}
         </span>

@@ -51,7 +51,7 @@ export function ResourceSidebar({
         className,
       )}
     >
-      <div className="px-3.5 pt-3 pb-2 font-mono text-label-sm text-muted-foreground uppercase">
+      <div className="px-3.5 pt-3 pb-2 font-mono text-label-sm font-normal text-muted-foreground uppercase">
         {labels.typeSection}
       </div>
 
@@ -96,7 +96,7 @@ export function ResourceSidebar({
 
       <div className="mx-2 my-1.5 h-px bg-border" />
 
-      <div className="px-3.5 pt-1 pb-2 font-mono text-label-sm text-muted-foreground uppercase">
+      <div className="px-3.5 pt-1 pb-2 font-mono text-label-sm font-normal text-muted-foreground uppercase">
         {labels.categoriesSection}
       </div>
 

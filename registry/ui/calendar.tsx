@@ -68,8 +68,8 @@ function Calendar({
         caption_label: cn(
           "font-medium select-none",
           captionLayout === "label"
-            ? "text-headline-sm"
-            : "flex items-center gap-1 rounded-(--cell-radius) text-headline-sm [&>svg]:size-3.5 [&>svg]:text-muted-foreground",
+            ? "text-headline-sm font-normal"
+            : "flex items-center gap-1 rounded-(--cell-radius) text-headline-sm font-normal [&>svg]:size-3.5 [&>svg]:text-muted-foreground",
           defaultClassNames.caption_label,
         ),
         month_grid: cn("w-full border-collapse", defaultClassNames.month_grid),

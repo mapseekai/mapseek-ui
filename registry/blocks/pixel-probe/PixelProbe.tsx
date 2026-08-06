@@ -19,7 +19,7 @@ function FieldRow({ field }: { field: PixelField }) {
         <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-muted-foreground">
           {field.key}
         </span>
-        <span className="border border-border bg-muted px-1 py-px font-mono text-label-md uppercase text-muted-foreground">
+        <span className="border border-border bg-muted px-1 py-px font-mono text-label-md font-normal uppercase text-muted-foreground">
           {field.type}
         </span>
         {field.locked && <IconLock size={11} className="ml-auto text-muted-foreground" />}

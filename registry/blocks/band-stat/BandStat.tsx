@@ -168,7 +168,7 @@ function Metric({ label, value }: { label: BandStatLabels[keyof BandStatLabels];
   return (
     <div className="flex min-w-0 flex-col gap-0.5 px-2 py-3 sm:px-4">
       <span className="text-body-sm text-muted-foreground">{label}</span>
-      <span className="mono tnum whitespace-nowrap text-headline-lg text-foreground sm:text-headline-lg">
+      <span className="mono tnum whitespace-nowrap text-lg font-medium text-foreground sm:text-2xl">
         {value.toLocaleString()}
       </span>
     </div>

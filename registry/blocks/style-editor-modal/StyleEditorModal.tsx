@@ -91,7 +91,7 @@ export function StyleEditorModalAlert({
           type="button"
           onClick={onDismiss}
           aria-label={dismissLabel}
-          className="flex size-6 shrink-0 cursor-pointer items-center justify-center text-headline-lg leading-none hover:bg-destructive/10"
+          className="flex size-6 shrink-0 cursor-pointer items-center justify-center text-headline-lg font-normal leading-none hover:bg-destructive/10"
         >
           ×
         </Button>

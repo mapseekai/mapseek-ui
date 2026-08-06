@@ -229,7 +229,7 @@ function MapSearch({
         if (value === "place" || value === "coordinates") setTab(value)
       }}
       className={cn(
-        "w-full max-w-sm gap-0 overflow-hidden border border-border bg-card text-card-foreground shadow-sm",
+        "w-full max-w-sm gap-0 overflow-hidden border border-border bg-card text-card-foreground",
         className,
       )}
     >

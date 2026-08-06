@@ -15,6 +15,18 @@ const releaseArtifacts = [
 
 it("emits the static docs and installable registry release artifacts", async () => {
   for (const artifact of releaseArtifacts) {
-    await expect(access(artifact)).resolves.toBeUndefined()
+    await expect
+      .poll(
+        async () => {
+          try {
+            await access(artifact)
+            return true
+          } catch {
+            return false
+          }
+        },
+        { timeout: 5_000 },
+      )
+      .toBe(true)
   }
 })

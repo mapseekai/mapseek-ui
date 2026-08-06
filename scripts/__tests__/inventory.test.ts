@@ -11,6 +11,7 @@ const foundationalPrimitives = [
   "button",
   "copy-button",
   "card",
+  "card-tabs",
   "collapsible",
   "dialog",
   "empty",
@@ -54,6 +55,18 @@ const overlayDataAndFeedbackPrimitives = [
   "sheet",
   "sonner",
   "table",
+  "alert-dialog",
+  "aspect-ratio",
+  "breadcrumb",
+  "button-group",
+  "hover-card",
+  "item",
+  "kbd",
+  "menubar",
+  "native-select",
+  "navigation-menu",
+  "scroll-area",
+  "spinner",
 ] as const
 
 const overlayDataAndFeedbackDependencies = {
@@ -65,6 +78,18 @@ const overlayDataAndFeedbackDependencies = {
   sheet: ["@mapseek/utils"],
   sonner: [],
   table: ["@mapseek/utils"],
+  "alert-dialog": ["@mapseek/utils", "@mapseek/button"],
+  "aspect-ratio": ["@mapseek/utils"],
+  breadcrumb: ["@mapseek/utils"],
+  "button-group": ["@mapseek/utils", "@mapseek/separator"],
+  "hover-card": ["@mapseek/utils"],
+  item: ["@mapseek/utils", "@mapseek/separator"],
+  kbd: ["@mapseek/utils"],
+  menubar: ["@mapseek/utils", "@mapseek/dropdown-menu"],
+  "native-select": ["@mapseek/utils"],
+  "navigation-menu": ["@mapseek/utils"],
+  "scroll-area": ["@mapseek/utils"],
+  spinner: ["@mapseek/utils"],
 } as const
 
 const overlayDataAndFeedbackNpmDependencies = {
@@ -76,6 +101,18 @@ const overlayDataAndFeedbackNpmDependencies = {
   sheet: ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
   sonner: ["@tabler/icons-react", "next-themes", "sonner"],
   table: [],
+  "alert-dialog": ["@base-ui/react"],
+  "aspect-ratio": [],
+  breadcrumb: ["@tabler/icons-react"],
+  "button-group": ["class-variance-authority"],
+  "hover-card": ["@base-ui/react"],
+  item: ["class-variance-authority"],
+  kbd: [],
+  menubar: ["@base-ui/react"],
+  "native-select": ["@tabler/icons-react"],
+  "navigation-menu": ["@base-ui/react", "@tabler/icons-react"],
+  "scroll-area": ["@base-ui/react"],
+  spinner: ["@tabler/icons-react"],
 } as const
 
 const basePrimitives = [
@@ -202,7 +239,12 @@ const applicationShellStatusAndResourceDependencies = {
     "@mapseek/placeholder-glyph",
     "@mapseek/resource-grid",
   ],
-  "linked-ref-list": ["@mapseek/icon-button", "@mapseek/tooltip", "@mapseek/utils"],
+  "linked-ref-list": [
+    "@mapseek/card-tabs",
+    "@mapseek/icon-button",
+    "@mapseek/tooltip",
+    "@mapseek/utils",
+  ],
 } as const
 
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url))

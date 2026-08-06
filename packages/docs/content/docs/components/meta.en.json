@@ -44,6 +44,18 @@
     "textarea",
     "toggle",
     "toggle-group",
-    "tooltip"
+    "tooltip",
+    "alert-dialog",
+    "aspect-ratio",
+    "breadcrumb",
+    "button-group",
+    "hover-card",
+    "item",
+    "kbd",
+    "menubar",
+    "native-select",
+    "navigation-menu",
+    "scroll-area",
+    "spinner"
   ]
 }

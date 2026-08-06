@@ -21,9 +21,7 @@ describe("shared theme surface contract", () => {
 
     expect(theme?.cssVars.light["--primary-foreground"]).toBe("oklch(1 0 0)")
     expect(theme?.cssVars.dark["--primary-foreground"]).toBe("oklch(0.1500 0.0100 149)")
-    expect(theme?.css["@layer utilities"]?.[".bg-primary"]?.color).toBe(
-      "var(--primary-foreground)",
-    )
+    expect(theme?.css["@layer utilities"]?.[".bg-primary"]?.color).toBe("var(--primary-foreground)")
   })
 })
 

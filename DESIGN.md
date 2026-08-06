@@ -65,6 +65,12 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: 0px
+  control-md:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 12px
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: 0px
   body-sm:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 11px
@@ -76,8 +82,7 @@ typography:
     fontSize: 10px
     fontWeight: 500
     lineHeight: 1.2
-    letterSpacing: "0.06em"
-    fontFeature: '"tnum" 1, "zero" 1'
+    letterSpacing: "0.04em"
   data-display:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 42px
@@ -107,7 +112,7 @@ components:
   button-primary:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.primary-foreground}"
-    typography: "{typography.body-md}"
+    typography: "{typography.control-md}"
     rounded: "{rounded.none}"
     height: 32px
     padding: 0px 10px
@@ -117,36 +122,36 @@ components:
   button-secondary:
     backgroundColor: "{colors.secondary}"
     textColor: "{colors.secondary-foreground}"
-    typography: "{typography.body-md}"
+    typography: "{typography.control-md}"
     rounded: "{rounded.none}"
     height: 32px
     padding: 0px 10px
   button-outline:
     backgroundColor: "{colors.background}"
     textColor: "{colors.foreground}"
-    typography: "{typography.body-md}"
+    typography: "{typography.control-md}"
     rounded: "{rounded.none}"
     height: 32px
     padding: 0px 10px
   button-destructive:
     backgroundColor: "color-mix(in oklch, {colors.destructive}, transparent 90%)"
     textColor: "{colors.destructive}"
-    typography: "{typography.body-md}"
+    typography: "{typography.control-md}"
     rounded: "{rounded.none}"
     height: 32px
     padding: 0px 10px
   button-xs:
-    typography: "{typography.body-md}"
+    typography: "{typography.control-md}"
     rounded: "{rounded.none}"
     height: 24px
     padding: 0px 8px
   button-sm:
-    typography: "{typography.body-md}"
+    typography: "{typography.control-md}"
     rounded: "{rounded.none}"
     height: 28px
     padding: 0px 10px
   button-lg:
-    typography: "{typography.body-md}"
+    typography: "{typography.control-md}"
     rounded: "{rounded.none}"
     height: 36px
     padding: 0px 10px
@@ -201,14 +206,14 @@ components:
   badge:
     backgroundColor: "{colors.muted}"
     textColor: "{colors.foreground}"
-    typography: "{typography.body-md}"
+    typography: "{typography.control-md}"
     rounded: "{rounded.none}"
     height: 20px
     padding: 0px 8px
   table-header:
     backgroundColor: "{colors.muted}"
     textColor: "{colors.muted-foreground}"
-    typography: "{typography.body-md}"
+    typography: "{typography.control-md}"
     height: 40px
 ---
 
@@ -276,9 +281,10 @@ Mapseek uses **Geist Mono Variable** as its UI and data family. This single tech
 | `{typography.headline-sm}` | 14px | 500 | 1.3 | -0.01em | Card titles and grouped controls |
 | `{typography.body-base}` | 16px | 400 | 1.5 | 0 | Root document scale and prose-oriented surfaces |
 | `{typography.body-lg}` | 13px | 400 | 1.5 | 0 | Prominent interface copy and resource names |
-| `{typography.body-md}` | 12px | 400 | 1.5 | 0 | Default controls, tables, fields, and panels |
+| `{typography.body-md}` | 12px | 400 | 1.5 | 0 | Content text in tables, fields, and panels |
+| `{typography.control-md}` | 12px | 500 | 1.5 | 0 | Interactive controls, tabs, badges, and table headers |
 | `{typography.body-sm}` | 11px | 400 | 1.5 | 0 | Metadata, counts, and compact status text |
-| `{typography.label-md}` | 10px | 500 | 1.2 | 0.06em | Short taxonomy and section labels |
+| `{typography.label-md}` | 10px | 500 | 1.2 | 0.04em | Short taxonomy and section labels |
 | `{typography.data-display}` | 42px | 600 | 1 | -0.02em | Exceptional data or specimen previews |
 
 ### Type Rules

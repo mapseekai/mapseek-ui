@@ -56,7 +56,9 @@ describe("MapSearch", () => {
     expect(html).toContain('role="tablist"')
     expect(html).toContain("地名搜索")
     expect(html).toContain("经纬度搜索")
-    expect(html).toContain('aria-label="收起搜索"')
+    expect(html).toContain('aria-label="收起"')
+    expect(html).toContain(">清除</button>")
+    expect(html).toContain(">定位</button>")
     expect(html).toContain('aria-label="地名"')
   })
 
@@ -64,7 +66,7 @@ describe("MapSearch", () => {
     const html = renderToStaticMarkup(<MapSearch {...requiredProps} defaultCollapsed />)
 
     expect(html).toContain('data-slot="map-search-trigger"')
-    expect(html).toContain('aria-label="展开搜索"')
+    expect(html).toContain('aria-label="展开"')
     expect(html).not.toContain('data-slot="map-search"')
     expect(html).not.toContain('role="tablist"')
   })

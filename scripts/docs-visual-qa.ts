@@ -1900,7 +1900,7 @@ export async function assertBlockInteraction(
       localized(path, "飞行至：上海 Shanghai", "Fly to: 上海 Shanghai"),
     )
     await demo
-      .getByRole("button", { name: localized(path, "清除地名", "Clear place"), exact: true })
+      .getByRole("button", { name: localized(path, "清除", "Clear place"), exact: true })
       .click()
     await expect(placeInput).toHaveValue("")
 
@@ -1922,20 +1922,20 @@ export async function assertBlockInteraction(
     await longitude.fill("116.4074")
     await latitude.fill("39.9042")
     await demo
-      .getByRole("button", { name: localized(path, "定位坐标", "Locate coordinates"), exact: true })
+      .getByRole("button", { name: localized(path, "定位", "Locate coordinates"), exact: true })
       .click()
     await expect(demo.locator('[data-demo-status="map-search"]')).toContainText("116.4074, 39.9042")
     await demo
-      .getByRole("button", { name: localized(path, "清除坐标", "Clear coordinates"), exact: true })
+      .getByRole("button", { name: localized(path, "清除", "Clear coordinates"), exact: true })
       .click()
     await expect(longitude).toHaveValue("")
     await expect(latitude).toHaveValue("")
 
     await demo
-      .getByRole("button", { name: localized(path, "收起搜索", "Collapse search"), exact: true })
+      .getByRole("button", { name: localized(path, "收起", "Collapse search"), exact: true })
       .click()
     const expand = demo.getByRole("button", {
-      name: localized(path, "展开搜索", "Expand search"),
+      name: localized(path, "展开", "Expand search"),
       exact: true,
     })
     await expect(expand).toBeFocused()

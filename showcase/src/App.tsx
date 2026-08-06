@@ -5,7 +5,7 @@ import { Skeleton } from "@registry/ui/skeleton"
 import { ToggleGroup, ToggleGroupItem } from "@registry/ui/toggle-group"
 import { IconMoon, IconSearch, IconSun } from "@tabler/icons-react"
 import { lazy, Suspense, useEffect, useMemo, useState } from "react"
-import { type ShowcaseCategory, showcaseEntries } from "./showcases/catalog"
+import { type ShowcaseCategory, standaloneShowcaseEntries } from "./showcases/catalog"
 
 const CATEGORY_LABELS = {
   primitive: "基础组件",
@@ -23,7 +23,9 @@ function requestedShowcaseId() {
 export function App() {
   const [activeId, setActiveId] = useState(() => {
     const requestedId = requestedShowcaseId()
-    return showcaseEntries.some((entry) => entry.id === requestedId) ? requestedId : "accordion"
+    return standaloneShowcaseEntries.some((entry) => entry.id === requestedId)
+      ? requestedId
+      : "accordion"
   })
   const [query, setQuery] = useState("")
   const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"))
@@ -31,18 +33,19 @@ export function App() {
   useEffect(() => {
     const syncFromHash = () => {
       const requestedId = requestedShowcaseId()
-      if (showcaseEntries.some((entry) => entry.id === requestedId)) setActiveId(requestedId)
+      if (standaloneShowcaseEntries.some((entry) => entry.id === requestedId))
+        setActiveId(requestedId)
     }
     window.addEventListener("hashchange", syncFromHash)
     return () => window.removeEventListener("hashchange", syncFromHash)
   }, [])
 
-  const activeEntry = showcaseEntries.find((entry) => entry.id === activeId)
+  const activeEntry = standaloneShowcaseEntries.find((entry) => entry.id === activeId)
   const ActiveShowcase = useMemo(() => (activeEntry ? lazy(activeEntry.load) : null), [activeEntry])
   const visibleEntries = useMemo(() => {
     if (!activeEntry) return []
     const normalizedQuery = query.trim().toLocaleLowerCase()
-    return showcaseEntries.filter(
+    return standaloneShowcaseEntries.filter(
       (entry) =>
         entry.category === activeEntry.category &&
         (normalizedQuery.length === 0 ||
@@ -53,8 +56,8 @@ export function App() {
 
   const counts = useMemo(
     () => ({
-      primitive: showcaseEntries.filter((entry) => entry.category === "primitive").length,
-      block: showcaseEntries.filter((entry) => entry.category === "block").length,
+      primitive: standaloneShowcaseEntries.filter((entry) => entry.category === "primitive").length,
+      block: standaloneShowcaseEntries.filter((entry) => entry.category === "block").length,
     }),
     [],
   )
@@ -67,7 +70,7 @@ export function App() {
   }
 
   const selectCategory = (category: ShowcaseCategory) => {
-    const entry = showcaseEntries.find((candidate) => candidate.category === category)
+    const entry = standaloneShowcaseEntries.find((candidate) => candidate.category === category)
     if (entry) selectEntry(entry.id)
     setQuery("")
   }

@@ -1,22 +1,10 @@
-import {
-  IconChevronLeft,
-  IconCurrentLocation,
-  IconMapPin,
-  IconSearch,
-  IconX,
-} from "@tabler/icons-react"
+import { IconChevronLeft, IconSearch } from "@tabler/icons-react"
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { IconButton } from "@/components/ui/icon-button"
 import { Input } from "@/components/ui/input"
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from "@/components/ui/input-group"
 import { Spinner } from "@/components/ui/spinner"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
@@ -60,12 +48,11 @@ function PlaceResult({
       role="option"
       aria-selected={selected}
       variant="ghost"
-      className="h-auto w-full justify-start px-2 py-2 text-start whitespace-normal"
+      className="h-7 w-full justify-start px-3 py-1 text-start"
       onClick={onSelect}
     >
-      <IconMapPin data-icon="inline-start" />
-      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="truncate font-medium">{place.name}</span>
+      <span className="flex min-w-0 flex-1 items-baseline gap-3">
+        <span className="shrink-0 font-medium">{place.name}</span>
         <span className="truncate text-[11px] text-muted-foreground">
           {place.description ?? `${place.longitude}, ${place.latitude}`}
         </span>
@@ -229,12 +216,12 @@ function MapSearch({
         if (value === "place" || value === "coordinates") setTab(value)
       }}
       className={cn(
-        "w-full max-w-sm gap-0 overflow-hidden border border-border bg-card text-card-foreground",
+        "relative w-full max-w-sm gap-0 border border-border bg-card text-card-foreground",
         className,
       )}
     >
-      <div className="flex items-center border-b border-border bg-muted/40">
-        <TabsList variant="line" className="min-w-0 flex-1 border-0">
+      <div className="flex h-9 items-center border-b border-border px-2">
+        <TabsList variant="line" className="h-9 min-w-0 flex-1 border-0 p-0">
           <TabsTrigger value="place">{labels.placeTab}</TabsTrigger>
           <TabsTrigger value="coordinates">{labels.coordinatesTab}</TabsTrigger>
         </TabsList>
@@ -250,13 +237,13 @@ function MapSearch({
         </Tooltip>
       </div>
 
-      <TabsContent value="place" className="flex flex-col gap-2 p-3">
+      <TabsContent value="place" className="flex flex-col gap-1.5 p-2">
         <Field>
           <FieldLabel htmlFor={placeInputId} className="sr-only">
             {labels.placeInputLabel}
           </FieldLabel>
-          <InputGroup>
-            <InputGroupInput
+          <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-1">
+            <Input
               id={placeInputId}
               aria-label={labels.placeInputLabel}
               placeholder={labels.placePlaceholder}
@@ -267,84 +254,44 @@ function MapSearch({
                 setLocateState("idle")
               }}
             />
-            <InputGroupAddon align="inline-end">
-              {query.length > 0 && (
-                <Tooltip>
-                  <TooltipTrigger
-                    render={
-                      <InputGroupButton
-                        size="icon-xs"
-                        aria-label={labels.clearPlace}
-                        onClick={clearPlace}
-                      >
-                        <IconX />
-                      </InputGroupButton>
-                    }
-                  />
-                  <TooltipContent>{labels.clearPlace}</TooltipContent>
-                </Tooltip>
-              )}
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <InputGroupButton
-                      size="icon-xs"
-                      aria-label={labels.locatePlace}
-                      aria-busy={locateState === "loading"}
-                      disabled={!query.trim() || locateState === "loading"}
-                      onClick={locatePlace}
-                    >
-                      {locateState === "loading" ? <Spinner /> : <IconCurrentLocation />}
-                    </InputGroupButton>
-                  }
-                />
-                <TooltipContent>{labels.locatePlace}</TooltipContent>
-              </Tooltip>
-            </InputGroupAddon>
-          </InputGroup>
+            <Button type="button" variant="outline" onClick={clearPlace}>
+              {labels.clearPlace}
+            </Button>
+            <Button
+              type="button"
+              aria-busy={locateState === "loading"}
+              disabled={!query.trim() || locateState === "loading"}
+              onClick={locatePlace}
+            >
+              {locateState === "loading" ? <Spinner /> : labels.locatePlace}
+            </Button>
+          </div>
         </Field>
 
-        <div aria-live="polite" className="min-h-4 text-xs text-muted-foreground">
-          {searchState === "loading" && labels.searchLoading}
-          {searchState === "success" && results.length === 0 && labels.noResults}
-          {searchState === "error" && (
-            <span role="alert" className="text-destructive">
-              {labels.searchFailed}
-            </span>
-          )}
-          {locateState === "error" && (
-            <span role="alert" className="text-destructive">
-              {labels.locateFailed}
-            </span>
-          )}
-        </div>
-
-        {results.length > 0 && (
-          <div
-            role="listbox"
-            aria-label={labels.resultsLabel}
-            className="flex max-h-56 flex-col gap-0.5 overflow-y-auto border border-border bg-background p-1"
-          >
-            {results.map((place) => (
-              <PlaceResult
-                key={place.id}
-                place={place}
-                selected={selectedPlaceId === place.id}
-                onSelect={() => {
-                  setSelectedPlaceId(place.id)
-                  setQuery(place.name)
-                  onSelectPlace(place)
-                }}
-              />
-            ))}
+        {searchState !== "idle" || locateState === "error" ? (
+          <div aria-live="polite" className="text-xs text-muted-foreground">
+            {searchState === "loading" && labels.searchLoading}
+            {searchState === "success" && results.length === 0 && labels.noResults}
+            {searchState === "error" && (
+              <span role="alert" className="text-destructive">
+                {labels.searchFailed}
+              </span>
+            )}
+            {locateState === "error" && (
+              <span role="alert" className="text-destructive">
+                {labels.locateFailed}
+              </span>
+            )}
           </div>
-        )}
+        ) : null}
       </TabsContent>
 
-      <TabsContent value="coordinates" className="flex flex-col gap-3 p-3">
-        <FieldGroup className="grid gap-3 @sm/field-group:grid-cols-2">
+      <TabsContent value="coordinates" className="flex flex-col gap-1.5 p-2">
+        <FieldGroup className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_auto] items-start gap-1">
           <Field data-invalid={Boolean(longitudeError)}>
-            <FieldLabel htmlFor={longitudeInputId}>{labels.longitudeLabel}</FieldLabel>
+            <FieldLabel htmlFor={longitudeInputId} className="sr-only">
+              {labels.longitudeLabel}
+            </FieldLabel>
             <Input
               id={longitudeInputId}
               inputMode="decimal"
@@ -358,7 +305,9 @@ function MapSearch({
             <FieldError id={longitudeErrorId}>{longitudeError}</FieldError>
           </Field>
           <Field data-invalid={Boolean(latitudeError)}>
-            <FieldLabel htmlFor={latitudeInputId}>{labels.latitudeLabel}</FieldLabel>
+            <FieldLabel htmlFor={latitudeInputId} className="sr-only">
+              {labels.latitudeLabel}
+            </FieldLabel>
             <Input
               id={latitudeInputId}
               inputMode="decimal"
@@ -371,18 +320,35 @@ function MapSearch({
             />
             <FieldError id={latitudeErrorId}>{latitudeError}</FieldError>
           </Field>
-        </FieldGroup>
-        <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" size="sm" onClick={clearCoordinates}>
-            <IconX data-icon="inline-start" />
+          <Button type="button" variant="outline" onClick={clearCoordinates}>
             {labels.clearCoordinates}
           </Button>
-          <Button type="button" size="sm" onClick={locateCoordinates}>
-            <IconCurrentLocation data-icon="inline-start" />
+          <Button type="button" onClick={locateCoordinates}>
             {labels.locateCoordinates}
           </Button>
-        </div>
+        </FieldGroup>
       </TabsContent>
+
+      {tab === "place" && results.length > 0 ? (
+        <div
+          role="listbox"
+          aria-label={labels.resultsLabel}
+          className="absolute inset-x-0 top-full z-10 mt-1 flex max-h-56 flex-col overflow-y-auto border border-border bg-popover p-1"
+        >
+          {results.map((place) => (
+            <PlaceResult
+              key={place.id}
+              place={place}
+              selected={selectedPlaceId === place.id}
+              onSelect={() => {
+                setSelectedPlaceId(place.id)
+                setQuery(place.name)
+                onSelectPlace(place)
+              }}
+            />
+          ))}
+        </div>
+      ) : null}
     </Tabs>
   )
 }

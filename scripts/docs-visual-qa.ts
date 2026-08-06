@@ -868,6 +868,12 @@ const blockPages = [
     importPath: "@registry/blocks/map-controls",
   },
   {
+    name: "map-search",
+    demo: "map-search",
+    sourceFunction: "MapSearchDemo",
+    importPath: "@registry/blocks/map-search",
+  },
+  {
     name: "map-coordinate-status",
     demo: "map-coordinate-status",
     sourceFunction: "MapCoordinateStatusDemo",
@@ -1877,6 +1883,64 @@ export async function assertBlockInteraction(
     await expect(demo.locator('[data-demo-status="map-controls"]')).toContainText(
       localized(path, "已归位", "Returned home"),
     )
+  }
+
+  if (block === "map-search") {
+    const demo = page.locator('[data-demo="map-search"]')
+    const placeInput = demo.getByRole("textbox", {
+      name: localized(path, "地名", "Place"),
+      exact: true,
+    })
+    await placeInput.fill(localized(path, "北京", "Beijing"))
+    await page.waitForTimeout(320)
+    await placeInput.fill(localized(path, "上海", "Shanghai"))
+    await demo.getByRole("option", { name: /上海 Shanghai/ }).click()
+    await expect(demo.getByRole("option", { name: /北京 Beijing/ })).toHaveCount(0)
+    await expect(demo.locator('[data-demo-status="map-search"]')).toContainText(
+      localized(path, "飞行至：上海 Shanghai", "Fly to: 上海 Shanghai"),
+    )
+    await demo
+      .getByRole("button", { name: localized(path, "清除地名", "Clear place"), exact: true })
+      .click()
+    await expect(placeInput).toHaveValue("")
+
+    await demo
+      .getByRole("tab", { name: localized(path, "经纬度搜索", "Coordinates"), exact: true })
+      .click()
+    const longitude = demo.getByRole("textbox", {
+      name: localized(path, "经度", "Longitude"),
+      exact: true,
+    })
+    const latitude = demo.getByRole("textbox", {
+      name: localized(path, "纬度", "Latitude"),
+      exact: true,
+    })
+    await longitude.fill("181")
+    await expect(demo.getByRole("alert")).toContainText(
+      localized(path, "经度必须在 -180 至 180 之间", "Longitude must be between -180 and 180"),
+    )
+    await longitude.fill("116.4074")
+    await latitude.fill("39.9042")
+    await demo
+      .getByRole("button", { name: localized(path, "定位坐标", "Locate coordinates"), exact: true })
+      .click()
+    await expect(demo.locator('[data-demo-status="map-search"]')).toContainText("116.4074, 39.9042")
+    await demo
+      .getByRole("button", { name: localized(path, "清除坐标", "Clear coordinates"), exact: true })
+      .click()
+    await expect(longitude).toHaveValue("")
+    await expect(latitude).toHaveValue("")
+
+    await demo
+      .getByRole("button", { name: localized(path, "收起搜索", "Collapse search"), exact: true })
+      .click()
+    const expand = demo.getByRole("button", {
+      name: localized(path, "展开搜索", "Expand search"),
+      exact: true,
+    })
+    await expect(expand).toBeFocused()
+    await expand.click()
+    await expect(demo.getByRole("tablist")).toBeVisible()
   }
 
   if (block === "map-coordinate-status") {

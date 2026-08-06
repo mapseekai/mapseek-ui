@@ -448,6 +448,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "map-search",
+    {
+      category: "block",
+    },
+  ],
+  [
     "map-switcher",
     {
       category: "block",

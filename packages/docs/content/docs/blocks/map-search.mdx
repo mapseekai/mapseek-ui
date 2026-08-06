@@ -1,0 +1,58 @@
+---
+title: "MapSearch"
+registryName: map-search
+category: block
+stability: stable
+showcase: map-search
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+MapSearch 把地名检索与经纬度检索组合成一个可收起的地图搜索浮层。组件管理输入、候选、异步状态和坐标校验，地理编码与地图飞行由调用方通过回调实现。
+
+## 安装
+
+<RegistryInstall registryName="map-search" />
+
+## 导入
+
+```tsx
+import {
+  MapSearch,
+  type MapCoordinates,
+  type MapSearchLabels,
+  type MapSearchProps,
+  type PlaceSearchResult,
+} from "@/registry/blocks/map-search"
+```
+
+## 地名与经纬度搜索
+
+<ShowcaseDemo registryName="map-search" title="地图搜索" description="输入地名查看异步候选，或切换到经纬度输入并体验越界校验、定位、清除和收起恢复。" minHeight={520} />
+
+## 回调契约
+
+`onSearchPlace(keyword, signal)` 返回候选地点；新请求会中止旧请求，因此数据源应响应 `AbortSignal`。点击候选调用 `onSelectPlace(place)`，点击地名定位按钮调用 `onLocatePlace(keyword)`，合法坐标通过 `onLocateCoordinates({ longitude, latitude })` 交给地图应用。
+
+```tsx
+<MapSearch
+  onSearchPlace={(keyword, signal) => geocoder.search(keyword, { signal })}
+  onSelectPlace={(place) => map.flyTo([place.longitude, place.latitude])}
+  onLocatePlace={(keyword) => locateKeyword(keyword)}
+  onLocateCoordinates={({ longitude, latitude }) => map.flyTo([longitude, latitude])}
+/>
+```
+
+## 状态与校验
+
+空关键词不会触发检索，默认防抖为 300ms。加载、空结果、检索失败和定位失败都有可感知反馈。经度范围为 `[-180, 180]`，纬度范围为 `[-90, 90]`；可解析的越界值会立即显示错误，空值和非数字在失焦或尝试定位后提示。切换 Tab 或收起不会丢失当前输入。
+
+## 本地化与无障碍
+
+组件提供中文默认文案，可用 `labels: Partial<MapSearchLabels>` 覆盖。Tabs 支持键盘切换，候选项可聚焦并用回车选择，纯图标按钮带可访问名称和 Tooltip，字段错误通过 `aria-invalid` 与描述文本关联。
+
+## 依赖
+
+<RegistryDependencies registryName="map-search" />

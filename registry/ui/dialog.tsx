@@ -1,6 +1,6 @@
-import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { IconX } from "@tabler/icons-react"
+import type * as React from "react"
 import { cn } from "@/registry/lib/utils"
 
 const Dialog = DialogPrimitive.Root
@@ -46,9 +46,12 @@ function DialogContent({
     <DialogPortal>
       <DialogBackdrop />
       <DialogPrimitive.Popup
+        data-slot="dialog-content"
+        data-layout={title ? "legacy" : "compound"}
         className={cn(
-          "fixed top-1/2 left-1/2 z-[1060] -translate-x-1/2 -translate-y-1/2 border border-border bg-card shadow-lg outline-none",
+          "fixed top-1/2 left-1/2 z-[1060] grid max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 border border-border bg-card shadow-lg outline-none",
           "transition-opacity duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+          title ? "gap-0 p-0" : "gap-4 p-4",
           className,
         )}
         style={{ width }}
@@ -85,14 +88,15 @@ function DialogContent({
 }
 
 function DialogBody({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("p-4", className)} {...props} />
+  return <div className={cn("in-data-[layout=legacy]:p-4", className)} {...props} />
 }
 
 function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "flex min-h-9 items-center justify-end gap-2 border-t border-border bg-muted/40 px-4 py-2",
+        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+        "in-data-[layout=legacy]:border-t in-data-[layout=legacy]:border-border in-data-[layout=legacy]:bg-muted/40 in-data-[layout=legacy]:px-4 in-data-[layout=legacy]:py-2",
         className,
       )}
       {...props}
@@ -101,27 +105,15 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 /**
- * Compound parts for callers that prefer the shadcn-style header
- * pattern over DialogContent's `title=` / `description=` props.
- *
- * Use them inside `<DialogContent hideClose>` so the wrapper does NOT
- * also render its built-in header strip — otherwise you'll get two
- * stacked titles.
- *
- *   <DialogContent hideClose>
- *     <DialogHeader>
- *       <DialogTitle>X</DialogTitle>
- *       <DialogDescription>Y</DialogDescription>
- *     </DialogHeader>
- *     <DialogBody>…</DialogBody>
- *     <DialogFooter>…</DialogFooter>
- *   </DialogContent>
+ * Compound parts follow the shadcn DialogContent → DialogHeader / body /
+ * DialogFooter structure. The legacy `title=` API keeps its own compact
+ * header strip until consumers migrate to the compound form.
  */
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-1 border-b border-border px-4 py-3", className)}
+      className={cn("flex flex-col gap-1 text-start", className)}
       {...props}
     />
   )
@@ -150,14 +142,14 @@ function DialogDescription({
 
 export {
   Dialog,
-  DialogTrigger,
-  DialogClose,
-  DialogPortal,
   DialogBackdrop,
-  DialogContent,
   DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogPortal,
   DialogTitle,
-  DialogDescription,
+  DialogTrigger,
 }

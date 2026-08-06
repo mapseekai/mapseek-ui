@@ -59,8 +59,10 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
+        data-layout={title ? "legacy" : "compound"}
         className={cn(
-          "fixed top-1/2 inset-s-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] gap-4 -translate-x-1/2 rtl:translate-x-1/2 -translate-y-1/2 rounded-none bg-popover p-4 text-xs/relaxed text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "fixed top-1/2 inset-s-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 rtl:translate-x-1/2 -translate-y-1/2 rounded-none bg-popover text-xs/relaxed text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          title ? "gap-0 p-0" : "gap-4 p-4",
           width && "sm:max-w-none",
           className,
         )}
@@ -68,7 +70,7 @@ function DialogContent({
         {...props}
       >
         {title && (
-          <DialogHeader>
+          <DialogHeader className="border-b border-border px-4 py-2">
             <DialogTitle>{title}</DialogTitle>
             {description && <DialogDescription>{description}</DialogDescription>}
           </DialogHeader>
@@ -89,9 +91,14 @@ function DialogContent({
 }
 
 function DialogBody({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={className} {...props} />
+  return <div className={cn("in-data-[layout=legacy]:p-4", className)} {...props} />
 }
 
+/**
+ * Compound parts follow the shadcn DialogContent → DialogHeader / body /
+ * DialogFooter structure. The legacy `title=` API keeps its own compact
+ * header strip until consumers migrate to the compound form.
+ */
 function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
@@ -113,7 +120,11 @@ function DialogFooter({
   return (
     <div
       data-slot="dialog-footer"
-      className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
+      className={cn(
+        "flex flex-col-reverse gap-2 sm:flex-row sm:justify-end",
+        "in-data-[layout=legacy]:border-t in-data-[layout=legacy]:border-border in-data-[layout=legacy]:bg-muted/40 in-data-[layout=legacy]:px-4 in-data-[layout=legacy]:py-2",
+        className,
+      )}
       {...props}
     >
       {children}

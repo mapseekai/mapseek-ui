@@ -199,6 +199,18 @@
             "font-feature-settings": "\"tnum\" 1, \"zero\" 1"
           },
           ".tnum": { "font-variant-numeric": "tabular-nums" }
+        },
+        "@keyframes accordion-down": {
+          "from": { "height": "0", "opacity": "0" },
+          "to": { "height": "var(--accordion-panel-height)", "opacity": "1" }
+        },
+        "@keyframes accordion-up": {
+          "from": { "height": "var(--accordion-panel-height)", "opacity": "1" },
+          "to": { "height": "0", "opacity": "0" }
+        },
+        "@keyframes progress-indeterminate": {
+          "from": { "transform": "translateX(-120%)" },
+          "to": { "transform": "translateX(340%)" }
         }
       }
     }

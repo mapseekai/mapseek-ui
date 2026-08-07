@@ -1,3 +1,4 @@
+import type { ButtonHTMLAttributes } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
 import { describe, expect, it, vi } from "vitest"
 
@@ -20,7 +21,18 @@ vi.mock("@/components/ui/field", () => ({
   FieldGroup: "div",
   FieldLabel: "label",
 }))
-vi.mock("@/components/ui/icon-button", () => ({ IconButton: "button" }))
+vi.mock("@/components/ui/icon-button", () => ({
+  IconButton: ({
+    children,
+    label,
+    tooltip: _tooltip,
+    ...props
+  }: ButtonHTMLAttributes<HTMLButtonElement> & { label: string; tooltip?: boolean | string }) => (
+    <button {...props} aria-label={label}>
+      {children}
+    </button>
+  ),
+}))
 vi.mock("@/components/ui/input", () => ({ Input: "input" }))
 vi.mock("@/components/ui/input-group", () => ({
   InputGroup: "fieldset",

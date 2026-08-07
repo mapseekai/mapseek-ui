@@ -169,10 +169,8 @@ export function MapCoordinateStatus({
           key={item.key}
           className="flex min-h-7 items-center border-l border-border px-1.5 whitespace-nowrap sm:min-h-0 sm:px-2.5"
         >
-          <span className="mr-1.5 text-[10px] tracking-[0.04em] text-muted-foreground uppercase">
-            {item.label}
-          </span>
-          {item.value}
+          <span className="mr-1.5 text-label-md text-muted-foreground uppercase">{item.label}</span>
+          <span className="tnum">{item.value}</span>
         </div>
       ))}
     </div>

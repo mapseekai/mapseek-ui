@@ -68,7 +68,7 @@ function ConfirmProvider({ children }: { children: React.ReactNode }) {
           <DialogContent
             width={420}
             title={
-              <span className="inline-flex items-center gap-2 leading-none">
+              <span className="flex min-h-5 items-center gap-2 leading-none">
                 {isDestructive && (
                   <IconAlertTriangle size={16} stroke={1.8} className="shrink-0 text-destructive" />
                 )}

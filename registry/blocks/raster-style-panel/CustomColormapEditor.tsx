@@ -29,7 +29,7 @@ function SectionHead({
   trailing?: React.ReactNode
 }) {
   return (
-    <div className="flex items-center gap-1.5 font-mono text-[10px] tracking-[0.06em] uppercase text-muted-foreground">
+    <div className="flex items-center gap-1.5 font-mono text-label-md uppercase text-muted-foreground">
       <Icon size={11} stroke={1.75} />
       <span>{title}</span>
       {trailing != null && (

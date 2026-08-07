@@ -7,7 +7,6 @@ import {
 } from "@tabler/icons-react"
 import { CopyButton } from "@/components/ui/copy-button"
 import { IconButton } from "@/components/ui/icon-button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import type { PixelField, PixelProbeProps } from "./types"
 
@@ -16,10 +15,8 @@ function FieldRow({ field }: { field: PixelField }) {
   return (
     <div className="flex flex-col gap-[3px]">
       <div className="flex items-center gap-1.5">
-        <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-muted-foreground">
-          {field.key}
-        </span>
-        <span className="border border-border bg-muted px-1 py-px font-mono text-label-md font-normal uppercase text-muted-foreground">
+        <span className="font-mono text-label-md uppercase text-muted-foreground">{field.key}</span>
+        <span className="border border-border bg-muted px-1 py-px font-mono text-label-md uppercase text-muted-foreground">
           {field.type}
         </span>
         {field.locked && <IconLock size={11} className="ml-auto text-muted-foreground" />}
@@ -88,7 +85,7 @@ export function PixelProbe({
           />
         )}
         {onClose && (
-          <IconButton size="sm" onClick={onClose} title={labels.close}>
+          <IconButton size="xs" label={labels.close} tooltip onClick={onClose}>
             <IconX stroke={1.75} />
           </IconButton>
         )}
@@ -105,31 +102,17 @@ export function PixelProbe({
       {showFooter && (
         <div className="flex items-center gap-1.5 border-t border-border px-3 py-2">
           <span className="flex-1" />
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <IconButton size="sm" onClick={onPrev}>
-                  <IconChevronLeft stroke={1.75} />
-                </IconButton>
-              }
-            />
-            <TooltipContent>{labels.prev}</TooltipContent>
-          </Tooltip>
+          <IconButton size="xs" label={labels.prev} tooltip onClick={onPrev}>
+            <IconChevronLeft stroke={1.75} />
+          </IconButton>
           {index != null && (
             <span className="font-mono text-[10px] tracking-[0.04em] text-muted-foreground">
               {labels.pointPrefix} {index}
             </span>
           )}
-          <Tooltip>
-            <TooltipTrigger
-              render={
-                <IconButton size="sm" onClick={onNext}>
-                  <IconChevronRight stroke={1.75} />
-                </IconButton>
-              }
-            />
-            <TooltipContent>{labels.next}</TooltipContent>
-          </Tooltip>
+          <IconButton size="xs" label={labels.next} tooltip onClick={onNext}>
+            <IconChevronRight stroke={1.75} />
+          </IconButton>
         </div>
       )}
     </div>

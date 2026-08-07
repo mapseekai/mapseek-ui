@@ -37,7 +37,7 @@ function ButtonGroupText({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="button-group-text"
       className={cn(
-        "flex h-8 items-center border border-border bg-muted px-2.5 text-body-md text-muted-foreground",
+        "flex h-auto items-center border border-border bg-muted px-2.5 text-body-md text-muted-foreground",
         className,
       )}
       {...props}

@@ -10,4 +10,9 @@ export interface LayerPanelLabels {
   readonly zoomToLayer: string
   readonly attributeTable: string
   readonly delete: string
+  readonly collapse: string
+  readonly expand: string
+  readonly showLayer: (name: string) => string
+  readonly hideLayer: (name: string) => string
+  readonly deleteLayer: (name: string) => string
 }

@@ -4,7 +4,6 @@ import { useState } from "react"
 
 import { CardTabs, CardTabsContent, CardTabsList, CardTabsTrigger } from "@/components/ui/card-tabs"
 import { IconButton } from "@/components/ui/icon-button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 import type {
@@ -127,7 +126,7 @@ function ItemRow({
   item: LinkedRefItem
   kind: LinkedRefKind
   icon: ReactNode
-  openLabel?: string
+  openLabel: string
 }) {
   return (
     <li className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border px-3 py-3 last:border-b-0 sm:flex-nowrap sm:gap-3 sm:px-4">
@@ -153,26 +152,12 @@ function ItemRow({
       ) : null}
       {item.status ? <StatusPill status={item.status} /> : null}
       <span className="flex shrink-0 items-center gap-1">
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <IconButton size="sm" disabled aria-label={openLabel}>
-                <IconExternalLink stroke={1.5} />
-              </IconButton>
-            }
-          />
-          <TooltipContent>{openLabel}</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <IconButton size="sm" disabled aria-label={openLabel}>
-                <IconLink stroke={1.5} />
-              </IconButton>
-            }
-          />
-          <TooltipContent>{openLabel}</TooltipContent>
-        </Tooltip>
+        <IconButton size="xs" disabled label={openLabel} tooltip>
+          <IconExternalLink stroke={1.5} />
+        </IconButton>
+        <IconButton size="xs" disabled label={openLabel} tooltip>
+          <IconLink stroke={1.5} />
+        </IconButton>
       </span>
     </li>
   )

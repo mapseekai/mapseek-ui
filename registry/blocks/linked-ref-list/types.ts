@@ -28,5 +28,5 @@ export type LinkedRefGroup = {
 export type LinkedRefListProps = {
   groups: LinkedRefGroup[]
   kindIcons: Record<LinkedRefKind, ReactNode>
-  openLabel?: string
+  openLabel: string
 }

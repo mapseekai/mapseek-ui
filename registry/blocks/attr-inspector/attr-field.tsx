@@ -125,10 +125,8 @@ function FieldHeader({
 }) {
   return (
     <div className="mb-[3px] flex items-center gap-1.5">
-      <span className="font-mono text-[10px] tracking-[0.04em] uppercase text-muted-foreground">
-        {name}
-      </span>
-      <span className="border border-border bg-muted px-1 py-px font-mono text-label-md font-normal uppercase text-muted-foreground">
+      <span className="font-mono text-label-md uppercase text-muted-foreground">{name}</span>
+      <span className="border border-border bg-muted px-1 py-px font-mono text-label-md uppercase text-muted-foreground">
         {badge}
       </span>
       {readOnly && <span className="flex-1" />}

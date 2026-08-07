@@ -203,21 +203,15 @@ function MapSearch({
 
   if (collapsed) {
     return (
-      <Tooltip>
-        <TooltipTrigger
-          render={
-            <IconButton
-              ref={expandButtonRef}
-              data-slot="map-search-trigger"
-              aria-label={labels.expand}
-              onClick={() => setCollapsed(false)}
-            >
-              <IconSearch />
-            </IconButton>
-          }
-        />
-        <TooltipContent>{labels.expand}</TooltipContent>
-      </Tooltip>
+      <IconButton
+        ref={expandButtonRef}
+        data-slot="map-search-trigger"
+        label={labels.expand}
+        tooltip
+        onClick={() => setCollapsed(false)}
+      >
+        <IconSearch />
+      </IconButton>
     )
   }
 
@@ -238,16 +232,9 @@ function MapSearch({
           <TabsTrigger value="place">{labels.placeTab}</TabsTrigger>
           <TabsTrigger value="coordinates">{labels.coordinatesTab}</TabsTrigger>
         </TabsList>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <IconButton size="sm" aria-label={labels.collapse} onClick={() => setCollapsed(true)}>
-                <IconChevronLeft />
-              </IconButton>
-            }
-          />
-          <TooltipContent>{labels.collapse}</TooltipContent>
-        </Tooltip>
+        <IconButton size="xs" label={labels.collapse} tooltip onClick={() => setCollapsed(true)}>
+          <IconChevronLeft />
+        </IconButton>
       </div>
 
       <TabsContent value="place" className="flex flex-col gap-2 p-3">

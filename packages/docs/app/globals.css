@@ -108,7 +108,7 @@ article > div[class~="@container"] > a {
 
 article > div[class~="@container"] > a:is(:hover, :focus-visible) {
   border-color: var(--primary);
-  background: color-mix(in oklch, var(--accent) 50%, transparent);
+  background: color-mix(in oklab, var(--accent) 50%, transparent);
 }
 
 [data-showcase-root] table,

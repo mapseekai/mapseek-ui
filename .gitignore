@@ -21,3 +21,6 @@ docs/provenance.md
 docs/superpowers/
 task-*-report.md
 /.worktrees/
+.pnpm-store/v10/
+.omx/plans/
+dist/showcase/

@@ -228,8 +228,8 @@ components:
     rounded: "{rounded.none}"
     padding: 10px
   badge:
-    backgroundColor: "{colors.muted}"
-    textColor: "{colors.foreground}"
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.primary-foreground}"
     typography: "{typography.body-md-medium}"
     rounded: "{rounded.none}"
     height: 20px
@@ -276,8 +276,9 @@ Mapseek 使用由低彩度中性色包围的绿色轴 OKLCH 调色板。主绿�
 ### Action, State, and Text
 
 - **Primary**（`{colors.primary}`）是唯一高强调动作、选中导航样式、键盘焦点来源和有限的进度强调；其前景色为 `{colors.primary-foreground}`。
+- **焦点环** 统一使用 20% 透明度的 `{colors.ring}`，宽度为 3px，适用于所有键盘可聚焦控件。
 - **Secondary**（`{colors.secondary}`）和 **accent**（`{colors.accent}`）用于低强调动作和成组选项；前景色使用对应的 `*-foreground` 令牌。
-- **交互与选择** 使用不同表面：普通可交互元素默认使用 50% 透明度的 `{colors.accent}`，与文档侧栏 hover 处理保持一致。持续选中状态使用完整的 `{colors.selection-bg}` token 和 `{colors.primary}` 文字，并可递进至 `{colors.selection-bg-deep}`；选中、展开和激活元素在 hover 时保持原状态表面与主色文字，不再应用普通 hover 处理。同时必须搭配选中语义、边缘、勾选或其他持续性标识。
+- **交互与选择** 使用不同表面：普通可交互元素默认使用 50% 透明度的 `{colors.accent}`，与文档侧栏 hover 处理保持一致。持续选中状态使用完整的 `{colors.selection-bg}` token 和 `{colors.primary}` 文字，并可递进至 `{colors.selection-bg-deep}`；选中、展开和激活元素在 hover 时保持原状态表面与主色文字，不再应用普通 hover 处理。同时必须搭配选中语义、边缘、勾选或其他持续性标识。卡片类元素（资源卡片、图标瓦片）为醒目例外:hover 与选中均使用 `{colors.primary}` 5% 填充加 1px 主色绿框；选中态以同样的填充和绿框作为持续标识，并搭配选中语义或勾选标记。拖拽与缩放手柄（分割条、排序握把）是另一类例外:hover 使用 `{colors.primary}` 色调（如 40%）作为动作可供性信号，因为中性 50% accent 填充在细条手柄上无法辨识。
 - **Destructive**、**warning** 与 **info** 是语义信号，不是装饰分类；必须搭配文字或图标，破坏性动作使用浅色调而非实心红色。
 
 ### Surfaces, Borders, and Dark Theme
@@ -361,8 +362,10 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 | Flat | 仅背景 | 应用框架、地图画布、内容区域 |
 | Structured | 1px `{colors.border}` | 面板、表格、卡片、成组控件 |
 | Selected | 选中填充加主色边缘或指示器 | 当前行、资源、图层或导航项 |
-| Floating | 带 1px 边界或 ring 的 Popover 表面 | 菜单、popover、tooltip、dialog、toast |
+| Floating | 带 1px 边界或 ring 的 Popover 表面 | 菜单、popover、dialog、toast |
 | Map floating | 带边界且对比清晰的表面 | 直接位于地图内容上方的控件 |
+
+- Tooltip 是有意例外：使用反色表面（`{colors.foreground}` 填充配 `{colors.background}` 文字，无边界），让提示与可交互 popover、菜单保持视觉区分。
 
 - 所有组件阴影令牌默认解析为 `none`；使用边界、轮廓和表面对比建立层级。
 - Dialog 遮罩保持轻量（`black/10`），可使用小幅 blur 以保留空间上下文。
@@ -373,7 +376,7 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 
 零圆角是 Mapseek 的决定性特征。矩形控件、字段、卡片、表格、菜单、popover、dialog、sheet 和面板均使用 `{rounded.none}`；不得重新引入框架默认圆角。
 
-- `{rounded.full}` 仅用于天然圆形的状态点、头像遮罩、switch 轨道和 switch 拇指。
+- `{rounded.full}` 仅用于天然圆形的状态点、头像遮罩、radio 控件、switch 轨道和 switch 拇指，以及细窄的拖拽/缩放握把。
 - 纯图标控件为正方形，并遵循 24px、28px、32px、36px 尺寸体系。
 - Tabler Icons 是默认图标语言；同一工具栏或行中保持一致的图标尺寸和 stroke。
 - 分隔线为 1px；不要叠加描边、使用粗线或增加装饰边框来制造层级。
@@ -388,7 +391,8 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 
 - **`button-primary`** 是高 32px、12px 字体、10px 水平内边距的绿色动作；每个局部任务仅有一个主导动作。Hover 降低主色强度，按下可下移 1px，焦点应有可见 ring。
 - **outline、secondary、ghost、link 变体**在不创建新动作色的前提下保持层级；`link` 仅用于真实行内导航或低框架动作。
-- **`button-destructive`** 使用浅色危险表面与危险文字；结果不可逆或难以恢复时要求确认。
+- **`button-destructive`** 使用浅色危险表面、`border-destructive/10` 边框与危险文字；hover 时表面与边框同时提升为 `hover:bg-destructive/20` 和 `hover:border-destructive/20`。结果不可逆或难以恢复时要求确认。
+- **`button-group`** 以共用边缘连接相关 Button 控件；可横向或纵向排列，折叠相邻内部边框，并将获得焦点的子项提升至相邻项之上。
 - **图标按钮**为 24–36px 正方形，必须有可访问名称；图标含义不自明时增加 tooltip。
 
 ### Forms and Selection
@@ -396,7 +400,9 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 - **`input`** 高 32px、方形、12px 字体、1px 输入边界、10px 水平内边距，并使用透明的亮色主题填充；placeholder 提供辅助，不能取代标签。
 - **透明输入框对比度契约。** `input`、`textarea` 和 `input-group` 使用 `{colors.input-surface}`，因此文字对比度必须在与承载表面合成后评估。它们只能置于 `background`、`card` 或 `popover`；每个支持主题中，文字对比度矩阵必须达到 4.5:1。不得置于 primary、destructive、影像、地图、数据可视化或其他未列出的彩色表面。`muted` 在显式加入对比度矩阵前不属于允许承载表面。
 - **`field`** 组合标签、说明、控件和错误信息；无效控件应暴露 `aria-invalid` 和可见错误文案；`FieldError` 通过 `role="alert"` 宣告。
+- **`button-radio-group`** 是相连的单选选择控件。`default` 的选中态为实心 `{colors.primary}` 与 `{colors.primary-foreground}` 文字；`soft` 的选中态使用 `{colors.selection-bg}` 与 `{colors.primary}` 文字，并在 hover 时保持选中态。它支持 24/28/32/36px 的 `xs`/`sm`/`default`/`lg` 高度。
 - **checkbox、switch、slider、select、combobox、toggle、tabs** 保持既有 Base UI 键盘语义；勾选和选中状态必须有 hover 之外的持续性标识。
+- **`switch`** 保留紧凑的视觉轨道：`default` 为 32×18.4px、拇指为 16px，`sm` 为 24×14px、拇指为 12px。其 `after` 指针目标在视觉轨道上下各扩展 8px；这些轨道是通用控件高度刻度的明确例外。
 
 ### Containers and Overlays
 
@@ -407,7 +413,7 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 ### Data and Domain Blocks
 
 - **`table`** 有边界并可横向滚动；表头高 40px，紧凑单元格仍保持可读的 12px 数据字体。
-- **`badge`** 高 20px、水平内边距 8px，仅承载短状态或分类标签。
+- **`badge`** 高 20px、水平内边距 8px，仅承载短状态或分类标签。默认表面为品牌绿底配反白文字；`secondary`、着色 `destructive`、`outline`（primary 描边与文字）、`ghost`、`link` 变体覆盖其余层级。
 - **progress、skeleton、empty、sonner、notification center** 的反馈范围应匹配任务范围；持久状态不得只存在于短暂 toast。
 - **MapControls、MapCoordinateStatus、MapSwitcher** 使用地图专用浮动层级，并保留标签或 tooltip。
 - **ResourceSidebar、ResourceGrid、LayerPanel、LayerStyleEditor、AttrTable、AttrInspector、GeoJSONView、JSONEditor** 应保持与基础组件一致的数据密度、注入标签、溢出处理和状态可见性。

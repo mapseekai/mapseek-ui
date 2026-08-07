@@ -1,6 +1,45 @@
 import { readFile } from "node:fs/promises"
-import { expect, it } from "vitest"
+import { type ComponentType, createElement } from "react"
+import { renderToStaticMarkup } from "react-dom/server"
+import { expect, it, vi } from "vitest"
 import { rawTypeBadgeClass } from "./columns"
+import type { ColumnDef, RowSource } from "./types"
+import { VirtualTable } from "./virtual-table"
+
+vi.mock("@tanstack/react-virtual", () => ({
+  useVirtualizer: () => ({
+    getVirtualItems: () => [{ index: 0, key: "row-0", start: 0 }],
+    getTotalSize: () => 36,
+    measureElement: () => undefined,
+  }),
+}))
+
+vi.mock("@/components/ui/button", () => ({ Button: () => null }))
+vi.mock("@/components/ui/skeleton", () => ({ Skeleton: () => null }))
+vi.mock("@/components/ui/tooltip", () => ({
+  Tooltip: ({ children }: { children: unknown }) => children,
+  TooltipContent: () => null,
+  TooltipProvider: ({ children }: { children: unknown }) => children,
+  TooltipTrigger: ({ render }: { render: unknown }) => render,
+}))
+vi.mock("@/lib/utils", () => ({
+  cn: (...values: Array<string | false | null | undefined>) => values.filter(Boolean).join(" "),
+}))
+
+type TestRow = { value: string }
+
+type TestVirtualTableProps = {
+  columns: ColumnDef[]
+  source: RowSource<TestRow>
+  getRowKey: (row: TestRow | undefined, index: number) => string | number
+  renderCell: (row: TestRow, col: ColumnDef) => React.ReactNode
+  getCellText: (row: TestRow, col: ColumnDef) => string | undefined
+  emptyLabel: string
+  errorRetryLabel: string
+  indexColLabel: string
+}
+
+const VirtualTableWithCellText = VirtualTable as unknown as ComponentType<TestVirtualTableProps>
 
 it.each([
   ["varchar(64)", "border-cat-1/30 bg-cat-1/10 text-cat-1"],
@@ -14,6 +53,33 @@ it.each([
 
 it("uses a neutral tag for unknown field types", () => {
   expect(rawTypeBadgeClass("custom_domain")).toContain("border-border bg-muted/50")
+})
+
+it("does not attach a native title before a data cell overflows", () => {
+  const fullValue = "parcel-2026-08-06-northwest-coastal-protection-corridor"
+  const source: RowSource<TestRow> = {
+    totalCount: 1,
+    getRow: (index) => (index === 0 ? { value: fullValue } : undefined),
+    scrollKey: "long-value",
+    isInitialLoading: false,
+    error: null,
+    refetch: () => undefined,
+  }
+
+  const html = renderToStaticMarkup(
+    createElement(VirtualTableWithCellText, {
+      columns: [{ name: "identifier", rawType: "text" }],
+      source,
+      getRowKey: (row, index) => row?.value ?? index,
+      renderCell: (row) => createElement("span", { className: "font-medium" }, row.value),
+      getCellText: (row) => row.value,
+      emptyLabel: "No rows",
+      errorRetryLabel: "Retry",
+      indexColLabel: "#",
+    }),
+  )
+
+  expect(html).not.toContain(`title="${fullValue}"`)
 })
 
 it("uses shared controls and square themed scrollbars", async () => {

@@ -33,9 +33,7 @@ function fontClass(family: FontDetail["family"]): string {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
-      {children}
-    </div>
+    <div className="mb-2 font-mono text-label-md text-muted-foreground uppercase">{children}</div>
   )
 }
 
@@ -331,7 +329,7 @@ function FontBody({
       )}
       {slicing && open && (
         <div className="px-4 py-3.5">
-          <div className="mb-2 flex items-center font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+          <div className="mb-2 flex items-center font-mono text-label-md text-muted-foreground uppercase">
             <span>{slicing.panelTitle}</span>
             <Button
               variant="ghost"
@@ -374,7 +372,7 @@ function FontBody({
               )
             })}
           </div>
-          <div className="mt-3 mb-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+          <div className="mt-3 mb-2 font-mono text-label-md text-muted-foreground uppercase">
             {slicing.customTitle}
           </div>
           <Textarea

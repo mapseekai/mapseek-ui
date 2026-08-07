@@ -69,10 +69,10 @@ export function NotificationCenter({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<IconButton className="relative" aria-label={labels.trigger} />}>
+      <DropdownMenuTrigger render={<IconButton className="relative" label={labels.trigger} />}>
         <IconBell stroke={1.75} />
         {total > 0 ? (
-          <span className="mono pointer-events-none absolute top-0.5 right-0.5 h-3 min-w-3 border border-primary bg-background px-px text-center text-[8px] font-bold leading-[11px] text-primary">
+          <span className="mono pointer-events-none absolute top-0.5 right-0.5 h-3 min-w-3 border border-primary bg-background px-px text-center text-[8px] font-semibold leading-[11px] text-primary">
             {total > 9 ? "9+" : total}
           </span>
         ) : null}
@@ -215,7 +215,7 @@ function NotificationRow({
   onClearItem?: NotificationCenterProps["onClearItem"]
 }) {
   return (
-    <li className="group grid grid-cols-[24px_minmax(0,1fr)_auto] gap-2 px-3 py-2 hover:bg-destructive/5">
+    <li className="group grid grid-cols-[24px_minmax(0,1fr)_auto] gap-2 px-3 py-2 hover:bg-accent/50">
       <span className="mt-0.5 grid size-6 place-items-center border border-border bg-background text-muted-foreground">
         {item.sourceType === "TILESET" ? (
           <IconMap2 size={14} stroke={1.75} />

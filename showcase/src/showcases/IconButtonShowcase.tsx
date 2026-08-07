@@ -1,32 +1,36 @@
 import { IconButton } from "@registry/ui/icon-button"
 import { IconDownload, IconPencil, IconRefresh, IconTrash } from "@tabler/icons-react"
 
-const iconProps = { stroke: 1.75 } as const
-
 import type { LocalizedDemoProps } from "./types"
+
+const iconProps = { stroke: 1.75 } as const
 
 const labels = {
   "zh-CN": {
-    defaultMd: "默认 md",
+    default: "默认",
     editLayer: "编辑图层",
     downloadLayer: "下载图层",
     refreshLayer: "刷新图层",
-    small: "小尺寸",
-    editSmallLayer: "编辑小尺寸图层",
-    downloadSmallLayer: "下载小尺寸图层",
+    sizes: "尺寸刻度",
+    editXs: "编辑图层（24px）",
+    editSm: "编辑图层（28px）",
+    editMd: "编辑图层（32px）",
+    editLg: "编辑图层（36px）",
     danger: "危险操作",
     deleteLayer: "删除图层",
     deleteSmallLayer: "删除小尺寸图层",
     disabledRefresh: "禁用刷新",
   },
   en: {
-    defaultMd: "Default md",
+    default: "Default",
     editLayer: "Edit layer",
     downloadLayer: "Download layer",
     refreshLayer: "Refresh layer",
-    small: "Small",
-    editSmallLayer: "Edit small layer",
-    downloadSmallLayer: "Download small layer",
+    sizes: "Size scale",
+    editXs: "Edit layer (24px)",
+    editSm: "Edit layer (28px)",
+    editMd: "Edit layer (32px)",
+    editLg: "Edit layer (36px)",
     danger: "Danger",
     deleteLayer: "Delete layer",
     deleteSmallLayer: "Delete small layer",
@@ -41,39 +45,37 @@ export function IconButtonOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps)
     <div className="space-y-8">
       <section className="space-y-3" data-demo="icon-button-default">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
-          {demoLabels.defaultMd}
+          {demoLabels.default}
         </h4>
         <div className="flex gap-2">
-          <IconButton aria-label={demoLabels.editLayer} title={demoLabels.editLayer}>
+          <IconButton label={demoLabels.editLayer} tooltip>
             <IconPencil {...iconProps} />
           </IconButton>
-          <IconButton aria-label={demoLabels.downloadLayer} title={demoLabels.downloadLayer}>
+          <IconButton label={demoLabels.downloadLayer} tooltip>
             <IconDownload {...iconProps} />
           </IconButton>
-          <IconButton aria-label={demoLabels.refreshLayer} title={demoLabels.refreshLayer}>
+          <IconButton label={demoLabels.refreshLayer} tooltip>
             <IconRefresh {...iconProps} />
           </IconButton>
         </div>
       </section>
 
-      <section className="space-y-3" data-demo="icon-button-small">
+      <section className="space-y-3" data-demo="icon-button-sizes">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
-          {demoLabels.small}
+          {demoLabels.sizes}
         </h4>
-        <div className="flex gap-2">
-          <IconButton
-            size="sm"
-            aria-label={demoLabels.editSmallLayer}
-            title={demoLabels.editSmallLayer}
-          >
+        <div className="flex items-center gap-2">
+          <IconButton data-demo="icon-button-size-xs" size="xs" label={demoLabels.editXs} tooltip>
             <IconPencil {...iconProps} />
           </IconButton>
-          <IconButton
-            size="sm"
-            aria-label={demoLabels.downloadSmallLayer}
-            title={demoLabels.downloadSmallLayer}
-          >
-            <IconDownload {...iconProps} />
+          <IconButton data-demo="icon-button-size-sm" size="sm" label={demoLabels.editSm} tooltip>
+            <IconPencil {...iconProps} />
+          </IconButton>
+          <IconButton data-demo="icon-button-size-md" size="md" label={demoLabels.editMd} tooltip>
+            <IconPencil {...iconProps} />
+          </IconButton>
+          <IconButton data-demo="icon-button-size-lg" size="lg" label={demoLabels.editLg} tooltip>
+            <IconPencil {...iconProps} />
           </IconButton>
         </div>
       </section>
@@ -83,22 +85,13 @@ export function IconButtonOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps)
           {demoLabels.danger}
         </h4>
         <div className="flex items-center gap-2">
-          <IconButton danger aria-label={demoLabels.deleteLayer} title={demoLabels.deleteLayer}>
+          <IconButton danger label={demoLabels.deleteLayer} tooltip>
             <IconTrash {...iconProps} />
           </IconButton>
-          <IconButton
-            danger
-            size="sm"
-            aria-label={demoLabels.deleteSmallLayer}
-            title={demoLabels.deleteSmallLayer}
-          >
+          <IconButton danger size="xs" label={demoLabels.deleteSmallLayer} tooltip>
             <IconTrash {...iconProps} />
           </IconButton>
-          <IconButton
-            aria-label={demoLabels.disabledRefresh}
-            title={demoLabels.disabledRefresh}
-            disabled
-          >
+          <IconButton label={demoLabels.disabledRefresh} tooltip disabled>
             <IconRefresh {...iconProps} />
           </IconButton>
         </div>

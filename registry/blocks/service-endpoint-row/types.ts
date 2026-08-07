@@ -10,6 +10,6 @@ export type ServiceEndpointRowProps = {
   icon?: ReactNode
   openDisabled?: boolean
   openTooltip?: string
-  openLabel?: string
+  openLabel: string
   onOpen?: () => void
 }

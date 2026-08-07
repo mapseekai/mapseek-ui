@@ -37,11 +37,12 @@ export function ResourceSidebar({
   className,
 }: ResourceSidebarProps) {
   const leafBase =
-    "relative flex h-[34px] w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-body-md text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-accent/50"
-  const activeLeaf = "bg-primary/10 text-primary before:opacity-100"
+    "relative flex h-[34px] w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-body-md text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0"
+  const activeLeaf =
+    "bg-selection-bg text-primary before:opacity-100 hover:bg-selection-bg hover:text-primary"
 
   function leafClass(active: boolean, extra: string) {
-    return cn(leafBase, extra, active && activeLeaf)
+    return cn(leafBase, extra, active ? activeLeaf : "hover:bg-accent/50")
   }
 
   return (
@@ -233,8 +234,10 @@ function CategoryRow({
         variant="ghost"
         size="sm"
         className={cn(
-          "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-body-md hover:bg-accent/50",
-          active && "bg-primary/10 text-body-md-medium text-primary",
+          "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-body-md",
+          active
+            ? "bg-selection-bg text-body-md-medium text-primary hover:bg-selection-bg hover:text-primary"
+            : "hover:bg-accent/50",
         )}
         onClick={onClick}
       >

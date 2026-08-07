@@ -62,7 +62,7 @@ function NavigationMenuTrigger({
     <NavigationMenuPrimitive.Trigger
       data-slot="navigation-menu-trigger"
       className={cn(
-        "inline-flex h-8 items-center justify-center gap-1 border border-transparent px-2 text-body-md-medium outline-none hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/50",
+        "inline-flex h-8 items-center justify-center gap-1 border border-transparent px-2 text-body-md-medium outline-none hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/20",
         className,
       )}
       {...props}

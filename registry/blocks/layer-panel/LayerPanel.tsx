@@ -159,7 +159,7 @@ function LayerPanelHeader({
   className?: string
   children: React.ReactNode
 }) {
-  const { collapsed, toggleCollapsed } = useLayerPanelContext()
+  const { collapsed, toggleCollapsed, labels } = useLayerPanelContext()
   return (
     <header
       data-slot="layer-panel-header"
@@ -174,9 +174,9 @@ function LayerPanelHeader({
         size="sm"
         type="button"
         aria-expanded={!collapsed}
-        aria-label="Toggle layer panel"
+        aria-label={collapsed ? labels.expand : labels.collapse}
         onClick={toggleCollapsed}
-        className="absolute inset-0 z-0 cursor-pointer border-0 bg-transparent p-0 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
+        className="absolute inset-0 z-0 cursor-pointer border-0 bg-transparent p-0 focus-visible:ring-1 focus-visible:ring-ring/20 focus-visible:outline-none"
       />
       <div className="pointer-events-none relative z-10 flex min-w-0 flex-1 items-center gap-1.5 px-3">
         <IconChevronDown
@@ -445,7 +445,9 @@ function LayerPanelItem({
               e.stopPropagation()
               ctx.onVisibleChange?.(layer.id, !layer.visible)
             }}
-            aria-label={`Toggle visibility for ${layer.name}`}
+            aria-label={
+              layer.visible ? ctx.labels.hideLayer(layer.name) : ctx.labels.showLayer(layer.name)
+            }
             className={cn(
               "shrink-0 hover:text-foreground",
               layer.visible ? "text-primary" : "text-muted-foreground",
@@ -539,7 +541,7 @@ function LayerPanelItem({
               size="icon-xs"
               type="button"
               onClick={() => ctx.onRemove?.(layer.id)}
-              aria-label={`Remove ${layer.name}`}
+              aria-label={ctx.labels.deleteLayer(layer.name)}
               title={ctx.labels.delete}
               className="size-6 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
             >

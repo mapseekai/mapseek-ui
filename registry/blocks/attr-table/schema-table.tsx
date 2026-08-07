@@ -89,6 +89,7 @@ export function SchemaTable({
               </Badge>
             )
           }
+          getCellText={(row, column) => (column.name === "name" ? row.name : row.rawType)}
           emptyLabel={isFiltered ? noMatchLabel : emptyLabel}
           errorRetryLabel=""
           indexColLabel="#"

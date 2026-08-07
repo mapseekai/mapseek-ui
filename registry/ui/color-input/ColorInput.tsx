@@ -137,10 +137,7 @@ export function ColorInput({
       aria-label={ariaLabel}
       spellCheck="false"
       autoComplete="off"
-      className={cn(
-        "h-7 w-full bg-transparent px-2 text-body-md focus-visible:outline-none",
-        "border border-input focus-visible:ring-1 focus-visible:ring-ring",
-      )}
+      className={cn("h-7 w-full border border-input bg-transparent px-2 text-body-md")}
       style={style}
       name={name}
       disabled={disabled}

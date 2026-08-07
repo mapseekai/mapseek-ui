@@ -2,7 +2,6 @@ import { IconExternalLink } from "@tabler/icons-react"
 import { CopyButton } from "@/components/ui/copy-button"
 import { IconButton } from "@/components/ui/icon-button"
 import { InputGroup, InputGroupText } from "@/components/ui/input-group"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import type { ServiceEndpointRowProps } from "./types"
 
 /**
@@ -61,22 +60,15 @@ export function ServiceEndpointRow({
           title={copyLabel}
           onCopy={onCopy}
         />
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <IconButton
-                size="sm"
-                disabled={openDisabled}
-                title={openLabel}
-                aria-label={openLabel}
-                onClick={onOpen}
-              >
-                <IconExternalLink stroke={1.5} />
-              </IconButton>
-            }
-          />
-          <TooltipContent>{openTooltip}</TooltipContent>
-        </Tooltip>
+        <IconButton
+          size="xs"
+          disabled={openDisabled}
+          label={openLabel}
+          tooltip={openTooltip}
+          onClick={onOpen}
+        >
+          <IconExternalLink stroke={1.5} />
+        </IconButton>
       </div>
     </div>
   )

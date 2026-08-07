@@ -108,9 +108,7 @@ export function StorageMeter({
             [labels.usageRate, `${pct}%`],
           ].map(([label, value]) => (
             <div key={label} className="flex flex-col gap-0.5">
-              <span className="text-[10px] tracking-[0.04em] uppercase text-muted-foreground">
-                {label}
-              </span>
+              <span className="text-label-md uppercase text-muted-foreground">{label}</span>
               <b className="font-mono text-body-md-strong tabular-nums text-foreground">{value}</b>
             </div>
           ))}

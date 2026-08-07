@@ -150,7 +150,7 @@ function GroupLabel({
   return (
     <div
       className={cn(
-        "mb-1 flex items-center gap-1.5 bg-muted px-2 py-1 text-[10px] tracking-[0.07em] uppercase text-muted-foreground",
+        "mb-1 flex items-center gap-1.5 bg-muted px-2 py-1 text-label-md uppercase text-muted-foreground",
         className,
       )}
     >

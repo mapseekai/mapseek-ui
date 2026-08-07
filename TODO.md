@@ -14,45 +14,41 @@
 
 ### 选中 / hover 契约（Colors 章节）
 
-- [ ] **5. ResourceSidebar 选中态违规 ×2**：`registry/blocks/resource-sidebar/ResourceSidebar.tsx:40-41,236-237` — 选中用 `bg-primary/10` 而非 `{colors.selection-bg}`；且无条件 `hover:bg-accent/50` 在 hover 时覆盖选中表面（契约要求选中元素 hover 时保留状态表面 + primary 文字）。
-- [ ] **6. ResourceGrid 图标卡片**：`registry/blocks/resource-grid/ResourceGrid.tsx:90-93` — 选中态用 `primary/5 + ring-primary` 而非 selection-bg token，名称文字不转 primary；普通 hover 用 primary 填色 + primary ring（绿色被用作装饰性 hover）。
-- [ ] **7. NotificationCenter 行 hover 色调错误**：`registry/blocks/notification-center/NotificationCenter.tsx:218` — `hover:bg-destructive/5`，普通交互 hover 应为 `bg-accent/50`。
-- [ ] **8. attr-table 拖拽手柄 hover 滥用 primary**：`registry/blocks/attr-table/attr-table-sheet.tsx:148` — `hover:bg-primary/40`，非 accent/50 也非选中态。
+- [x] **5. ResourceSidebar 选中态违规 ×2**：✅ 已修复（工作区未提交）：TypeRow/CategoryRow 选中态改用 `bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary`（选中 hover 保留表面 + primary 文字），非选中行才 `hover:bg-accent/50`；showcase 实测计算样式确认。~~`registry/blocks/resource-sidebar/ResourceSidebar.tsx:40-41,236-237` — 选中用 `bg-primary/10` 而非 `{colors.selection-bg}`；且无条件 `hover:bg-accent/50` 在 hover 时覆盖选中表面（契约要求选中元素 hover 时保留状态表面 + primary 文字）。~~
+- [x] **6. ResourceGrid 图标卡片**：✅ 裁决为契约追认实现（视觉评审后保留原样）：DESIGN.md/DESIGN.zh-CN.md 新增卡片类例外——hover 与选中均用 `primary/5` 填充 + 1px 主色绿框，选中以持续填充+绿框+勾选作持久标识。实现维持 `ResourceGrid.tsx:90-93` 原状。~~选中态用 `primary/5 + ring-primary` 而非 selection-bg token；普通 hover 用 primary 填色 + primary ring。~~
+- [x] **7. NotificationCenter 行 hover 色调错误**：✅ 已修复（工作区未提交）：`NotificationCenter.tsx:218` 行 hover 改为 `hover:bg-accent/50`,showcase 实测 hover 计算样式 = accent/50。清除按钮的 destructive 语义（`hover:bg-destructive/10`）为破坏性操作正当用法，未动。~~`registry/blocks/notification-center/NotificationCenter.tsx:218` — `hover:bg-destructive/5`，普通交互 hover 应为 `bg-accent/50`。~~
+- [x] **8. attr-table 拖拽手柄 hover 滥用 primary**：✅ 裁决为契约追认实现：拖拽/缩放手柄 hover 允许 `{colors.primary}` 色调（如 40%）作为动作可供性（细条上 accent/50 不可辨识），DESIGN.md/DESIGN.zh-CN.md 已加例外；`attr-table-sheet.tsx:148` 维持 `hover:bg-primary/40` 原状。~~非 accent/50 也非选中态。~~
 
 ### 组件契约（front matter components 段）
 
-- [ ] **9. Badge 默认表面违反 front matter**：契约 `badge: bg-muted + text-foreground`，实现 `registry/ui/badge.tsx:12` 默认 `bg-primary text-primary-foreground`；被动标签占用保留动作绿，冲突 "Use green only for primary action, current focus, selection"。
-- [ ] **10. attr-table 表头规格不符**：`registry/blocks/attr-table/virtual-table.tsx:231` `h-9`（36px）vs 契约 `table-header 40px`；`:239` `text-[11px]` vs body-md 12px（表头比数据单元格还小）。注：`registry/ui/table.tsx:75` 原语合规。
-- [ ] **11. Tooltip 非 popover 表面**：`registry/ui/tooltip.tsx:41` — 反色 `bg-foreground/text-background`，无 border/ring；Elevation 表 Floating 行明确包含 tooltips = "Popover surface with a 1px border or ring"。
-- [ ] **12. Scrim 不一致**：`dialog.tsx:28` 合规（`bg-black/10` + blur），但 `sheet.tsx:21`、`alert-dialog.tsx:26` 为 `bg-black/40` 无 blur，违反 "Dialog scrims are light (black/10)"。
-- [ ] **13. Command 裸用无边界**：`registry/ui/command.tsx:15` 无 border/ring，仅 CommandDialog 靠 DialogContent 的 ring 兜底。
+- [x] **9. Badge 默认表面违反 front matter**：✅ 已裁决并收口（工作区未提交）：用户视觉评审后保留绿色默认（`bg-primary text-primary-foreground`）；outline 变体为 `border-primary text-primary`（绿边 + 绿字）。`DESIGN.md` 与 `DESIGN.zh-CN.md` front matter 均已同步为 primary 默认表面，并补充变体说明。~~契约 `badge: bg-muted + text-foreground`，实现 `registry/ui/badge.tsx:12` 默认 `bg-primary text-primary-foreground`；被动标签占用保留动作绿，冲突 "Use green only for primary action, current focus, selection"。~~
+- [x] **10. attr-table 表头规格不符**：✅ 已修复（视觉确认）：`virtual-table.tsx:239` 表头改为 `h-10`（40px）+ `text-body-md-medium`（13px/500），与契约 `table-header` 及 `table.tsx:75` 原语对齐。~~`h-9`（36px）vs 契约 40px；表头比数据单元格还小。~~
+- [x] **11. Tooltip 非 popover 表面**：✅ 裁决为契约追认实现：tooltip 反色表面（`bg-foreground`/`text-background` 无边界）属有意例外，已从 Elevation 表 Floating 行移出并加注说明（DESIGN.md/DESIGN.zh-CN.md），`tooltip.tsx` 与 MapControls tooltip 维持原状。~~Elevation 表 Floating 行明确包含 tooltips = "Popover surface with a 1px border or ring"。~~
+- [x] **12. Scrim 不一致**：✅ 已修复并运行态验证：`sheet.tsx`、`alert-dialog.tsx` 已与 `dialog.tsx` 对齐为 `bg-black/10` + `supports-backdrop-filter:backdrop-blur-xs`；三者实测均为 10% 黑色遮罩与 `blur(4px)`。~~`dialog.tsx:28` 合规（`bg-black/10` + blur），但 `sheet.tsx:21`、`alert-dialog.tsx:26` 为 `bg-black/40` 无 blur，违反 "Dialog scrims are light (black/10)"。~~
+- [x] **13. Command 裸用无边界**：✅ 已修复（工作区未提交）：`Command` 根层现在自带 `border border-border`，可独立作为完整浮层表面；Showcase 两处尺寸容器已移除重复外边框。新增 `command.test.tsx` 锁定裸用边界契约，浏览器实测 Command = 1px border、演示外层 = 0px。~~`registry/ui/command.tsx:15` 无 border/ring，仅 CommandDialog 靠 DialogContent 的 ring 兜底。~~
 
 ## P1 — 形状与排版纪律
 
-- [ ] **14. 保留列表外的圆角**：
-  - `registry/ui/radio-group.tsx:15` Radio 根 `rounded-full`（rounded.full 仅保留给 status dots/avatar/switch）；
-  - `registry/blocks/attr-table/attr-table-sheet.tsx:153` 拖拽丸 `rounded-full`；
-  - `registry/ui/chart.tsx:197,289` 图例色块 `rounded-[2px]`；
-  - `registry/ui/button-radio-group.tsx:26` `rounded-md`（被 `--radius-md:0px` 运行时中和，但违反 "Do not reintroduce framework corner radii" 字面）。
-- [ ] **15. 禁用字重 700**："Use weights 400, 500, and 600" — `registry/blocks/style-editor-modal/StyleEditorModal.tsx:39,67,129`、`registry/blocks/style-function-editor/StyleFunctionEditor.tsx:30,38`、`registry/blocks/notification-center/NotificationCenter.tsx:75`、`registry/blocks/product-logo/ProductLogo.tsx:50` 均用 `font-bold`。
-- [ ] **16. 坐标无 tabular numerals**：类型规则明言 coordinates 用 tnum；`registry/blocks/map-coordinate-status/MapCoordinateStatus.tsx:134,175` 坐标读数仅 `font-mono`，无 tnum/tabular-nums。
-- [ ] **17. label-md 被各文件重新发明**：契约 10px/500/0.06em — 约 20 处实现为 0.04em（`combobox.tsx:199`、`attr-field.tsx:128,131`、`pixel-probe`、`storage-meter` 等）、0.05em（`LayerPanel.tsx:366`）、0.07em（`CrsPicker.tsx:153`）、tracking-wider（`StyleFunctionEditor.tsx:30`），尺寸漂移 11px/12px，字重漂移 600/700。`registry/ui/select.tsx:112` SelectLabel 完全不符合 label-md（12px/400 无大写）。
-- [ ] **18. 标题尺寸脱轨**：`alert-dialog.tsx:74`、`sheet.tsx:96` 标题 14px/600 vs headline-md 15px/600；`StyleEditorModal.tsx:39` 覆盖 DialogTitle 为 18px/700；`registry/blocks/resource-detail-drawer/ResourceDetailDrawer.tsx:284` 标本 `text-5xl` 48px vs data-display 42px。
-- [ ] **19. 离刻度尺寸**：8px（`NotificationCenter.tsx:75`）、9px（`showcase/src/showcases/AppTopBarShowcase.tsx:45`）、20px（`registry/blocks/linked-ref-list/LinkedRefList.tsx:112`）、24px（`registry/blocks/band-stat/BandStat.tsx:171`）。
+- [x] **14. 保留列表外的圆角**：✅ 已裁决并修复：Radio（16px 真圆）与 attr-table 拖拽握把（40×2px 胶囊）为有意例外，已加入 DESIGN.md/DESIGN.zh-CN.md 的 `{rounded.full}` 允许列表；chart tooltip/legend 色块（`chart.tsx:197,289`）已从 `rounded-[2px]` 改为 `rounded-none`；ButtonRadioGroup 已删除无视觉作用、但可能在主题覆写时泄漏的 `rounded-md`。对应测试 11/11 通过。
+- [x] **15. 禁用字重 700**：✅ 已修复：当前全库已无 `font-bold` / 700 字重；遗留的通知角标（12×12px、8px）已由 `font-bold` 改为 `font-semibold`（600），浏览器实测字重 600。~~"Use weights 400, 500, and 600"；审计时列出的多处 font-bold。~~
+- [x] **16. 坐标无 tabular numerals**：✅ 已修复（工作区未提交）：`MapCoordinateStatus.tsx:175` 现以 `<span className="tnum">` 包住每个 `item.value`，仅对坐标/层级读数启用 tabular numerals，不波及标签与 CRS 文案。新增 SSR 回归测试覆盖三个默认读数；Showcase 实测三个读数的 `font-variant-numeric` 均为 `tabular-nums`。~~类型规则明言 coordinates 用 tnum；`registry/blocks/map-coordinate-status/MapCoordinateStatus.tsx:134,175` 坐标读数仅 `font-mono`，无 tnum/tabular-nums。~~
+- [x] **17. label-md 被各文件重新发明**：✅ 已修复：规范为 10px/500/1.2/0.04em（旧审计中的 0.06em 为误记）。`SelectLabel`、`ComboboxLabel`、字段/类别/指标/坐标/直方图标签均改用 `text-label-md`；AttrField 与 PixelProbe 已移除将 token 覆盖为 400 的 `font-normal`；CRS、色带编辑器与资源详情标题的 0.07/0.06em 漂移已收敛。数值、单位、chip、估算结果和小写色带项等非 taxonomy 文案保持原样。契约测试 10/10 通过，浏览器实测 CRS 分组和坐标标签为 10px/500/12px/0.04em。
+- [x] **18. 标题尺寸脱轨**：✅ 已修复：AlertDialog 与 Sheet 标题均使用 `text-headline-md`（15px/600/1.25/-0.02em）；StyleEditorModal 主标题使用完整 `text-headline-lg`（18px/600/1.2/-0.02em），已移除覆盖 token 行高的 `leading-none`；ResourceDetailDrawer 标本使用 `text-data-display`（42px/600/1/tnum）。新增契约测试覆盖四处；浏览器实测样式弹窗标题为 18px/600/21.6px/-0.36px。~~旧审计中的 14px/600、18px/700 与 48px 实现。~~
+- [x] **19. 离刻度尺寸**：[OK] AppTopBar Showcase 的 9px 状态 pill 已改用 `ResourceStatusBadge`（`text-body-sm-medium`，11px），dirty 映射 `neutral`、saved 映射 `ready`；NotificationCenter 8px、LinkedRefList 20px、BandStat 24px 按本次裁决保留为例外，不处理。
 
 ## P1 — 表单 / 按钮细节
 
-- [ ] **20. Slider 滑块硬编码 `bg-white`**：`registry/ui/slider.tsx:51` — 违反 "Do not copy color literals"，dark 主题保持白色（switch 滑块用 `bg-background` 为正确范式）。
-- [ ] **21. aria-invalid 缺口**：`slider.tsx`、`radio-group.tsx` 全文无 aria-invalid 样式；契约 "Invalid controls expose aria-invalid and visible error copy"。
-- [ ] **22. icon-button 与设计全面脱节**：`registry/ui/icon-button.tsx` — 无 aria-label 强制、无 tooltip 支持（契约明文要求）；尺寸仅 24/32 两档（缺 28/36）；原生 `<button>` 而非 Base UI；focus ring `ring-ring/20` 与 Button 的 `/50` 不一致；无 `rounded-none`。
-- [ ] **23. Focus ring 颜色打折**：front matter `focus-ring: {colors.ring}` 全色，实现统一 `ring-ring/50`（`button.tsx:7`、`button-radio-group.tsx:41`）甚至 `/20`（`icon-button.tsx:22`）。
-- [ ] **24. Switch 高度 18.4px/14px**：`registry/ui/switch.tsx:17` — 不在 24/28/32/36 刻度，18.4px 破坏 4px 节奏。
-- [ ] **25. 未记录变体 / 组件**：ButtonRadioGroup `soft` 变体（`button-radio-group.tsx:7,41`）、button-group 整组件（`button-group.tsx`）、destructive 按钮 `border-destructive/10` 边框（`button.tsx:19`）均未出现在 DESIGN。需决定：补文档或删实现。
+- [x] **20. Slider 滑块硬编码 `bg-white`**：✅ 已裁决并修复：保留深色模式的高对比近白 thumb，但不复制字面量；浅色使用 `bg-background`，深色使用 `dark:bg-foreground`（Switch 的既有语义范式）。浏览器实测浅色 thumb = `--background`，深色 thumb = `--foreground`。新增回归契约测试。~~`registry/ui/slider.tsx:51` 使用 `bg-white`，dark 主题仍保持白色。~~
+- [x] **21. aria-invalid 缺口**：✅ 已裁决不处理：Slider 与 RadioGroup 仅用于即时选择／调节，不承载业务校验；无需为不会出现的 invalid state 增加 destructive 视觉样式或泛化错误文案。保留底层 primitive 的 `aria-invalid` 属性透传能力。~~`slider.tsx`、`radio-group.tsx` 全文无 aria-invalid 样式；契约 "Invalid controls expose aria-invalid and visible error copy"。~~
+- [x] **22. icon-button 与设计全面脱节**：✅ 已修复（工作区未提交）：`IconButton` 现通过 Base UI `Button` 渲染；`label` 为必填 accessible name 并直映 `aria-label`，`tooltip` 支持默认 label 或自定义文本；新增 `xs/sm/md/lg` = 24/28/32/36px，默认 md，固定 `rounded-none`，focus ring 与 #23 一致为 `ring-ring/20`。所有调用方已迁移到 `label`，注册表已声明 tooltip 依赖；中英文 docs 与 showcase 覆盖四尺寸。新增 6 项契约测试；`pnpm test` 52 文件/200 测试、typecheck/lint/registry 验证和 icon-button browser QA 均通过。~~`registry/ui/icon-button.tsx` — 无 aria-label 强制、无 tooltip 支持（契约明文要求）；尺寸仅 24/32 两档（缺 28/36）；原生 `<button>` 而非 Base UI；无 `rounded-none`。Focus ring 已由 #23 统一为 `ring-ring/20`。~~
+- [x] **23. Focus ring 颜色打折**：✅ 已裁决并修复：所有常规键盘 focus ring 统一为 `ring-ring/20`，保留 3px 宽度；此前的 `/50` 与两个不透明 override 已迁移，错误态 `ring-destructive/*` 不变。`DESIGN.md` 与 `DESIGN.zh-CN.md` 明确记录 20% opacity；新增回归契约测试并在浏览器实测 Button、Checkbox、Radio、ButtonRadioGroup、Slider、Switch 均为 3px / 20%。~~front matter `focus-ring: {colors.ring}` 全色，实现统一 `ring-ring/50`（`button.tsx:7`、`button-radio-group.tsx:41`）甚至 `/20`（`icon-button.tsx:22`）。~~
+- [x] **24. Switch 高度 18.4px/14px**：[OK] 已按视觉裁决恢复紧凑轨道：default 为 32×18.4px / 16px thumb，sm 为 24×14px / 12px thumb；这两档是通用控件高度刻度的明确例外，`after` 指针目标上下各扩展 8px。framed `ServiceStatus` 同步恢复 24px 高度。DESIGN 中英版已记录该契约，Switch 几何回归测试覆盖两档。~~`registry/ui/switch.tsx:17` 使用 18.4px/14px，高度不在 24/28/32/36 刻度。~~
+- [x] **25. 未记录变体 / 组件**：✅ 已补全文档：`button-radio-group` 记录 default/`soft` 选中态与 24/28/32/36px 尺寸；`button-group` 记录方向、边框折叠与焦点层级；`button-destructive` 记录 `border-destructive/10` 与 hover 的 20% 边框。`DESIGN.md`/`DESIGN.zh-CN.md` 同步，新增回归契约测试。~~ButtonRadioGroup `soft` 变体（`button-radio-group.tsx:7,41`）、button-group 整组件（`button-group.tsx`）、destructive 按钮 `border-destructive/10` 边框（`button.tsx:19`）均未出现在 DESIGN。~~
 
 ## P2 — Blocks / 文案注入
 
-- [ ] **26. 不可注入的英文 aria 文案 ×4**：`registry/blocks/layer-panel/LayerPanel.tsx:177`（"Toggle layer panel"）、`:453`、`:547`（英文模板串）、`registry/blocks/attr-table/attr-table-sheet.tsx:151`（"Resize attribute table"）— 不走 labels prop，违反 "no non-injectable product copy"。
-- [ ] **27. attr-table 截断不可发现**：`registry/blocks/attr-table/virtual-table.tsx:265` `truncate` 无 title/tooltip，列固定 160px（`:11`），横向滚动也看不到全文；契约要求 "truncate with a discoverable full value or scroll horizontally"。
+- [x] **26. 不可注入的英文 aria 文案 ×4**：[OK] `LayerPanelLabels` 现公开 `collapse`/`expand`、`showLayer`/`hideLayer` 与 `deleteLayer`；`AttrTableSheet` 现公开 `resizeLabel`，四处 accessible name 都经由可覆盖的 labels/prop 注入。
+- [x] **27. attr-table 截断不可发现**：✅ 已修复：`virtual-table.tsx` 仅在文本实际横向溢出时显示 Base UI Tooltip，未溢出单元格不显示浮层；原生 `title` 已移除。列固定 160px（`:11`），横向滚动也看不到全文；契约要求 "truncate with a discoverable full value or scroll horizontally"。
 
 ## P2 — 文档 / 验收面
 
@@ -64,7 +60,7 @@
 
 - [ ] **A. 字重规范性**：front matter 绑定 `typography: body-md`（400），实现统一 `font-medium`（500）（`button.tsx:7`、`badge.tsx:8`、`tabs.tsx:53`、`select.tsx:46`、`table.tsx:75`）。prose 允许 500 —— 需明确 YAML 对字重是否规范，然后统一改文档或改实现。
 - [ ] **B. select 家族 input-surface 契约**：契约只点名 input/textarea/input-group；`select.tsx:46` 触发器用 `bg-background`，`combobox.tsx:233` chips 用 `border-border bg-background`。决定是否将 select 家族纳入透明输入契约。
-- [ ] **C. tooltip 反色表面**：若是有意例外，应从 Elevation 表 Floating 行移除 tooltips；否则按 #11 修复。
+- [x] **C. tooltip 反色表面**：✅ 已裁决（2026-08-06）：反色为有意例外，Elevation 表 Floating 行已移除 tooltips 并加注说明（见 #11）。
 - [ ] **D. oklch vs oklab**：DESIGN 写 `color-mix(in oklch, ...)`，Tailwind `/80` 修饰符生成 `in oklab`。视觉等价，决定契约措辞是否放宽。
 - [ ] **E. 未记录小尺寸**：checkbox/radio `size-4`（16px）、slider 滑块 `size-3`（12px）、textarea `min-h-16`（64px）偏离 24/28/32/36 刻度，DESIGN 未规定小型选择控件尺寸 —— 决定补文档还是改实现。
 

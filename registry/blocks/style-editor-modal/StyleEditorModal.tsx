@@ -36,7 +36,7 @@ export function StyleEditorModal({
       >
         <DialogHeader className="shrink-0 px-6 py-4">
           <DialogTitle
-            className="text-headline-lg leading-none"
+            className="text-headline-lg"
             data-wd-key={dataWdKey ? `${dataWdKey}.title` : undefined}
           >
             {title}

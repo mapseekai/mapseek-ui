@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "NODE_OPTIONS=--experimental-require-module next dev",
+    "build": "NODE_OPTIONS=--experimental-require-module next build",
     "start": "next start",
     "postinstall": "fumadocs-mdx"
   },

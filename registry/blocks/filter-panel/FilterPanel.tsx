@@ -41,7 +41,7 @@ function patch(
   onChange({ ...value, ...delta })
 }
 
-const miniSelect = "rounded-none border-border bg-background px-2 font-mono text-body-sm"
+const miniSelect = "rounded-none px-2 font-mono text-body-sm"
 
 // ---------------------------------------------------------------------------
 // Root

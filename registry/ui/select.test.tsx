@@ -32,6 +32,19 @@ describe("SelectTrigger size variants", () => {
   })
 })
 
+describe("SelectTrigger surface", () => {
+  it("uses the shared input surface instead of an opaque background", () => {
+    const trigger = SelectTrigger({ children: "Value" }) as ReactElement<{
+      className: string
+    }>
+    const classes = trigger.props.className.split(/\s+/)
+
+    expect(classes).toContain("border-input")
+    expect(classes).toContain("bg-input-surface")
+    expect(classes).not.toContain("bg-background")
+  })
+})
+
 describe("SelectContent width", () => {
   it("grows to the longest option while staying within the available width", () => {
     const portal = SelectContent({ children: "Options" }) as ReactElement<{

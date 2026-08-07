@@ -165,7 +165,7 @@ components:
     height: 32px
     padding: 0px 10px
   button-xs:
-    typography: "{typography.body-md-medium}"
+    typography: "{typography.body-md}"
     rounded: "{rounded.none}"
     height: 24px
     padding: 0px 8px
@@ -279,6 +279,7 @@ Mapseek 使用由低彩度中性色包围的绿色轴 OKLCH 调色板。主绿�
 - **焦点环** 统一使用 20% 透明度的 `{colors.ring}`，宽度为 3px，适用于所有键盘可聚焦控件。
 - **Secondary**（`{colors.secondary}`）和 **accent**（`{colors.accent}`）用于低强调动作和成组选项；前景色使用对应的 `*-foreground` 令牌。
 - **交互与选择** 使用不同表面：普通可交互元素默认使用 50% 透明度的 `{colors.accent}`，与文档侧栏 hover 处理保持一致。持续选中状态使用完整的 `{colors.selection-bg}` token 和 `{colors.primary}` 文字，并可递进至 `{colors.selection-bg-deep}`；选中、展开和激活元素在 hover 时保持原状态表面与主色文字，不再应用普通 hover 处理。同时必须搭配选中语义、边缘、勾选或其他持续性标识。卡片类元素（资源卡片、图标瓦片）为醒目例外:hover 与选中均使用 `{colors.primary}` 5% 填充加 1px 主色绿框；选中态以同样的填充和绿框作为持续标识，并搭配选中语义或勾选标记。拖拽与缩放手柄（分割条、排序握把）是另一类例外:hover 使用 `{colors.primary}` 色调（如 40%）作为动作可供性信号，因为中性 50% accent 填充在细条手柄上无法辨识。
+- **透明度混合。** 对单一语义颜色 token 与 `transparent` 的混合，应明确目标 alpha（例如 primary 保留 80% 不透明度）。此场景下，`color-mix(in oklch, ...)` 与 Tailwind 透明度工具生成的 `color-mix(in oklab, ...)` 等效，均符合规范。此例外不适用于两个可见颜色的混合：必须显式指定插值空间；使用 OKLCH 时还必须指定色相插值方法。
 - **Destructive**、**warning** 与 **info** 是语义信号，不是装饰分类；必须搭配文字或图标，破坏性动作使用浅色调而非实心红色。
 
 ### Surfaces, Borders, and Dark Theme
@@ -286,7 +287,7 @@ Mapseek 使用由低彩度中性色包围的绿色轴 OKLCH 调色板。主绿�
 - **Background**（`{colors.background}`）是应用底面；**card** 和 **popover** 是使用对应前景令牌的独立表面。
 - **Muted** 支持表头、元数据带和空状态骨架，不再作为默认交互 hover 填充；关键小号文字不得使用 `{colors.muted-foreground}`。
 - **Border** 是默认 1px 结构；**border-strong** 仅用于强调边界和活动拖放目标。
-- 输入框的边界使用 `{colors.input}`，填充使用 `{colors.input-surface}`；亮色主题有意保持透明填充。
+- 输入框和选择控件的输入表面使用 `{colors.input}` 边界与 `{colors.input-surface}` 填充；亮色主题有意保持透明填充。
 - 深色模式通过运行时主题的 `.dark` 值复用相同语义名，而非机械反相。深色面板只略亮于应用底面，可编辑输入框使用克制的半透明填充。
 - **强调填充反转前景而非底色。** 深色模式下，`{colors.primary}`、`{colors.destructive}` 与 sidebar-primary 保持品牌色相（略微提亮），前景切换为深色文字（`oklch(0.1500 0.0100 149)` / `oklch(0.1000 0 0)`）。此为有意为之：白字在提亮后的底色上对比度不足 3:1，深字可保持约 7:1。如不同时加深底色，不要将白字"改回"。
 
@@ -308,9 +309,9 @@ Mapseek 将 **Geist Mono Variable** 同时作为 UI 与数据字体。统一的�
 | `{typography.body-base}` | 16px | 400 | 1.5 | 0 | 根文档尺度和偏正文表面 |
 | `{typography.body-lg}` | 13px | 400 | 1.5 | 0 | 显著界面文案和资源名称 |
 | `{typography.body-lg-medium}` | 13px | 500 | 1.5 | 0 | 强调的资源名称和标识符 |
-| `{typography.body-md}` | 12px | 400 | 1.5 | 0 | 表格、字段和面板中的内容文字 |
-| `{typography.body-md-medium}` | 12px | 500 | 1.5 | 0 | 交互控件、标签页、徽章和表头 |
-| `{typography.body-md-strong}` | 12px | 600 | 1.5 | 0 | 密集面板中的面板和区块标题 |
+| `{typography.body-md}` | 13px | 400 | 1.3333 | 0 | 表格、字段和面板中的内容文字；紧凑的 `button-xs` 标签 |
+| `{typography.body-md-medium}` | 13px | 500 | 1.3333 | 0 | 交互控件、标签页、徽章和表头 |
+| `{typography.body-md-strong}` | 13px | 600 | 1.3333 | 0 | 密集面板中的面板和区块标题 |
 | `{typography.body-sm}` | 11px | 400 | 1.5 | 0 | 元数据、计数和紧凑状态文本 |
 | `{typography.body-sm-medium}` | 11px | 500 | 1.5 | 0 | 强调的元数据和紧凑表头 |
 | `{typography.label-sm}` | 11px | 500 | 1.2 | 0.04em | 紧凑分类和眉线标签 |
@@ -389,7 +390,7 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 
 ### Buttons and Actions
 
-- **`button-primary`** 是高 32px、12px 字体、10px 水平内边距的绿色动作；每个局部任务仅有一个主导动作。Hover 降低主色强度，按下可下移 1px，焦点应有可见 ring。
+- **`button-primary`** 是高 32px、13px/500 字重、10px 水平内边距的绿色动作；每个局部任务仅有一个主导动作。Hover 降低主色强度，按下可下移 1px，焦点应有可见 ring。紧凑的 24px `button-xs` 是明确例外，使用 13px/400 字重。
 - **outline、secondary、ghost、link 变体**在不创建新动作色的前提下保持层级；`link` 仅用于真实行内导航或低框架动作。
 - **`button-destructive`** 使用浅色危险表面、`border-destructive/10` 边框与危险文字；hover 时表面与边框同时提升为 `hover:bg-destructive/20` 和 `hover:border-destructive/20`。结果不可逆或难以恢复时要求确认。
 - **`button-group`** 以共用边缘连接相关 Button 控件；可横向或纵向排列，折叠相邻内部边框，并将获得焦点的子项提升至相邻项之上。
@@ -397,11 +398,12 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 
 ### Forms and Selection
 
-- **`input`** 高 32px、方形、12px 字体、1px 输入边界、10px 水平内边距，并使用透明的亮色主题填充；placeholder 提供辅助，不能取代标签。
-- **透明输入框对比度契约。** `input`、`textarea` 和 `input-group` 使用 `{colors.input-surface}`，因此文字对比度必须在与承载表面合成后评估。它们只能置于 `background`、`card` 或 `popover`；每个支持主题中，文字对比度矩阵必须达到 4.5:1。不得置于 primary、destructive、影像、地图、数据可视化或其他未列出的彩色表面。`muted` 在显式加入对比度矩阵前不属于允许承载表面。
+- **`input`** 高 32px、方形、13px/400 字重、1px 输入边界、10px 水平内边距，并使用透明的亮色主题填充；placeholder 提供辅助，不能取代标签。
+- **透明输入框对比度契约。** `input`、`textarea`、`input-group`（包括 combobox 输入框）、`select-trigger`、`native-select` 和 `combobox-chips` 使用 `{colors.input-surface}`，因此文字对比度必须在与承载表面合成后评估。它们只能置于 `background`、`card` 或 `popover`；每个支持主题中，文字对比度矩阵必须达到 4.5:1。不得置于 primary、destructive、影像、地图、数据可视化或其他未列出的彩色表面。`muted` 在显式加入对比度矩阵前不属于允许承载表面。Select 与 Combobox 的弹层继续使用不透明的 `{colors.popover}` 表面；单个 chip 保留自身的状态填充。
 - **`field`** 组合标签、说明、控件和错误信息；无效控件应暴露 `aria-invalid` 和可见错误文案；`FieldError` 通过 `role="alert"` 宣告。
 - **`button-radio-group`** 是相连的单选选择控件。`default` 的选中态为实心 `{colors.primary}` 与 `{colors.primary-foreground}` 文字；`soft` 的选中态使用 `{colors.selection-bg}` 与 `{colors.primary}` 文字，并在 hover 时保持选中态。它支持 24/28/32/36px 的 `xs`/`sm`/`default`/`lg` 高度。
 - **checkbox、switch、slider、select、combobox、toggle、tabs** 保持既有 Base UI 键盘语义；勾选和选中状态必须有 hover 之外的持续性标识。
+- **紧凑选择控件区分可见尺寸与指针命中区。** Checkbox 和 Radio 的可见标记均为 16×16px，Slider thumb 为 12×12px；其伪元素分别将指针命中区扩展至 40×32px、32×32px 和 28×28px。因此，这些可见标记不属于 24/28/32/36px 的单行与图标控件尺寸体系。`textarea` 是多行输入，最小高度为 64px（两个默认输入行），并随内容增长；其最小高度同样不属于该尺寸体系。
 - **`switch`** 保留紧凑的视觉轨道：`default` 为 32×18.4px、拇指为 16px，`sm` 为 24×14px、拇指为 12px。其 `after` 指针目标在视觉轨道上下各扩展 8px；这些轨道是通用控件高度刻度的明确例外。
 
 ### Containers and Overlays
@@ -412,7 +414,7 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 
 ### Data and Domain Blocks
 
-- **`table`** 有边界并可横向滚动；表头高 40px，紧凑单元格仍保持可读的 12px 数据字体。
+- **`table`** 有边界并可横向滚动；表头高 40px，紧凑单元格使用可读的 13px/400 数据字体，表头使用 13px/500 字重。
 - **`badge`** 高 20px、水平内边距 8px，仅承载短状态或分类标签。默认表面为品牌绿底配反白文字；`secondary`、着色 `destructive`、`outline`（primary 描边与文字）、`ghost`、`link` 变体覆盖其余层级。
 - **progress、skeleton、empty、sonner、notification center** 的反馈范围应匹配任务范围；持久状态不得只存在于短暂 toast。
 - **MapControls、MapCoordinateStatus、MapSwitcher** 使用地图专用浮动层级，并保留标签或 tooltip。

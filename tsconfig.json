@@ -10,8 +10,11 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@/components": ["./registry"],
       "@/components/ui/*": ["./registry/ui/*"],
       "@/components/blocks/*": ["./registry/blocks/*"],
+      "@/hooks": ["./registry/lib"],
+      "@/lib": ["./registry/lib"],
       "@/lib/utils": ["./registry/lib/utils.ts"],
       "@/lib/mapseek-labels": ["./registry/lib/labels.ts"],
       "@/lib/svg-data-uri": ["./registry/lib/svg-data-uri.ts"],

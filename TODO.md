@@ -52,17 +52,17 @@
 
 ## P2 — 文档 / 验收面
 
-- [ ] **28. docs 侧栏漏 2 个组件**：`packages/docs/content/docs/components/meta.json` 漏 `alert`、`card-tabs`（页面存在可路由，仅导航不可见）。
-- [ ] **29. 根 `components.json:8` 悬空**：`tailwind.css: src/app.css` 不存在；`@/components`、`@/hooks` 别名无根目录支撑（仅影响根目录跑 `shadcn add`）。
-- [ ] **30. 校验脚本覆盖缺口**：`scripts/check-docs-examples.ts` 必需清单缺 17 个新原语（alert、alert-dialog、aspect-ratio、breadcrumb、button-group、calendar、card-tabs、copy-button、hover-card、input-number、item、kbd、menubar、native-select、navigation-menu、scroll-area、spinner）；CI `.github/workflows/deploy-pages.yml` 只跑 `docs:build` 不跑 `docs:verify`。
+- [x] **28. docs 侧栏漏 2 个组件**：✅ 已修复：`packages/docs/content/docs/components/meta.json` 与 `meta.en.json` 已补 `alert`、`card-tabs`；并按字母序重排 sidebar 列表。
+- [x] **29. 根 `components.json:8` 悬空**：✅ 已修复：`tailwind.css` 改为 `packages/docs/app/globals.css`；`tsconfig.json` 为 `@/components`、`@/hooks`、`@/lib` 补了根目录映射（分别指向 `./registry` 与 `./registry/lib`）。
+- [x] **30. 校验脚本覆盖缺口**：✅ 已修复：`scripts/docs-required-registry-docs.ts` 必需清单已补 17 个新原语；CI `.github/workflows/deploy-pages.yml` 改为跑 `pnpm run docs:verify`。~~`scripts/check-docs-examples.ts` 必需清单缺 17 个新原语（alert、alert-dialog、aspect-ratio、breadcrumb、button-group、calendar、card-tabs、copy-button、hover-card、input-number、item、kbd、menubar、native-select、navigation-menu、scroll-area、spinner）；CI `.github/workflows/deploy-pages.yml` 只跑 `docs:build` 不跑 `docs:verify`。~~
 
 ## 待裁决判断点（非缺陷，需设计决策）
 
-- [ ] **A. 字重规范性**：front matter 绑定 `typography: body-md`（400），实现统一 `font-medium`（500）（`button.tsx:7`、`badge.tsx:8`、`tabs.tsx:53`、`select.tsx:46`、`table.tsx:75`）。prose 允许 500 —— 需明确 YAML 对字重是否规范，然后统一改文档或改实现。
-- [ ] **B. select 家族 input-surface 契约**：契约只点名 input/textarea/input-group；`select.tsx:46` 触发器用 `bg-background`，`combobox.tsx:233` chips 用 `border-border bg-background`。决定是否将 select 家族纳入透明输入契约。
+- [x] **A. 字重规范性**：✅ 已裁决（2026-08-07）：交互控件、Tabs、Badge 和表头统一使用 `body-md-medium`（13px/500）；`Button size="xs"` 是明确例外，使用 `body-md`（13px/400）。中英文 DESIGN 的 YAML 与 Typography 表均已对齐运行时 token 和实现。~~front matter 绑定 `typography: body-md`（400），实现统一 `font-medium`（500）（`button.tsx:7`、`badge.tsx:8`、`tabs.tsx:53`、`select.tsx:46`、`table.tsx:75`）。prose 允许 500 —— 需明确 YAML 对字重是否规范，然后统一改文档或改实现。~~
+- [x] **B. select 家族 input-surface 契约**：✅ 已裁决（2026-08-07）：将选择控件的输入表面纳入透明输入契约；`SelectTrigger`、`NativeSelect`、Combobox 的 `InputGroup` 与 `ComboboxChips` 统一使用 `border-input bg-input-surface`。弹层继续使用不透明 `bg-popover`，单个 chip 保留状态填充。FilterPanel 已移除覆盖默认输入表面的 `border-border bg-background`。~~契约只点名 input/textarea/input-group；`select.tsx:46` 触发器用 `bg-background`，`combobox.tsx:233` chips 用 `border-border bg-background`。决定是否将 select 家族纳入透明输入契约。~~
 - [x] **C. tooltip 反色表面**：✅ 已裁决（2026-08-06）：反色为有意例外，Elevation 表 Floating 行已移除 tooltips 并加注说明（见 #11）。
-- [ ] **D. oklch vs oklab**：DESIGN 写 `color-mix(in oklch, ...)`，Tailwind `/80` 修饰符生成 `in oklab`。视觉等价，决定契约措辞是否放宽。
-- [ ] **E. 未记录小尺寸**：checkbox/radio `size-4`（16px）、slider 滑块 `size-3`（12px）、textarea `min-h-16`（64px）偏离 24/28/32/36 刻度，DESIGN 未规定小型选择控件尺寸 —— 决定补文档还是改实现。
+- [x] **D. oklch vs oklab**：✅ 已裁决（2026-08-07）：单一语义色 token 与 `transparent` 的透明度混合，以目标 alpha 为契约；`oklch` 与 Tailwind 生成的 `oklab` 均允许。两个可见颜色混合仍须显式声明插值空间，OKLCH 另须声明色相插值方法；中英文 DESIGN 已同步。~~DESIGN 写 `color-mix(in oklch, ...)`，Tailwind `/80` 修饰符生成 `in oklab`。视觉等价，决定契约措辞是否放宽。~~
+- [x] **E. 未记录小尺寸**：✅ 已裁决（2026-08-07）：保留紧凑实现并补文档。Checkbox/Radio 的 16px 可见标记与 Slider 的 12px thumb 不属于 24/28/32/36px 单行和图标控件尺寸体系，伪元素分别提供 40×32px、32×32px、28×28px 指针命中区；Textarea 是可随内容增长的多行输入，64px 为两个默认输入行的最小高度。中英文 DESIGN 已同步。~~checkbox/radio `size-4`（16px）、slider 滑块 `size-3`（12px）、textarea `min-h-16`（64px）偏离 24/28/32/36 刻度，DESIGN 未规定小型选择控件尺寸 —— 决定补文档还是改实现。~~
 
 ## 已验证一致（无需处理）
 

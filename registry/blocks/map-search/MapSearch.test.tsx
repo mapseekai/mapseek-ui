@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises"
+import { resolve } from "node:path"
 import type { ButtonHTMLAttributes } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
 import { describe, expect, it, vi } from "vitest"
@@ -81,5 +83,13 @@ describe("MapSearch", () => {
     expect(html).toContain('aria-label="展开"')
     expect(html).not.toContain('data-slot="map-search"')
     expect(html).not.toContain('role="tablist"')
+  })
+
+  it("keeps selected place results visibly selected on hover", async () => {
+    const source = await readFile(resolve(import.meta.dirname, "MapSearch.tsx"), "utf8")
+
+    expect(source).toContain(
+      'selected && "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"',
+    )
   })
 })

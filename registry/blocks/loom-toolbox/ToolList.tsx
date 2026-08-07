@@ -159,7 +159,7 @@ export function ToolList({
               return (
                 <div
                   key={tool.id}
-                  className="flex items-center gap-2 border border-transparent px-2 py-1.5 transition-colors hover:border-primary hover:bg-accent/50"
+                  className="flex items-center gap-2 border border-transparent px-2 py-1.5 transition-colors hover:bg-accent/50"
                 >
                   <Button
                     variant="link"

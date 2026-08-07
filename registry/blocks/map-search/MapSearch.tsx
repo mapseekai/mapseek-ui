@@ -47,7 +47,10 @@ function PlaceResult({
       role="option"
       aria-selected={selected}
       variant="ghost"
-      className="h-7 w-full justify-start px-3 py-1 text-start"
+      className={cn(
+        "h-7 w-full justify-start px-3 py-1 text-start",
+        selected && "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary",
+      )}
       onClick={onSelect}
     >
       <span className="flex min-w-0 flex-1 items-baseline gap-3">

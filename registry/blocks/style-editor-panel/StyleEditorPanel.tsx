@@ -61,11 +61,7 @@ export function StyleEditorPanelSection({
 }: StyleEditorPanelSectionProps) {
   return (
     <section className={cn("grid gap-3", className)}>
-      {title ? (
-        <h2 className="m-0 text-body-md-strong tracking-[0.04em] text-muted-foreground uppercase">
-          {title}
-        </h2>
-      ) : null}
+      {title ? <h2 className="m-0 text-headline-md text-muted-foreground">{title}</h2> : null}
       {children}
     </section>
   )

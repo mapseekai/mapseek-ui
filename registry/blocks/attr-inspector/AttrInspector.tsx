@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 import { EditField, ReadField } from "./attr-field"
 import type { AttrFieldMeta, AttrInspectorProps } from "./types"
 
-const actionBtn = "h-6 gap-1.5 rounded-none px-2.5 text-body-sm"
+const actionBtn = "h-6 gap-1.5 rounded-none px-2.5 text-body-md-medium"
 
 /**
  * Floating attribute panel for a single picked feature, decoupled from any
@@ -69,6 +69,8 @@ export function AttrInspector({
                   variant="ghost"
                   size="icon"
                   onClick={onClose}
+                  aria-label={labels.close}
+                  title={labels.close}
                   className="mr-1 size-8 rounded-none text-muted-foreground"
                 >
                   <IconX />
@@ -110,7 +112,7 @@ export function AttrInspector({
             <Button
               variant="ghost"
               onClick={onAddField}
-              className="mt-2.5 h-6 w-full justify-start gap-1.5 rounded-none px-2.5 text-body-sm"
+              className="mt-2.5 h-6 w-full justify-start gap-1.5 rounded-none px-2.5 text-body-md-medium"
             >
               <IconColumnInsertRight data-icon="inline-start" /> {labels.addField}
             </Button>
@@ -135,11 +137,11 @@ export function AttrInspector({
                 <Button
                   variant="outline"
                   onClick={onCancel}
-                  className="h-6 rounded-none px-2.5 text-body-sm"
+                  className="h-6 rounded-none px-2.5 text-body-md-medium"
                 >
                   {labels.cancel}
                 </Button>
-                <Button onClick={onConfirm} className="h-6 rounded-none px-2.5 text-body-sm">
+                <Button onClick={onConfirm} className="h-6 rounded-none px-2.5 text-body-md-medium">
                   {labels.confirm}
                 </Button>
               </>

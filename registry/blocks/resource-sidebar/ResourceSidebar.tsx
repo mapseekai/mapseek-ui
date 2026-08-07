@@ -52,7 +52,7 @@ export function ResourceSidebar({
         className,
       )}
     >
-      <div className="px-3.5 pt-3 pb-2 font-mono text-label-sm font-normal text-muted-foreground uppercase">
+      <div className="px-3.5 pt-3 pb-2 font-mono text-label-sm text-muted-foreground uppercase">
         {labels.typeSection}
       </div>
 
@@ -97,7 +97,7 @@ export function ResourceSidebar({
 
       <div className="mx-2 my-1.5 h-px bg-border" />
 
-      <div className="px-3.5 pt-1 pb-2 font-mono text-label-sm font-normal text-muted-foreground uppercase">
+      <div className="px-3.5 pt-1 pb-2 font-mono text-label-sm text-muted-foreground uppercase">
         {labels.categoriesSection}
       </div>
 
@@ -197,7 +197,14 @@ function TypeRow({
   onClick: () => void
 }) {
   return (
-    <Button type="button" variant="ghost" size="sm" className={className} onClick={onClick}>
+    <Button
+      type="button"
+      variant="ghost"
+      size="sm"
+      className={className}
+      aria-pressed={active}
+      onClick={onClick}
+    >
       {icon}
       <span>{label}</span>
       <span
@@ -233,6 +240,7 @@ function CategoryRow({
         type="button"
         variant="ghost"
         size="sm"
+        aria-pressed={active}
         className={cn(
           "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-body-md",
           active

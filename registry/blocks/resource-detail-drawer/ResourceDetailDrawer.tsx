@@ -286,7 +286,7 @@ function FontBody({
         )}
       >
         <div>{detail.specimen}</div>
-        <div className="font-mono text-label-sm font-normal text-muted-foreground">
+        <div className="font-mono text-label-sm text-muted-foreground">
           {detail.title.toUpperCase()}
         </div>
       </div>
@@ -299,7 +299,7 @@ function FontBody({
         <SectionTitle>{detail.sampleTitle}</SectionTitle>
         <div
           className={cn(
-            "border border-border bg-muted px-3 py-2.5 text-headline-lg font-normal leading-relaxed",
+            "border border-border bg-muted px-3 py-2.5 text-headline-lg leading-relaxed",
             fontClass(detail.family),
           )}
         >

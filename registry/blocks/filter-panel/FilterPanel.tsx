@@ -92,7 +92,7 @@ function FilterPanelModeToggle({ className }: { className?: string }) {
   return (
     <TabsList variant="primary" className={cn("mb-2.5 grid h-7 w-full grid-cols-2", className)}>
       {modes.map((mode) => (
-        <TabsTrigger key={mode.id} value={mode.id} className="text-body-sm">
+        <TabsTrigger key={mode.id} value={mode.id} className="text-body-md-medium">
           <mode.Icon data-icon="inline-start" />
           {mode.label}
         </TabsTrigger>
@@ -200,7 +200,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 </SelectContent>
               </Select>
               <Input
-                className="h-6 rounded-none border-border bg-background px-2 font-mono text-body-sm"
+                className="h-6 rounded-none border-input bg-input-surface px-2 font-mono text-body-sm"
                 placeholder={labels.valuePlaceholder}
                 value={f.value}
                 onChange={(e) => updateRow(f.id, { value: e.target.value })}

@@ -75,7 +75,7 @@ export function ResourceGrid({
       <div
         data-testid="resource-icon-grid"
         className={cn(
-          "grid w-full min-w-0 grid-cols-[repeat(auto-fit,minmax(96px,1fr))] border-t border-l border-border",
+          "grid w-full min-w-0 grid-cols-[repeat(auto-fill,minmax(96px,1fr))] border-t border-l border-border",
           className,
         )}
       >
@@ -205,7 +205,7 @@ function ResourceCard({
       variant="ghost"
       size="sm"
       type="button"
-      className="flex h-auto w-full cursor-pointer flex-col items-stretch overflow-hidden border border-border bg-background p-0 text-left transition-all hover:border-primary"
+      className="flex h-auto w-full cursor-pointer flex-col items-stretch overflow-hidden border border-border bg-background p-0 text-left transition-all hover:border-primary hover:bg-primary/5"
       onClick={onOpen}
       onContextMenu={onContextMenu}
     >

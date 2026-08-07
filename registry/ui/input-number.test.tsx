@@ -39,4 +39,11 @@ describe("InputNumber", () => {
     expect(html).toContain('data-disabled=""')
     expect(html).toContain('disabled=""')
   })
+
+  it("gives both keyboard-focusable step controls the shared focus ring", () => {
+    const html = renderToStaticMarkup(<InputNumber aria-label="Distance" defaultValue={12} />)
+
+    expect(html.match(/focus-visible:ring-\[3px\]/g) ?? []).toHaveLength(2)
+    expect(html.match(/focus-visible:ring-ring\/20/g) ?? []).toHaveLength(2)
+  })
 })

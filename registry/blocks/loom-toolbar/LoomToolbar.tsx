@@ -70,7 +70,7 @@ export function LoomToolbar({
           <div className="flex h-11 min-w-max items-center gap-1 px-1.5">
             <Button
               size="sm"
-              className="h-7 gap-1.5 px-2.5 text-body-sm"
+              className="h-7 gap-1.5 px-2.5 text-body-md-medium"
               onClick={() => onEditingChange(!editing)}
             >
               <IconPencil data-icon="inline-start" />
@@ -83,7 +83,7 @@ export function LoomToolbar({
                   variant="ghost"
                   size="sm"
                   disabled={!dirty}
-                  className="h-7 gap-1.5 px-2 text-body-sm"
+                  className="h-7 gap-1.5 px-2 text-body-md-medium"
                   onClick={onSave}
                 >
                   <IconDeviceFloppy data-icon="inline-start" />

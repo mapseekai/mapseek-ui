@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils"
 import { inferAttrFieldKind } from "./infer-hint"
 import type { AttrFieldKind, AttrFieldMeta } from "./types"
 
-const inputBase = "w-full rounded-none border-border bg-background px-2 text-body-md"
+const inputBase = "w-full rounded-none border-input bg-input-surface px-2 text-body-md"
 
 type Resolved = {
   kind: AttrFieldKind

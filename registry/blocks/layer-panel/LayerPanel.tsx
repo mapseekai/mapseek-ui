@@ -357,10 +357,7 @@ function LayerPanelGroupTitle({ className, ...props }: React.ComponentProps<"div
   return (
     <div
       data-slot="layer-panel-group-title"
-      className={cn(
-        "min-w-0 flex-1 truncate text-body-md-strong uppercase tracking-[0.04em] text-foreground",
-        className,
-      )}
+      className={cn("min-w-0 flex-1 truncate text-headline-md text-foreground", className)}
       {...props}
     />
   )

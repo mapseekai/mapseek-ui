@@ -44,11 +44,18 @@ describe("FilterPanel.ModeToggle", () => {
     expect(html).toContain('data-variant="primary"')
     expect(html).toMatch(/role="tab"[^>]*aria-selected="true"[^>]*>.*构建器/s)
     expect(html).toMatch(/role="tab"[^>]*aria-selected="false"[^>]*>.*SQL/s)
+    const tabs = html.match(/<button[^>]*role="tab"[^>]*>/g) ?? []
+
+    expect(tabs).toHaveLength(2)
+    for (const tab of tabs) {
+      expect(tab).toContain("text-body-md-medium")
+      expect(tab).not.toContain("text-body-sm")
+    }
   })
 })
 
 describe("FilterPanel.Builder", () => {
-  it("does not override the shared select input surface", () => {
+  it("does not override the shared input surfaces", () => {
     const html = renderToStaticMarkup(
       <FilterPanel
         fields={["type"]}
@@ -64,5 +71,7 @@ describe("FilterPanel.Builder", () => {
     )
 
     expect(html).not.toMatch(/<button[^>]*class="[^"]*(?:border-border|bg-background)[^"]*"/)
+    expect(html).toMatch(/<input[^>]*class="[^"]*border-input[^"]*bg-input-surface[^"]*"/)
+    expect(html).not.toMatch(/<input[^>]*class="[^"]*(?:border-border|bg-background)[^"]*"/)
   })
 })

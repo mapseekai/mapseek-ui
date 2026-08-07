@@ -27,7 +27,7 @@ export function StyleFunctionStopsTable({
   return (
     <div className={cn("mt-6", className)}>
       <table data-slot="style-function-stops-table" className="w-full table-fixed border-collapse">
-        <caption className="mb-2 text-left text-body-md-strong tracking-[0.04em] text-muted-foreground uppercase">
+        <caption className="mb-2 text-left text-headline-md text-muted-foreground">
           {caption}
         </caption>
         <thead>

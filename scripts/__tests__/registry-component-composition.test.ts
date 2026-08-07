@@ -117,13 +117,14 @@ describe("registry component composition", () => {
     )
   })
 
-  it("uses a primary hover border with the reference accent background for tool rows", async () => {
+  it("uses a neutral hover treatment for tool rows", async () => {
     const toolList = await readFile("registry/blocks/loom-toolbox/ToolList.tsx", "utf8")
 
     expect(toolList.match(/variant="link"/g)).toHaveLength(2)
     expect(toolList.match(/text-foreground hover:no-underline/g)).toHaveLength(2)
     expect(toolList).toContain("border border-transparent")
-    expect(toolList).toContain("transition-colors hover:border-primary hover:bg-accent/50")
+    expect(toolList).toContain("transition-colors hover:bg-accent/50")
+    expect(toolList).not.toContain("hover:border-primary")
   })
 
   it("marks selected split-tool options on the left edge only", async () => {
@@ -161,11 +162,12 @@ describe("registry component composition", () => {
     expect(layerPanel).not.toContain("text-center text-xs text-muted-foreground")
   })
 
-  it("uses background-free buttons for loom layer groups and selections", async () => {
+  it("uses background-free buttons and primary text for selected loom layers", async () => {
     const layerGroup = await readFile("registry/blocks/loom-layer-panel/LoomLayerGroup.tsx", "utf8")
 
     expect(layerGroup.match(/variant="link"/g)).toHaveLength(2)
-    expect(layerGroup.match(/text-foreground hover:no-underline/g)).toHaveLength(2)
+    expect(layerGroup.match(/text-foreground hover:no-underline/g)).toHaveLength(1)
+    expect(layerGroup).toContain('selected ? "text-primary" : "text-foreground"')
   })
 
   it("renders the loom toolbar with a border and no shadow", async () => {

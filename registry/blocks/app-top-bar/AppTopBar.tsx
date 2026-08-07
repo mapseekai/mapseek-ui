@@ -71,7 +71,7 @@ export function AppTopBar({
             disabled={saveDisabled || savePending}
             aria-busy={savePending || undefined}
             onClick={() => void onSave()}
-            className="m-0 gap-1.5 rounded-none border-primary bg-primary text-body-sm-medium text-primary-foreground hover:bg-primary/90"
+            className="m-0 gap-1.5 rounded-none border-primary bg-primary text-body-md-medium text-primary-foreground hover:bg-primary/90"
           >
             <IconDeviceFloppy data-icon="inline-start" /> {labels.save}
           </Button>

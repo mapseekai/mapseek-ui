@@ -92,7 +92,7 @@ export function LoomLayerGroup({
                 key={layer.id}
                 className={cn(
                   "flex items-center gap-1 border px-2 py-2",
-                  selected ? "border-primary/30 bg-primary/10" : "border-border",
+                  selected ? "border-primary/30 bg-selection-bg text-primary" : "border-border",
                 )}
               >
                 <Button
@@ -100,7 +100,10 @@ export function LoomLayerGroup({
                   size="sm"
                   type="button"
                   aria-label={labels.selectLayer(layer.name)}
-                  className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start text-foreground hover:no-underline"
+                  className={cn(
+                    "h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start hover:no-underline",
+                    selected ? "text-primary" : "text-foreground",
+                  )}
                   onClick={() => onSelectLayer(layer.id)}
                 >
                   <GeometryIcon className="size-3.5 shrink-0 text-primary" />

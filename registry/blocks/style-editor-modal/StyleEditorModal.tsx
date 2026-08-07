@@ -63,7 +63,7 @@ export function StyleEditorModalSection({
 }: StyleEditorModalSectionProps) {
   return (
     <section className={cn("flex flex-col gap-4 not-last:mb-8", className)}>
-      {title ? <h1 className="m-0 border-b border-border pb-1 text-headline-lg">{title}</h1> : null}
+      {title ? <h2 className="m-0 border-b border-border pb-1 text-headline-md">{title}</h2> : null}
       {description ? <p className="text-body-lg text-muted-foreground">{description}</p> : null}
       {children}
     </section>
@@ -91,7 +91,7 @@ export function StyleEditorModalAlert({
           type="button"
           onClick={onDismiss}
           aria-label={dismissLabel}
-          className="flex size-6 shrink-0 cursor-pointer items-center justify-center text-headline-lg font-normal leading-none hover:bg-destructive/10"
+          className="flex size-6 shrink-0 cursor-pointer items-center justify-center text-headline-lg leading-none hover:bg-destructive/10"
         >
           ×
         </Button>
@@ -117,7 +117,7 @@ export function StyleEditorModalTile({
       size="sm"
       type="button"
       className={cn(
-        "group flex w-full cursor-pointer flex-col overflow-hidden border border-border bg-background text-left transition-colors hover:border-primary hover:bg-accent/50",
+        "group flex w-full cursor-pointer flex-col overflow-hidden border border-border bg-background text-left transition-colors hover:border-primary hover:bg-primary/5",
         className,
       )}
       aria-label={typeof title === "string" ? title : undefined}

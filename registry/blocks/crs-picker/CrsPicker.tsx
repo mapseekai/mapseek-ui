@@ -187,9 +187,7 @@ function CrsRow({
       className={cn(
         "flex cursor-pointer items-start justify-between px-2 py-[7px]",
         "border-l-2",
-        selected
-          ? "border-l-primary bg-[oklch(0.627_0.194_149_/_0.06)]"
-          : "border-l-transparent hover:bg-accent/50",
+        selected ? "border-l-primary bg-selection-bg" : "border-l-transparent hover:bg-accent/50",
       )}
     >
       <div className="min-w-0">

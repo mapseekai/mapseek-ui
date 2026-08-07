@@ -59,6 +59,16 @@ describe("SelectContent width", () => {
   })
 })
 
+describe("SelectContent document behavior", () => {
+  it("does not align items with the trigger by default so it does not lock document scroll", () => {
+    const portal = SelectContent({ children: "Options" }) as ReactElement<{
+      children: ReactElement<{ alignItemWithTrigger: boolean }>
+    }>
+
+    expect(portal.props.children.props.alignItemWithTrigger).toBe(false)
+  })
+})
+
 describe("SelectTrigger width", () => {
   it("uses the fixed container width by default", () => {
     const trigger = SelectTrigger({ children: "Value" }) as ReactElement<{

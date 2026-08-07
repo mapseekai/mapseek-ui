@@ -35,11 +35,11 @@ import {
 
 ## 用法
 
-`SchemaTable` 读取字段名和类型并自动过滤 geometry/geography 列。`DataTable` 读取 `RowSource`，通过 `getRowKey`、`renderCell` 和 `onRowClick` 接入业务数据。`AttrTableSheet` 是贴底的可调整高度外壳，适合覆盖地图画布。
+`SchemaTable` 读取字段名和类型并自动过滤 geometry/geography 列。`DataTable` 读取 `RowSource`，通过 `getRowKey`、`renderCell` 和 `onRowClick` 接入业务数据；自定义单元格内容可通过可选的 `getCellText` 提供可发现的完整文本。`AttrTableSheet` 是贴底的可调整高度外壳，适合覆盖地图画布。
 
 ## 公开导出与 Props
 
-导出 `AttrTableSheet`、`DataTable`、`SchemaTable`、`attributeColumns`、`isGeometryColumn`、`useStaticRowSource`、`useTableSheetState`、`ColumnDef`、`RowSource`、`DataTableProps`、`SchemaTableProps`、`AttrTableSheetProps` 和 `TableSheetState`。核心 props 是列定义、行源、行 key、单元格渲染、选中 key、空状态文案、错误重试文案和抽屉 header 插槽。
+导出 `AttrTableSheet`、`DataTable`、`SchemaTable`、`attributeColumns`、`isGeometryColumn`、`useStaticRowSource`、`useTableSheetState`、`ColumnDef`、`RowSource`、`DataTableProps`、`SchemaTableProps`、`AttrTableSheetProps` 和 `TableSheetState`。核心 props 是列定义、行源、行 key、单元格渲染、长内容的完整单元格文本、选中 key、空状态文案、错误重试文案和抽屉 header 插槽。
 
 ## 状态、空态与错误
 

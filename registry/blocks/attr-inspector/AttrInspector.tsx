@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
 import { EditField, ReadField } from "./attr-field"
 import type { AttrFieldMeta, AttrInspectorProps } from "./types"
 
-const actionBtn = "h-6 gap-1.5 rounded-none px-2.5 text-[11px]"
+const actionBtn = "h-6 gap-1.5 rounded-none px-2.5 text-body-sm"
 
 /**
  * Floating attribute panel for a single picked feature, decoupled from any
@@ -59,7 +59,7 @@ export function AttrInspector({
       <div className="flex shrink-0 items-center border-b border-border">
         <div className="flex flex-1 items-center gap-1.5 px-3 py-2.5">
           <IconInfoSquareRounded size={13} className="text-primary" />
-          <span className="text-xs font-medium">{labels.title}</span>
+          <span className="text-body-md-medium">{labels.title}</span>
         </div>
         {onClose && (
           <Tooltip>
@@ -105,12 +105,12 @@ export function AttrInspector({
               ),
             )}
           </div>
-          {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
+          {error && <p className="mt-2 text-body-md text-destructive">{error}</p>}
           {isEdit && onAddField && (
             <Button
               variant="ghost"
               onClick={onAddField}
-              className="mt-2.5 h-6 w-full justify-start gap-1.5 rounded-none px-2.5 text-[11px]"
+              className="mt-2.5 h-6 w-full justify-start gap-1.5 rounded-none px-2.5 text-body-sm"
             >
               <IconColumnInsertRight data-icon="inline-start" /> {labels.addField}
             </Button>
@@ -135,11 +135,11 @@ export function AttrInspector({
                 <Button
                   variant="outline"
                   onClick={onCancel}
-                  className="h-6 rounded-none px-2.5 text-[11px]"
+                  className="h-6 rounded-none px-2.5 text-body-sm"
                 >
                   {labels.cancel}
                 </Button>
-                <Button onClick={onConfirm} className="h-6 rounded-none px-2.5 text-[11px]">
+                <Button onClick={onConfirm} className="h-6 rounded-none px-2.5 text-body-sm">
                   {labels.confirm}
                 </Button>
               </>

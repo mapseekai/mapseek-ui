@@ -46,3 +46,23 @@ describe("FilterPanel.ModeToggle", () => {
     expect(html).toMatch(/role="tab"[^>]*aria-selected="false"[^>]*>.*SQL/s)
   })
 })
+
+describe("FilterPanel.Builder", () => {
+  it("does not override the shared select input surface", () => {
+    const html = renderToStaticMarkup(
+      <FilterPanel
+        fields={["type"]}
+        value={{
+          mode: "builder",
+          rows: [{ id: 1, conn: "AND", field: "type", op: "=", value: "road" }],
+          sql: "",
+        }}
+        onChange={() => {}}
+      >
+        <FilterPanel.Builder ops={["="]} />
+      </FilterPanel>,
+    )
+
+    expect(html).not.toMatch(/<button[^>]*class="[^"]*(?:border-border|bg-background)[^"]*"/)
+  })
+})

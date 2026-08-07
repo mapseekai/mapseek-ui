@@ -246,7 +246,7 @@ export function NumberRangeInput({
       />
       <Input
         aria-label={ariaLabel}
-        className={cn("h-7 shrink-0 text-xs tabular-nums", inputClassName)}
+        className={cn("h-7 shrink-0 text-body-md tabular-nums", inputClassName)}
         data-wd-key={dataWdKey ? `${dataWdKey}-text` : undefined}
         disabled={disabled}
         inputMode="decimal"

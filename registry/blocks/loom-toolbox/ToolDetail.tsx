@@ -48,7 +48,7 @@ export function ToolDetail({
           variant="link"
           size="sm"
           type="button"
-          className="h-auto gap-1 rounded-none p-0 text-xs text-primary hover:no-underline"
+          className="h-auto gap-1 rounded-none p-0 text-body-md text-primary hover:no-underline"
           onClick={onBack}
         >
           <IconArrowLeft className="size-3.5" /> {labels.back}
@@ -84,22 +84,28 @@ export function ToolDetail({
             <ToolIcon className="size-4" />
           </span>
           <div className="min-w-0">
-            <h2 className="text-sm font-semibold">{tool.label}</h2>
-            <p className="mt-1 text-xs text-muted-foreground">{tool.description}</p>
+            <h2 className="text-headline-sm">{tool.label}</h2>
+            <p className="mt-1 text-body-md text-muted-foreground">{tool.description}</p>
           </div>
         </div>
         <Separator className="my-4" />
-        <h3 className="mb-3 text-xs font-semibold">{labels.parameters}</h3>
+        <h3 className="mb-3 text-body-md-strong">{labels.parameters}</h3>
         <FieldGroup className="gap-3">
           <Field className="gap-1.5">
-            <FieldLabel htmlFor="loom-tool-input-layer" className="text-xs text-muted-foreground">
+            <FieldLabel
+              htmlFor="loom-tool-input-layer"
+              className="text-body-md text-muted-foreground"
+            >
               {labels.inputLayer}
             </FieldLabel>
             <Input id="loom-tool-input-layer" value={inputLayerName} readOnly />
           </Field>
           {tool.parameterKind === "distance" && (
             <Field className="gap-1.5">
-              <FieldLabel htmlFor="loom-tool-distance" className="text-xs text-muted-foreground">
+              <FieldLabel
+                htmlFor="loom-tool-distance"
+                className="text-body-md text-muted-foreground"
+              >
                 {labels.distance}
               </FieldLabel>
               <Input
@@ -119,7 +125,7 @@ export function ToolDetail({
       <Separator />
       <footer className="p-3">
         {completed && (
-          <div role="status" className="mb-2 text-[11px] text-primary">
+          <div role="status" className="mb-2 text-body-sm text-primary">
             {labels.completed}
           </div>
         )}

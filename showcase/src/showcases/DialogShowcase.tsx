@@ -222,7 +222,9 @@ export function DialogConfirmationDemo({ locale = "zh-CN" }: LocalizedDemoProps)
           }
         />
         <DialogContent title={demoLabels.title} width={440}>
-          <DialogDescription>{demoLabels.description}</DialogDescription>
+          <DialogBody>
+            <DialogDescription>{demoLabels.description}</DialogDescription>
+          </DialogBody>
           <DialogFooter>
             <DialogClose
               render={

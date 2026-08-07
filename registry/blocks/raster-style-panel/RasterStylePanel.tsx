@@ -46,8 +46,7 @@ function normalizeSelector(selector: RasterSelector): Extract<RasterSelector, { 
   return { kind: "bands", bands: [band], assignments: {} }
 }
 
-const labelCls =
-  "self-center font-sans text-[11px] font-medium uppercase tracking-[0.06em] text-muted-foreground"
+const labelCls = "self-center font-sans text-label-sm uppercase text-muted-foreground"
 const colorPattern = /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i
 
 type DraftReporter = (key: string, valid: boolean | null) => void
@@ -105,7 +104,7 @@ function StatGrid({ stats }: { stats: RasterStat[] }) {
       {stats.map((s) => (
         <div key={s.label}>
           <div className="font-mono text-[10px] text-muted-foreground">{s.label}</div>
-          <div className="font-mono text-[11px]">
+          <div className="font-mono text-body-sm">
             {s.value}
             {s.unit}
           </div>

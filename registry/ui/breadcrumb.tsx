@@ -8,7 +8,7 @@ function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
     <nav
       aria-label="breadcrumb"
       data-slot="breadcrumb"
-      className={cn("text-xs", className)}
+      className={cn("not-prose text-body-md", className)}
       {...props}
     />
   )

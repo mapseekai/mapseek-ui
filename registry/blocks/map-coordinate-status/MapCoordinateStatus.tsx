@@ -131,7 +131,7 @@ export function MapCoordinateStatus({
     <div
       data-slot="map-coordinate-status"
       className={cn(
-        "flex h-auto max-w-full flex-wrap items-stretch border border-border bg-card font-mono text-[11px] font-medium text-foreground sm:h-7 sm:flex-nowrap",
+        "flex h-auto max-w-full flex-wrap items-stretch border border-border bg-card font-mono text-body-sm-medium text-foreground sm:h-7 sm:flex-nowrap",
         className,
       )}
     >
@@ -169,10 +169,8 @@ export function MapCoordinateStatus({
           key={item.key}
           className="flex min-h-7 items-center border-l border-border px-1.5 whitespace-nowrap sm:min-h-0 sm:px-2.5"
         >
-          <span className="mr-1.5 text-[10px] tracking-[0.04em] text-muted-foreground uppercase">
-            {item.label}
-          </span>
-          {item.value}
+          <span className="mr-1.5 text-label-md text-muted-foreground uppercase">{item.label}</span>
+          <span className="tnum">{item.value}</span>
         </div>
       ))}
     </div>

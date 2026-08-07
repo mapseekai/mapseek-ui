@@ -445,7 +445,7 @@ export const ColorPickerOutput = ({ className }: ColorPickerOutputProps) => {
       <SelectContent>
         <SelectGroup>
           {formats.map((format) => (
-            <SelectItem className="text-xs" key={format} value={format}>
+            <SelectItem className="text-body-md" key={format} value={format}>
               {format.toUpperCase()}
             </SelectItem>
           ))}
@@ -464,9 +464,12 @@ const PercentageInput = ({ className, ...props }: PercentageInputProps) => {
         readOnly
         type="text"
         {...props}
-        className={cn("h-8 w-13 rounded-l-none bg-secondary px-2 text-xs shadow-none", className)}
+        className={cn(
+          "h-8 w-13 rounded-l-none bg-secondary px-2 text-body-md shadow-none",
+          className,
+        )}
       />
-      <span className="absolute top-1/2 right-2 -translate-y-1/2 text-xs text-muted-foreground">
+      <span className="absolute top-1/2 right-2 -translate-y-1/2 text-body-md text-muted-foreground">
         %
       </span>
     </div>
@@ -485,7 +488,7 @@ export const ColorPickerFormat = ({ className, ...props }: ColorPickerFormatProp
     return (
       <div className={cn("relative flex w-full items-center -space-x-px", className)} {...props}>
         <Input
-          className="h-8 rounded-r-none bg-secondary px-2 text-xs shadow-none"
+          className="h-8 rounded-r-none bg-secondary px-2 text-body-md shadow-none"
           readOnly
           type="text"
           value={hex}
@@ -506,7 +509,7 @@ export const ColorPickerFormat = ({ className, ...props }: ColorPickerFormatProp
         {RGB_OUTPUT_CHANNELS.map((channel, index) => (
           <Input
             className={cn(
-              "h-8 rounded-r-none bg-secondary px-2 text-xs shadow-none",
+              "h-8 rounded-r-none bg-secondary px-2 text-body-md shadow-none",
               index && "rounded-l-none",
               className,
             )}
@@ -530,7 +533,7 @@ export const ColorPickerFormat = ({ className, ...props }: ColorPickerFormatProp
     return (
       <div className={cn("w-full", className)} {...props}>
         <Input
-          className="h-8 w-full bg-secondary px-2 text-xs shadow-none"
+          className="h-8 w-full bg-secondary px-2 text-body-md shadow-none"
           readOnly
           type="text"
           value={`rgba(${rgb.join(", ")}, ${alpha}%)`}
@@ -551,7 +554,7 @@ export const ColorPickerFormat = ({ className, ...props }: ColorPickerFormatProp
         {HSL_OUTPUT_CHANNELS.map((channel, index) => (
           <Input
             className={cn(
-              "h-8 rounded-r-none bg-secondary px-2 text-xs shadow-none",
+              "h-8 rounded-r-none bg-secondary px-2 text-body-md shadow-none",
               index && "rounded-l-none",
               className,
             )}

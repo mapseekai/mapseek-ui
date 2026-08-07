@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-IconButton is for icon-only tool actions such as edit, download, refresh, and delete. It stays square and uses `danger` for destructive actions.
+IconButton is for icon-only tool actions such as edit, download, refresh, and delete. It is always square; `label` supplies the required accessible name, and `danger` expresses destructive actions.
 
 ## Installation
 
@@ -24,19 +24,27 @@ import { IconButton } from "@/registry/ui/icon-button"
 
 ## Usage
 
-<ShowcaseDemo registryName="icon-button" demo="overview" title="Icon button states" description="Covers md, sm, danger, and disabled and shows tool button sizes and danger state." minHeight={300} />
+<ShowcaseDemo registryName="icon-button" demo="overview" title="Icon button states" description="Covers the 24/28/32/36px size scale, danger and disabled states, and the built-in tooltip." minHeight={336} />
+
+```tsx
+import { IconPencil } from "@tabler/icons-react"
+
+<IconButton label="Edit layer" tooltip>
+  <IconPencil />
+</IconButton>
+```
 
 ## Exports
 
-`icon-button.tsx` exports `IconButton`. The component inherits native `button` props and adds `size="sm" | "md"` and `danger`.
+`icon-button.tsx` exports `IconButton`. It accepts Base UI Button props plus required `label`, optional `tooltip`, `size="xs" | "sm" | "md" | "lg"` (24/28/32/36px), and `danger`; the default size is `md`.
 
 ## States
 
-Default buttons use muted hover styles; `danger` uses destructive foreground and a tinted background. `disabled` removes pointer interaction and lowers opacity.
+Default buttons use muted hover styles; `danger` uses destructive foreground and a tinted background. `disabled` removes pointer interaction and lowers opacity; every size stays square with a zero radius and shows a 3px ring on keyboard focus.
 
 ## Accessibility
 
-Every icon button needs `aria-label`; add `title` or an outer tooltip when the meaning is not obvious. Destructive actions still need confirmation or undo at the workflow layer.
+`label` is the required accessible name and maps directly to `aria-label`. `tooltip` is off by default; `true` shows `label`, while a string supplies custom text. Enable it only when the symbol is not self-evident; destructive actions still need confirmation or undo at the workflow layer.
 
 ## Dependencies
 

@@ -33,17 +33,15 @@ function fontClass(family: FontDetail["family"]): string {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
-      {children}
-    </div>
+    <div className="mb-2 font-mono text-label-md text-muted-foreground uppercase">{children}</div>
   )
 }
 
 function KVRow({ k, v }: { k: string; v: string }) {
   return (
-    <div className="flex justify-between gap-2 py-[5px] text-[12px]">
+    <div className="flex justify-between gap-2 py-[5px] text-body-md">
       <span className="text-muted-foreground">{k}</span>
-      <span className="max-w-[180px] truncate text-right font-mono text-[11px] text-foreground">
+      <span className="max-w-[180px] truncate text-right font-mono text-body-sm text-foreground">
         {v}
       </span>
     </div>
@@ -73,8 +71,8 @@ export function ResourceDetailDrawer({
         className={cn("max-w-full", wide ? "w-[460px]" : "w-[380px]", className)}
       >
         <SheetHeader className="pr-12">
-          <SheetTitle className="truncate text-[15px]">{detail.title}</SheetTitle>
-          <SheetDescription className="truncate font-mono text-[12px]">
+          <SheetTitle className="truncate text-headline-md">{detail.title}</SheetTitle>
+          <SheetDescription className="truncate font-mono text-body-md">
             {detail.subtitle}
           </SheetDescription>
         </SheetHeader>
@@ -124,7 +122,7 @@ function IconBody({
           {detail.tags.map((t) => (
             <span
               key={t}
-              className="border border-border bg-muted px-1.5 py-0.5 font-mono text-[11px] font-medium text-muted-foreground"
+              className="border border-border bg-muted px-1.5 py-0.5 font-mono text-body-sm-medium text-muted-foreground"
             >
               {t}
             </span>
@@ -212,10 +210,12 @@ function SpriteBody({
             {detail.sources.map((s) => (
               <div
                 key={`${s.label}:${s.tag}`}
-                className="flex items-center gap-2 border border-border px-2.5 py-1.5 text-xs"
+                className="flex items-center gap-2 border border-border px-2.5 py-1.5 text-body-md"
               >
                 <span>{s.label}</span>
-                <span className="ml-auto font-mono text-[11px] text-muted-foreground">{s.tag}</span>
+                <span className="ml-auto font-mono text-body-sm text-muted-foreground">
+                  {s.tag}
+                </span>
               </div>
             ))}
           </div>
@@ -236,7 +236,7 @@ function SpriteBody({
               className="flex items-center gap-2 border border-border px-2.5 py-1.5"
             >
               <div className="min-w-0 flex-1">
-                <div className="font-mono text-[12px]">{f.name}</div>
+                <div className="font-mono text-body-md">{f.name}</div>
                 <div className="text-[10px] text-muted-foreground">{f.desc}</div>
               </div>
             </div>
@@ -281,12 +281,12 @@ function FontBody({
     <div className="flex min-h-full flex-col">
       <div
         className={cn(
-          "flex min-h-[140px] flex-col items-center justify-center gap-2 border-b border-border bg-muted p-6 text-5xl leading-none font-semibold",
+          "flex min-h-[140px] flex-col items-center justify-center gap-2 border-b border-border bg-muted p-6 text-data-display",
           fontClass(detail.family),
         )}
       >
         <div>{detail.specimen}</div>
-        <div className="font-mono text-[11px] tracking-[0.04em] text-muted-foreground">
+        <div className="font-mono text-label-sm font-normal text-muted-foreground">
           {detail.title.toUpperCase()}
         </div>
       </div>
@@ -299,7 +299,7 @@ function FontBody({
         <SectionTitle>{detail.sampleTitle}</SectionTitle>
         <div
           className={cn(
-            "border border-border bg-muted px-3 py-2.5 text-lg leading-relaxed",
+            "border border-border bg-muted px-3 py-2.5 text-headline-lg font-normal leading-relaxed",
             fontClass(detail.family),
           )}
         >
@@ -329,7 +329,7 @@ function FontBody({
       )}
       {slicing && open && (
         <div className="px-4 py-3.5">
-          <div className="mb-2 flex items-center font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+          <div className="mb-2 flex items-center font-mono text-label-md text-muted-foreground uppercase">
             <span>{slicing.panelTitle}</span>
             <Button
               variant="ghost"
@@ -362,7 +362,7 @@ function FontBody({
                     }
                   />
                   <div className="min-w-0 flex-1">
-                    <div className="text-[12px] font-medium">{c.name}</div>
+                    <div className="text-body-md-medium">{c.name}</div>
                     <div className="font-mono text-[10px] text-muted-foreground">
                       {c.range} · {c.glyphs.toLocaleString()}
                     </div>
@@ -372,21 +372,21 @@ function FontBody({
               )
             })}
           </div>
-          <div className="mt-3 mb-2 font-mono text-[10px] tracking-[0.06em] text-muted-foreground uppercase">
+          <div className="mt-3 mb-2 font-mono text-label-md text-muted-foreground uppercase">
             {slicing.customTitle}
           </div>
           <Textarea
             rows={2}
-            className="resize-y p-2 font-mono text-[11px]"
+            className="resize-y p-2 font-mono text-body-sm"
             value={customChars}
             onChange={(e) => setCustomChars(e.target.value)}
             placeholder={slicing.customPlaceholder}
           />
           <div className="mt-3 border border-border bg-muted p-2.5">
             <KVRow k={slicing.rawSizeLabel} v={slicing.rawSizeValue} />
-            <div className="flex justify-between gap-2 py-[5px] text-[12px]">
+            <div className="flex justify-between gap-2 py-[5px] text-body-md">
               <span className="text-muted-foreground">{slicing.estimateLabel}</span>
-              <span className="font-mono text-[11px] text-primary">~{estMb} MB</span>
+              <span className="font-mono text-body-sm text-primary">~{estMb} MB</span>
             </div>
             <KVRow
               k={slicing.selectedLabel}

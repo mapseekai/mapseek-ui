@@ -37,11 +37,12 @@ export function ResourceSidebar({
   className,
 }: ResourceSidebarProps) {
   const leafBase =
-    "relative flex h-[34px] w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-xs text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0 hover:bg-accent/50"
-  const activeLeaf = "bg-primary/10 text-primary before:opacity-100"
+    "relative flex h-[34px] w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-body-md text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0"
+  const activeLeaf =
+    "bg-selection-bg text-primary before:opacity-100 hover:bg-selection-bg hover:text-primary"
 
   function leafClass(active: boolean, extra: string) {
-    return cn(leafBase, extra, active && activeLeaf)
+    return cn(leafBase, extra, active ? activeLeaf : "hover:bg-accent/50")
   }
 
   return (
@@ -51,14 +52,14 @@ export function ResourceSidebar({
         className,
       )}
     >
-      <div className="px-3.5 pt-3 pb-2 font-mono text-[11px] tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="px-3.5 pt-3 pb-2 font-mono text-label-sm font-normal text-muted-foreground uppercase">
         {labels.typeSection}
       </div>
 
       <div className="px-1.5 pt-0.5">
         <div
           className={cn(
-            "flex items-center gap-2 px-2.5 py-[7px] text-xs font-semibold",
+            "flex items-center gap-2 px-2.5 py-[7px] text-body-md-strong",
             tab === "icon" || tab === "sprite"
               ? "text-primary [&_svg]:text-primary"
               : "text-foreground [&_svg]:text-muted-foreground",
@@ -86,7 +87,7 @@ export function ResourceSidebar({
         />
         <TypeRow
           active={tab === "font"}
-          className={leafClass(tab === "font", "px-2.5 py-[7px] font-semibold")}
+          className={leafClass(tab === "font", "px-2.5 py-[7px] text-body-md-strong")}
           icon={<IconTypography data-icon="inline-start" stroke={ICON_STROKE} />}
           label={labels.font}
           count={tabCounts.font}
@@ -96,7 +97,7 @@ export function ResourceSidebar({
 
       <div className="mx-2 my-1.5 h-px bg-border" />
 
-      <div className="px-3.5 pt-1 pb-2 font-mono text-[11px] tracking-[0.06em] text-muted-foreground uppercase">
+      <div className="px-3.5 pt-1 pb-2 font-mono text-label-sm font-normal text-muted-foreground uppercase">
         {labels.categoriesSection}
       </div>
 
@@ -201,7 +202,7 @@ function TypeRow({
       <span>{label}</span>
       <span
         className={cn(
-          "ml-auto font-mono text-[11px]",
+          "ml-auto font-mono text-body-sm",
           active ? "text-primary" : "text-muted-foreground",
         )}
       >
@@ -233,8 +234,10 @@ function CategoryRow({
         variant="ghost"
         size="sm"
         className={cn(
-          "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-xs text-foreground hover:bg-accent/50",
-          active && "bg-primary/10 font-medium text-primary",
+          "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-body-md",
+          active
+            ? "bg-selection-bg text-body-md-medium text-primary hover:bg-selection-bg hover:text-primary"
+            : "hover:bg-accent/50",
         )}
         onClick={onClick}
       >
@@ -243,7 +246,7 @@ function CategoryRow({
       </Button>
       <span
         className={cn(
-          "pointer-events-none absolute inset-y-0 right-2 flex items-center font-mono text-[11px] text-muted-foreground",
+          "pointer-events-none absolute inset-y-0 right-2 flex items-center font-mono text-body-sm text-muted-foreground",
           active && "text-primary",
           actions && "group-hover/cat:hidden",
         )}

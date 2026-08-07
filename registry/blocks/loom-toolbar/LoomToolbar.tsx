@@ -70,7 +70,7 @@ export function LoomToolbar({
           <div className="flex h-11 min-w-max items-center gap-1 px-1.5">
             <Button
               size="sm"
-              className="h-7 gap-1.5 px-2.5 text-[11px]"
+              className="h-7 gap-1.5 px-2.5 text-body-sm"
               onClick={() => onEditingChange(!editing)}
             >
               <IconPencil data-icon="inline-start" />
@@ -83,7 +83,7 @@ export function LoomToolbar({
                   variant="ghost"
                   size="sm"
                   disabled={!dirty}
-                  className="h-7 gap-1.5 px-2 text-[11px]"
+                  className="h-7 gap-1.5 px-2 text-body-sm"
                   onClick={onSave}
                 >
                   <IconDeviceFloppy data-icon="inline-start" />
@@ -177,7 +177,7 @@ export function LoomToolbar({
         </div>
       </div>
 
-      <div className="absolute bottom-4 end-4 flex items-center gap-2 border border-border bg-card/95 px-3 py-2 text-xs">
+      <div className="absolute bottom-4 end-4 flex items-center gap-2 border border-border bg-card/95 px-3 py-2 text-body-md">
         <span className="text-muted-foreground">{labels.currentMode}</span>
         <Badge>{activeTool?.label ?? activeMode}</Badge>
         {dirty && <span className="text-warning">{labels.unsaved}</span>}

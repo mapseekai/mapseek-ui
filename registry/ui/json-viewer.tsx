@@ -193,20 +193,18 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
   return (
     <div
       className={cn(
-        "relative flex w-full flex-col bg-card font-mono text-[13px] leading-6 text-foreground",
+        "relative flex w-full flex-col bg-card font-mono text-body-lg leading-6 text-foreground",
         className,
       )}
     >
       <div className="z-10 flex h-8 shrink-0 items-center gap-2 border-b border-border px-3">
-        <div className="text-[11px] leading-none font-semibold tracking-[0.06em] text-muted-foreground uppercase">
-          {title}
-        </div>
+        <div className="text-label-sm leading-none text-muted-foreground uppercase">{title}</div>
         <span className="flex-1" />
         <Button
           type="button"
           variant="ghost"
           onClick={expandAll}
-          className="h-6 rounded-none px-2 text-[11px] font-medium text-muted-foreground hover:text-foreground"
+          className="h-6 rounded-none px-2 text-body-sm-medium text-muted-foreground hover:text-foreground"
         >
           {expandAllLabel}
         </Button>
@@ -214,7 +212,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
           type="button"
           variant="ghost"
           onClick={collapseAll}
-          className="h-6 rounded-none px-2 text-[11px] font-medium text-muted-foreground hover:text-foreground"
+          className="h-6 rounded-none px-2 text-body-sm-medium text-muted-foreground hover:text-foreground"
         >
           {collapseAllLabel}
         </Button>
@@ -235,7 +233,7 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
           {copied ? (
             <>
               <IconCheck size={14} stroke={1.7} />
-              <span className="text-[11px] font-medium">已复制</span>
+              <span className="text-body-sm-medium">已复制</span>
             </>
           ) : (
             <IconCopy size={14} stroke={1.5} />
@@ -269,7 +267,7 @@ const LineNumbers: React.FC<{ lineCount: number }> = ({ lineCount }) => {
   return (
     <div className="mr-4 flex flex-col border-r border-border pr-4 text-right text-muted-foreground select-none">
       {Array.from({ length: lineCount }, (_, i) => i + 1).map((lineNumber) => (
-        <div key={lineNumber} className="h-6 text-xs leading-6 tabular-nums opacity-50">
+        <div key={lineNumber} className="h-6 text-body-md leading-6 tabular-nums opacity-50">
           {lineNumber}
         </div>
       ))}

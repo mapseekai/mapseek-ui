@@ -4,7 +4,6 @@ import { useState } from "react"
 
 import { CardTabs, CardTabsContent, CardTabsList, CardTabsTrigger } from "@/components/ui/card-tabs"
 import { IconButton } from "@/components/ui/icon-button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 
 import type {
@@ -63,12 +62,12 @@ export function LinkedRefList({ groups, kindIcons, openLabel }: LinkedRefListPro
         <CardTabsContent key={group.key} value={group.key} className="p-0!">
           <div className="flex items-center gap-2 bg-muted/30 px-4 py-2.5">
             <span className="shrink-0">{kindIcons[group.kind]}</span>
-            <span className="text-sm font-medium text-foreground">{group.title}</span>
-            <span className="mono border border-border bg-background px-1.5 text-[11px] text-muted-foreground">
+            <span className="text-headline-sm text-foreground">{group.title}</span>
+            <span className="mono border border-border bg-background px-1.5 text-body-sm text-muted-foreground">
               {group.count}
             </span>
             {group.summary ? (
-              <span className="ml-auto truncate text-[11px] text-muted-foreground">
+              <span className="ml-auto truncate text-body-sm text-muted-foreground">
                 {group.summary}
               </span>
             ) : null}
@@ -100,7 +99,7 @@ function SummaryCard({ group, icon }: { group: LinkedRefGroup; icon: ReactNode }
       value={group.key}
       className="group/ref-tab h-auto min-w-0 flex-col gap-2 px-4 py-3 text-left"
     >
-      <span className="flex items-center gap-2 text-sm font-medium text-foreground group-data-active/ref-tab:text-primary">
+      <span className="flex items-center gap-2 text-headline-sm text-foreground group-data-active/ref-tab:text-primary">
         <span
           className={cn("flex size-9 items-center justify-center border", KIND_BOX[group.kind])}
         >
@@ -110,7 +109,7 @@ function SummaryCard({ group, icon }: { group: LinkedRefGroup; icon: ReactNode }
       </span>
       <span>
         <span className="mono text-xl font-medium">{group.count}</span>{" "}
-        <span className="text-[11px] text-muted-foreground group-data-active/ref-tab:text-primary">
+        <span className="text-body-sm text-muted-foreground group-data-active/ref-tab:text-primary">
           {unit}
         </span>
       </span>
@@ -127,7 +126,7 @@ function ItemRow({
   item: LinkedRefItem
   kind: LinkedRefKind
   icon: ReactNode
-  openLabel?: string
+  openLabel: string
 }) {
   return (
     <li className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border px-3 py-3 last:border-b-0 sm:flex-nowrap sm:gap-3 sm:px-4">
@@ -137,9 +136,9 @@ function ItemRow({
         {icon}
       </span>
       <div className="min-w-0 basis-[calc(100%-2.75rem)] sm:flex-1 sm:basis-auto">
-        <div className="text-sm font-medium text-foreground">{item.name}</div>
+        <div className="text-headline-sm text-foreground">{item.name}</div>
         {item.subtitle || item.id ? (
-          <div className="truncate text-[11px] text-muted-foreground">
+          <div className="truncate text-body-sm text-muted-foreground">
             {item.subtitle}
             {item.subtitle && item.id ? " · " : null}
             {item.id ? <span className="mono">{item.id}</span> : null}
@@ -147,32 +146,18 @@ function ItemRow({
         ) : null}
       </div>
       {item.time ? (
-        <span className="mono tnum ml-11 shrink-0 text-[11px] text-muted-foreground sm:ml-0">
+        <span className="mono tnum ml-11 shrink-0 text-body-sm text-muted-foreground sm:ml-0">
           {item.time}
         </span>
       ) : null}
       {item.status ? <StatusPill status={item.status} /> : null}
       <span className="flex shrink-0 items-center gap-1">
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <IconButton size="sm" disabled aria-label={openLabel}>
-                <IconExternalLink stroke={1.5} />
-              </IconButton>
-            }
-          />
-          <TooltipContent>{openLabel}</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <IconButton size="sm" disabled aria-label={openLabel}>
-                <IconLink stroke={1.5} />
-              </IconButton>
-            }
-          />
-          <TooltipContent>{openLabel}</TooltipContent>
-        </Tooltip>
+        <IconButton size="xs" disabled label={openLabel} tooltip>
+          <IconExternalLink stroke={1.5} />
+        </IconButton>
+        <IconButton size="xs" disabled label={openLabel} tooltip>
+          <IconLink stroke={1.5} />
+        </IconButton>
       </span>
     </li>
   )
@@ -183,7 +168,7 @@ function StatusPill({ status }: { status: { label: string; tone: LinkedRefStatus
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center gap-1 border px-1.5 py-0.5 text-[11px]",
+        "inline-flex shrink-0 items-center gap-1 border px-1.5 py-0.5 text-body-sm",
         tone.pill,
       )}
     >

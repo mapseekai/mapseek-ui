@@ -36,11 +36,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build static documentation
+      - name: Verify and build documentation
         env:
           NEXT_PUBLIC_BASE_PATH: /mapseek-ui
           VITE_BASE_PATH: /mapseek-ui/showcase/
-        run: pnpm run docs:build
+        run: pnpm run docs:verify
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

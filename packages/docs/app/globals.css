@@ -1,13 +1,8 @@
 @import "tailwindcss";
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
-@import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
-@import "@fontsource-variable/geist-mono";
 @import "./theme.generated.css";
-
-@custom-variant dark (&:is(.dark *));
 
 @source "../../../registry/**/*.{ts,tsx}";
 @source "../../../showcase/src/showcases/**/*.{ts,tsx}";
@@ -74,28 +69,7 @@
   }
 
   body {
-    background: var(--background);
-    color: var(--foreground);
     letter-spacing: 0;
-  }
-
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 0;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: var(--border);
-    border-radius: 0;
-  }
-
-  ::-webkit-scrollbar-corner {
-    border-radius: 0;
   }
 }
 
@@ -134,7 +108,7 @@ article > div[class~="@container"] > a {
 
 article > div[class~="@container"] > a:is(:hover, :focus-visible) {
   border-color: var(--primary);
-  background: color-mix(in oklch, var(--accent) 50%, transparent);
+  background: color-mix(in oklab, var(--accent) 50%, transparent);
 }
 
 [data-showcase-root] table,

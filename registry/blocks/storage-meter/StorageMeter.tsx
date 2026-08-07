@@ -29,7 +29,7 @@ export function StorageMeter({
       <Tooltip>
         <TooltipTrigger
           render={
-            <span className="inline-flex h-6 items-center gap-1 border border-dashed border-border px-2 font-sans text-[11px] leading-none text-muted-foreground">
+            <span className="inline-flex h-6 items-center gap-1 border border-dashed border-border px-2 font-sans text-body-sm leading-none text-muted-foreground">
               <IconDatabase size={11} /> {labels.unsupported}
             </span>
           }
@@ -51,12 +51,12 @@ export function StorageMeter({
             variant="outline"
             aria-label={`${labels.used} ${formatBytes(data.usage)} / ${formatBytes(data.quota)} (${pct}%)`}
             className={cn(
-              "inline-flex h-6 cursor-pointer items-center gap-1.5 rounded-none border-border bg-background px-2 font-sans text-[11px] leading-none text-foreground hover:bg-accent/50 aria-expanded:border-primary aria-expanded:bg-selection-bg aria-expanded:text-primary aria-expanded:hover:bg-selection-bg aria-expanded:hover:text-primary aria-expanded:[&_span]:text-primary aria-expanded:[&_strong]:text-primary aria-expanded:[&_svg]:text-primary",
+              "inline-flex h-6 cursor-pointer items-center gap-1.5 rounded-none border-border bg-background px-2 font-sans text-body-sm leading-none text-foreground hover:bg-accent/50 aria-expanded:border-primary aria-expanded:bg-selection-bg aria-expanded:text-primary aria-expanded:hover:bg-selection-bg aria-expanded:hover:text-primary aria-expanded:[&_span]:text-primary aria-expanded:[&_strong]:text-primary aria-expanded:[&_svg]:text-primary",
               className,
             )}
           >
             <IconDatabase data-icon="inline-start" className="text-muted-foreground" />
-            <span className="inline-flex items-baseline gap-[3px] whitespace-nowrap font-mono text-[11px] tabular-nums">
+            <span className="inline-flex items-baseline gap-[3px] whitespace-nowrap font-mono text-body-sm tabular-nums">
               <strong className="font-semibold text-foreground">{formatBytes(data.usage)}</strong>
               <span className="text-muted-foreground">/</span>
               <span>{formatBytes(data.quota)}</span>
@@ -76,9 +76,9 @@ export function StorageMeter({
         align="end"
         sideOffset={6}
         aria-label={labels.details}
-        className="w-auto min-w-[300px] max-w-[360px] gap-0 p-3 font-sans text-xs leading-snug text-foreground shadow-none"
+        className="w-auto min-w-[300px] max-w-[360px] gap-0 p-3 font-sans text-body-md leading-snug text-foreground shadow-none"
       >
-        <div className="mb-2 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.04em] text-muted-foreground">
+        <div className="mb-2 flex items-center gap-1.5 text-label-sm uppercase text-muted-foreground">
           <IconDatabase size={12} />
           <span>{labels.title}</span>
           <Tooltip>
@@ -108,12 +108,8 @@ export function StorageMeter({
             [labels.usageRate, `${pct}%`],
           ].map(([label, value]) => (
             <div key={label} className="flex flex-col gap-0.5">
-              <span className="text-[10px] uppercase tracking-[0.04em] text-muted-foreground">
-                {label}
-              </span>
-              <b className="font-mono text-xs font-semibold tabular-nums text-foreground">
-                {value}
-              </b>
+              <span className="text-label-md uppercase text-muted-foreground">{label}</span>
+              <b className="font-mono text-body-md-strong tabular-nums text-foreground">{value}</b>
             </div>
           ))}
         </div>
@@ -125,7 +121,7 @@ export function StorageMeter({
         />
 
         {(det.fileSystem != null || det.indexedDB != null || det.caches != null) && (
-          <div className="mb-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] text-muted-foreground">
+          <div className="mb-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-body-sm text-muted-foreground">
             {det.fileSystem != null && (
               <span>
                 <em className="not-italic mr-1 font-medium text-foreground">OPFS</em>
@@ -150,7 +146,7 @@ export function StorageMeter({
         {footer}
 
         {error && (
-          <p className="mt-1.5 text-[11px] text-destructive">
+          <p className="mt-1.5 text-body-sm text-destructive">
             {errorLabel ? errorLabel(error) : error}
           </p>
         )}

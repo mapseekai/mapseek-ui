@@ -239,12 +239,7 @@ const applicationShellStatusAndResourceDependencies = {
     "@mapseek/placeholder-glyph",
     "@mapseek/resource-grid",
   ],
-  "linked-ref-list": [
-    "@mapseek/card-tabs",
-    "@mapseek/icon-button",
-    "@mapseek/tooltip",
-    "@mapseek/utils",
-  ],
+  "linked-ref-list": ["@mapseek/card-tabs", "@mapseek/icon-button", "@mapseek/utils"],
 } as const
 
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url))
@@ -264,6 +259,12 @@ describe("foundational primitive inventory", () => {
     }
 
     expect(itemsByName.get("collapsible")?.dependencies).toEqual(["@base-ui/react"])
+    expect(itemsByName.get("icon-button")?.registryDependencies).toEqual([
+      "@mapseek/theme",
+      "@mapseek/tooltip",
+      "@mapseek/utils",
+    ])
+    expect(itemsByName.get("icon-button")?.dependencies).toEqual(["@base-ui/react"])
   })
 })
 

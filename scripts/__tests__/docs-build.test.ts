@@ -89,7 +89,7 @@ it("scans the real registry and showcase sources for Tailwind utilities", async 
 })
 
 it("keeps every docs scrollbar square", async () => {
-  const globals = await readFile("packages/docs/app/globals.css", "utf8")
+  const globals = await readFile("packages/docs/app/theme.generated.css", "utf8")
 
   expect(globals).toContain("::-webkit-scrollbar-thumb")
   expect(globals).toContain("::-webkit-scrollbar-track")
@@ -196,7 +196,7 @@ it("maps the docs shell to the generated Mapseek UI tokens", async () => {
   )
 
   expect(globalsCss).toContain('@import "./theme.generated.css"')
-  expect(globalsCss).toContain("@custom-variant dark")
+  expect(generatedTheme).toContain("@custom-variant dark")
   expect(globalsCss).toContain("[data-showcase-root] :where(ol, ul, menu)")
   expect(globalsCss).toContain("[data-showcase-root] table")
   expect(globalsCss).toMatch(

@@ -41,7 +41,7 @@ function patch(
   onChange({ ...value, ...delta })
 }
 
-const miniSelect = "rounded-none border-border bg-background px-2 font-mono text-[11px]"
+const miniSelect = "rounded-none px-2 font-mono text-body-sm"
 
 // ---------------------------------------------------------------------------
 // Root
@@ -92,7 +92,7 @@ function FilterPanelModeToggle({ className }: { className?: string }) {
   return (
     <TabsList variant="primary" className={cn("mb-2.5 grid h-7 w-full grid-cols-2", className)}>
       {modes.map((mode) => (
-        <TabsTrigger key={mode.id} value={mode.id} className="text-[11px]">
+        <TabsTrigger key={mode.id} value={mode.id} className="text-body-sm">
           <mode.Icon data-icon="inline-start" />
           {mode.label}
         </TabsTrigger>
@@ -132,7 +132,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
     <TabsContent value="builder" className={cn("flex flex-col", className)}>
       <div className="flex flex-col gap-1.5">
         {value.rows.length === 0 && (
-          <div className="py-2.5 text-center text-[11px] leading-[1.5] text-muted-foreground">
+          <div className="py-2.5 text-center text-body-sm leading-[1.5] text-muted-foreground">
             {labels.noConditions}
           </div>
         )}
@@ -148,7 +148,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                       variant="ghost"
                       onClick={() => updateRow(f.id, { conn: c })}
                       className={cn(
-                        "h-5 rounded-none border border-border px-1.5 font-mono text-[10px] font-semibold leading-none tracking-[0.04em]",
+                        "h-5 rounded-none border border-border px-1.5 font-mono text-[10px] tracking-[0.04em] leading-none",
                         ci > 0 && "-ml-px",
                         isCur
                           ? "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
@@ -200,7 +200,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 </SelectContent>
               </Select>
               <Input
-                className="h-6 rounded-none border-border bg-background px-2 font-mono text-[11px]"
+                className="h-6 rounded-none border-border bg-background px-2 font-mono text-body-sm"
                 placeholder={labels.valuePlaceholder}
                 value={f.value}
                 onChange={(e) => updateRow(f.id, { value: e.target.value })}
@@ -222,7 +222,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
         <Button
           variant="ghost"
           onClick={addRow}
-          className="h-6 flex-1 gap-1 rounded-none border border-dashed border-primary/40 px-1.5 text-[11px] font-medium leading-none text-primary hover:text-primary"
+          className="h-6 flex-1 gap-1 rounded-none border border-dashed border-primary/40 px-1.5 text-body-sm-medium leading-none text-primary hover:text-primary"
         >
           <IconPlus data-icon="inline-start" /> {labels.addCondition}
         </Button>
@@ -288,7 +288,7 @@ function FilterPanelEstimate({
   return (
     <span
       className={cn(
-        "flex-1 font-mono text-[10px] uppercase tracking-[0.04em] text-muted-foreground",
+        "flex-1 font-mono text-[10px] tracking-[0.04em] uppercase text-muted-foreground",
         className,
       )}
     >
@@ -310,7 +310,7 @@ function FilterPanelClearButton({
     <Button
       variant="outline"
       onClick={() => onChange({ ...EMPTY_FILTER, mode: value.mode })}
-      className={cn("h-6 rounded-none px-2 text-[11px]", className)}
+      className={cn("h-6 rounded-none px-2 text-body-sm", className)}
     >
       {children ?? labels.clear}
     </Button>
@@ -328,7 +328,10 @@ function FilterPanelApplyButton({
 }) {
   const { labels } = useFilterPanelContext()
   return (
-    <Button onClick={onClick} className={cn("-ml-px h-6 rounded-none px-2 text-[11px]", className)}>
+    <Button
+      onClick={onClick}
+      className={cn("-ml-px h-6 rounded-none px-2 text-body-sm", className)}
+    >
       {children ?? labels.apply}
     </Button>
   )

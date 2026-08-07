@@ -6,6 +6,7 @@ export type DataTableProps<TRow> = {
   source: RowSource<TRow>
   getRowKey: (row: TRow | undefined, index: number) => string | number
   renderCell: (row: TRow, col: ColumnDef) => React.ReactNode
+  getCellText?: (row: TRow, col: ColumnDef) => string | undefined
   selectedRowKey?: string | number | null
   onRowClick?: (row: TRow) => void
   emptyLabel: string
@@ -19,6 +20,7 @@ export function DataTable<TRow>({
   source,
   getRowKey,
   renderCell,
+  getCellText,
   selectedRowKey,
   onRowClick,
   emptyLabel,
@@ -32,6 +34,7 @@ export function DataTable<TRow>({
       source={source}
       getRowKey={getRowKey}
       renderCell={renderCell}
+      getCellText={getCellText}
       selectedRowKey={selectedRowKey}
       onRowClick={onRowClick}
       emptyLabel={emptyLabel}

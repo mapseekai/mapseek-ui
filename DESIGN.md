@@ -59,11 +59,29 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: 0px
+  body-lg-medium:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 13px
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: 0px
   body-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
-    fontSize: 12px
+    fontSize: 13px
     fontWeight: 400
-    lineHeight: 1.5
+    lineHeight: 1.3333
+    letterSpacing: 0px
+  body-md-medium:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 13px
+    fontWeight: 500
+    lineHeight: 1.3333
+    letterSpacing: 0px
+  body-md-strong:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 13px
+    fontWeight: 600
+    lineHeight: 1.3333
     letterSpacing: 0px
   body-sm:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
@@ -71,13 +89,24 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: 0px
+  body-sm-medium:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 1.5
+    letterSpacing: 0px
+  label-sm:
+    fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
+    fontSize: 11px
+    fontWeight: 500
+    lineHeight: 1.2
+    letterSpacing: "0.04em"
   label-md:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 10px
     fontWeight: 500
     lineHeight: 1.2
-    letterSpacing: "0.06em"
-    fontFeature: '"tnum" 1, "zero" 1'
+    letterSpacing: "0.04em"
   data-display:
     fontFamily: "Geist Mono Variable, ui-monospace, SF Mono, Menlo, monospace"
     fontSize: 42px
@@ -107,7 +136,7 @@ components:
   button-primary:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.primary-foreground}"
-    typography: "{typography.body-md}"
+    typography: "{typography.body-md-medium}"
     rounded: "{rounded.none}"
     height: 32px
     padding: 0px 10px
@@ -117,21 +146,21 @@ components:
   button-secondary:
     backgroundColor: "{colors.secondary}"
     textColor: "{colors.secondary-foreground}"
-    typography: "{typography.body-md}"
+    typography: "{typography.body-md-medium}"
     rounded: "{rounded.none}"
     height: 32px
     padding: 0px 10px
   button-outline:
     backgroundColor: "{colors.background}"
     textColor: "{colors.foreground}"
-    typography: "{typography.body-md}"
+    typography: "{typography.body-md-medium}"
     rounded: "{rounded.none}"
     height: 32px
     padding: 0px 10px
   button-destructive:
     backgroundColor: "color-mix(in oklch, {colors.destructive}, transparent 90%)"
     textColor: "{colors.destructive}"
-    typography: "{typography.body-md}"
+    typography: "{typography.body-md-medium}"
     rounded: "{rounded.none}"
     height: 32px
     padding: 0px 10px
@@ -141,12 +170,12 @@ components:
     height: 24px
     padding: 0px 8px
   button-sm:
-    typography: "{typography.body-md}"
+    typography: "{typography.body-md-medium}"
     rounded: "{rounded.none}"
     height: 28px
     padding: 0px 10px
   button-lg:
-    typography: "{typography.body-md}"
+    typography: "{typography.body-md-medium}"
     rounded: "{rounded.none}"
     height: 36px
     padding: 0px 10px
@@ -199,16 +228,16 @@ components:
     rounded: "{rounded.none}"
     padding: 10px
   badge:
-    backgroundColor: "{colors.muted}"
-    textColor: "{colors.foreground}"
-    typography: "{typography.body-md}"
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.primary-foreground}"
+    typography: "{typography.body-md-medium}"
     rounded: "{rounded.none}"
     height: 20px
     padding: 0px 8px
   table-header:
     backgroundColor: "{colors.muted}"
     textColor: "{colors.muted-foreground}"
-    typography: "{typography.body-md}"
+    typography: "{typography.body-md-medium}"
     height: 40px
 ---
 
@@ -247,8 +276,10 @@ Mapseek uses a green-axis OKLCH palette surrounded by low-chroma neutrals. The p
 ### Action, State, and Text
 
 - **Primary** (`{colors.primary}`) is the single high-emphasis action, selected navigation treatment, keyboard focus source, and limited progress accent. Its foreground is `{colors.primary-foreground}`.
+- **Focus ring** uses `{colors.ring}` at 20% opacity and a 3px width consistently across keyboard-focusable controls.
 - **Secondary** (`{colors.secondary}`) and **accent** (`{colors.accent}`) provide lower-emphasis actions and grouped choices. Their foregrounds are the matching `*-foreground` tokens.
-- **Interaction and selection** use separate surfaces: ordinary interactive elements use `{colors.accent}` at 50% opacity, matching the documentation sidebar hover treatment. Persistent selections use the full `{colors.selection-bg}` token with `{colors.primary}` text and may progress toward `{colors.selection-bg-deep}`; selected, expanded, and active elements retain both their state surface and primary text on hover instead of applying the ordinary hover treatment. They must also use selected semantics, an edge, a checkmark, or another lasting indicator.
+- **Interaction and selection** use separate surfaces: ordinary interactive elements use `{colors.accent}` at 50% opacity, matching the documentation sidebar hover treatment. Persistent selections use the full `{colors.selection-bg}` token with `{colors.primary}` text and may progress toward `{colors.selection-bg-deep}`; selected, expanded, and active elements retain both their state surface and primary text on hover instead of applying the ordinary hover treatment. They must also use selected semantics, an edge, a checkmark, or another lasting indicator. Card-type elements (resource cards, icon tiles) are an exception for prominence: both hover and selected use a `{colors.primary}` 5% fill with a 1px primary ring; the selected state persists the same fill and ring as its lasting indicator, paired with selected semantics or a checkmark. Drag and resize handles (splitter strips, reorder grips) are another exception: their hover uses a `{colors.primary}` tint (e.g. 40%) as an action affordance, since the neutral 50% accent fill is not legible on thin handles.
+- **Transparency mixing.** For a single semantic color token mixed with `transparent`, specify the intended alpha (for example, primary at 80%). `color-mix(in oklch, ...)` and Tailwind opacity utilities that compile to `color-mix(in oklab, ...)` are equivalent in this single-color case and both conform. This exception does not extend to mixing two visible colors: their interpolation space must be explicit, and an OKLCH mix must also state its hue interpolation method.
 - **Destructive**, **warning**, and **info** are semantic signals, not decorative categories. Pair them with text or an icon; destructive actions remain tinted rather than solid red.
 
 ### Surfaces, Borders, and Dark Theme
@@ -256,8 +287,9 @@ Mapseek uses a green-axis OKLCH palette surrounded by low-chroma neutrals. The p
 - **Background** (`{colors.background}`) is the application floor; **card** and **popover** are discrete elevated surfaces with their matching foreground tokens.
 - **Muted** supports table headers, metadata bands, and empty-state scaffolding; it is not the default interactive hover fill. Do not use `{colors.muted-foreground}` for essential small text.
 - **Border** is the default 1px structure; **border-strong** is reserved for emphasized boundaries and active drop targets.
-- Inputs use `{colors.input}` for their border and `{colors.input-surface}` for their fill. The light theme deliberately keeps the fill transparent.
+- Input and selection-control input surfaces use `{colors.input}` for their border and `{colors.input-surface}` for their fill. The light theme deliberately keeps the fill transparent.
 - Dark mode reuses the same semantic names with the `.dark` values in the runtime theme; it is not a mechanical inversion. Dark panels remain only slightly lighter than the application floor, and editable inputs use a quiet translucent fill.
+- **Emphasis fills invert their foreground, not their base.** In dark mode, `{colors.primary}`, `{colors.destructive}`, and sidebar-primary keep their brand hues (slightly brightened), while their foregrounds switch to dark text (`oklch(0.1500 0.0100 149)` / `oklch(0.1000 0 0)`). This is deliberate: white text on the brightened fills falls below a 3:1 contrast ratio, while dark text holds roughly 7:1. Do not "fix" the inversion back to white without darkening the base color.
 
 ### Data Palettes
 
@@ -276,9 +308,14 @@ Mapseek uses **Geist Mono Variable** as its UI and data family. This single tech
 | `{typography.headline-sm}` | 14px | 500 | 1.3 | -0.01em | Card titles and grouped controls |
 | `{typography.body-base}` | 16px | 400 | 1.5 | 0 | Root document scale and prose-oriented surfaces |
 | `{typography.body-lg}` | 13px | 400 | 1.5 | 0 | Prominent interface copy and resource names |
-| `{typography.body-md}` | 12px | 400 | 1.5 | 0 | Default controls, tables, fields, and panels |
+| `{typography.body-lg-medium}` | 13px | 500 | 1.5 | 0 | Emphasized resource names and identifiers |
+| `{typography.body-md}` | 13px | 400 | 1.3333 | 0 | Content text in tables, fields, and panels; compact (`xs`) button labels |
+| `{typography.body-md-medium}` | 13px | 500 | 1.3333 | 0 | Interactive controls, tabs, badges, and table headers |
+| `{typography.body-md-strong}` | 13px | 600 | 1.3333 | 0 | Panel and section titles within dense surfaces |
 | `{typography.body-sm}` | 11px | 400 | 1.5 | 0 | Metadata, counts, and compact status text |
-| `{typography.label-md}` | 10px | 500 | 1.2 | 0.06em | Short taxonomy and section labels |
+| `{typography.body-sm-medium}` | 11px | 500 | 1.5 | 0 | Emphasized metadata and compact table headers |
+| `{typography.label-sm}` | 11px | 500 | 1.2 | 0.04em | Compact taxonomy and eyebrow labels |
+| `{typography.label-md}` | 10px | 500 | 1.2 | 0.04em | Short taxonomy and section labels |
 | `{typography.data-display}` | 42px | 600 | 1 | -0.02em | Exceptional data or specimen previews |
 
 ### Type Rules
@@ -326,8 +363,10 @@ Mapseek is **border-first and surface-first**. Static panels do not float above 
 | Flat | Background only | App shell, map canvas, content regions |
 | Structured | 1px `{colors.border}` | Panels, tables, cards, grouped controls |
 | Selected | Selection fill plus primary edge or indicator | Current row, resource, layer, or navigation item |
-| Floating | Popover surface with a 1px border or ring | Menus, popovers, tooltips, dialogs, toasts |
+| Floating | Popover surface with a 1px border or ring | Menus, popovers, dialogs, toasts |
 | Map floating | Bordered surface with clear contrast | Controls directly above map content |
+
+- Tooltips are an intentional exception: they use an inverted surface (`{colors.foreground}` fill with `{colors.background}` text, no border) so hints stay visually distinct from interactive popovers and menus.
 
 - All component shadow tokens resolve to `none` by default; use borders, outlines, and surface contrast to establish separation.
 - Dialog scrims are light (`black/10`) and may use a small blur so spatial context remains visible.
@@ -338,7 +377,7 @@ Mapseek is **border-first and surface-first**. Static panels do not float above 
 
 Zero radius is a defining Mapseek characteristic. Rectangular controls, fields, cards, tables, menus, popovers, dialogs, sheets, and panels use `{rounded.none}`. Do not reintroduce framework corner radii.
 
-- `{rounded.full}` is reserved for naturally circular status dots, avatar masks, switch tracks, and switch thumbs.
+- `{rounded.full}` is reserved for naturally circular status dots, avatar masks, radio controls, switch tracks, and switch thumbs, plus thin drag/resize grips.
 - Icon-only controls are square and follow the 24px, 28px, 32px, and 36px size scale.
 - Tabler Icons are the default icon language. Within a toolbar or row, keep icon size and stroke consistent.
 - Separators are 1px; do not stack outlines, use thick strokes, or add decorative frames to create hierarchy.
@@ -351,17 +390,21 @@ Components follow a fixed ownership model: theme → primitives → domain block
 
 ### Buttons and Actions
 
-- **`button-primary`** is a 32px green action with 12px type and 10px horizontal padding. Use one dominant primary action per local task. Hover lowers primary intensity; press can translate by 1px; focus adds a visible ring.
+- **`button-primary`** is a 32px green action with 13px medium type and 10px horizontal padding. Use one dominant primary action per local task. Hover lowers primary intensity; press can translate by 1px; focus adds a visible ring. The compact 24px `button-xs` is the explicit exception: it uses 13px regular type.
 - **Outline, secondary, ghost, and link variants** preserve hierarchy without creating a new action color. `link` is for genuine inline navigation or low-chrome actions.
-- **`button-destructive`** uses a tinted destructive surface and text. Ask for confirmation when an action is irreversible or difficult to recover.
+- **`button-destructive`** uses a tinted destructive surface, `border-destructive/10` border, and destructive text. Hover raises both surface and border to `hover:bg-destructive/20` and `hover:border-destructive/20`; ask for confirmation when an action is irreversible or difficult to recover.
+- **`button-group`** connects related Button controls on one shared edge. It may be horizontal or vertical, collapses adjacent interior borders, and raises a focused child above its neighbours.
 - **Icon buttons** are square and sized 24–36px. They need an accessible name and, where the symbol is not self-evident, a tooltip.
 
 ### Forms and Selection
 
-- **`input`** is 32px high, square, uses 12px type, a 1px input border, 10px horizontal padding, and a transparent light-theme fill. Placeholder text supports, but never replaces, a label.
-- **Transparent input contrast contract.** `input`, `textarea`, and `input-group` use `{colors.input-surface}`, so evaluate their text contrast after compositing with the host surface. They may appear only on `background`, `card`, or `popover`, and each supported theme must meet a 4.5:1 text contrast ratio. Do not place them on primary, destructive, imagery, maps, data visualizations, or any unlisted colored surface. `muted` is not an approved host until it is explicitly added to the contrast matrix.
+- **`input`** is 32px high, square, uses 13px regular type, a 1px input border, 10px horizontal padding, and a transparent light-theme fill. Placeholder text supports, but never replaces, a label.
+- **Transparent input contrast contract.** `input`, `textarea`, `input-group` (including the combobox input), `select-trigger`, `native-select`, and `combobox-chips` use `{colors.input-surface}`, so evaluate their text contrast after compositing with the host surface. They may appear only on `background`, `card`, or `popover`, and each supported theme must meet a 4.5:1 text contrast ratio. Do not place them on primary, destructive, imagery, maps, data visualizations, or any unlisted colored surface. `muted` is not an approved host until it is explicitly added to the contrast matrix. Select and combobox popups remain opaque `{colors.popover}` surfaces; individual chips retain their own state fill.
 - **`field`** composes label, description, control, and error. Invalid controls expose `aria-invalid` and visible error copy; `FieldError` announces with `role="alert"`.
+- **`button-radio-group`** is a connected radio selection control. Its default selected state is solid `{colors.primary}` with `{colors.primary-foreground}` text; its `soft` selected state uses `{colors.selection-bg}` with `{colors.primary}` text and remains selected on hover. It supports 24/28/32/36px (`xs`/`sm`/`default`/`lg`) heights.
 - **Checkbox, switch, slider, select, combobox, toggle, and tabs** keep their existing Base UI keyboard semantics. Checked and selected states require a persistent indicator beyond hover.
+- **Compact selection controls separate visible size from pointer target size.** Checkbox and radio indicators are 16×16px, while the slider thumb is 12×12px. Their pseudo-elements expand the pointer targets to 40×32px, 32×32px, and 28×28px respectively, so the visible indicators do not belong to the 24/28/32/36px single-line and icon-control scale. `textarea` is a multi-line input with a 64px minimum height (two default input rows) and grows with its content; its minimum height is likewise outside that scale.
+- **`switch`** retains compact visual tracks: `default` is 32×18.4px with a 16px thumb, and `sm` is 24×14px with a 12px thumb. Its `after` pointer target extends 8px above and below the visual track; these tracks are an explicit exception to the general control-height scale.
 
 ### Containers and Overlays
 
@@ -371,8 +414,8 @@ Components follow a fixed ownership model: theme → primitives → domain block
 
 ### Data and Domain Blocks
 
-- **`table`** is bordered and horizontally scrollable. Its header is 40px high; compact cells preserve readable 12px data type.
-- **`badge`** is 20px high with 8px horizontal padding and holds short state or category labels only.
+- **`table`** is bordered and horizontally scrollable. Its header is 40px high; compact cells preserve readable 13px regular data type, while headers use 13px medium type.
+- **`badge`** is 20px high with 8px horizontal padding and holds short state or category labels only. The default surface is primary green with primary-foreground text; `secondary`, tinted `destructive`, `outline` (primary border and text), `ghost`, and `link` variants cover the remaining hierarchy.
 - **Progress, skeleton, empty, sonner, and notification center** match feedback scope. Persistent state must not live only in a temporary toast.
 - **MapControls, MapCoordinateStatus, and MapSwitcher** use map-specific floating elevation and retain labels or tooltips.
 - **ResourceSidebar, ResourceGrid, LayerPanel, LayerStyleEditor, AttrTable, AttrInspector, GeoJSONView, and JSONEditor** keep data density, injected labels, overflow handling, and state visibility consistent with the primitives.

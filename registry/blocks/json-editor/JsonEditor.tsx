@@ -256,7 +256,7 @@ export function JsonEditor({
         >
           <span
             className={cn(
-              "font-mono text-[11px] leading-none font-semibold tracking-[0.06em] text-muted-foreground uppercase",
+              "font-mono text-label-sm leading-none text-muted-foreground uppercase",
               titleClassName,
             )}
           >
@@ -266,7 +266,7 @@ export function JsonEditor({
       ) : null}
       <div
         className={cn(
-          "relative min-h-0 flex-1 overflow-hidden bg-background text-xs",
+          "relative min-h-0 flex-1 overflow-hidden bg-background text-body-md",
           editorClassName,
         )}
       >

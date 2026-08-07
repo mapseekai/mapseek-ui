@@ -49,7 +49,7 @@ function MenubarTrigger({ className, ...props }: React.ComponentProps<typeof Dro
     <DropdownMenuTrigger
       data-slot="menubar-trigger"
       className={cn(
-        "h-7 px-2 text-xs outline-none hover:bg-accent/50 focus:bg-accent/50",
+        "h-7 px-2 text-body-md outline-none hover:bg-accent/50 focus:bg-accent/50",
         className,
       )}
       {...props}

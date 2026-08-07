@@ -35,6 +35,34 @@ it("keeps keyboard focus rings at the three-pixel design token", async () => {
   expect(slider).toContain("has-[:focus-visible]:ring-(length:--focus-ring-width)")
 })
 
+it("uses a 20% primary ring for every keyboard focus treatment", async () => {
+  const focusRingPaths = [
+    "registry/ui/accordion.tsx",
+    "registry/ui/badge.tsx",
+    "registry/ui/button-radio-group.tsx",
+    "registry/ui/button.tsx",
+    "registry/ui/checkbox.tsx",
+    "registry/ui/item.tsx",
+    "registry/ui/navigation-menu.tsx",
+    "registry/ui/radio-group.tsx",
+    "registry/ui/scroll-area.tsx",
+    "registry/ui/slider.tsx",
+    "registry/ui/switch.tsx",
+    "registry/ui/tabs.tsx",
+    "registry/ui/toggle.tsx",
+    "registry/blocks/attr-table/attr-table-sheet.tsx",
+    "registry/blocks/layer-panel/LayerPanel.tsx",
+  ]
+  const sources = await Promise.all(focusRingPaths.map((path) => readFile(path, "utf8")))
+
+  for (const source of sources) {
+    expect(source).toContain("ring-ring/20")
+    expect(source).not.toContain("ring-ring/50")
+  }
+
+  expect(sources.join("\n")).not.toMatch(/focus-visible:ring-ring(?=[\s"])/u)
+})
+
 it("keeps table headers on the full muted surface", async () => {
   const table = await readComponent("table")
 
@@ -46,6 +74,13 @@ it("keeps dialog titles on the headline-md typography token", async () => {
   const dialog = await readComponent("dialog")
 
   expect(dialog).toContain('className={cn("font-heading text-headline-md", className)}')
+})
+
+it("vertically centers confirm dialog title content in the legacy title row", async () => {
+  const confirmDialog = await readComponent("confirm-dialog")
+
+  expect(confirmDialog).toContain('className="flex min-h-5 items-center gap-2 leading-none"')
+  expect(confirmDialog).not.toContain('className="inline-flex items-center gap-2 leading-none"')
 })
 
 it("maps button radio group sizes to the Button height scale", async () => {
@@ -99,6 +134,21 @@ it("provides a soft button radio selected state without replacing the default va
   expect(showcase).toContain("variant={variant}")
 })
 
+it("documents published grouped-button variants and destructive borders", async () => {
+  const [design, designChinese] = await Promise.all([
+    readFile("DESIGN.md", "utf8"),
+    readFile("DESIGN.zh-CN.md", "utf8"),
+  ])
+
+  for (const source of [design, designChinese]) {
+    expect(source).toContain("`button-radio-group`")
+    expect(source).toContain("`soft`")
+    expect(source).toContain("`button-group`")
+    expect(source).toContain("`border-destructive/10`")
+    expect(source).toContain("`hover:border-destructive/20`")
+  }
+})
+
 it("exports component design tokens through the runtime theme", async () => {
   const theme = await readFile("registry/theme/registry.json", "utf8")
 
@@ -109,7 +159,89 @@ it("exports component design tokens through the runtime theme", async () => {
   expect(theme).toContain('"--headline-md-font-size": "15px"')
   expect(theme).toContain('"--headline-md-line-height": "1.25"')
   expect(theme).toContain('"--headline-md-font-weight": "600"')
+  expect(theme).toContain('"--text-label-md": "var(--label-md-font-size)"')
+  expect(theme).toContain('"--text-label-md--line-height": "var(--label-md-line-height)"')
+  expect(theme).toContain('"--text-label-md--font-weight": "var(--label-md-font-weight)"')
+  expect(theme).toContain('"--text-label-md--letter-spacing": "var(--label-md-letter-spacing)"')
+  expect(theme).toContain('"--label-md-font-size": "10px"')
+  expect(theme).toContain('"--label-md-font-weight": "500"')
+  expect(theme).toContain('"--label-md-letter-spacing": "0.04em"')
   expect(theme).toContain('"--focus-ring-width": "3px"')
   expect(theme).toContain('"--input-surface": "transparent"')
   expect(theme).toContain('"--input-surface": "oklch(1 0 0 / 4.5%)"')
+})
+
+it("uses the label-md token for semantic taxonomy labels", async () => {
+  const [
+    select,
+    combobox,
+    attrField,
+    pixelProbe,
+    crsPicker,
+    colormapEditor,
+    resourceDrawer,
+    resourceGrid,
+    storageMeter,
+    coordinateStatus,
+    bandStat,
+  ] = await Promise.all([
+    readComponent("select"),
+    readComponent("combobox"),
+    readFile("registry/blocks/attr-inspector/attr-field.tsx", "utf8"),
+    readFile("registry/blocks/pixel-probe/PixelProbe.tsx", "utf8"),
+    readFile("registry/blocks/crs-picker/CrsPicker.tsx", "utf8"),
+    readFile("registry/blocks/raster-style-panel/CustomColormapEditor.tsx", "utf8"),
+    readFile("registry/blocks/resource-detail-drawer/ResourceDetailDrawer.tsx", "utf8"),
+    readFile("registry/blocks/resource-grid/ResourceGrid.tsx", "utf8"),
+    readFile("registry/blocks/storage-meter/StorageMeter.tsx", "utf8"),
+    readFile("registry/blocks/map-coordinate-status/MapCoordinateStatus.tsx", "utf8"),
+    readFile("registry/blocks/band-stat/BandStat.tsx", "utf8"),
+  ])
+
+  expect(select).toContain("px-2 py-1.5 text-label-md uppercase text-muted-foreground")
+  expect(combobox).toContain("px-2 py-1.5 text-label-md uppercase text-muted-foreground")
+
+  for (const source of [
+    attrField,
+    pixelProbe,
+    crsPicker,
+    colormapEditor,
+    resourceDrawer,
+    resourceGrid,
+    storageMeter,
+    coordinateStatus,
+    bandStat,
+  ]) {
+    expect(source).toContain("text-label-md")
+  }
+
+  expect(attrField).not.toContain("text-label-md font-normal")
+  expect(pixelProbe).not.toContain("text-label-md font-normal")
+  expect(crsPicker).not.toContain("tracking-[0.07em]")
+  expect(colormapEditor).not.toContain("tracking-[0.06em]")
+  expect(resourceDrawer).not.toContain("tracking-[0.06em]")
+})
+
+it("keeps dialog and editor titles on their full typography tokens", async () => {
+  const [alertDialog, sheet, styleEditorModal, resourceDrawer] = await Promise.all([
+    readComponent("alert-dialog"),
+    readComponent("sheet"),
+    readFile("registry/blocks/style-editor-modal/StyleEditorModal.tsx", "utf8"),
+    readFile("registry/blocks/resource-detail-drawer/ResourceDetailDrawer.tsx", "utf8"),
+  ])
+
+  expect(alertDialog).toContain('className={cn("text-headline-md", className)}')
+  expect(sheet).toContain('className={cn("text-headline-md", className)}')
+  expect(styleEditorModal).toContain(
+    '<DialogTitle\n            className="text-headline-lg"\n            data-wd-key=',
+  )
+  expect(resourceDrawer).toContain("text-data-display")
+  expect(resourceDrawer).not.toContain("text-5xl")
+})
+
+it("uses semantic surfaces for slider thumb contrast in both themes", async () => {
+  const slider = await readComponent("slider")
+
+  expect(slider).toContain("border border-ring bg-background dark:bg-foreground")
+  expect(slider).not.toContain("bg-white")
 })

@@ -51,7 +51,7 @@ export function SchemaForm({
         if (f.type === "multiselect") {
           return (
             <FieldSet key={f.key} className="gap-2">
-              <FieldLegend variant="label" className="mb-0 text-xs">
+              <FieldLegend variant="label" className="mb-0 text-body-md">
                 {label}
               </FieldLegend>
               <FieldGroup className="max-h-[140px] gap-0 overflow-auto border border-border bg-background py-1">
@@ -73,10 +73,7 @@ export function SchemaForm({
                           checked={checked}
                           onCheckedChange={() => onChange(f.key, nextMulti(values[f.key], o.value))}
                         />
-                        <FieldLabel
-                          htmlFor={optionId}
-                          className="cursor-pointer text-xs font-normal"
-                        >
+                        <FieldLabel htmlFor={optionId} className="cursor-pointer text-body-md">
                           {o.label}
                         </FieldLabel>
                       </Field>
@@ -90,7 +87,7 @@ export function SchemaForm({
 
         return (
           <Field key={f.key} className="gap-1.5">
-            <FieldLabel htmlFor={id} className="text-xs">
+            <FieldLabel htmlFor={id} className="text-body-md">
               {label}
             </FieldLabel>
             {f.type === "number" && (

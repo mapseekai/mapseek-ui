@@ -35,11 +35,11 @@ import {
 
 ## Usage
 
-`SchemaTable` reads field names and types and filters geometry/geography columns. `DataTable` consumes a `RowSource` plus `getRowKey`, `renderCell`, and `onRowClick`. `AttrTableSheet` is a bottom-anchored resizable shell for map overlays.
+`SchemaTable` reads field names and types and filters geometry/geography columns. `DataTable` consumes a `RowSource` plus `getRowKey`, `renderCell`, and `onRowClick`; use optional `getCellText` to expose the complete text of custom cell content. `AttrTableSheet` is a bottom-anchored resizable shell for map overlays.
 
 ## Public Exports and Props
 
-Exports include `AttrTableSheet`, `DataTable`, `SchemaTable`, `attributeColumns`, `isGeometryColumn`, `useStaticRowSource`, `useTableSheetState`, `ColumnDef`, `RowSource`, `DataTableProps`, `SchemaTableProps`, `AttrTableSheetProps`, and `TableSheetState`. Key props are columns, row source, row key, cell renderer, selected key, empty label, retry label, and sheet header slots.
+Exports include `AttrTableSheet`, `DataTable`, `SchemaTable`, `attributeColumns`, `isGeometryColumn`, `useStaticRowSource`, `useTableSheetState`, `ColumnDef`, `RowSource`, `DataTableProps`, `SchemaTableProps`, `AttrTableSheetProps`, and `TableSheetState`. Key props are columns, row source, row key, cell renderer, full cell text for long content, selected key, empty label, retry label, and sheet header slots.
 
 ## States, Empty, and Error
 

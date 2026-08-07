@@ -167,7 +167,7 @@ function ComboboxItem({ className, children, ...props }: ComboboxPrimitive.Item.
     <ComboboxPrimitive.Item
       data-slot="combobox-item"
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center justify-between gap-2 px-2 py-2 text-xs outline-hidden",
+        "relative flex w-full cursor-pointer select-none items-center justify-between gap-2 px-2 py-2 text-body-md outline-hidden",
         "data-highlighted:bg-accent/50",
         "data-disabled:pointer-events-none data-disabled:opacity-50",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
@@ -195,10 +195,7 @@ function ComboboxLabel({ className, ...props }: ComboboxPrimitive.GroupLabel.Pro
   return (
     <ComboboxPrimitive.GroupLabel
       data-slot="combobox-label"
-      className={cn(
-        "px-2 py-1.5 text-[10px] font-medium uppercase tracking-[0.04em] text-muted-foreground",
-        className,
-      )}
+      className={cn("px-2 py-1.5 text-label-md uppercase text-muted-foreground", className)}
       {...props}
     />
   )
@@ -213,7 +210,7 @@ function ComboboxEmpty({ className, ...props }: ComboboxPrimitive.Empty.Props) {
     <ComboboxPrimitive.Empty
       data-slot="combobox-empty"
       className={cn(
-        "hidden w-full items-center justify-center py-2 text-center text-xs text-muted-foreground",
+        "hidden w-full items-center justify-center py-2 text-center text-body-md text-muted-foreground",
         "data-[state=visible]:flex",
         className,
       )}
@@ -230,7 +227,7 @@ function ComboboxChips({
     <ComboboxPrimitive.Chips
       data-slot="combobox-chips"
       className={cn(
-        "flex min-h-8 flex-wrap items-center gap-1 border border-border bg-background px-2 py-1 text-xs transition-colors",
+        "flex min-h-8 flex-wrap items-center gap-1 border border-input bg-input-surface px-2 py-1 text-body-md transition-colors",
         "focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/20",
         "has-aria-invalid:border-destructive has-aria-invalid:ring-3 has-aria-invalid:ring-destructive/20",
         "dark:has-aria-invalid:border-destructive/50 dark:has-aria-invalid:ring-destructive/40",
@@ -251,7 +248,7 @@ function ComboboxChip({ className, children, showRemove = true, ...props }: Comb
     <ComboboxPrimitive.Chip
       data-slot="combobox-chip"
       className={cn(
-        "flex h-5 w-fit items-center justify-center gap-1 whitespace-nowrap bg-muted px-1.5 text-[11px] font-medium text-foreground",
+        "flex h-5 w-fit items-center justify-center gap-1 whitespace-nowrap bg-muted px-1.5 text-body-sm-medium text-foreground",
         "has-data-[slot=combobox-chip-remove]:pr-0",
         "has-disabled:pointer-events-none has-disabled:cursor-not-allowed has-disabled:opacity-50",
         className,

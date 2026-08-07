@@ -47,7 +47,10 @@ export function ProductLogo({
       />
       {showText && displayLabel && (
         <span
-          className={cn("text-sm font-bold tracking-[-0.02em] whitespace-nowrap", textClassName)}
+          className={cn(
+            "text-sm font-semibold tracking-[-0.02em] whitespace-nowrap",
+            textClassName,
+          )}
         >
           {displayLabel}
         </span>

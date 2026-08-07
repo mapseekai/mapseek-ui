@@ -32,7 +32,7 @@ export function StyleEditorPanelHeader({ title, actions, className }: StyleEdito
         className,
       )}
     >
-      <h2 className="text-panel-text m-0 min-w-0 flex-1 truncate pr-2 text-sm leading-none font-semibold">
+      <h2 className="text-panel-text m-0 min-w-0 flex-1 truncate pr-2 text-headline-sm leading-none">
         {title}
       </h2>
       {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
@@ -62,7 +62,7 @@ export function StyleEditorPanelSection({
   return (
     <section className={cn("grid gap-3", className)}>
       {title ? (
-        <h2 className="m-0 text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+        <h2 className="m-0 text-body-md-strong tracking-[0.04em] text-muted-foreground uppercase">
           {title}
         </h2>
       ) : null}
@@ -83,9 +83,9 @@ export function StyleEditorPanelCard({
     <section className={cn("overflow-hidden border border-border bg-card", className)}>
       <header className="flex items-center justify-between gap-2 bg-muted/45 px-3 py-2">
         <div className="min-w-0 flex-1">
-          <p className="m-0 truncate text-sm leading-tight font-semibold">{title}</p>
+          <p className="m-0 truncate text-headline-sm leading-tight">{title}</p>
           {subtitle ? (
-            <p className="m-0 mt-0.5 truncate font-mono text-[11px] leading-tight text-muted-foreground">
+            <p className="m-0 mt-0.5 truncate font-mono text-body-sm leading-tight text-muted-foreground">
               {subtitle}
             </p>
           ) : null}
@@ -99,5 +99,7 @@ export function StyleEditorPanelCard({
 }
 
 export function StyleEditorPanelEmpty({ children, className }: StyleEditorPanelEmptyProps) {
-  return <p className={cn("m-0 text-sm text-muted-foreground italic", className)}>{children}</p>
+  return (
+    <p className={cn("m-0 text-body-lg text-muted-foreground italic", className)}>{children}</p>
+  )
 }

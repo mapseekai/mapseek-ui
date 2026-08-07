@@ -121,7 +121,7 @@ export const InputNumber: React.FC<InputNumberProps> = ({
     <Input
       aria-label={ariaLabel}
       spellCheck="false"
-      className={cn("h-7 w-full text-xs", className)}
+      className={cn("h-7 w-full text-body-md", className)}
       placeholder={defaultValue?.toString()}
       value={displayValue === undefined ? "" : displayValue}
       onChange={(e) => changeValue(e.target.value)}

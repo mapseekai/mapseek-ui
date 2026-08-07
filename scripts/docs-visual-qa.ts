@@ -1234,16 +1234,38 @@ export async function assertPrimitiveInteraction(
   }
 
   if (primitive === "icon-button") {
-    const defaultIcon = page
-      .locator('[data-demo="icon-button-default"] [data-slot="icon-button"] svg')
-      .first()
-    const smallIcon = page
-      .locator('[data-demo="icon-button-small"] [data-slot="icon-button"] svg')
-      .first()
-    await expect(defaultIcon).toHaveCSS("width", "16px")
-    await expect(defaultIcon).toHaveCSS("height", "16px")
-    await expect(smallIcon).toHaveCSS("width", "14px")
-    await expect(smallIcon).toHaveCSS("height", "14px")
+    const xs = page.locator('[data-demo="icon-button-size-xs"]')
+    const sm = page.locator('[data-demo="icon-button-size-sm"]')
+    const md = page.locator('[data-demo="icon-button-size-md"]')
+    const lg = page.locator('[data-demo="icon-button-size-lg"]')
+
+    await expect(xs).toHaveCSS("width", "24px")
+    await expect(xs).toHaveCSS("height", "24px")
+    await expect(sm).toHaveCSS("width", "28px")
+    await expect(sm).toHaveCSS("height", "28px")
+    await expect(md).toHaveCSS("width", "32px")
+    await expect(md).toHaveCSS("height", "32px")
+    await expect(lg).toHaveCSS("width", "36px")
+    await expect(lg).toHaveCSS("height", "36px")
+
+    await expect(xs).toHaveCSS("border-radius", "0px")
+    await expect(sm).toHaveCSS("border-radius", "0px")
+    await expect(md).toHaveCSS("border-radius", "0px")
+    await expect(lg).toHaveCSS("border-radius", "0px")
+    await expect(xs).toHaveAttribute(
+      "aria-label",
+      localized(path, "编辑图层（24px）", "Edit layer (24px)"),
+    )
+
+    await sm.focus()
+    await page.keyboard.press("Tab")
+    await expect(md).toBeFocused()
+    await expect(md).toHaveCSS("box-shadow", /3px/)
+
+    await xs.hover()
+    await expect(page.locator('[data-slot="tooltip-content"]')).toHaveText(
+      localized(path, "编辑图层（24px）", "Edit layer (24px)"),
+    )
   }
 
   if (primitive === "combobox") {
@@ -1566,11 +1588,11 @@ async function assertInstallWidget(page: Page, path: string): Promise<void> {
   const install = article.locator("[data-install-widget]").first()
   const command = install.locator("code").first()
   await expect(command).toContainText(`npx ${SHADCN_PACKAGE} add @mapseek/`)
-  await install.getByRole("tab", { name: "pnpm", exact: true }).click()
+  await install.getByRole("button", { name: "pnpm", exact: true }).click()
   await expect(command).toContainText(`pnpm dlx ${SHADCN_PACKAGE} add @mapseek/`)
-  await install.getByRole("tab", { name: "bun", exact: true }).click()
+  await install.getByRole("button", { name: "bun", exact: true }).click()
   await expect(command).toContainText(`bunx ${SHADCN_PACKAGE} add @mapseek/`)
-  await install.getByRole("tab", { name: "npm", exact: true }).click()
+  await install.getByRole("button", { name: "npm", exact: true }).click()
   await expect(command).toContainText(`npx ${SHADCN_PACKAGE} add @mapseek/`)
 }
 

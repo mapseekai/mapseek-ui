@@ -55,9 +55,9 @@ export function LoadingScreen({
           stroke={1.75}
           className={cn(indicator.className, "text-primary")}
         />
-        <div className="text-sm text-foreground">{text ?? resolvedLabels.loading}</div>
+        <div className="text-body-lg text-foreground">{text ?? resolvedLabels.loading}</div>
         {description ? (
-          <div className="text-[12px] text-muted-foreground">{description}</div>
+          <div className="text-body-md text-muted-foreground">{description}</div>
         ) : null}
       </div>
     </div>

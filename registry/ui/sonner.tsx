@@ -55,15 +55,15 @@ const Toaster = ({ ...props }: ToasterProps) => {
       toastOptions={{
         classNames: {
           toast:
-            "group/toast !h-auto !min-h-0 !w-fit !min-w-0 !max-w-[calc(100vw-2rem)] !rounded-none !border !border-border !px-3 !py-2.5 !font-sans !text-xs !shadow-none data-[type=success]:!border-primary data-[type=error]:!border-destructive data-[type=warning]:!border-warning data-[type=info]:!border-info data-[x-position=center]:inset-x-0! data-[x-position=center]:mx-auto!",
+            "group/toast !h-auto !min-h-0 !w-fit !min-w-0 !max-w-[calc(100vw-2rem)] !rounded-none !border !border-border !px-3 !py-2.5 !font-sans !text-body-md !shadow-none data-[type=success]:!border-primary data-[type=error]:!border-destructive data-[type=warning]:!border-warning data-[type=info]:!border-info data-[x-position=center]:inset-x-0! data-[x-position=center]:mx-auto!",
           title:
-            "!text-[13px] !font-medium !leading-tight group-data-[type=success]/toast:!text-primary group-data-[type=error]/toast:!text-destructive group-data-[type=warning]/toast:!text-warning group-data-[type=info]/toast:!text-info",
+            "!text-body-lg-medium !leading-tight group-data-[type=success]/toast:!text-primary group-data-[type=error]/toast:!text-destructive group-data-[type=warning]/toast:!text-warning group-data-[type=info]/toast:!text-info",
           description:
-            "!text-[11px] !leading-snug !text-muted-foreground group-data-[type=success]/toast:!text-primary group-data-[type=error]/toast:!text-destructive group-data-[type=warning]/toast:!text-warning group-data-[type=info]/toast:!text-info",
+            "!text-body-sm !leading-snug !text-muted-foreground group-data-[type=success]/toast:!text-primary group-data-[type=error]/toast:!text-destructive group-data-[type=warning]/toast:!text-warning group-data-[type=info]/toast:!text-info",
           actionButton:
-            "!rounded-none !bg-primary !px-2 !py-1 !text-[11px] !font-medium !text-primary-foreground hover:!bg-primary/90",
+            "!rounded-none !bg-primary !px-2 !py-1 !text-body-sm-medium !text-primary-foreground hover:!bg-primary/90",
           cancelButton:
-            "!rounded-none !border !border-border !bg-background !px-2 !py-1 !text-[11px] !font-medium !text-foreground hover:!bg-accent/50",
+            "!rounded-none !border !border-border !bg-background !px-2 !py-1 !text-body-sm-medium !text-foreground hover:!bg-accent/50",
           closeButton: "!rounded-none !border !border-border !bg-background hover:!bg-accent/50",
           icon: "!mt-px",
         },

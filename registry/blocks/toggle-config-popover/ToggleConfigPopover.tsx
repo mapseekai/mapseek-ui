@@ -138,7 +138,7 @@ function ToggleConfigPopover({
         >
           <header className="flex h-9 items-center gap-2 border-b border-border px-3">
             <Icon size={14} className={checked ? "text-primary" : "text-muted-foreground"} />
-            <span className="text-xs font-semibold leading-none">{label}</span>
+            <span className="text-body-md-strong leading-none">{label}</span>
             <span className="flex-1" />
             <Button
               type="button"

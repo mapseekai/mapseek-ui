@@ -44,16 +44,18 @@ function Stat({
         !isLast && "border-r border-border",
       )}
     >
-      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+      <span className="flex items-center gap-1.5 text-body-md text-muted-foreground">
         {label}
         {badge}
       </span>
       <span className="flex items-center gap-1.5">
         {icon}
-        <span className={cn("truncate text-base font-medium leading-none", mono && "mono tnum")}>
+        <span
+          className={cn("truncate text-body-base font-medium leading-none", mono && "mono tnum")}
+        >
           {value}
         </span>
-        {unit && <span className="mono text-xs text-muted-foreground">{unit}</span>}
+        {unit && <span className="mono text-body-md text-muted-foreground">{unit}</span>}
       </span>
     </div>
   )

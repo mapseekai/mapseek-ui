@@ -65,8 +65,8 @@ export function LoomLayerGroup({
             <IconChevronDown className="size-4 shrink-0 text-muted-foreground" />
           )}
           <IconFolder className="size-4 shrink-0 text-primary" />
-          <span className="truncate text-xs font-semibold">{group}</span>
-          <span className="text-[11px] text-muted-foreground">{members.length}</span>
+          <span className="truncate text-body-md-strong">{group}</span>
+          <span className="text-body-sm text-muted-foreground">{members.length}</span>
         </Button>
         <span className="flex-1" />
         {onRenameGroup && (
@@ -105,8 +105,8 @@ export function LoomLayerGroup({
                 >
                   <GeometryIcon className="size-3.5 shrink-0 text-primary" />
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-xs font-medium">{layer.name}</span>
-                    <span className="block truncate text-[11px] text-muted-foreground">
+                    <span className="block truncate text-body-md-medium">{layer.name}</span>
+                    <span className="block truncate text-body-sm text-muted-foreground">
                       {labels.geometry[layer.geometry]} · {labels.featureCount(layer.featureCount)}
                     </span>
                   </span>

@@ -2,7 +2,6 @@ import { IconExternalLink } from "@tabler/icons-react"
 import { CopyButton } from "@/components/ui/copy-button"
 import { IconButton } from "@/components/ui/icon-button"
 import { InputGroup, InputGroupText } from "@/components/ui/input-group"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import type { ServiceEndpointRowProps } from "./types"
 
 /**
@@ -30,17 +29,17 @@ export function ServiceEndpointRow({
         <div className="flex min-w-0 items-center gap-2">
           {icon}
           <div className="flex min-w-0 flex-col">
-            <span className="text-sm font-medium">{title}</span>
-            <span className="mono text-[11px] uppercase text-muted-foreground">{subtitle}</span>
+            <span className="text-headline-sm">{title}</span>
+            <span className="mono text-body-sm uppercase text-muted-foreground">{subtitle}</span>
           </div>
         </div>
-        <span className="mono shrink-0 border border-info/25 bg-info/10 px-1.5 py-0.5 text-[11px] text-info">
+        <span className="mono shrink-0 border border-info/25 bg-info/10 px-1.5 py-0.5 text-body-sm text-info">
           {method}
         </span>
       </div>
       <div className="flex min-w-0 items-center gap-1.5">
         <InputGroup className="h-auto min-h-8 w-auto flex-1 overflow-hidden bg-muted/40">
-          <InputGroupText className="mono min-w-0 max-w-full flex-1 gap-0 overflow-x-auto whitespace-nowrap px-2 py-1.5 text-[11px]">
+          <InputGroupText className="mono min-w-0 max-w-full flex-1 gap-0 overflow-x-auto whitespace-nowrap px-2 py-1.5 text-body-sm">
             {urlSegments.map((segment) =>
               /^\{.+\}$/.test(segment.part) ? (
                 <span key={segment.key} className="font-medium text-warning">
@@ -61,22 +60,15 @@ export function ServiceEndpointRow({
           title={copyLabel}
           onCopy={onCopy}
         />
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <IconButton
-                size="sm"
-                disabled={openDisabled}
-                title={openLabel}
-                aria-label={openLabel}
-                onClick={onOpen}
-              >
-                <IconExternalLink stroke={1.5} />
-              </IconButton>
-            }
-          />
-          <TooltipContent>{openTooltip}</TooltipContent>
-        </Tooltip>
+        <IconButton
+          size="xs"
+          disabled={openDisabled}
+          label={openLabel}
+          tooltip={openTooltip}
+          onClick={onOpen}
+        >
+          <IconExternalLink stroke={1.5} />
+        </IconButton>
       </div>
     </div>
   )

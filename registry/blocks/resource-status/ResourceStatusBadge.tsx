@@ -30,7 +30,7 @@ export function ResourceStatusBadge({ tone, label, className }: ResourceStatusBa
   return (
     <span
       className={cn(
-        "inline-flex h-5 w-fit shrink-0 items-center gap-1 border px-1.5 font-mono text-[11px] leading-none font-medium whitespace-nowrap",
+        "inline-flex h-5 w-fit shrink-0 items-center gap-1 border px-1.5 font-mono text-body-sm-medium leading-none whitespace-nowrap",
         TONE_CLASS[tone],
         className,
       )}

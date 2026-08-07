@@ -141,7 +141,7 @@ function LayerPanelRoot({
         data-slot="layer-panel"
         data-collapsed={collapsed ? "true" : undefined}
         className={cn(
-          "relative flex max-h-full flex-col overflow-hidden border border-border bg-card text-[13px]",
+          "relative flex max-h-full flex-col overflow-hidden border border-border bg-card text-body-lg",
           className,
           collapsed && "h-8",
         )}
@@ -159,7 +159,7 @@ function LayerPanelHeader({
   className?: string
   children: React.ReactNode
 }) {
-  const { collapsed, toggleCollapsed } = useLayerPanelContext()
+  const { collapsed, toggleCollapsed, labels } = useLayerPanelContext()
   return (
     <header
       data-slot="layer-panel-header"
@@ -174,9 +174,9 @@ function LayerPanelHeader({
         size="sm"
         type="button"
         aria-expanded={!collapsed}
-        aria-label="Toggle layer panel"
+        aria-label={collapsed ? labels.expand : labels.collapse}
         onClick={toggleCollapsed}
-        className="absolute inset-0 z-0 cursor-pointer border-0 bg-transparent p-0 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none"
+        className="absolute inset-0 z-0 cursor-pointer border-0 bg-transparent p-0 focus-visible:ring-1 focus-visible:ring-ring/20 focus-visible:outline-none"
       />
       <div className="pointer-events-none relative z-10 flex min-w-0 flex-1 items-center gap-1.5 px-3">
         <IconChevronDown
@@ -199,12 +199,7 @@ function LayerPanelTitle({
   children: React.ReactNode
 }) {
   return (
-    <span
-      className={cn(
-        "text-[11px] font-medium uppercase leading-[14px] tracking-[0.06em] text-muted-foreground",
-        className,
-      )}
-    >
+    <span className={cn("text-label-sm uppercase leading-[14px] text-muted-foreground", className)}>
       {children}
     </span>
   )
@@ -266,7 +261,7 @@ function LayerPanelAddButton({
       aria-label={labels.addLayer}
       title={labels.addLayer}
       className={cn(
-        "inline-flex h-6 items-center gap-1.5 bg-transparent px-2.5 text-[11px] font-medium leading-none text-foreground hover:bg-accent/50 disabled:opacity-50",
+        "inline-flex h-6 items-center gap-1.5 bg-transparent px-2.5 text-body-sm-medium leading-none text-foreground hover:bg-accent/50 disabled:opacity-50",
         className,
       )}
     >
@@ -363,7 +358,7 @@ function LayerPanelGroupTitle({ className, ...props }: React.ComponentProps<"div
     <div
       data-slot="layer-panel-group-title"
       className={cn(
-        "min-w-0 flex-1 truncate text-[12px] font-semibold uppercase tracking-[0.05em] text-foreground",
+        "min-w-0 flex-1 truncate text-body-md-strong uppercase tracking-[0.04em] text-foreground",
         className,
       )}
       {...props}
@@ -450,7 +445,9 @@ function LayerPanelItem({
               e.stopPropagation()
               ctx.onVisibleChange?.(layer.id, !layer.visible)
             }}
-            aria-label={`Toggle visibility for ${layer.name}`}
+            aria-label={
+              layer.visible ? ctx.labels.hideLayer(layer.name) : ctx.labels.showLayer(layer.name)
+            }
             className={cn(
               "shrink-0 hover:text-foreground",
               layer.visible ? "text-primary" : "text-muted-foreground",
@@ -482,12 +479,12 @@ function LayerPanelItem({
           )}
           aria-label={layer.name}
         >
-          <div className="truncate text-[13px] font-medium leading-tight text-foreground">
+          <div className="truncate text-body-lg-medium leading-tight text-foreground">
             {layer.name}
           </div>
           <div
             data-slot="layer-panel-item-meta"
-            className="mt-0.5 flex min-w-0 items-center gap-1.5 overflow-hidden whitespace-nowrap text-[11px] leading-tight text-muted-foreground"
+            className="mt-0.5 flex min-w-0 items-center gap-1.5 overflow-hidden whitespace-nowrap text-body-sm leading-tight text-muted-foreground"
           >
             {layer.featureCount != null && (
               <>
@@ -498,7 +495,7 @@ function LayerPanelItem({
             )}
             <span>{getGeomLabel(ctx.labels, layer.geometryType)}</span>
             {layer.crsLabel && (
-              <span className="ml-0.5 inline-flex min-w-0 items-center truncate border border-primary/25 bg-primary/10 px-1 font-mono text-[10px] font-medium uppercase tracking-[0.04em] text-primary">
+              <span className="ml-0.5 inline-flex min-w-0 items-center truncate border border-primary/25 bg-primary/10 px-1 font-mono text-[10px] font-medium tracking-[0.04em] uppercase text-primary">
                 {layer.crsLabel}
               </span>
             )}
@@ -544,7 +541,7 @@ function LayerPanelItem({
               size="icon-xs"
               type="button"
               onClick={() => ctx.onRemove?.(layer.id)}
-              aria-label={`Remove ${layer.name}`}
+              aria-label={ctx.labels.deleteLayer(layer.name)}
               title={ctx.labels.delete}
               className="size-6 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
             >
@@ -605,7 +602,7 @@ function LayerPanelSection({
       >
         <span className="pointer-events-none absolute left-[21px] top-1/2 h-px w-[9px] bg-border" />
         <Icon data-icon="inline-start" className="text-foreground" />
-        <span className="flex-1 text-[11px] font-semibold uppercase leading-[14px] tracking-[0.06em] text-foreground">
+        <span className="flex-1 text-label-sm uppercase leading-[14px] text-foreground">
           {label}
         </span>
         <IconChevronUp

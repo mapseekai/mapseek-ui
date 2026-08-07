@@ -15,7 +15,7 @@ function NativeSelect({ className, size = "default", ...props }: NativeSelectPro
       <select
         data-slot="native-select"
         data-size={size}
-        className="appearance-none border border-input bg-input-surface py-1 pe-7 ps-2.5 text-xs outline-none transition-colors hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/20 disabled:pointer-events-none data-[size=default]:h-8 data-[size=sm]:h-7"
+        className="appearance-none border border-input bg-input-surface py-1 pe-7 ps-2.5 text-body-md outline-none transition-colors hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/20 disabled:pointer-events-none data-[size=default]:h-8 data-[size=sm]:h-7"
         {...props}
       />
       <IconSelector

@@ -7,7 +7,6 @@ import { IconButton } from "@/components/ui/icon-button"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
 
@@ -53,7 +52,7 @@ function PlaceResult({
     >
       <span className="flex min-w-0 flex-1 items-baseline gap-3">
         <span className="shrink-0 font-medium">{place.name}</span>
-        <span className="truncate text-[11px] text-muted-foreground">
+        <span className="truncate text-body-sm text-muted-foreground">
           {place.description ?? `${place.longitude}, ${place.latitude}`}
         </span>
       </span>
@@ -190,21 +189,15 @@ function MapSearch({
 
   if (collapsed) {
     return (
-      <Tooltip>
-        <TooltipTrigger
-          render={
-            <IconButton
-              ref={expandButtonRef}
-              data-slot="map-search-trigger"
-              aria-label={labels.expand}
-              onClick={() => setCollapsed(false)}
-            >
-              <IconSearch />
-            </IconButton>
-          }
-        />
-        <TooltipContent>{labels.expand}</TooltipContent>
-      </Tooltip>
+      <IconButton
+        ref={expandButtonRef}
+        data-slot="map-search-trigger"
+        label={labels.expand}
+        tooltip
+        onClick={() => setCollapsed(false)}
+      >
+        <IconSearch />
+      </IconButton>
     )
   }
 
@@ -225,16 +218,9 @@ function MapSearch({
           <TabsTrigger value="place">{labels.placeTab}</TabsTrigger>
           <TabsTrigger value="coordinates">{labels.coordinatesTab}</TabsTrigger>
         </TabsList>
-        <Tooltip>
-          <TooltipTrigger
-            render={
-              <IconButton size="sm" aria-label={labels.collapse} onClick={() => setCollapsed(true)}>
-                <IconChevronLeft />
-              </IconButton>
-            }
-          />
-          <TooltipContent>{labels.collapse}</TooltipContent>
-        </Tooltip>
+        <IconButton size="xs" label={labels.collapse} tooltip onClick={() => setCollapsed(true)}>
+          <IconChevronLeft />
+        </IconButton>
       </div>
 
       <TabsContent value="place" className="flex flex-col gap-1.5 p-2">
@@ -269,7 +255,7 @@ function MapSearch({
         </Field>
 
         {searchState !== "idle" || locateState === "error" ? (
-          <div aria-live="polite" className="text-xs text-muted-foreground">
+          <div aria-live="polite" className="text-body-md text-muted-foreground">
             {searchState === "loading" && labels.searchLoading}
             {searchState === "success" && results.length === 0 && labels.noResults}
             {searchState === "error" && (

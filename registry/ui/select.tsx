@@ -43,7 +43,7 @@ function SelectTrigger({
       data-size={size}
       data-width={width}
       className={cn(
-        "flex items-center justify-between gap-1.5 border border-input bg-background pe-2 ps-2.5 text-xs font-medium text-foreground whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=xs]:h-6 data-[size=sm]:h-7 data-[size=default]:h-8 data-[size=lg]:h-9 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5",
+        "flex items-center justify-between gap-1.5 border border-input bg-input-surface pe-2 ps-2.5 text-body-md-medium text-foreground whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=xs]:h-6 data-[size=sm]:h-7 data-[size=default]:h-8 data-[size=lg]:h-9 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5",
         width === "content" ? "w-fit" : "w-full",
         className,
       )}
@@ -109,7 +109,7 @@ function SelectLabel({ className, ...props }: SelectPrimitive.GroupLabel.Props) 
   return (
     <SelectPrimitive.GroupLabel
       data-slot="select-label"
-      className={cn("px-2 py-2 text-xs text-muted-foreground", className)}
+      className={cn("px-2 py-1.5 text-label-md uppercase text-muted-foreground", className)}
       {...props}
     />
   )
@@ -120,7 +120,7 @@ function SelectItem({ className, children, ...props }: SelectPrimitive.Item.Prop
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex h-(--anchor-height) w-full cursor-default items-center gap-2 pe-8 ps-2 text-xs outline-hidden select-none data-highlighted:bg-accent/50 data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50",
+        "relative flex h-(--anchor-height) w-full cursor-default items-center gap-2 pe-8 ps-2 text-body-md outline-hidden select-none data-highlighted:bg-accent/50 data-highlighted:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50",
         className,
       )}
       {...props}

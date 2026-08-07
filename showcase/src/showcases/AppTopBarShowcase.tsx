@@ -1,5 +1,6 @@
 import { AppTopBar } from "@registry/blocks/app-top-bar"
 import { ProductLogo } from "@registry/blocks/product-logo"
+import { ResourceStatusBadge } from "@registry/blocks/resource-status"
 import { Button } from "@registry/ui/button"
 import { IconHistory } from "@tabler/icons-react"
 import { useState } from "react"
@@ -30,30 +31,6 @@ const labels = {
   },
 }
 
-type AppTopBarDemoLabels = (typeof labels)["zh-CN"]
-
-function StatusPill({
-  dirty,
-  labels,
-}: {
-  readonly dirty: boolean
-  readonly labels: AppTopBarDemoLabels
-}) {
-  return (
-    <span
-      className={[
-        "ml-1 inline-flex items-center gap-1 whitespace-nowrap border px-1.5 py-0.5 font-mono text-[9px] leading-none font-medium uppercase",
-        dirty
-          ? "border-warning/25 bg-warning/10 text-warning"
-          : "border-primary/25 bg-primary/10 text-primary",
-      ].join(" ")}
-    >
-      <span className={`size-[5px] rounded-full ${dirty ? "bg-warning" : "bg-primary"}`} />
-      {dirty ? labels.dirty : labels.saved}
-    </span>
-  )
-}
-
 export function AppTopBarDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
   const [dirty, setDirty] = useState(true)
@@ -71,7 +48,12 @@ export function AppTopBarDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         <AppTopBar
           brand={brand}
           projectName={demoLabels.projectName}
-          status={<StatusPill dirty={dirty} labels={demoLabels} />}
+          status={
+            <ResourceStatusBadge
+              tone={dirty ? "neutral" : "ready"}
+              label={dirty ? demoLabels.dirty : demoLabels.saved}
+            />
+          }
           labels={demoLabels.labels}
           onBack={() => setStatus(demoLabels.labels.back)}
           onSave={() => {

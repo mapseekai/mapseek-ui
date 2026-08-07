@@ -181,7 +181,8 @@
       "title": "Icon Button",
       "description": "Icon-only action button.",
       "categories": ["input"],
-      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/tooltip", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react"],
       "files": [
         {
           "path": "icon-button.tsx",

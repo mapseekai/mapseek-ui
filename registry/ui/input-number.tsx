@@ -56,13 +56,13 @@ function InputNumber({
           aria-invalid={ariaInvalid}
           autoFocus={autoFocus}
           placeholder={placeholder}
-          className="h-full min-w-0 flex-1 bg-transparent px-2.5 py-1 text-xs outline-none placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed"
+          className="h-full min-w-0 flex-1 bg-transparent px-2.5 py-1 text-body-md outline-none placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed"
         />
 
         {unit !== undefined && unit !== null && (
           <span
             data-slot="input-number-unit"
-            className="pointer-events-none flex h-full min-w-14 shrink-0 items-center justify-end pe-2.5 text-xs text-muted-foreground group-focus-within/input-number:hidden"
+            className="pointer-events-none flex h-full min-w-14 shrink-0 items-center justify-end pe-2.5 text-body-md text-muted-foreground group-focus-within/input-number:hidden"
           >
             {unit}
           </span>

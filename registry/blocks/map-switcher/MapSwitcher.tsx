@@ -188,10 +188,10 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
       aria-selected={isActive}
       onClick={() => onSelect(id)}
       className={cn(
-        "flex w-full items-center justify-start gap-2 border-0 border-l-2 bg-transparent px-2 py-1.5 text-left text-sm cursor-pointer",
+        "flex w-full items-center justify-start gap-2 border-0 border-l-2 bg-transparent px-2 py-1.5 text-left cursor-pointer",
         isActive
-          ? "border-l-primary bg-selection-bg text-primary font-semibold hover:bg-selection-bg hover:text-primary"
-          : "border-l-transparent hover:bg-accent/50 text-foreground",
+          ? "border-l-primary bg-selection-bg text-headline-sm text-primary hover:bg-selection-bg hover:text-primary"
+          : "border-l-transparent hover:bg-accent/50 text-body-lg text-foreground",
       )}
     >
       {/* Color dot */}
@@ -268,7 +268,7 @@ function MapSwitcherTrigger() {
           {/* Bottom row: label + chevron */}
           <div className="grid h-6 w-full grid-cols-[1rem_minmax(0,1fr)_1rem] items-center">
             <span aria-hidden="true" />
-            <span className="min-w-0 truncate text-center text-[11px] text-foreground">
+            <span className="min-w-0 truncate text-center text-body-sm text-foreground">
               {item?.label ?? ""}
             </span>
             <span className="flex items-center justify-center">{chevron}</span>

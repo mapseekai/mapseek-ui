@@ -15,8 +15,12 @@ vi.mock("@/registry/ui/button", () => ({
 }))
 
 vi.mock("@/registry/ui/icon-button", () => ({
-  IconButton: ({ children, ...props }: ButtonHTMLAttributes<HTMLButtonElement>) => (
-    <button data-primitive="icon-button" {...props}>
+  IconButton: ({
+    children,
+    label,
+    ...props
+  }: ButtonHTMLAttributes<HTMLButtonElement> & { label: string }) => (
+    <button data-primitive="icon-button" {...props} aria-label={label}>
       {children}
     </button>
   ),

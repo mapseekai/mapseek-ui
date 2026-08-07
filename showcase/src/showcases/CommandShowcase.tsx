@@ -51,7 +51,7 @@ export function CommandOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.commandPalette}
         </h4>
-        <div className="h-78 w-full border border-border">
+        <div className="h-78 w-full">
           <Command>
             <CommandInput placeholder={demoLabels.typeCommand} />
             <CommandList>
@@ -77,7 +77,7 @@ export function CommandOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.emptyState}
         </h4>
-        <div className="h-32 w-full border border-border">
+        <div className="h-32 w-full">
           <Command>
             <CommandInput placeholder={demoLabels.search} />
             <CommandList>

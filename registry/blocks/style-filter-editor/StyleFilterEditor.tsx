@@ -41,7 +41,7 @@ export function StyleFilterEditorInlineError({
   className,
 }: StyleFilterEditorInlineErrorProps) {
   return (
-    <div className={cn("mt-1 text-xs font-medium text-destructive", className)}>{children}</div>
+    <div className={cn("mt-1 text-body-md-medium text-destructive", className)}>{children}</div>
   )
 }
 
@@ -53,7 +53,7 @@ export function StyleFilterEditorUnsupported({
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 border border-destructive/25 bg-destructive/5 p-3 text-sm",
+        "flex flex-col gap-3 border border-destructive/25 bg-destructive/5 p-3 text-body-lg",
         className,
       )}
     >
@@ -64,5 +64,5 @@ export function StyleFilterEditorUnsupported({
 }
 
 export function StyleFilterEditorInfo({ children, className }: StyleFilterEditorInfoProps) {
-  return <div className={cn("mt-2 bg-muted/60 p-3 text-xs", className)}>{children}</div>
+  return <div className={cn("mt-2 bg-muted/60 p-3 text-body-md", className)}>{children}</div>
 }

@@ -79,8 +79,8 @@ function CopyButton({
       <IconButton
         type={type}
         data-slot="copy-button"
-        size="sm"
-        aria-label={accessibleLabel}
+        size="xs"
+        label={accessibleLabel}
         onClick={() => void handleCopy()}
         {...props}
       >

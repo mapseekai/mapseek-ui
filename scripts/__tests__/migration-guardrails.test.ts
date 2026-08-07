@@ -22,7 +22,7 @@ describe("migration guardrails", () => {
     const violations: string[] = []
 
     for (const file of files) {
-      if (file.endsWith("source-catalog.generated.tsx")) continue
+      if (file.endsWith(".test.tsx") || file.endsWith("source-catalog.generated.tsx")) continue
       const source = await readFile(file, "utf8")
       if (/<(?:button|input|select|textarea)\b/.test(source)) {
         violations.push(file.slice(repoRoot.length + 1))

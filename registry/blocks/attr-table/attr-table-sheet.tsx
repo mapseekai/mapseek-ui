@@ -24,8 +24,10 @@ export type AttrTableSheetProps = {
   showFullscreen?: boolean
   /** Built-in close button. Defaults on. */
   showClose?: boolean
-  fullscreenLabel?: string
-  closeLabel?: string
+  fullscreenLabel: string
+  closeLabel: string
+  /** Accessible label for the resize handle. */
+  resizeLabel?: string
   ariaLabel?: string
   className?: string
   children: React.ReactNode
@@ -47,6 +49,7 @@ export function AttrTableSheet({
   showClose = true,
   fullscreenLabel,
   closeLabel,
+  resizeLabel = "Resize attribute table",
   ariaLabel = "Attribute table",
   className,
   children,
@@ -145,10 +148,10 @@ export function AttrTableSheet({
         onKeyDown={handleResizeKeyDown}
         disabled={s.fullscreen}
         className={cn(
-          "group flex h-1.5 shrink-0 cursor-ns-resize items-center justify-center border-0 bg-border/40 p-0 hover:bg-primary/40 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-none disabled:cursor-default",
+          "group flex h-1.5 shrink-0 cursor-ns-resize items-center justify-center border-0 bg-border/40 p-0 hover:bg-primary/40 focus-visible:ring-1 focus-visible:ring-ring/20 focus-visible:outline-none disabled:cursor-default",
           s.fullscreen && "pointer-events-none opacity-0",
         )}
-        aria-label="Resize attribute table"
+        aria-label={resizeLabel}
       >
         <span className="h-0.5 w-10 rounded-full bg-foreground/20 group-hover:bg-foreground/40" />
       </Button>
@@ -163,7 +166,7 @@ export function AttrTableSheet({
         <div className="flex shrink-0 items-center justify-end gap-0.5">
           {actions}
           {showFullscreen && (
-            <IconButton size="sm" onClick={s.toggleFullscreen} title={fullscreenLabel}>
+            <IconButton size="xs" label={fullscreenLabel} tooltip onClick={s.toggleFullscreen}>
               {s.fullscreen ? (
                 <IconArrowsMinimize stroke={1.5} />
               ) : (
@@ -172,7 +175,7 @@ export function AttrTableSheet({
             </IconButton>
           )}
           {showClose && (
-            <IconButton size="sm" onClick={onClose} title={closeLabel}>
+            <IconButton size="xs" label={closeLabel} tooltip onClick={onClose}>
               <IconX stroke={1.5} />
             </IconButton>
           )}

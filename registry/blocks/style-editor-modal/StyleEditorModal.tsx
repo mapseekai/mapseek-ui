@@ -36,7 +36,7 @@ export function StyleEditorModal({
       >
         <DialogHeader className="shrink-0 px-6 py-4">
           <DialogTitle
-            className="text-lg leading-none font-bold tracking-tight"
+            className="text-headline-lg"
             data-wd-key={dataWdKey ? `${dataWdKey}.title` : undefined}
           >
             {title}
@@ -63,10 +63,8 @@ export function StyleEditorModalSection({
 }: StyleEditorModalSectionProps) {
   return (
     <section className={cn("flex flex-col gap-4 not-last:mb-8", className)}>
-      {title ? (
-        <h1 className="m-0 border-b border-border pb-1 text-lg font-bold">{title}</h1>
-      ) : null}
-      {description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
+      {title ? <h1 className="m-0 border-b border-border pb-1 text-headline-lg">{title}</h1> : null}
+      {description ? <p className="text-body-lg text-muted-foreground">{description}</p> : null}
       {children}
     </section>
   )
@@ -85,7 +83,7 @@ export function StyleEditorModalAlert({
         className,
       )}
     >
-      <span className="min-w-0 flex-1 text-sm">{children}</span>
+      <span className="min-w-0 flex-1 text-body-lg">{children}</span>
       {onDismiss ? (
         <Button
           variant="ghost"
@@ -93,7 +91,7 @@ export function StyleEditorModalAlert({
           type="button"
           onClick={onDismiss}
           aria-label={dismissLabel}
-          className="flex size-6 shrink-0 cursor-pointer items-center justify-center text-xl leading-none hover:bg-destructive/10"
+          className="flex size-6 shrink-0 cursor-pointer items-center justify-center text-headline-lg font-normal leading-none hover:bg-destructive/10"
         >
           ×
         </Button>
@@ -126,7 +124,7 @@ export function StyleEditorModalTile({
       onClick={onClick}
     >
       <span className="flex w-full items-center border-b border-border px-3 py-2">
-        <span className="min-w-0 flex-1 truncate text-sm font-bold">{title}</span>
+        <span className="min-w-0 flex-1 truncate text-headline-sm">{title}</span>
         {action ? (
           <span className="shrink-0 text-muted-foreground group-hover:text-primary">{action}</span>
         ) : null}
@@ -148,7 +146,7 @@ export function StyleEditorModalSourceCard({
   return (
     <section className={cn("mb-4 overflow-hidden border border-border", className)}>
       <header className="flex items-center border-b border-border bg-muted/50 px-4 py-2">
-        <span className="min-w-0 flex-1 truncate font-mono text-sm">{title}</span>
+        <span className="min-w-0 flex-1 truncate font-mono text-body-lg">{title}</span>
         {action ? <div className="shrink-0">{action}</div> : null}
       </header>
       <div className="p-4">{children}</div>
@@ -159,7 +157,7 @@ export function StyleEditorModalSourceCard({
 export function StyleEditorModalKbd({ className, ...props }: React.ComponentProps<"kbd">) {
   return (
     <kbd
-      className={cn("bg-muted px-2 py-0.5 font-mono text-xs whitespace-nowrap", className)}
+      className={cn("bg-muted px-2 py-0.5 font-mono text-body-md whitespace-nowrap", className)}
       {...props}
     />
   )

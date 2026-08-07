@@ -64,11 +64,11 @@ export function BandStat({ data, labels }: BandStatProps) {
     <div className="border border-border bg-card">
       {/* Header */}
       <div className="flex items-center gap-3 border-b border-dashed border-border px-4 py-3">
-        <span className="mono inline-flex size-7 items-center justify-center bg-primary/10 text-xs font-medium text-primary">
+        <span className="mono inline-flex size-7 items-center justify-center bg-primary/10 text-body-md-medium text-primary">
           {data.band}
         </span>
-        <span className="flex-1 text-sm font-medium text-foreground">{data.name}</span>
-        <span className="mono border border-warning/25 bg-warning/10 px-1.5 py-0.5 text-[11px] text-warning uppercase">
+        <span className="flex-1 text-headline-sm text-foreground">{data.name}</span>
+        <span className="mono border border-warning/25 bg-warning/10 px-1.5 py-0.5 text-body-sm text-warning uppercase">
           {data.type}
         </span>
       </div>
@@ -85,16 +85,16 @@ export function BandStat({ data, labels }: BandStatProps) {
       <div className="px-4 py-3">
         <div className="flex items-end justify-between">
           <div className="flex flex-col gap-0.5">
-            <span className="text-[11px] text-muted-foreground">{labels.histogram}</span>
-            <span className="mono text-[11px] text-muted-foreground">{labels.histogramMeta}</span>
+            <span className="text-body-sm text-muted-foreground">{labels.histogram}</span>
+            <span className="mono text-body-sm text-muted-foreground">{labels.histogramMeta}</span>
           </div>
-          <span className="mono tnum text-[11px] text-muted-foreground">
+          <span className="mono tnum text-body-sm text-muted-foreground">
             {data.min.toLocaleString()} – {data.max.toLocaleString()}
           </span>
         </div>
         <div className="mt-2 grid grid-cols-[20px_minmax(0,1fr)] gap-2">
           <div className="flex items-center justify-center">
-            <span className="mono -rotate-90 text-[10px] tracking-[0.04em] whitespace-nowrap text-muted-foreground uppercase">
+            <span className="mono -rotate-90 text-label-md whitespace-nowrap text-muted-foreground uppercase">
               {labels.histogramYAxis}
             </span>
           </div>
@@ -143,7 +143,7 @@ export function BandStat({ data, labels }: BandStatProps) {
             </BarChart>
           </ChartContainer>
         </div>
-        <div className="mono mt-1 ml-7 text-center text-[10px] tracking-[0.04em] text-muted-foreground uppercase">
+        <div className="mono mt-1 ml-7 text-center text-label-md text-muted-foreground uppercase">
           {labels.histogramXAxis}
         </div>
       </div>
@@ -167,7 +167,7 @@ function binRangeLabel(index: number, count: number, min: number, max: number): 
 function Metric({ label, value }: { label: BandStatLabels[keyof BandStatLabels]; value: number }) {
   return (
     <div className="flex min-w-0 flex-col gap-0.5 px-2 py-3 sm:px-4">
-      <span className="text-[11px] text-muted-foreground">{label}</span>
+      <span className="text-body-sm text-muted-foreground">{label}</span>
       <span className="mono tnum whitespace-nowrap text-lg font-medium text-foreground sm:text-2xl">
         {value.toLocaleString()}
       </span>

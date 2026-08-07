@@ -10,6 +10,24 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "alert",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "alert-dialog",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "aspect-ratio",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "avatar",
     {
       category: "primitive",
@@ -22,13 +40,37 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "breadcrumb",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "button",
     {
       category: "primitive",
     },
   ],
   [
+    "button-group",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "calendar",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "card",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "card-tabs",
     {
       category: "primitive",
     },
@@ -82,6 +124,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "copy-button",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "dialog",
     {
       category: "primitive",
@@ -106,6 +154,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "hover-card",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "icon-button",
     {
       category: "primitive",
@@ -118,7 +172,19 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "input-number",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "input-group",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "item",
     {
       category: "primitive",
     },
@@ -130,7 +196,31 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "kbd",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "label",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "menubar",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "native-select",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "navigation-menu",
     {
       category: "primitive",
     },
@@ -172,6 +262,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "scroll-area",
+    {
+      category: "primitive",
+    },
+  ],
+  [
     "select",
     {
       category: "primitive",
@@ -197,6 +293,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
   ],
   [
     "slider",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "spinner",
     {
       category: "primitive",
     },

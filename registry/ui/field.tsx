@@ -18,11 +18,38 @@ function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   )
 }
 
+function FieldRequiredIndicator() {
+  return (
+    <span aria-hidden="true" data-slot="field-required-indicator" className="text-destructive">
+      *
+    </span>
+  )
+}
+
+function FieldLabelContent({
+  children,
+  required,
+}: {
+  children: React.ReactNode
+  required?: boolean
+}) {
+  if (!required) return children
+
+  return (
+    <span data-slot="field-label-content" className="inline-flex items-center gap-0.5">
+      {children}
+      <FieldRequiredIndicator />
+    </span>
+  )
+}
+
 function FieldLegend({
   className,
   variant = "legend",
+  children,
+  required,
   ...props
-}: React.ComponentProps<"legend"> & { variant?: "legend" | "label" }) {
+}: React.ComponentProps<"legend"> & { variant?: "legend" | "label"; required?: boolean }) {
   return (
     <legend
       data-slot="field-legend"
@@ -32,7 +59,9 @@ function FieldLegend({
         className,
       )}
       {...props}
-    />
+    >
+      <FieldLabelContent required={required}>{children}</FieldLabelContent>
+    </legend>
   )
 }
 
@@ -92,7 +121,12 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>) {
+function FieldLabel({
+  className,
+  children,
+  required,
+  ...props
+}: React.ComponentProps<typeof Label> & { required?: boolean }) {
   return (
     <Label
       data-slot="field-label"
@@ -102,7 +136,9 @@ function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>)
         className,
       )}
       {...props}
-    />
+    >
+      <FieldLabelContent required={required}>{children}</FieldLabelContent>
+    </Label>
   )
 }
 

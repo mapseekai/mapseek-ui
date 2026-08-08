@@ -6,7 +6,7 @@ import type { LocalizedDemoProps } from "./types"
 
 const labels = {
   "zh-CN": {
-    basicField: "基础字段",
+    basicField: "必填字段",
     datasetName: "数据集名称",
     enterName: "输入名称...",
     displayNameDescription: "用作图层列表中的显示名称。",
@@ -19,7 +19,7 @@ const labels = {
     lockedLayerId: "锁定图层 ID",
   },
   en: {
-    basicField: "Basic field",
+    basicField: "Required field",
     datasetName: "Dataset Name",
     enterName: "Enter name...",
     displayNameDescription: "Used as the display name in the layer list.",
@@ -43,8 +43,10 @@ export function FieldOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {demoLabels.basicField}
         </h4>
         <Field>
-          <FieldLabel htmlFor="docs-field-name">{demoLabels.datasetName}</FieldLabel>
-          <Input id="docs-field-name" placeholder={demoLabels.enterName} />
+          <FieldLabel required htmlFor="docs-field-name">
+            {demoLabels.datasetName}
+          </FieldLabel>
+          <Input id="docs-field-name" required placeholder={demoLabels.enterName} />
           <FieldDescription>{demoLabels.displayNameDescription}</FieldDescription>
         </Field>
       </section>

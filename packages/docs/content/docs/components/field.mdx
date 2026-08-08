@@ -24,11 +24,11 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@/registry/ui/f
 
 ## 用法
 
-<ShowcaseDemo registryName="field" demo="overview" title="字段布局" description="覆盖基础字段、错误字段、水平 checkbox 字段和禁用字段，展示 label/description/error 组合。" minHeight={420} />
+<ShowcaseDemo registryName="field" demo="overview" title="字段布局" description="覆盖必填字段、错误字段、水平 checkbox 字段和禁用字段，展示 label/description/error 组合。" minHeight={420} />
 
 ## 导出
 
-`field.tsx` 导出 `FieldSet`、`FieldLegend`、`FieldGroup`、`Field`、`FieldContent`、`FieldLabel`、`FieldTitle`、`FieldDescription`、`FieldSeparator` 和 `FieldError`。
+`field.tsx` 导出 `FieldSet`、`FieldLegend`、`FieldGroup`、`Field`、`FieldContent`、`FieldLabel`、`FieldTitle`、`FieldDescription`、`FieldSeparator` 和 `FieldError`。`FieldLabel` 和 `FieldLegend` 都接受 `required`：它会在字段名称后添加破坏色红色 `*`。
 
 ## 状态
 
@@ -36,9 +36,8 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@/registry/ui/f
 
 ## 无障碍
 
-`FieldError` 使用 `role="alert"`。字段 label 应绑定实际控件；错误文本说明格式、影响和修复方式。
+`FieldError` 使用 `role="alert"`。字段 label 应绑定实际控件；必填标签使用 `required`，并在实际控件上保留对应的原生 `required` 或 `aria-required` 语义；错误文本说明格式、影响和修复方式。
 
 ## 依赖
 
 <RegistryDependencies registryName="field" />
-

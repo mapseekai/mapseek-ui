@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-AddFieldForm is the controlled body for adding an attribute field. It handles field name, type, enum values, default value, nullable, and description inputs; dialog chrome, footer submission, schema writes, and validation policy stay with the caller.
+AddFieldForm is the controlled body for adding an attribute field. It handles field name, type, type-aware default value, nullable, and description inputs; dialog chrome, footer submission, schema writes, and validation policy stay with the caller.
 
 ## Installation
 
@@ -22,23 +22,25 @@ AddFieldForm is the controlled body for adding an attribute field. It handles fi
 import {
   AddFieldForm,
   EMPTY_ADD_FIELD,
+  type AddFieldDefaultValue,
   type AddFieldFormLabels,
   type AddFieldValue,
+  type AddFieldType,
   type FieldTypeOption,
 } from "@/registry/blocks/add-field-form"
 ```
 
 ## Controlled Field Form
 
-<ShowcaseDemo registryName="add-field-form" title="Controlled field form" description="Shows type buttons, conditional enum values, nullable checkbox, default placeholder changes, and live value output." minHeight={620} />
+<ShowcaseDemo registryName="add-field-form" title="Controlled field form" description="Shows text, integer, float, boolean, and date types; type-aware default-value controls, a nullable checkbox, and live value output." minHeight={620} />
 
 ## Usage
 
-Initialize from `EMPTY_ADD_FIELD`, pass the allowed `fieldTypes`, and store the complete draft in `onChange`. Submit actions usually live in an outer Dialog or Drawer and check `value.name`, duplicate keys, and enum formatting.
+Initialize from `EMPTY_ADD_FIELD`, pass the allowed `fieldTypes`, and store the complete draft in `onChange`. Supported types are `text`, `integer`, `float`, `boolean`, and `date`; their defaults use text, number (with a `0.1` float step), a Yes/No select, or the Calendar date picker initialized to the current date. Submit actions usually live in an outer Dialog or Drawer and check `value.name` and duplicate keys.
 
 ## Public Exports and Props
 
-Exports include `AddFieldForm`, `EMPTY_ADD_FIELD`, `AddFieldFormProps`, `AddFieldFormLabels`, `AddFieldValue`, and `FieldTypeOption`. Key props are `value`, `onChange`, `fieldTypes`, `labels`, and `className`; `FieldTypeOption` can provide an icon, default placeholder, and `hasOptions`.
+Exports include `AddFieldForm`, `EMPTY_ADD_FIELD`, `AddFieldDefaultValue`, `AddFieldType`, `AddFieldFormProps`, `AddFieldFormLabels`, `AddFieldValue`, and `FieldTypeOption`. Key props are `value`, `onChange`, `fieldTypes`, `labels`, and `className`; `FieldTypeOption` provides a label and icon for each supported type.
 
 ## States and Validation
 
@@ -46,9 +48,8 @@ The block does not submit, show errors, or deduplicate names by itself. It keeps
 
 ## Accessibility
 
-Fields use readable labels and native inputs. Type choices are buttons; nullable is a checkbox paired with a label. Outer submit UI should expose error text, dialog title, description, and disabled submit state to keyboard and screen reader users.
+Fields use readable labels and input controls. Type choices are buttons; the date picker pairs a focusable trigger with Calendar, and nullable is a checkbox paired with a label. Outer submit UI should expose error text, dialog title, description, and disabled submit state to keyboard and screen reader users.
 
 ## Dependencies
 
 <RegistryDependencies registryName="add-field-form" />
-

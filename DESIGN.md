@@ -440,3 +440,4 @@ Components follow a fixed ownership model: theme → primitives → domain block
 - Do not copy color literals into components when a semantic token exists.
 - Do not hide essential actions behind an unlabeled icon, hover-only treatment, or color-only affordance.
 - Do not duplicate primitive behavior or embed non-injectable product copy and network behavior inside domain blocks.
+- Required field names use `FieldLabel required` or `FieldLegend required`. These primitives append a destructive-red `*` directly after the human-readable name; preserve the matching native `required` or `aria-required` semantics on the control itself.

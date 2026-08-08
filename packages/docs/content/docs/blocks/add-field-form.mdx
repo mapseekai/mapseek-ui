@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-AddFieldForm 是受控的“新增属性字段”表单主体。它只处理字段名、字段类型、枚举值、默认值、nullable 和说明输入；弹窗、底栏提交、schema 写入和校验策略由调用方负责。
+AddFieldForm 是受控的“新增属性字段”表单主体。它只处理字段名、字段类型、与类型匹配的默认值、nullable 和说明输入；弹窗、底栏提交、schema 写入和校验策略由调用方负责。
 
 ## 安装
 
@@ -22,23 +22,25 @@ AddFieldForm 是受控的“新增属性字段”表单主体。它只处理字�
 import {
   AddFieldForm,
   EMPTY_ADD_FIELD,
+  type AddFieldDefaultValue,
   type AddFieldFormLabels,
   type AddFieldValue,
+  type AddFieldType,
   type FieldTypeOption,
 } from "@/registry/blocks/add-field-form"
 ```
 
 ## 受控字段表单
 
-<ShowcaseDemo registryName="add-field-form" title="受控字段表单" description="示例展示字段类型按钮、枚举值条件输入、nullable 复选框、默认值占位符变化和实时 value 输出。" minHeight={620} />
+<ShowcaseDemo registryName="add-field-form" title="受控字段表单" description="示例展示文字、整型、浮点型、布尔和日期字段类型，随类型切换的默认值控件、nullable 复选框和实时 value 输出。" minHeight={620} />
 
 ## 用法
 
-从 `EMPTY_ADD_FIELD` 初始化 `value`，把 `fieldTypes` 作为业务允许的类型列表传入，并在 `onChange` 中保存完整草稿。提交按钮通常放在外层 Dialog 或 Drawer 中，并根据调用方规则检查 `value.name`、重复字段名和枚举值格式。
+从 `EMPTY_ADD_FIELD` 初始化 `value`，把 `fieldTypes` 作为业务允许的类型列表传入，并在 `onChange` 中保存完整草稿。支持的类型是 `text`、`integer`、`float`、`boolean` 和 `date`；默认值会分别使用文本、数字（浮点型步长为 `0.1`）、“是 / 否”选择，或默认显示当天的 Calendar 日期选择器。提交按钮通常放在外层 Dialog 或 Drawer 中，并根据调用方规则检查 `value.name` 和重复字段名。
 
 ## 公开导出与 Props
 
-导出 `AddFieldForm`、`EMPTY_ADD_FIELD`、`AddFieldFormProps`、`AddFieldFormLabels`、`AddFieldValue` 和 `FieldTypeOption`。关键 props 是 `value`、`onChange`、`fieldTypes`、`labels` 和 `className`；`FieldTypeOption` 可以提供图标、默认值占位符和 `hasOptions` 来控制枚举输入是否出现。
+导出 `AddFieldForm`、`EMPTY_ADD_FIELD`、`AddFieldDefaultValue`、`AddFieldType`、`AddFieldFormProps`、`AddFieldFormLabels`、`AddFieldValue` 和 `FieldTypeOption`。关键 props 是 `value`、`onChange`、`fieldTypes`、`labels` 和 `className`；`FieldTypeOption` 为每个受支持类型提供标签和图标。
 
 ## 状态与校验
 
@@ -46,9 +48,8 @@ import {
 
 ## 无障碍
 
-字段使用可读标签和原生输入。类型按钮是 `button`，nullable 使用复选框与 `label` 绑定。外层提交区应提供明确的错误文本，并把 Dialog 标题、说明和提交按钮状态暴露给键盘与读屏用户。
+字段使用可读标签和输入控件。类型按钮是 `button`，日期选择器由可聚焦触发按钮与 Calendar 组成，nullable 使用复选框与 `label` 绑定。外层提交区应提供明确的错误文本，并把 Dialog 标题、说明和提交按钮状态暴露给键盘与读屏用户。
 
 ## 依赖
 
 <RegistryDependencies registryName="add-field-form" />
-

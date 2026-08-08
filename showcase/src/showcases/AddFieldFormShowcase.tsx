@@ -9,65 +9,62 @@ import {
   IconCalendar,
   IconHash,
   IconLetterCase,
-  IconListCheck,
+  IconMathFunction,
   IconToggleLeft,
 } from "@tabler/icons-react"
 import { useState } from "react"
-import type { LocalizedDemoProps } from "./types"
+import type { DemoLocale, LocalizedDemoProps } from "./types"
 
-const fieldTypes: FieldTypeOption[] = [
-  { id: "text", label: "Text", icon: IconLetterCase },
-  { id: "number", label: "Number", icon: IconHash, defaultPlaceholder: "0" },
-  { id: "date", label: "Date", icon: IconCalendar, defaultPlaceholder: "Today" },
-  { id: "enum", label: "Enum", icon: IconListCheck, hasOptions: true },
-  { id: "bool", label: "Bool", icon: IconToggleLeft, defaultPlaceholder: "false" },
-]
+const fieldTypes: Record<DemoLocale, FieldTypeOption[]> = {
+  "zh-CN": [
+    { id: "text", label: "文字", icon: IconLetterCase },
+    { id: "integer", label: "整型", icon: IconHash },
+    { id: "float", label: "浮点型", icon: IconMathFunction },
+    { id: "boolean", label: "布尔", icon: IconToggleLeft },
+    { id: "date", label: "日期", icon: IconCalendar },
+  ],
+  en: [
+    { id: "text", label: "Text", icon: IconLetterCase },
+    { id: "integer", label: "Integer", icon: IconHash },
+    { id: "float", label: "Float", icon: IconMathFunction },
+    { id: "boolean", label: "Boolean", icon: IconToggleLeft },
+    { id: "date", label: "Date", icon: IconCalendar },
+  ],
+}
 
 const labels = {
   "zh-CN": {
-    intro: "受控字段表单。选择枚举类型会显示枚举值输入，默认值占位符随类型变化。",
+    intro: "受控字段表单。默认值控件会随文字、整型、浮点型、布尔和日期字段类型切换。",
     reset: "重置",
     valid: "可提交",
     invalid: "字段名必填",
     form: {
       nameLabel: "字段名",
-      nameRequiredHint: "必填 · 小写 · 下划线",
       namePlaceholder: "例如 build_year",
-      nameHint: "用作 schema key，提交后不可更改",
       typeLabel: "字段类型",
-      enumLabel: "枚举值",
-      enumOptionalHint: "逗号分隔",
-      enumPlaceholder: "例如 居住,商业,工业,绿地",
       defaultLabel: "默认值",
-      defaultOptionalHint: "可选",
+      booleanTrueLabel: "是",
+      booleanFalseLabel: "否",
       nullableLabel: "允许为空",
-      nullableHint: "nullable",
       descLabel: "说明",
-      descOptionalHint: "可选 · 显示在属性面板",
       descPlaceholder: "该字段的用途...",
     },
   },
   en: {
     intro:
-      "Controlled field form. Choosing Enum reveals option input and the default placeholder follows the selected type.",
+      "Controlled field form. The default-value control changes with text, integer, float, boolean, and date types.",
     reset: "Reset",
     valid: "Ready to submit",
     invalid: "Field name is required",
     form: {
       nameLabel: "Field name",
-      nameRequiredHint: "Required · lowercase · underscores",
       namePlaceholder: "e.g. build_year",
-      nameHint: "Used as the schema key and fixed after creation.",
       typeLabel: "Field type",
-      enumLabel: "Enum values",
-      enumOptionalHint: "Comma separated",
-      enumPlaceholder: "e.g. residential,commercial,industrial,park",
       defaultLabel: "Default value",
-      defaultOptionalHint: "Optional",
+      booleanTrueLabel: "Yes",
+      booleanFalseLabel: "No",
       nullableLabel: "Allow null",
-      nullableHint: "nullable",
       descLabel: "Description",
-      descOptionalHint: "Optional · shown in inspectors",
       descPlaceholder: "What this field is for...",
     },
   },
@@ -96,7 +93,7 @@ export function AddFieldFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           <AddFieldForm
             value={value}
             onChange={setValue}
-            fieldTypes={fieldTypes}
+            fieldTypes={fieldTypes[locale]}
             labels={demoLabels.form}
           />
         </div>

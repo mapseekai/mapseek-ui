@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-PixelProbe 是只读栅格像元探测面板，适合展示 TiTiler `/point` 或类似查询结果。它负责 header、字段行、类型 badge、锁定标记、复制按钮、关闭按钮和像元步进 footer；查询、复制内容和关闭状态由调用方处理。
+PixelProbe 是只读栅格像元探测面板，适合展示 TiTiler `/point` 或类似查询结果。它负责 header、语义化字段行、类型 Tag、锁定标记、空状态、复制按钮、关闭按钮和有边界的像元步进 footer；查询、复制内容和关闭状态由调用方处理。
 
 ## 安装
 
@@ -34,21 +34,24 @@ import {
 
 ## 用法
 
-把查询结果转换成 `PixelField[]`，每行提供 `key`、`type` 和 `value`，可选 `unit` 与 `locked`。传入 `count` 和 `index` 展示点数量与当前点。`onCopy`、`onClose`、`onPrev` 和 `onNext` 都是调用方处理器。
+把查询结果转换成 `PixelField[]`，每行提供 `key`、`type` 和 `value`，可选 `unit` 与 `locked`。传入 `count` 和 `index` 展示点数量与当前点。`labels.empty` 和 `labels.locked` 是必填的本地化文案。`onCopy`、`onClose`、`onPrev` 和 `onNext` 都是调用方处理器；缺少 `onPrev` 或 `onNext` 时不会渲染对应按钮。
 
 ## 公开导出与 Props
 
-导出 `PixelProbe`、`PixelProbeProps`、`PixelProbeLabels`、`PixelField` 和 `PixelFieldType`。关键 props 是 `fields`、`count`、`index`、`labels`、`onCopy`、`onClose`、`onPrev`、`onNext` 和 `className`。
+导出 `PixelProbe`、`PixelProbeProps`、`PixelProbeLabels`、`PixelField` 和 `PixelFieldType`。关键 props 是 `fields`、`count`、`index`、`labels`、`prevDisabled`、`nextDisabled`、`onCopy`、`onClose`、`onPrev`、`onNext` 和 `className`。
 
 ## 受控状态
 
-面板没有内部查询状态。示例把当前像元 index 和关闭状态保存在外层，并在复制、关闭、上一个、下一个回调中更新状态文本。真实应用通常会在 `onNext` 和 `onPrev` 中重新请求像元数据。
+面板没有内部查询状态。示例把当前像元 index 和关闭状态保存在外层，并在复制、关闭、上一个、下一个回调中更新状态文本。`index <= 1` 时上一个按钮自动禁用；同时提供 `index` 与 `count` 且 `index >= count` 时下一个按钮自动禁用。`prevDisabled` 和 `nextDisabled` 可以额外强制禁用按钮。真实应用通常会在 `onNext` 和 `onPrev` 中重新请求像元数据。
+
+## 空状态与响应式
+
+传入 `fields={[]}` 会在保留 header 的同时渲染组件内置 Empty 状态。长字段值在值框内部水平滚动，单位保持固定。示例在小于 640px 时保留 16px 水平内边距；空间允许时使用稳定的 340px 面板宽度。
 
 ## 无障碍
 
-复制和关闭按钮使用 `labels.copy` 与 `labels.close`。prev / next 按钮通过 Tooltip 提供可读说明。字段值以可选择文本呈现；单位和锁定标记应作为辅助信息，不要替代字段名。
+面板是以 `labels.title` 命名的 section，字段使用 `dl`、`dt` 与 `dd` 保留名称和值的语义关系。复制和关闭按钮使用 `labels.copy` 与 `labels.close`，prev / next 按钮通过 Tooltip 提供可读说明。`labels.locked` 和 `labels.empty` 分别暴露锁定与空状态；字段值保持可选择，单位和锁定标记只作为辅助信息。
 
 ## 依赖
 
 <RegistryDependencies registryName="pixel-probe" />
-

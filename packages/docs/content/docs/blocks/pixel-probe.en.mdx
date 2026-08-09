@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-PixelProbe is a read-only raster pixel probe panel for TiTiler `/point` or similar query results. It owns the header, field rows, type badges, lock marker, copy button, close button, and pixel stepper footer; querying, copy payloads, and close state are handled by the caller.
+PixelProbe is a read-only raster pixel probe panel for TiTiler `/point` or similar query results. It owns the header, semantic field rows, type Tags, lock marker, empty state, copy button, close button, and bounded pixel stepper footer; querying, copy payloads, and close state are handled by the caller.
 
 ## Installation
 
@@ -34,21 +34,24 @@ import {
 
 ## Usage
 
-Convert query results into `PixelField[]`, with each row providing `key`, `type`, and `value`, plus optional `unit` and `locked`. Pass `count` and `index` to show the point count and current point. `onCopy`, `onClose`, `onPrev`, and `onNext` are caller handlers.
+Convert query results into `PixelField[]`, with each row providing `key`, `type`, and `value`, plus optional `unit` and `locked`. Pass `count` and `index` to show the point count and current point. `labels.empty` and `labels.locked` are required localized strings. `onCopy`, `onClose`, `onPrev`, and `onNext` are caller handlers; omitting `onPrev` or `onNext` omits the matching button.
 
 ## Public Exports and Props
 
-Exports include `PixelProbe`, `PixelProbeProps`, `PixelProbeLabels`, `PixelField`, and `PixelFieldType`. Key props are `fields`, `count`, `index`, `labels`, `onCopy`, `onClose`, `onPrev`, `onNext`, and `className`.
+Exports include `PixelProbe`, `PixelProbeProps`, `PixelProbeLabels`, `PixelField`, and `PixelFieldType`. Key props are `fields`, `count`, `index`, `labels`, `prevDisabled`, `nextDisabled`, `onCopy`, `onClose`, `onPrev`, `onNext`, and `className`.
 
 ## Controlled State
 
-The panel has no internal query state. The demo keeps current pixel index and closed state outside the block, then updates status text from copy, close, previous, and next callbacks. Real apps usually re-fetch pixel data in `onNext` and `onPrev`.
+The panel has no internal query state. The demo keeps current pixel index and closed state outside the block, then updates status text from copy, close, previous, and next callbacks. Previous is disabled when `index <= 1`; next is disabled when both `index` and `count` are present and `index >= count`. `prevDisabled` and `nextDisabled` can force either button off in additional caller-defined states. Real apps usually re-fetch pixel data in `onNext` and `onPrev`.
+
+## Empty and Responsive Behavior
+
+Passing `fields={[]}` renders the built-in Empty state while preserving the header. Long field values scroll horizontally inside their value box while the unit stays fixed. Below 640px, the demo keeps 16px horizontal insets; when space permits, it uses a stable 340px panel width.
 
 ## Accessibility
 
-Copy and close buttons use `labels.copy` and `labels.close`. Prev / next buttons use Tooltip for readable descriptions. Field values are selectable text; units and lock markers should be supplementary and not replace field names.
+The panel is a section named by `labels.title`, and fields use `dl`, `dt`, and `dd` to preserve name/value relationships. Copy and close buttons use `labels.copy` and `labels.close`, while prev / next buttons use Tooltip for readable descriptions. `labels.locked` and `labels.empty` expose the locked and empty states; field values remain selectable, and units and lock markers stay supplementary.
 
 ## Dependencies
 
 <RegistryDependencies registryName="pixel-probe" />
-

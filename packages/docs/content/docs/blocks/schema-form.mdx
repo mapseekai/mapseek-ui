@@ -21,9 +21,12 @@ SchemaForm 是 schema 驱动的表单主体，支持 number、text、select 和 
 ```tsx
 import {
   SchemaForm,
+  SCHEMA_FORM_LABELS_EN,
+  SCHEMA_FORM_LABELS_ZH_CN,
   isSchemaFormValid,
   seedSchemaFormValues,
   type SchemaFormField,
+  type SchemaFormLabels,
   type SchemaFormOption,
 } from "@/registry/blocks/schema-form"
 ```
@@ -38,9 +41,9 @@ import {
 
 ## 公开导出与 Props
 
-导出 `SchemaForm`、`seedSchemaFormValues`、`isSchemaFormValid`、`SchemaFormField`、`SchemaFormOption` 和 `SchemaFormProps`。关键 props 是 `fields`、`values`、`onChange`、`errors`、`labels`、`idPrefix` 和 `className`。
+导出 `SchemaForm`、`seedSchemaFormValues`、`isSchemaFormValid`、`SchemaFormField`、`SchemaFormLabels`、`SchemaFormOption`、`SchemaFormProps`、`SCHEMA_FORM_LABELS_EN` 和 `SCHEMA_FORM_LABELS_ZH_CN`。关键 props 是 `fields`、`values`、`onChange`、`errors`、`labels`、`idPrefix` 和 `className`。
 
-字段可指定 `name`、`autoComplete` 和 text 字段的 `spellCheck`；未指定的 name 使用字段 key，number/text 默认 `autoComplete="off"`。`errors` 是调用方拥有的、按字段 key 索引的本地化错误文本，`labels.emptyOptions` 提供全局空选项回退文案。
+字段可指定 `name`、`autoComplete` 和 text 字段的 `spellCheck`；未指定的 name 使用字段 key，number/text 默认 `autoComplete="off"`。`errors` 是调用方拥有的、按字段 key 索引的本地化错误文本，`SchemaFormLabels` 是可注入的 `labels` 契约，`SCHEMA_FORM_LABELS_EN` 和 `SCHEMA_FORM_LABELS_ZH_CN` 分别是可直接使用的英文和简体中文默认标签集，其中 `labels.emptyOptions` 提供全局空选项回退文案。
 
 ## 状态与校验
 

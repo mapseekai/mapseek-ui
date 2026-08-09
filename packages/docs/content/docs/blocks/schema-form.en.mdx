@@ -21,9 +21,12 @@ SchemaForm is a schema-driven form body for number, text, select, and multiselec
 ```tsx
 import {
   SchemaForm,
+  SCHEMA_FORM_LABELS_EN,
+  SCHEMA_FORM_LABELS_ZH_CN,
   isSchemaFormValid,
   seedSchemaFormValues,
   type SchemaFormField,
+  type SchemaFormLabels,
   type SchemaFormOption,
 } from "@/registry/blocks/schema-form"
 ```
@@ -38,9 +41,9 @@ import {
 
 ## Public Exports and Props
 
-Exports include `SchemaForm`, `seedSchemaFormValues`, `isSchemaFormValid`, `SchemaFormField`, `SchemaFormOption`, and `SchemaFormProps`. Key props are `fields`, `values`, `onChange`, `errors`, `labels`, `idPrefix`, and `className`.
+Exports include `SchemaForm`, `seedSchemaFormValues`, `isSchemaFormValid`, `SchemaFormField`, `SchemaFormLabels`, `SchemaFormOption`, `SchemaFormProps`, `SCHEMA_FORM_LABELS_EN`, and `SCHEMA_FORM_LABELS_ZH_CN`. Key props are `fields`, `values`, `onChange`, `errors`, `labels`, `idPrefix`, and `className`.
 
-Fields can specify `name`, `autoComplete`, and text `spellCheck`; an omitted name uses the field key, while number/text default to `autoComplete="off"`. `errors` is caller-owned localized error text by field key, and `labels.emptyOptions` provides the global empty-option fallback copy.
+Fields can specify `name`, `autoComplete`, and text `spellCheck`; an omitted name uses the field key, while number/text default to `autoComplete="off"`. `errors` is caller-owned localized error text by field key; `SchemaFormLabels` is the injectable `labels` contract, while `SCHEMA_FORM_LABELS_EN` and `SCHEMA_FORM_LABELS_ZH_CN` are ready-to-use English and Simplified Chinese defaults. `labels.emptyOptions` provides the global empty-option fallback copy.
 
 ## States and Validation
 

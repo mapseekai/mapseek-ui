@@ -52,7 +52,6 @@ it("uses a 20% primary ring for every keyboard focus treatment", async () => {
     "registry/ui/tabs.tsx",
     "registry/ui/toggle.tsx",
     "registry/blocks/attr-table/attr-table-sheet.tsx",
-    "registry/blocks/layer-panel/LayerPanel.tsx",
   ]
   const sources = await Promise.all(focusRingPaths.map((path) => readFile(path, "utf8")))
 

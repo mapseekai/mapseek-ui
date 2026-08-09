@@ -472,17 +472,32 @@
     {
       "name": "layer-panel",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/labels", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/dropdown-menu",
+        "@mapseek/empty",
+        "@mapseek/icon-button",
+        "@mapseek/input-group",
+        "@mapseek/tag",
+        "@mapseek/toggle-group",
+        "@mapseek/tooltip",
+        "@mapseek/utils"
+      ],
       "files": [
+        {
+          "path": "layer-panel/LayerActions.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-panel/LayerActions.tsx"
+        },
+        {
+          "path": "layer-panel/LayerGroup.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/layer-panel/LayerGroup.tsx"
+        },
         {
           "path": "layer-panel/LayerPanel.tsx",
           "type": "registry:block",
           "target": "@components/blocks/layer-panel/LayerPanel.tsx"
-        },
-        {
-          "path": "layer-panel/defaults.ts",
-          "type": "registry:block",
-          "target": "@components/blocks/layer-panel/defaults.ts"
         },
         {
           "path": "layer-panel/index.ts",
@@ -498,11 +513,6 @@
           "path": "layer-panel/types.ts",
           "type": "registry:block",
           "target": "@components/blocks/layer-panel/types.ts"
-        },
-        {
-          "path": "layer-panel/use-layer-panel.ts",
-          "type": "registry:block",
-          "target": "@components/blocks/layer-panel/use-layer-panel.ts"
         }
       ],
       "dependencies": ["@tabler/icons-react"]
@@ -617,41 +627,6 @@
           "path": "loading-screen/labels.ts",
           "type": "registry:block",
           "target": "@components/blocks/loading-screen/labels.ts"
-        }
-      ],
-      "dependencies": ["@tabler/icons-react"]
-    },
-    {
-      "name": "loom-layer-panel",
-      "type": "registry:block",
-      "registryDependencies": [
-        "@mapseek/badge",
-        "@mapseek/button",
-        "@mapseek/empty",
-        "@mapseek/input-group",
-        "@mapseek/toggle-group",
-        "@mapseek/utils"
-      ],
-      "files": [
-        {
-          "path": "loom-layer-panel/LoomLayerPanel.tsx",
-          "type": "registry:block",
-          "target": "@components/blocks/loom-layer-panel/LoomLayerPanel.tsx"
-        },
-        {
-          "path": "loom-layer-panel/index.ts",
-          "type": "registry:block",
-          "target": "@components/blocks/loom-layer-panel/index.ts"
-        },
-        {
-          "path": "loom-layer-panel/labels.ts",
-          "type": "registry:block",
-          "target": "@components/blocks/loom-layer-panel/labels.ts"
-        },
-        {
-          "path": "loom-layer-panel/types.ts",
-          "type": "registry:block",
-          "target": "@components/blocks/loom-layer-panel/types.ts"
         }
       ],
       "dependencies": ["@tabler/icons-react"]

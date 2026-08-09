@@ -152,18 +152,19 @@ describe("registry component composition", () => {
     expect(splitToolPicker).not.toContain("border-selection-bg")
   })
 
-  it("uses a flat-ended selection bar for layer-panel items", async () => {
-    const layerPanel = await readFile("registry/blocks/layer-panel/LayerPanel.tsx", "utf8")
+  it("uses a persistent selection surface and semantics for layer-panel items", async () => {
+    const layerGroup = await readFile("registry/blocks/layer-panel/LayerGroup.tsx", "utf8")
 
-    expect(layerPanel).toContain("before:inset-y-0 before:left-0 before:w-0.5")
-    expect(layerPanel).toContain("bg-selection-bg before:bg-primary")
-    expect(layerPanel).not.toContain('? "border-l-primary bg-selection-bg"')
+    expect(layerGroup).toContain("border-primary/40 bg-selection-bg")
+    expect(layerGroup).toContain('aria-current={selected ? "true" : undefined}')
+    expect(layerGroup).toContain('{selected && <Tag variant="solid">{labels.current}</Tag>}')
+    expect(layerGroup).not.toContain("bg-primary/10")
   })
 
   it("uses Empty for loom toolbox and layer-panel empty states", async () => {
     const [toolList, layerPanel] = await Promise.all([
       readFile("registry/blocks/loom-toolbox/ToolList.tsx", "utf8"),
-      readFile("registry/blocks/loom-layer-panel/LoomLayerPanel.tsx", "utf8"),
+      readFile("registry/blocks/layer-panel/LayerPanel.tsx", "utf8"),
     ])
 
     expect(toolList).toContain("Empty")
@@ -174,8 +175,8 @@ describe("registry component composition", () => {
     expect(layerPanel).not.toContain("text-center text-xs text-muted-foreground")
   })
 
-  it("uses background-free buttons and primary text for selected loom layers", async () => {
-    const layerGroup = await readFile("registry/blocks/loom-layer-panel/LoomLayerGroup.tsx", "utf8")
+  it("uses background-free buttons and primary text for selected layers", async () => {
+    const layerGroup = await readFile("registry/blocks/layer-panel/LayerGroup.tsx", "utf8")
 
     expect(layerGroup.match(/variant="link"/g)).toHaveLength(2)
     expect(layerGroup.match(/text-foreground hover:no-underline/g)).toHaveLength(1)

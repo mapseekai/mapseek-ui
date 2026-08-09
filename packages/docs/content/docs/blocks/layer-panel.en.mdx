@@ -9,8 +9,7 @@ showcase: layer-panel
 import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
-
-LayerPanel is a controlled layer panel for map projects. It owns the header, list, row selection, visibility buttons, row actions, empty state, and pluggable sections; the caller owns layer data, ordering, deletion, locating, attribute-table behavior, and grouping.
+LayerPanel is a controlled layer panel for map projects with grouping, search, visibility filtering, current-layer selection, and panel collapse state.
 
 ## Installation
 
@@ -19,34 +18,18 @@ LayerPanel is a controlled layer panel for map projects. It owns the header, lis
 ## Import
 
 ```tsx
-import { LayerPanel, type LayerData } from "@/registry/blocks/layer-panel"
+import { LayerPanel, type LayerData } from "@/components/blocks/layer-panel"
 ```
 
-## Basic Controlled Panel
+## Project layers
 
-<ShowcaseDemo registryName="layer-panel" demo="basic" title="Basic controlled panel" description="Shows visibility toggles, controlled selection, and style sections." minHeight={280} />
+<div className="max-w-lg">
+  <ShowcaseDemo registryName="layer-panel" title="Project layers" description="The caller controls search, filters, group collapse, selection, and visibility." minHeight={620} />
+</div>
 
-<ShowcaseDemo registryName="layer-panel" demo="groups" title="Group state" description="The caller controls group collapse, rename, menu, and visibility state." minHeight={300} />
+## Controlled state
 
-## Controlled State
-
-`LayerPanel` does not store business data. Pass `layers`, `selectedId`, and handlers, then update project state from `onSelectChange`, `onVisibleChange`, `onReorder`, `onRemove`, `onLocate`, and `onOpenTable`. `collapsed` can be controlled, or `defaultCollapsed` can let the panel keep its own collapsed state.
-
-## Layer and Group Models
-
-`LayerData` requires at least `id`, `name`, `visible`, and `geometryType`. `featureCount`, `crsLabel`, and `flags` are display enhancements. Compose group presentation with `LayerPanel.Group`, `GroupHeader`, `GroupTrigger`, `GroupTitle`, `GroupActions`, and `GroupContent`; the caller still owns group data, collapse state, renaming, and menu actions.
-
-## Required Handlers
-
-A read-only panel can pass only `layers` and `selectedId`. Provide `onVisibleChange` when visibility buttons are shown; provide `onReorder` when drag sorting is enabled; deletion, locating, and attribute-table buttons are controlled by `onRemove`, `onLocate`, and `onOpenTable`. When a handler is missing, the matching operation is not rendered.
-
-## Accessibility Labels
-
-Use `labels` to localize geometry names, add-layer, feature count, locate, attribute table, and delete text. Rows use the layer name as their accessible name, and actions reuse the registry `Button`. Give `GroupTrigger` expanded/collapsed labels; group menus and rename inputs also need an `aria-label` or readable text.
-
-## Scrolling and Responsive Constraints
-
-Give the panel an explicit height or a parent scroll boundary. The list scrolls inside the panel and hides horizontal overflow. The docs examples use `w-full` with `max-w-*`, so they fit mobile previews; long layer names are constrained by row-level `truncate`.
+Connect project state through `layers`, `selectedId`, `query`, `visibleOnly`, `collapsedGroups`, and the matching handlers. Each `LayerData` item supplies its group, geometry, feature count, and visibility. All visible copy is injectable through `labels`.
 
 ## Dependencies
 

@@ -1,62 +1,47 @@
-import type * as React from "react"
-import type { Button } from "@/components/ui/button"
-import type { LayerPanelLabels } from "./labels"
-
 export type LayerGeometry = "point" | "polyline" | "polygon" | "mixed" | "raster"
 
-export interface LayerData {
-  id: string
-  name: string
-  visible: boolean
-  geometryType: LayerGeometry
-  featureCount?: number
-  crsLabel?: string
-  flags?: {
-    locked?: boolean
-    busy?: boolean
-    dirty?: boolean
-  }
+export type LayerData = {
+  readonly id: string
+  readonly name: string
+  readonly group: string
+  readonly geometry: LayerGeometry
+  readonly featureCount: number
+  readonly visible: boolean
 }
 
-export interface LayerPanelProps {
-  layers: LayerData[]
-  selectedId?: string | null
-  onSelectChange?: (id: string) => void
-  onVisibleChange?: (id: string, visible: boolean) => void
-  onReorder?: (newOrder: string[]) => void
-  onRemove?: (id: string) => void
-  onLocate?: (id: string) => void
-  onOpenTable?: (id: string) => void
-  collapsed?: boolean
-  defaultCollapsed?: boolean
-  onCollapsedChange?: (collapsed: boolean) => void
-  labels?: Partial<LayerPanelLabels>
-  className?: string
-  children: React.ReactNode
+export type LayerPanelActionLabels = {
+  readonly locateLayer: string
+  readonly openAttributeTable: string
+  readonly moreLayerActions: string
+  readonly renameGroup: string
+  readonly showGroup: string
+  readonly hideGroup: string
+  readonly showLayer: string
+  readonly hideLayer: string
 }
 
-export interface LayerPanelGroupProps extends React.ComponentProps<"section"> {
-  collapsed?: boolean
-}
-
-export interface LayerPanelGroupTriggerProps extends React.ComponentProps<typeof Button> {
-  expandedLabel?: string
-  collapsedLabel?: string
-}
-
-export interface LayerPanelContextValue {
-  layers: LayerData[]
-  selectedId: string | null
-  onSelectChange: (id: string) => void
-  onVisibleChange?: (id: string, visible: boolean) => void
-  onReorder?: (order: string[]) => void
-  onRemove?: (id: string) => void
-  onLocate?: (id: string) => void
-  onOpenTable?: (id: string) => void
-  isSectionOpen: (layerId: string, sectionId: string) => boolean
-  toggleSection: (layerId: string, sectionId: string) => void
-  registerSectionDefault: (layerId: string, sectionId: string, open: boolean) => void
-  collapsed: boolean
-  toggleCollapsed: () => void
-  labels: LayerPanelLabels
+export type LayerPanelLabels = {
+  readonly title: string
+  readonly search: string
+  readonly all: string
+  readonly visible: string
+  readonly current: string
+  readonly empty: string
+  readonly createGroup: string
+  readonly addLayer: string
+  readonly collapse: string
+  readonly expand: string
+  /** Visible Tooltip and overflow-menu text. Keep these labels free of object names. */
+  readonly actions: LayerPanelActionLabels
+  readonly featureCount: (count: number) => string
+  readonly geometry: Readonly<Record<LayerGeometry, string>>
+  readonly selectLayer: (name: string) => string
+  readonly locateLayer: (name: string) => string
+  readonly openAttributeTable: (name: string) => string
+  readonly moreLayerActions: (name: string) => string
+  readonly renameGroup: (name: string) => string
+  readonly showGroup: (name: string) => string
+  readonly hideGroup: (name: string) => string
+  readonly showLayer: (name: string) => string
+  readonly hideLayer: (name: string) => string
 }

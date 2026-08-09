@@ -501,80 +501,44 @@ async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
     page.getByRole("heading", { level: 1, name: "LayerPanel", exact: true }),
   ).toBeVisible()
 
-  const basic = page.locator('[data-demo="layer-panel-basic"]')
-  const groups = page.locator('[data-demo="layer-panel-groups"]')
-  await expect(basic).toBeVisible()
-  await expect(groups).toBeVisible()
-  await basic.scrollIntoViewIfNeeded()
-  await assertLayerPanelDemoFits(basic, `${path} basic LayerPanel`)
+  const demo = page.locator('[data-demo="layer-panel"]')
+  await expect(demo).toBeVisible()
+  await demo.scrollIntoViewIfNeeded()
+  await assertLayerPanelDemoFits(demo, `${path} LayerPanel`)
 
-  const basicPanel = basic.locator('[data-slot="layer-panel"]')
-  const panelToggle = basicPanel.getByRole("button", { name: "Toggle layer panel" })
-  await panelToggle.click()
-  await expect(basicPanel.locator('[data-slot="layer-panel-list"]')).toHaveCount(0)
-  await expect
-    .poll(() => basicPanel.evaluate((element) => element.getBoundingClientRect().height))
-    .toBeLessThanOrEqual(32)
-  await panelToggle.click()
-  await expect(basicPanel.locator('[data-slot="layer-panel-list"]')).toBeVisible()
+  const panel = demo.locator('[data-slot="layer-panel"]')
+  await panel
+    .getByRole("button", {
+      name: path.startsWith("/en/") ? "Collapse layer panel" : "收起图层面板",
+    })
+    .click()
+  await expect(panel).toHaveAttribute("data-collapsed", "true")
+  await panel
+    .getByRole("button", {
+      name: path.startsWith("/en/") ? "Expand layer panel" : "展开图层面板",
+    })
+    .click()
+  await expect(panel).not.toHaveAttribute("data-collapsed", "true")
 
-  await activateByKeyboard(
-    basic.locator('button[aria-label="Toggle visibility for Transit corridors"]'),
-  )
-  await expect(basic.locator('[data-demo="layer-panel-basic-status"]')).toContainText(
-    path.startsWith("/en/") ? "Hidden" : "已隐藏",
-  )
-
-  await basic.getByRole("button", { name: "Field assets", exact: true }).click()
-  await expect(basic.locator('[data-demo="layer-panel-basic-status"]')).toContainText(
-    "Field assets",
-  )
-
-  const styleButton = basic.getByRole("button", {
-    name: path.startsWith("/en/") ? "Style" : "样式",
-    exact: true,
-  })
-  await styleButton.click()
-  await styleButton.click()
-
-  await groups.scrollIntoViewIfNeeded()
-  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel`)
-
-  const operationsCollapse = groups.locator('[data-demo="layer-panel-group-collapse-operations"]')
-  await operationsCollapse.click()
-  await expect(groups.getByRole("button", { name: "Water mains", exact: true })).toBeHidden()
-  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after collapse`)
-  await operationsCollapse.click()
-  await expect(groups.getByRole("button", { name: "Water mains", exact: true })).toBeVisible()
-  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after expand`)
-
-  await groups.locator('[data-demo="layer-panel-group-rename-operations"]').click()
-  const renameInput = groups.locator('[data-demo="layer-panel-group-rename-input-operations"]')
-  await renameInput.fill(path.startsWith("/en/") ? "Response" : "响应")
-  await groups.locator('[data-demo="layer-panel-group-rename-save-operations"]').click()
-  await expect(groups.locator('[data-demo="layer-panel-group-operations"]')).toContainText(
-    path.startsWith("/en/") ? "Response" : "响应",
-  )
-  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after rename`)
-
-  await groups.locator('[data-demo="layer-panel-group-menu-trigger-operations"]').click()
-  const menu = groups.locator('[data-demo="layer-panel-group-menu-operations"]')
-  await expect(menu).toBeVisible()
-  await assertNoHorizontalOverflow(menu, `${path} LayerPanel group menu`)
-  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel with menu`)
-  await groups.locator('[data-demo="layer-panel-group-menu-zoom-operations"]').click()
-  await expect(groups.locator('[data-demo="layer-panel-groups-status"]')).toContainText(
-    path.startsWith("/en/") ? "Menu action" : "已执行菜单",
-  )
-  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after menu action`)
+  const search = panel.getByLabel(path.startsWith("/en/") ? "Search layers" : "搜索图层")
+  await search.fill(path.startsWith("/en/") ? "road" : "道路")
+  await expect(
+    panel.getByText(path.startsWith("/en/") ? "Road centerlines" : "道路中心线"),
+  ).toBeVisible()
+  await expect(panel.getByText(path.startsWith("/en/") ? "Land use" : "用地分类")).toHaveCount(0)
+  await search.fill("")
 
   await activateByKeyboard(
-    groups.locator('button[aria-label="Toggle visibility for Inspection points"]'),
+    panel.getByRole("button", {
+      name: path.startsWith("/en/") ? "Hide layer Road centerlines" : "隐藏图层 道路中心线",
+    }),
   )
-  await expect(groups.locator('[data-demo="layer-panel-groups-status"]')).toContainText(
-    path.startsWith("/en/") ? "Shown" : "已显示",
-  )
-  await assertLayerPanelDemoFits(groups, `${path} grouped LayerPanel after visibility`)
+  await expect(
+    panel.getByRole("button", {
+      name: path.startsWith("/en/") ? "Show layer Road centerlines" : "显示图层 道路中心线",
+    }),
+  ).toBeVisible()
+  await assertLayerPanelDemoFits(demo, `${path} interactive LayerPanel`)
 }
 
 async function runPilotsCase(baseUrl: string, browserChannel?: string): Promise<void> {
@@ -766,12 +730,6 @@ const blockPages = [
     importPath: "@registry/blocks/custom-colormap",
   },
   {
-    name: "loom-layer-panel",
-    demo: "loom-layer-panel",
-    sourceFunction: "LoomLayerPanelDemo",
-    importPath: "@registry/blocks/loom-layer-panel",
-  },
-  {
     name: "loom-toolbox",
     demo: "loom-toolbox",
     sourceFunction: "LoomToolboxDemo",
@@ -803,8 +761,8 @@ const blockPages = [
   },
   {
     name: "layer-panel",
-    demo: "layer-panel-basic",
-    sourceFunction: "LayerPanelBasicDemo",
+    demo: "layer-panel",
+    sourceFunction: "LayerPanelDemo",
     importPath: "@registry/blocks/layer-panel",
   },
   {
@@ -2326,37 +2284,14 @@ export async function assertBlockInteraction(
   }
 
   if (block === "layer-panel") {
-    const demo = page.locator('[data-demo="layer-panel-basic"]')
+    const demo = page.locator('[data-demo="layer-panel"]')
     const panel = demo.locator('[data-slot="layer-panel"]').first()
-    const deleteButtons = panel.getByRole("button", { name: /^Remove / })
-    while ((await deleteButtons.count()) > 0) {
-      await deleteButtons.first().click()
-    }
-
-    const emptyTitle = panel.getByText(localized(path, "暂无图层", "No layers"), { exact: true })
+    await panel.getByLabel(localized(path, "搜索图层", "Search layers")).fill("no-match")
+    const emptyTitle = panel.getByText(localized(path, "没有匹配的图层", "No matching layers"), {
+      exact: true,
+    })
     await expect(emptyTitle).toBeVisible()
-    await expect
-      .poll(async () => {
-        return panel.evaluate(
-          (element, titleText) => {
-            const header = element.querySelector('[data-slot="layer-panel-header"]')
-            const title = [...element.querySelectorAll("div")].find(
-              (candidate) => candidate.textContent?.trim() === titleText,
-            )
-            if (!(header instanceof HTMLElement) || !(title instanceof HTMLElement)) {
-              return Number.POSITIVE_INFINITY
-            }
-            const panelBounds = element.getBoundingClientRect()
-            const headerBounds = header.getBoundingClientRect()
-            const titleBounds = title.getBoundingClientRect()
-            const bodyCenter = (headerBounds.bottom + panelBounds.bottom) / 2
-            const titleCenter = titleBounds.top + titleBounds.height / 2
-            return Math.abs(titleCenter - bodyCenter)
-          },
-          localized(path, "暂无图层", "No layers"),
-        )
-      })
-      .toBeLessThanOrEqual(24)
+    await assertNoHorizontalOverflow(panel, `${path} LayerPanel empty state`)
   }
 
   if (block === "band-stat") {

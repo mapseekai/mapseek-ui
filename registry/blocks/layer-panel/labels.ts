@@ -1,18 +1,75 @@
-export interface LayerPanelLabels {
-  readonly point: string
-  readonly polyline: string
-  readonly polygon: string
-  readonly mixed: string
-  readonly raster: string
-  readonly addLayer: string
-  readonly features: string
-  readonly locate: string
-  readonly zoomToLayer: string
-  readonly attributeTable: string
-  readonly delete: string
-  readonly collapse: string
-  readonly expand: string
-  readonly showLayer: (name: string) => string
-  readonly hideLayer: (name: string) => string
-  readonly deleteLayer: (name: string) => string
+import type { LayerPanelLabels } from "./types"
+
+export const LAYER_PANEL_LABELS_ZH_CN: LayerPanelLabels = {
+  title: "图层",
+  search: "搜索图层",
+  all: "全部",
+  visible: "可见",
+  current: "当前",
+  empty: "没有匹配的图层",
+  createGroup: "新建分组",
+  addLayer: "添加图层",
+  collapse: "收起图层面板",
+  expand: "展开图层面板",
+  actions: {
+    locateLayer: "定位图层",
+    openAttributeTable: "打开属性表",
+    moreLayerActions: "更多图层操作",
+    renameGroup: "重命名分组",
+    showGroup: "显示分组",
+    hideGroup: "隐藏分组",
+    showLayer: "显示图层",
+    hideLayer: "隐藏图层",
+  },
+  featureCount: (count) => `${count.toLocaleString("zh-CN")} 个要素`,
+  geometry: { polygon: "面", polyline: "线", point: "点", mixed: "混合", raster: "栅格" },
+  selectLayer: (name) => `选择图层 ${name}`,
+  locateLayer: (name) => `定位图层 ${name}`,
+  openAttributeTable: (name) => `打开属性表 ${name}`,
+  moreLayerActions: (name) => `更多图层操作 ${name}`,
+  renameGroup: (name) => `重命名分组 ${name}`,
+  showGroup: (name) => `显示分组 ${name}`,
+  hideGroup: (name) => `隐藏分组 ${name}`,
+  showLayer: (name) => `显示图层 ${name}`,
+  hideLayer: (name) => `隐藏图层 ${name}`,
+}
+
+export const LAYER_PANEL_LABELS_EN: LayerPanelLabels = {
+  title: "Layers",
+  search: "Search layers",
+  all: "All",
+  visible: "Visible",
+  current: "Current",
+  empty: "No matching layers",
+  createGroup: "Create group",
+  addLayer: "Add layer",
+  collapse: "Collapse layer panel",
+  expand: "Expand layer panel",
+  actions: {
+    locateLayer: "Locate layer",
+    openAttributeTable: "Open attribute table",
+    moreLayerActions: "More layer actions",
+    renameGroup: "Rename group",
+    showGroup: "Show group",
+    hideGroup: "Hide group",
+    showLayer: "Show layer",
+    hideLayer: "Hide layer",
+  },
+  featureCount: (count) => `${count.toLocaleString("en")} features`,
+  geometry: {
+    polygon: "Polygon",
+    polyline: "Line",
+    point: "Point",
+    mixed: "Mixed",
+    raster: "Raster",
+  },
+  selectLayer: (name) => `Select layer ${name}`,
+  locateLayer: (name) => `Locate layer ${name}`,
+  openAttributeTable: (name) => `Open attribute table for ${name}`,
+  moreLayerActions: (name) => `More layer actions for ${name}`,
+  renameGroup: (name) => `Rename group ${name}`,
+  showGroup: (name) => `Show group ${name}`,
+  hideGroup: (name) => `Hide group ${name}`,
+  showLayer: (name) => `Show layer ${name}`,
+  hideLayer: (name) => `Hide layer ${name}`,
 }

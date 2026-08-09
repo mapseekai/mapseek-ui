@@ -370,12 +370,6 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
-    "loom-layer-panel",
-    {
-      category: "block",
-    },
-  ],
-  [
     "loom-toolbox",
     {
       category: "block",

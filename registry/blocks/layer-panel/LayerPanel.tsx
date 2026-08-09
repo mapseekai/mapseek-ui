@@ -1,669 +1,207 @@
 import {
-  IconChevronDown,
-  IconChevronUp,
-  IconCurrentLocation,
-  IconEye,
-  IconEyeOff,
-  IconGripVertical,
-  IconLine,
-  IconMapOff,
+  IconFolderPlus,
+  IconLayoutSidebar,
   IconPlus,
-  IconPointFilled,
-  IconPolygon,
-  type IconProps,
+  IconSearch,
   IconStack2,
-  IconTable,
-  IconTrash,
 } from "@tabler/icons-react"
-import * as React from "react"
+import { useMemo } from "react"
 import { Button } from "@/components/ui/button"
-import { resolveLabels } from "@/lib/mapseek-labels"
+import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
+import { IconButton } from "@/components/ui/icon-button"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { Tag } from "@/components/ui/tag"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
-import { DEFAULT_LAYER_PANEL_LABELS } from "./defaults"
-import type { LayerPanelLabels } from "./labels"
-import type {
-  LayerData,
-  LayerGeometry,
-  LayerPanelGroupProps,
-  LayerPanelGroupTriggerProps,
-  LayerPanelProps,
-} from "./types"
-import {
-  LayerItemContext,
-  LayerPanelContext,
-  useLayerItemContext,
-  useLayerPanelContext,
-  useSectionState,
-} from "./use-layer-panel"
+import { LayerGroup } from "./LayerGroup"
+import { LAYER_PANEL_LABELS_ZH_CN } from "./labels"
+import type { LayerData, LayerPanelLabels } from "./types"
 
-function getGeomLabel(labels: LayerPanelLabels, geometry: LayerGeometry) {
-  switch (geometry) {
-    case "point":
-      return labels.point
-    case "polyline":
-      return labels.polyline
-    case "polygon":
-      return labels.polygon
-    case "mixed":
-      return labels.mixed
-    case "raster":
-      return labels.raster
-  }
+const selectedToggleClass =
+  "aria-pressed:border-primary/40 aria-pressed:bg-selection-bg aria-pressed:text-primary aria-pressed:hover:bg-selection-bg aria-pressed:hover:text-primary data-[state=on]:border-primary/40 data-[state=on]:bg-selection-bg data-[state=on]:text-primary data-[state=on]:hover:bg-selection-bg data-[state=on]:hover:text-primary"
+
+export type LayerPanelProps = {
+  readonly layers: readonly LayerData[]
+  readonly selectedId?: string
+  readonly query: string
+  readonly visibleOnly: boolean
+  readonly collapsed?: boolean
+  readonly collapsedGroups?: ReadonlySet<string>
+  readonly labels?: LayerPanelLabels
+  readonly className?: string
+  readonly onQueryChange: (query: string) => void
+  readonly onVisibleOnlyChange: (visibleOnly: boolean) => void
+  readonly onSelectLayer: (id: string) => void
+  readonly onVisibilityChange: (id: string, visible: boolean) => void
+  readonly onGroupCollapsedChange?: (group: string, collapsed: boolean) => void
+  readonly onCollapsedChange?: (collapsed: boolean) => void
+  readonly onRenameGroup?: (group: string) => void
+  readonly onCreateGroup?: () => void
+  readonly onAddLayer?: () => void
+  readonly onLocateLayer?: (id: string) => void
+  readonly onOpenAttributeTable?: (id: string) => void
+  readonly onMoreLayerActions?: (id: string) => void
 }
 
-function GeomIcon({
-  type,
-  size = 13,
-  className,
-}: {
-  type: LayerGeometry
-  size?: number
-  className?: string
-}) {
-  switch (type) {
-    case "polygon":
-      return <IconPolygon size={size} className={className} />
-    case "polyline":
-      return <IconLine size={size} className={className} />
-    case "point":
-      return <IconPointFilled size={size} className={className} />
-    default:
-      return <IconStack2 size={size} className={className} />
-  }
-}
-
-function LayerPanelRoot({
+export function LayerPanel({
   layers,
   selectedId,
-  onSelectChange,
-  onVisibleChange,
-  onReorder,
-  onRemove,
-  onLocate,
-  onOpenTable,
-  collapsed: collapsedProp,
-  defaultCollapsed = false,
-  onCollapsedChange,
-  labels,
-  className,
-  children,
-}: LayerPanelProps) {
-  const { isSectionOpen, toggleSection, registerSectionDefault } = useSectionState()
-  const resolvedLabels = resolveLabels(DEFAULT_LAYER_PANEL_LABELS, labels)
-  const [collapsedUncontrolled, setCollapsedUncontrolled] = React.useState(defaultCollapsed)
-  const isControlled = collapsedProp !== undefined
-  const collapsed = isControlled ? collapsedProp : collapsedUncontrolled
-
-  const toggleCollapsed = React.useCallback(() => {
-    const next = !collapsed
-    if (!isControlled) setCollapsedUncontrolled(next)
-    onCollapsedChange?.(next)
-  }, [collapsed, isControlled, onCollapsedChange])
-
-  const ctx = React.useMemo(
-    () => ({
-      layers,
-      selectedId: selectedId ?? null,
-      onSelectChange: onSelectChange ?? (() => {}),
-      onVisibleChange,
-      onReorder,
-      onRemove,
-      onLocate,
-      onOpenTable,
-      isSectionOpen,
-      toggleSection,
-      registerSectionDefault,
-      collapsed,
-      toggleCollapsed,
-      labels: resolvedLabels,
-    }),
-    [
-      layers,
-      selectedId,
-      onSelectChange,
-      onVisibleChange,
-      onReorder,
-      onRemove,
-      onLocate,
-      onOpenTable,
-      isSectionOpen,
-      toggleSection,
-      registerSectionDefault,
-      collapsed,
-      toggleCollapsed,
-      resolvedLabels,
-    ],
-  )
-
-  return (
-    <LayerPanelContext.Provider value={ctx}>
-      <aside
-        data-slot="layer-panel"
-        data-collapsed={collapsed ? "true" : undefined}
-        className={cn(
-          "relative flex max-h-full flex-col overflow-hidden border border-border bg-card text-body-lg",
-          className,
-          collapsed && "h-8",
-        )}
-      >
-        {children}
-      </aside>
-    </LayerPanelContext.Provider>
-  )
-}
-
-function LayerPanelHeader({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  const { collapsed, toggleCollapsed, labels } = useLayerPanelContext()
-  return (
-    <header
-      data-slot="layer-panel-header"
-      className={cn(
-        "relative flex h-8 shrink-0 select-none items-center border-b border-border bg-card hover:bg-accent/50",
-        collapsed && "border-b-transparent",
-        className,
-      )}
-    >
-      <Button
-        variant="ghost"
-        size="sm"
-        type="button"
-        aria-expanded={!collapsed}
-        aria-label={collapsed ? labels.expand : labels.collapse}
-        onClick={toggleCollapsed}
-        className="absolute inset-0 z-0 cursor-pointer border-0 bg-transparent p-0 focus-visible:ring-1 focus-visible:ring-ring/20 focus-visible:outline-none"
-      />
-      <div className="pointer-events-none relative z-10 flex min-w-0 flex-1 items-center gap-1.5 px-3">
-        <IconChevronDown
-          size={12}
-          className="text-muted-foreground transition-transform duration-[180ms]"
-          style={{ transform: collapsed ? "rotate(-90deg)" : "none" }}
-        />
-        <IconStack2 size={13} className="text-muted-foreground" />
-        {children}
-      </div>
-    </header>
-  )
-}
-
-function LayerPanelTitle({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <span className={cn("text-label-sm uppercase leading-[14px] text-muted-foreground", className)}>
-      {children}
-    </span>
-  )
-}
-
-function LayerPanelCount({ className }: { className?: string }) {
-  const { layers } = useLayerPanelContext()
-  return (
-    <span
-      className={cn(
-        "inline-flex h-5 items-center border border-primary/25 bg-primary/10 px-[5px] font-mono text-[10px] font-medium tracking-[0.04em] text-primary",
-        className,
-      )}
-    >
-      {layers.length}
-    </span>
-  )
-}
-
-function LayerPanelActions({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <>
-      <span className="flex-1" />
-      <div
-        data-slot="layer-panel-actions"
-        className={cn("pointer-events-auto flex items-center gap-1", className)}
-      >
-        {children}
-      </div>
-    </>
-  )
-}
-
-function LayerPanelAddButton({
-  onClick,
-  className,
-  children,
-  disabled,
-}: {
-  onClick?: () => void
-  className?: string
-  children?: React.ReactNode
-  disabled?: boolean
-}) {
-  const { labels } = useLayerPanelContext()
-  return (
-    <Button
-      variant="ghost"
-      size="sm"
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={labels.addLayer}
-      title={labels.addLayer}
-      className={cn(
-        "inline-flex h-6 items-center gap-1.5 bg-transparent px-2.5 text-body-sm-medium leading-none text-foreground hover:bg-accent/50 disabled:opacity-50",
-        className,
-      )}
-    >
-      <IconPlus data-icon="inline-start" />
-      {children ?? labels.addLayer}
-    </Button>
-  )
-}
-
-function LayerPanelList({
-  className,
-  children,
-}: {
-  className?: string
-  children?: React.ReactNode
-}) {
-  const { collapsed } = useLayerPanelContext()
-  if (collapsed) return null
-  return (
-    <div
-      data-slot="layer-panel-list"
-      className={cn(
-        "flex min-h-0 flex-1 flex-col overflow-y-auto overflow-x-hidden pb-2",
-        className,
-      )}
-    >
-      {children}
-    </div>
-  )
-}
-
-const LayerPanelGroupContext = React.createContext({ collapsed: false })
-
-function LayerPanelGroup({
+  query,
+  visibleOnly,
   collapsed = false,
+  collapsedGroups = new Set(),
+  labels = LAYER_PANEL_LABELS_ZH_CN,
   className,
-  children,
-  ...props
-}: LayerPanelGroupProps) {
-  const value = React.useMemo(() => ({ collapsed }), [collapsed])
-  return (
-    <LayerPanelGroupContext.Provider value={value}>
-      <section
-        data-slot="layer-panel-group"
-        data-collapsed={collapsed ? "true" : undefined}
-        className={cn("min-w-0", className)}
-        {...props}
-      >
-        {children}
-      </section>
-    </LayerPanelGroupContext.Provider>
-  )
-}
+  onQueryChange,
+  onVisibleOnlyChange,
+  onSelectLayer,
+  onVisibilityChange,
+  onGroupCollapsedChange,
+  onCollapsedChange,
+  onRenameGroup,
+  onCreateGroup,
+  onAddLayer,
+  onLocateLayer,
+  onOpenAttributeTable,
+  onMoreLayerActions,
+}: LayerPanelProps) {
+  const filteredLayers = useMemo(() => {
+    const keyword = query.trim().toLocaleLowerCase()
+    return layers.filter(
+      (layer) =>
+        (!visibleOnly || layer.visible) &&
+        (keyword.length === 0 || layer.name.toLocaleLowerCase().includes(keyword)),
+    )
+  }, [layers, query, visibleOnly])
+  const groups = [...new Set(filteredLayers.map((layer) => layer.group))]
 
-function LayerPanelGroupHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="layer-panel-group-header"
-      className={cn(
-        "flex min-h-9 items-center gap-1 border-b border-border bg-muted/35 px-2",
-        className,
-      )}
-      {...props}
-    />
-  )
-}
-
-function LayerPanelGroupTrigger({
-  expandedLabel,
-  collapsedLabel,
-  className,
-  children,
-  ...props
-}: LayerPanelGroupTriggerProps) {
-  const { collapsed } = React.useContext(LayerPanelGroupContext)
-  return (
-    <Button
-      data-slot="layer-panel-group-trigger"
-      variant="ghost"
-      size="icon-sm"
-      type="button"
-      aria-expanded={!collapsed}
-      aria-label={collapsed ? collapsedLabel : expandedLabel}
-      className={cn("shrink-0 rounded-none text-muted-foreground hover:text-foreground", className)}
-      {...props}
-    >
-      {children ?? (collapsed ? <IconChevronDown className="-rotate-90" /> : <IconChevronDown />)}
-    </Button>
-  )
-}
-
-function LayerPanelGroupTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="layer-panel-group-title"
-      className={cn("min-w-0 flex-1 truncate text-headline-md text-foreground", className)}
-      {...props}
-    />
-  )
-}
-
-function LayerPanelGroupActions({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="layer-panel-group-actions"
-      className={cn("flex shrink-0 items-center gap-1", className)}
-      {...props}
-    />
-  )
-}
-
-function LayerPanelGroupContent({ className, ...props }: React.ComponentProps<"div">) {
-  const { collapsed } = React.useContext(LayerPanelGroupContext)
-  if (collapsed) return null
-  return <div data-slot="layer-panel-group-content" className={className} {...props} />
-}
-
-function LayerPanelItem({
-  layer,
-  className,
-  children,
-}: {
-  layer: LayerData
-  className?: string
-  children?: React.ReactNode
-}) {
-  const ctx = useLayerPanelContext()
-  const isSelected = ctx.selectedId === layer.id
-
-  function handleDragStart(e: React.DragEvent<HTMLButtonElement>) {
-    e.dataTransfer.setData("text/plain", layer.id)
-    e.dataTransfer.effectAllowed = "move"
-  }
-  function handleDragOver(e: React.DragEvent<HTMLButtonElement>) {
-    if (!ctx.onReorder) return
-    e.preventDefault()
-    e.dataTransfer.dropEffect = "move"
-  }
-  function handleDrop(e: React.DragEvent<HTMLButtonElement>) {
-    if (!ctx.onReorder) return
-    e.preventDefault()
-    const src = e.dataTransfer.getData("text/plain")
-    if (!src || src === layer.id) return
-    const ids = ctx.layers.map((l) => l.id)
-    const srcIdx = ids.indexOf(src)
-    const tgtIdx = ids.indexOf(layer.id)
-    if (srcIdx < 0 || tgtIdx < 0) return
-    ids.splice(srcIdx, 1)
-    ids.splice(tgtIdx, 0, src)
-    ctx.onReorder(ids)
-  }
-
-  return (
-    <LayerItemContext.Provider value={layer}>
-      <div
-        data-slot="layer-panel-item"
-        data-testid="layer-item"
-        data-selected={isSelected ? "true" : undefined}
-        className={cn(
-          "group relative flex select-none items-center gap-2 border-b border-l-2 border-b-border border-l-transparent px-2.5 py-2 transition-colors before:pointer-events-none before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-transparent before:content-['']",
-          isSelected ? "bg-selection-bg before:bg-primary" : "hover:bg-accent/50",
-          className,
-        )}
-      >
-        {ctx.onReorder && (
-          <IconGripVertical
-            size={10}
-            className="cursor-grab text-muted-foreground/50 opacity-0 group-hover:opacity-100"
-          />
-        )}
-
-        {ctx.onVisibleChange && (
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation()
-              ctx.onVisibleChange?.(layer.id, !layer.visible)
-            }}
-            aria-label={
-              layer.visible ? ctx.labels.hideLayer(layer.name) : ctx.labels.showLayer(layer.name)
+  if (collapsed) {
+    return (
+      <aside data-slot="layer-panel" data-collapsed="true" className="inline-flex">
+        <Tooltip>
+          <TooltipTrigger
+            render={
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label={labels.expand}
+                onClick={() => onCollapsedChange?.(false)}
+              />
             }
-            className={cn(
-              "shrink-0 hover:text-foreground",
-              layer.visible ? "text-primary" : "text-muted-foreground",
-            )}
           >
-            {layer.visible ? <IconEye /> : <IconEyeOff />}
-          </Button>
-        )}
-
-        <GeomIcon
-          type={layer.geometryType}
-          size={13}
-          className="pointer-events-none shrink-0 text-primary"
-        />
-
-        <Button
-          variant="ghost"
-          size="sm"
-          data-slot="layer-panel-item-content"
-          type="button"
-          draggable={!!ctx.onReorder}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          onClick={() => ctx.onSelectChange(layer.id)}
-          className={cn(
-            "relative z-0 h-auto min-w-0 flex-1 cursor-pointer justify-start rounded-none p-0 text-left",
-            isSelected && "text-primary hover:text-primary [&>div]:text-primary",
-          )}
-          aria-label={layer.name}
-        >
-          <div className="truncate text-body-lg-medium leading-tight text-foreground">
-            {layer.name}
-          </div>
-          <div
-            data-slot="layer-panel-item-meta"
-            className="mt-0.5 flex min-w-0 items-center gap-1.5 overflow-hidden whitespace-nowrap text-body-sm leading-tight text-muted-foreground"
-          >
-            {layer.featureCount != null && (
-              <>
-                <span className="font-mono tabular-nums">{layer.featureCount}</span>
-                <span>{ctx.labels.features}</span>
-                <span className="text-muted-foreground/50">·</span>
-              </>
-            )}
-            <span>{getGeomLabel(ctx.labels, layer.geometryType)}</span>
-            {layer.crsLabel && (
-              <span className="ml-0.5 inline-flex min-w-0 items-center truncate border border-primary/25 bg-primary/10 px-1 font-mono text-[10px] font-medium tracking-[0.04em] uppercase text-primary">
-                {layer.crsLabel}
-              </span>
-            )}
-          </div>
-        </Button>
-
-        <div
-          data-slot="layer-panel-item-actions"
-          className={cn(
-            "relative z-10 flex shrink-0 items-center gap-0.5 transition-opacity",
-            isSelected ? "opacity-100" : "opacity-0",
-          )}
-        >
-          {ctx.onLocate && (
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              type="button"
-              onClick={() => ctx.onLocate?.(layer.id)}
-              aria-label={ctx.labels.locate}
-              title={ctx.labels.zoomToLayer}
-              className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-accent/50 hover:text-foreground"
-            >
-              <IconCurrentLocation />
-            </Button>
-          )}
-          {ctx.onOpenTable && (
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              type="button"
-              onClick={() => ctx.onOpenTable?.(layer.id)}
-              aria-label={ctx.labels.attributeTable}
-              title={ctx.labels.attributeTable}
-              className="inline-flex size-6 items-center justify-center text-muted-foreground hover:bg-accent/50 hover:text-foreground"
-            >
-              <IconTable />
-            </Button>
-          )}
-          {ctx.onRemove && (
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              type="button"
-              onClick={() => ctx.onRemove?.(layer.id)}
-              aria-label={ctx.labels.deleteLayer(layer.name)}
-              title={ctx.labels.delete}
-              className="size-6 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-            >
-              <IconTrash />
-            </Button>
-          )}
-        </div>
-      </div>
-      {isSelected && children}
-    </LayerItemContext.Provider>
-  )
-}
-
-function LayerPanelSection({
-  id,
-  icon: Icon,
-  label,
-  defaultOpen = true,
-  hidden = false,
-  className,
-  children,
-}: {
-  id: string
-  icon: React.ComponentType<IconProps>
-  label: React.ReactNode
-  defaultOpen?: boolean
-  hidden?: boolean
-  className?: string
-  children: React.ReactNode
-}) {
-  const ctx = useLayerPanelContext()
-  const layer = useLayerItemContext()
-
-  React.useEffect(() => {
-    ctx.registerSectionDefault(layer.id, id, defaultOpen)
-  }, [ctx, layer.id, id, defaultOpen])
-
-  if (hidden) return null
-
-  const open = ctx.isSectionOpen(layer.id, id)
+            <IconStack2 data-icon="inline-start" />
+          </TooltipTrigger>
+          <TooltipContent>{labels.expand}</TooltipContent>
+        </Tooltip>
+      </aside>
+    )
+  }
 
   return (
-    <div
-      data-slot="layer-panel-section"
-      data-section-id={id}
-      className={cn("relative border-b border-border", className)}
-    >
-      <span className="pointer-events-none absolute bottom-0 left-[21px] top-0 w-px bg-border" />
-      <Button
-        variant="ghost"
-        size="sm"
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation()
-          ctx.toggleSection(layer.id, id)
-        }}
-        className="relative flex h-7 w-full cursor-pointer select-none items-center gap-1.5 border-0 bg-transparent pl-8 pr-3 text-left"
-      >
-        <span className="pointer-events-none absolute left-[21px] top-1/2 h-px w-[9px] bg-border" />
-        <Icon data-icon="inline-start" className="text-foreground" />
-        <span className="flex-1 text-label-sm uppercase leading-[14px] text-foreground">
-          {label}
-        </span>
-        <IconChevronUp
-          data-icon="inline-end"
-          className="text-muted-foreground transition-transform duration-[180ms]"
-          style={{ transform: open ? "none" : "rotate(180deg)" }}
-        />
-      </Button>
-      <div
-        style={{
-          maxHeight: open ? 2000 : 0,
-          overflow: "hidden",
-          transition: "max-height 180ms",
-        }}
-      >
-        <div className="py-1 pb-3 pl-8 pr-3 pt-1">{children}</div>
-      </div>
-    </div>
-  )
-}
-
-function LayerPanelEmpty({
-  className,
-  children,
-}: {
-  className?: string
-  children?: React.ReactNode
-}) {
-  const { layers, collapsed } = useLayerPanelContext()
-  if (collapsed || layers.length > 0) return null
-  return (
-    <div
-      data-slot="layer-panel-empty"
+    <aside
+      data-slot="layer-panel"
       className={cn(
-        "absolute inset-x-0 bottom-0 top-8 flex flex-col items-center justify-center gap-2.5 px-3 text-center",
+        "flex h-[560px] w-80 min-w-0 max-w-full flex-col overflow-hidden border border-border bg-card text-body-md",
         className,
       )}
     >
-      {children}
-    </div>
+      <header className="flex items-center gap-2 border-b border-border px-3 py-2">
+        <span className="flex size-7 items-center justify-center border border-border text-foreground">
+          <IconStack2 className="size-4" />
+        </span>
+        <h2 className="text-headline-sm">{labels.title}</h2>
+        <Tag size="sm">{layers.length}</Tag>
+        <span className="flex-1" />
+        {onCreateGroup && (
+          <IconButton size="sm" label={labels.createGroup} tooltip onClick={onCreateGroup}>
+            <IconFolderPlus />
+          </IconButton>
+        )}
+        {onAddLayer && (
+          <IconButton size="sm" label={labels.addLayer} tooltip onClick={onAddLayer}>
+            <IconPlus />
+          </IconButton>
+        )}
+        {onCollapsedChange && (
+          <IconButton
+            size="sm"
+            label={labels.collapse}
+            tooltip
+            onClick={() => onCollapsedChange(true)}
+          >
+            <IconLayoutSidebar />
+          </IconButton>
+        )}
+      </header>
+      <div className="flex flex-col gap-2 border-b border-border px-3 py-2.5">
+        <InputGroup>
+          <InputGroupInput
+            aria-label={labels.search}
+            autoComplete="off"
+            name="layer-search"
+            type="search"
+            value={query}
+            onChange={(event) => onQueryChange(event.target.value)}
+            placeholder={labels.search}
+          />
+          <Tooltip>
+            <TooltipTrigger render={<InputGroupAddon aria-label={labels.search} />}>
+              <IconSearch aria-hidden="true" />
+            </TooltipTrigger>
+            <TooltipContent>{labels.search}</TooltipContent>
+          </Tooltip>
+        </InputGroup>
+        <ToggleGroup
+          aria-label={labels.title}
+          value={[String(visibleOnly)]}
+          onValueChange={([value]) => {
+            if (value) onVisibleOnlyChange(value === "true")
+          }}
+          variant="outline"
+          size="sm"
+          spacing={1}
+        >
+          {([false, true] as const).map((onlyVisible) => (
+            <ToggleGroupItem
+              key={String(onlyVisible)}
+              value={String(onlyVisible)}
+              className={selectedToggleClass}
+            >
+              {onlyVisible ? labels.visible : labels.all}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto p-3">
+        {groups.map((group) => (
+          <LayerGroup
+            key={group}
+            group={group}
+            members={filteredLayers.filter((layer) => layer.group === group)}
+            selectedId={selectedId}
+            collapsed={collapsedGroups.has(group)}
+            labels={labels}
+            onGroupCollapsedChange={onGroupCollapsedChange}
+            onRenameGroup={onRenameGroup}
+            onSelectLayer={onSelectLayer}
+            onVisibilityChange={onVisibilityChange}
+            onLocateLayer={onLocateLayer}
+            onOpenAttributeTable={onOpenAttributeTable}
+            onMoreLayerActions={onMoreLayerActions}
+          />
+        ))}
+        {filteredLayers.length === 0 && (
+          <Empty className="min-h-40 border-0 p-4">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <IconStack2 />
+              </EmptyMedia>
+              <EmptyTitle>{labels.empty}</EmptyTitle>
+            </EmptyHeader>
+          </Empty>
+        )}
+      </div>
+    </aside>
   )
 }
-
-function LayerPanelEmptyIcon({ className }: { className?: string }) {
-  return (
-    <IconMapOff size={28} className={cn("text-muted-foreground", className)} strokeWidth={1.5} />
-  )
-}
-
-export const LayerPanel = Object.assign(LayerPanelRoot, {
-  Header: LayerPanelHeader,
-  Title: LayerPanelTitle,
-  Count: LayerPanelCount,
-  Actions: LayerPanelActions,
-  AddButton: LayerPanelAddButton,
-  List: LayerPanelList,
-  Group: LayerPanelGroup,
-  GroupHeader: LayerPanelGroupHeader,
-  GroupTrigger: LayerPanelGroupTrigger,
-  GroupTitle: LayerPanelGroupTitle,
-  GroupActions: LayerPanelGroupActions,
-  GroupContent: LayerPanelGroupContent,
-  Item: LayerPanelItem,
-  Section: LayerPanelSection,
-  Empty: LayerPanelEmpty,
-  EmptyIcon: LayerPanelEmptyIcon,
-})

@@ -47,7 +47,7 @@ The numeric `Input` uses the standard 32px height. Slider thumb and pointer-targ
 
 ## Accessibility
 
-Every instance needs a non-blank accessible name. Without a visible label, pass `aria-label`; it names the numeric input and defaults to the Slider thumb name. With a visible `FieldLabel`, pass `aria-labelledby` pointing to the label ID and **also provide** a non-blank `sliderAriaLabel` for the Slider thumb.
+Every instance needs a non-blank accessible name. Accessible naming is a strict mutually exclusive TypeScript union: callers choose one naming path and must not supply both naming props. Without a visible label, pass `aria-label`; an omitted `sliderAriaLabel` defaults from it. With a visible `FieldLabel`, pass `aria-labelledby` pointing to the label ID and **also provide** a non-blank `sliderAriaLabel` for the Slider thumb.
 
 Give the numeric input a stable `id`, link help and errors with `aria-describedby`, and pass `autoComplete` where appropriate. Both slider and number input support keyboard operation; callers own `FieldDescription`, `FieldError`, localized copy, and external `aria-invalid` state.
 

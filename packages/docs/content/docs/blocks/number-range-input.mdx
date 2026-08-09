@@ -47,7 +47,7 @@ import {
 
 ## 无障碍
 
-每个实例必须有非空的可访问名称。没有可见标签时，直接传入 `aria-label`；该名称会用于数字输入，并默认用于 Slider thumb。使用可见的 `FieldLabel` 时，传入 `aria-labelledby` 指向标签 ID，**同时必须**传入非空 `sliderAriaLabel` 作为 Slider thumb 名称。
+每个实例必须有非空的可访问名称。可访问命名是 TypeScript 的严格互斥联合：调用方只能选择一种方式，不能同时提供两个命名 props。没有可见标签时，直接传入 `aria-label`；可选的 `sliderAriaLabel` 未传入时会默认使用它。使用可见的 `FieldLabel` 时，传入 `aria-labelledby` 指向标签 ID，**同时必须**传入非空 `sliderAriaLabel` 作为 Slider thumb 名称。
 
 为数字输入提供稳定的 `id`，使用 `aria-describedby` 关联提示和错误信息，并在需要时传入 `autoComplete`。滑块和数字框都支持键盘操作；调用方拥有 `FieldDescription`、`FieldError`、本地化文案和外部 `aria-invalid` 状态。
 

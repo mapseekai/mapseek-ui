@@ -20,8 +20,9 @@ describe("NumberRangeInput model", () => {
     expect(getCommittedNumberRangeValue(true, undefined, 48)).toBeUndefined()
   })
 
-  it("marks out-of-range drafts invalid and restores the committed value on blur", () => {
+  it("marks out-of-range and non-numeric drafts invalid and restores the committed value on blur", () => {
     expect(parseNumberRangeDraft("101", 0, 100, 1)).toEqual({ valid: false })
+    expect(parseNumberRangeDraft("-", 0, 100, 1)).toEqual({ valid: false })
     const committed = getCommittedNumberRangeValue(true, 48, undefined)
     expect(resetNumberRangeDraft(committed)).toBe(48)
   })
@@ -34,8 +35,9 @@ describe("NumberRangeInput model", () => {
     })
   })
 
-  it("snaps integer and decimal slider values without floating-point tails", () => {
+  it("snaps integer, decimal, and scientific-notation slider values without floating-point tails", () => {
     expect(snapNumberRangeValue(4.6, 0, 10, 1)).toBe(5)
     expect(snapNumberRangeValue(0.6246, 0, 1, 0.001)).toBe(0.625)
+    expect(snapNumberRangeValue(1.5e-7, 0, 1, 1.5e-7)).toBe(1.5e-7)
   })
 })

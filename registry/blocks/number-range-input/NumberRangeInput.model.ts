@@ -10,9 +10,10 @@ function clamp(value: number, min: number, max: number): number {
 
 function decimalPlaces(value: number): number {
   const text = String(value)
-  if (text.includes("e-")) {
-    const [, exponent] = text.split("e-")
-    return Number(exponent) || 0
+  if (text.includes("e")) {
+    const [mantissa, exponent] = text.split("e")
+    const [, fraction = ""] = mantissa.split(".")
+    return Math.max(0, fraction.length - (Number(exponent) || 0))
   }
   const [, fraction = ""] = text.split(".")
   return fraction.length

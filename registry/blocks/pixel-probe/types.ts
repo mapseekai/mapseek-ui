@@ -21,6 +21,10 @@ export interface PixelProbeLabels {
   next: string
   /** Prefix before the point index in the footer, e.g. "PT". */
   pointPrefix: string
+  /** Empty-state copy rendered when no fields are available. */
+  empty: string
+  /** Assistive label announced for lock-marked fields. */
+  locked: string
 }
 
 export interface PixelProbeProps {
@@ -34,5 +38,9 @@ export interface PixelProbeProps {
   onClose?: () => void
   onPrev?: () => void
   onNext?: () => void
+  /** Force-disable previous navigation in addition to the index boundary. */
+  prevDisabled?: boolean
+  /** Force-disable next navigation in addition to the count boundary. */
+  nextDisabled?: boolean
   className?: string
 }

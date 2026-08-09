@@ -28,6 +28,8 @@ const labels = {
       prev: "上一个像元",
       next: "下一个像元",
       pointPrefix: "PT",
+      empty: "暂无选中像元",
+      locked: "已锁定",
     },
   },
   en: {
@@ -54,9 +56,13 @@ const labels = {
       prev: "Previous pixel",
       next: "Next pixel",
       pointPrefix: "PT",
+      empty: "No selected pixel",
+      locked: "Locked",
     },
   },
 }
+
+const pointCount = 3
 
 export function PixelProbeDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
@@ -80,7 +86,12 @@ export function PixelProbeDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         >
           {demoLabels.reopen}
         </Button>
-        <span data-demo-status="pixel-probe" className="font-mono text-xs text-muted-foreground">
+        <span
+          aria-atomic="true"
+          aria-live="polite"
+          data-demo-status="pixel-probe"
+          className="font-mono text-xs text-muted-foreground"
+        >
           {status}
         </span>
       </div>
@@ -103,43 +114,42 @@ export function PixelProbeDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         {demoLabels.clearSelection}
       </Button>
       <div className="relative h-[560px] w-full border border-border bg-muted/20">
-        {empty ? (
-          <div
-            data-demo-empty="pixel-probe"
-            className="absolute top-4 right-4 w-[340px] border border-border bg-card p-3 font-mono text-xs text-muted-foreground"
-          >
-            {demoLabels.empty}
-          </div>
-        ) : (
-          <PixelProbe
-            className="absolute top-4 right-4 max-h-[calc(100%-32px)] w-[340px]"
-            fields={demoLabels.fields.map((field) => ({ ...field }))}
-            count={1}
-            index={point}
-            labels={demoLabels.labels}
-            onCopy={() => setStatus(demoLabels.copied)}
-            onClose={() => {
-              setClosed(true)
-              setStatus(demoLabels.closed)
-            }}
-            onPrev={() =>
-              setPoint((current) => {
-                const nextPoint = Math.max(1, current - 1)
-                setStatus(`${demoLabels.statusPrefix} ${nextPoint}`)
-                return nextPoint
-              })
-            }
-            onNext={() =>
-              setPoint((current) => {
-                const nextPoint = current + 1
-                setStatus(`${demoLabels.statusPrefix} ${nextPoint}`)
-                return nextPoint
-              })
-            }
-          />
-        )}
+        <PixelProbe
+          className="absolute top-4 right-4 left-4 max-h-[calc(100%-32px)] w-auto sm:left-auto sm:w-[340px]"
+          fields={empty ? [] : demoLabels.fields.map((field) => ({ ...field }))}
+          count={empty ? undefined : pointCount}
+          index={empty ? undefined : point}
+          labels={demoLabels.labels}
+          onCopy={empty ? undefined : () => setStatus(demoLabels.copied)}
+          onClose={() => {
+            setClosed(true)
+            setStatus(demoLabels.closed)
+          }}
+          onPrev={
+            empty
+              ? undefined
+              : () =>
+                  setPoint((current) => {
+                    const nextPoint = Math.max(1, current - 1)
+                    setStatus(`${demoLabels.statusPrefix} ${nextPoint}`)
+                    return nextPoint
+                  })
+          }
+          onNext={
+            empty
+              ? undefined
+              : () =>
+                  setPoint((current) => {
+                    const nextPoint = Math.min(pointCount, current + 1)
+                    setStatus(`${demoLabels.statusPrefix} ${nextPoint}`)
+                    return nextPoint
+                  })
+          }
+        />
       </div>
       <span
+        aria-atomic="true"
+        aria-live="polite"
         data-demo-status="pixel-probe"
         className="self-end font-mono text-xs text-muted-foreground"
       >

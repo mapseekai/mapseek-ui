@@ -730,10 +730,10 @@ const blockPages = [
     importPath: "@registry/blocks/custom-colormap",
   },
   {
-    name: "loom-toolbox",
-    demo: "loom-toolbox",
-    sourceFunction: "LoomToolboxDemo",
-    importPath: "@registry/blocks/loom-toolbox",
+    name: "toolbox",
+    demo: "toolbox",
+    sourceFunction: "ToolboxDemo",
+    importPath: "@registry/blocks/toolbox",
   },
   {
     name: "loom-toolbar",

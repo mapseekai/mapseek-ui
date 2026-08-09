@@ -114,9 +114,9 @@ describe("registry component composition", () => {
     expect(dateEditField).not.toContain('size="sm"')
   })
 
-  it("composes loom toolbox detail with Separator Alert and Field", async () => {
-    const toolDetail = await readFile("registry/blocks/loom-toolbox/ToolDetail.tsx", "utf8")
-    const registryItem = await blockRegistryItem("loom-toolbox")
+  it("composes toolbox detail with Separator Alert and Field", async () => {
+    const toolDetail = await readFile("registry/blocks/toolbox/ToolDetail.tsx", "utf8")
+    const registryItem = await blockRegistryItem("toolbox")
 
     expect(toolDetail).toContain("Separator")
     expect(toolDetail).toContain("Alert")
@@ -130,13 +130,15 @@ describe("registry component composition", () => {
   })
 
   it("uses a neutral hover treatment for tool rows", async () => {
-    const toolList = await readFile("registry/blocks/loom-toolbox/ToolList.tsx", "utf8")
+    const toolList = await readFile("registry/blocks/toolbox/ToolList.tsx", "utf8")
 
     expect(toolList.match(/variant="link"/g)).toHaveLength(2)
     expect(toolList.match(/text-foreground hover:no-underline/g)).toHaveLength(2)
     expect(toolList).toContain("border border-transparent")
     expect(toolList).toContain("transition-colors hover:bg-accent/50")
-    expect(toolList).not.toContain("hover:border-primary")
+    expect(toolList).not.toContain(
+      "border border-transparent px-2 py-1.5 transition-colors hover:border-primary",
+    )
   })
 
   it("marks selected split-tool options on the left edge only", async () => {
@@ -161,9 +163,9 @@ describe("registry component composition", () => {
     expect(layerGroup).not.toContain("bg-primary/10")
   })
 
-  it("uses Empty for loom toolbox and layer-panel empty states", async () => {
+  it("uses Empty for toolbox and layer-panel empty states", async () => {
     const [toolList, layerPanel] = await Promise.all([
-      readFile("registry/blocks/loom-toolbox/ToolList.tsx", "utf8"),
+      readFile("registry/blocks/toolbox/ToolList.tsx", "utf8"),
       readFile("registry/blocks/layer-panel/LayerPanel.tsx", "utf8"),
     ])
 

@@ -1,0 +1,34 @@
+---
+title: "Toolbox"
+registryName: toolbox
+category: block
+stability: experimental
+showcase: toolbox
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Toolbox is a controlled spatial-analysis toolbox with search, favorites, recents, quick access, parameter details, and run status.
+
+## Installation
+
+<RegistryInstall registryName="toolbox" />
+
+## Import
+
+```tsx
+import { Toolbox, type ToolboxTool } from "@/components/blocks/toolbox"
+```
+
+## Editing toolbox
+
+<ShowcaseDemo registryName="toolbox" title="Editing toolbox" description="Move between the tool list and parameter details while keeping favorites and recents." minHeight={620} />
+
+## State boundary
+
+The caller owns tool data, filtering, favorites, recents, the active tool, and run results. The component owns only the interaction structure and accessible states.
+
+## Dependencies
+
+<RegistryDependencies registryName="toolbox" />

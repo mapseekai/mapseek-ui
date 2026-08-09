@@ -98,7 +98,7 @@ export const BLOCKS = [
   "layout",
   "linked-ref-list",
   "loading-screen",
-  "loom-toolbox",
+  "toolbox",
   "loom-toolbar",
   "map-controls",
   "map-coordinate-status",

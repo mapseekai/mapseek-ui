@@ -3,7 +3,7 @@ import { defineCategory, type ShowcaseEntry } from "./types"
 const block = defineCategory("block")
 
 export const blockShowcases = [
-  block("loom-toolbox", "LoomToolbox 编辑工具箱", () => import("./LoomToolboxShowcase")),
+  block("toolbox", "Toolbox 编辑工具箱", () => import("./ToolboxShowcase")),
   block("loom-toolbar", "LoomToolbar 编辑工具条", () => import("./LoomToolbarShowcase")),
   block("add-field-form", "AddFieldForm 添加字段", () => import("./AddFieldFormShowcase")),
   block("app-top-bar", "AppTopBar 应用顶栏", () => import("./AppTopBarShowcase")),

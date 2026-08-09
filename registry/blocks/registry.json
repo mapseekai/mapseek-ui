@@ -638,7 +638,7 @@
       "dependencies": ["@tabler/icons-react"]
     },
     {
-      "name": "loom-toolbox",
+      "name": "toolbox",
       "type": "registry:block",
       "registryDependencies": [
         "@mapseek/alert",
@@ -653,34 +653,34 @@
       ],
       "files": [
         {
-          "path": "loom-toolbox/LoomToolbox.tsx",
+          "path": "toolbox/Toolbox.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbox/LoomToolbox.tsx"
+          "target": "@components/blocks/toolbox/Toolbox.tsx"
         },
         {
-          "path": "loom-toolbox/ToolDetail.tsx",
+          "path": "toolbox/ToolDetail.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbox/ToolDetail.tsx"
+          "target": "@components/blocks/toolbox/ToolDetail.tsx"
         },
         {
-          "path": "loom-toolbox/ToolList.tsx",
+          "path": "toolbox/ToolList.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbox/ToolList.tsx"
+          "target": "@components/blocks/toolbox/ToolList.tsx"
         },
         {
-          "path": "loom-toolbox/index.ts",
+          "path": "toolbox/index.ts",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbox/index.ts"
+          "target": "@components/blocks/toolbox/index.ts"
         },
         {
-          "path": "loom-toolbox/labels.ts",
+          "path": "toolbox/labels.ts",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbox/labels.ts"
+          "target": "@components/blocks/toolbox/labels.ts"
         },
         {
-          "path": "loom-toolbox/types.ts",
+          "path": "toolbox/types.ts",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbox/types.ts"
+          "target": "@components/blocks/toolbox/types.ts"
         }
       ],
       "dependencies": ["@tabler/icons-react"]

@@ -370,7 +370,7 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
-    "loom-toolbox",
+    "toolbox",
     {
       category: "block",
     },

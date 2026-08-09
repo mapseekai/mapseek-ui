@@ -16,7 +16,7 @@ function docsIdentity(category: "block" | "primitive", registryName: string): st
 const promotedShowcaseBlocks = [
   "custom-colormap",
   "layer-panel",
-  "loom-toolbox",
+  "toolbox",
   "loom-toolbar",
 ] as const
 

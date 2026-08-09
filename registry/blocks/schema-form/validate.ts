@@ -21,7 +21,7 @@ function isFieldValid(field: SchemaFormField, value: unknown): boolean {
   return typeof value === "string"
 }
 
-/** True when every required field has a usable value. */
+/** True when required fields are filled and all supplied values meet their configured constraints. */
 export function isSchemaFormValid(
   fields: SchemaFormField[],
   values: Record<string, unknown>,

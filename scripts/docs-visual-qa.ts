@@ -2518,7 +2518,12 @@ export async function assertBlockInteraction(
   if (block === "layer-panel") {
     const demo = page.locator('[data-demo="layer-panel"]')
     const panel = demo.locator('[data-slot="layer-panel"]').first()
-    await panel.getByLabel(localized(path, "搜索图层", "Search layers")).fill("no-match")
+    await panel
+      .getByRole("searchbox", {
+        name: localized(path, "搜索图层", "Search layers"),
+        exact: true,
+      })
+      .fill("no-match")
     const emptyTitle = panel.getByText(localized(path, "没有匹配的图层", "No matching layers"), {
       exact: true,
     })

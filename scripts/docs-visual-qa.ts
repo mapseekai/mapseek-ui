@@ -1862,12 +1862,10 @@ export async function assertBlockInteraction(
     await expect(demo.locator('[data-demo-status="validation"]')).toContainText(
       localized(path, "可提交", "Ready to submit"),
     )
-    await demo.getByRole("button", { name: "Enum", exact: true }).click()
-    await expect(
-      demo.getByPlaceholder(
-        localized(path, "例如 居住,商业,工业,绿地", "e.g. residential,commercial,industrial,park"),
-      ),
-    ).toBeVisible()
+    await demo
+      .getByRole("button", { name: localized(path, "整型", "Integer"), exact: true })
+      .click()
+    await expect(demo.getByPlaceholder("0", { exact: true })).toBeVisible()
     await activateByKeyboard(demo.getByRole("button", { name: localized(path, "重置", "Reset") }))
     await expect(demo.locator('[data-demo-status="validation"]')).toContainText(
       localized(path, "字段名必填", "Field name is required"),

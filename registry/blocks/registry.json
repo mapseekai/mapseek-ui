@@ -220,6 +220,43 @@
       "dependencies": ["@tabler/icons-react"]
     },
     {
+      "name": "coordinate-system-combobox",
+      "type": "registry:block",
+      "registryDependencies": ["@mapseek/combobox", "@mapseek/labels", "@mapseek/utils"],
+      "files": [
+        {
+          "path": "coordinate-system-combobox/CoordinateSystemCombobox.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/coordinate-system-combobox/CoordinateSystemCombobox.tsx"
+        },
+        {
+          "path": "coordinate-system-combobox/built-in-coordinate-systems.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/coordinate-system-combobox/built-in-coordinate-systems.ts"
+        },
+        {
+          "path": "coordinate-system-combobox/defaults.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/coordinate-system-combobox/defaults.ts"
+        },
+        {
+          "path": "coordinate-system-combobox/index.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/coordinate-system-combobox/index.ts"
+        },
+        {
+          "path": "coordinate-system-combobox/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/coordinate-system-combobox/labels.ts"
+        },
+        {
+          "path": "coordinate-system-combobox/types.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/coordinate-system-combobox/types.ts"
+        }
+      ]
+    },
+    {
       "name": "custom-colormap",
       "type": "registry:block",
       "registryDependencies": [

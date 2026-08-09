@@ -1,0 +1,55 @@
+---
+title: "CoordinateSystemCombobox"
+registryName: coordinate-system-combobox
+category: block
+stability: stable
+showcase: coordinate-system-combobox
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+CoordinateSystemCombobox 是基于标准 Combobox 的单选坐标系业务组件。输入框始终以 `EPSG:编码 · 名称` 显示选中项，搜索和键盘导航由基础组件提供；地图重投影、能力校验和地图引擎重载仍由调用方负责。
+
+## 安装
+
+<RegistryInstall registryName="coordinate-system-combobox" />
+
+## 导入
+
+```tsx
+import {
+  CoordinateSystemCombobox,
+  type CoordinateSystemComboboxLabels,
+  type CoordinateSystemComboboxProps,
+  type CoordinateSystemItem,
+  type CoordinateSystemKind,
+} from "@/registry/blocks/coordinate-system-combobox"
+```
+
+## 示例
+
+<ShowcaseDemo registryName="coordinate-system-combobox" title="坐标系选择" description="受控单选、分组搜索，以及追加与覆盖 EPSG 条目的示例。" minHeight={420} />
+
+## 默认坐标系
+
+选项分为“球面坐标系”和“平面坐标系”。默认球面坐标系为 WGS 84 (`EPSG:4326`)、CGCS2000 (`EPSG:4490`)、Beijing 1954 (`EPSG:4214`) 和 Xian 1980 (`EPSG:4610`)。默认平面坐标系包括 Web Mercator (`EPSG:3857`)，以及仅 CGCS2000 的高斯-克吕格投影：6 度带 13–23（`EPSG:4491`–`EPSG:4501`）和 3 度带 25–45（`EPSG:4513`–`EPSG:4533`）。
+
+默认项不包含中央经线（CM）变体，也不包含 Beijing 1954 或 Xian 1980 的 3 度带、6 度带投影；如需它们，请通过 `extraItems` 明确加入。
+
+## 追加与覆盖条目
+
+传入 `extraItems` 可以追加项目私有坐标系，也可以按 EPSG 编码覆盖内置项。若同一 EPSG 在 `extraItems` 中重复，最后一个条目生效。每项包含 `epsg`、`name` 和 `kind`（`geographic` 或 `projected`）。
+
+## 受控与非受控
+
+受控模式传入 `value` 和 `onValueChange`；回调返回 EPSG 字符串或清除后的 `null`。非受控模式传入 `defaultValue`。当 `value` 指向未收录的 EPSG 时，组件安全地显示为空选中状态。
+
+## 可访问性
+
+输入框由 `labels.inputLabel` 命名，搜索占位符、空结果提示和两个分组标题都可通过 `labels` 覆盖。搜索匹配 EPSG 编码与名称，并由标准 Combobox 提供键盘操作与单选语义。
+
+## 依赖
+
+<RegistryDependencies registryName="coordinate-system-combobox" />

@@ -86,6 +86,7 @@ export const BLOCKS = [
   "attr-table",
   "band-stat",
   "crs-picker",
+  "coordinate-system-combobox",
   "custom-colormap",
   "filter-panel",
   "form-inputs",

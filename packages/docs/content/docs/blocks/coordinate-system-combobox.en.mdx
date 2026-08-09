@@ -1,0 +1,55 @@
+---
+title: "CoordinateSystemCombobox"
+registryName: coordinate-system-combobox
+category: block
+stability: stable
+showcase: coordinate-system-combobox
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+
+CoordinateSystemCombobox is a single-select coordinate-system business component built on the standard Combobox. Its input always displays the selected item as `EPSG:code · name`, while the base component provides search and keyboard navigation; reprojection, capability checks, and map-engine reloads remain with the caller.
+
+## Installation
+
+<RegistryInstall registryName="coordinate-system-combobox" />
+
+## Import
+
+```tsx
+import {
+  CoordinateSystemCombobox,
+  type CoordinateSystemComboboxLabels,
+  type CoordinateSystemComboboxProps,
+  type CoordinateSystemItem,
+  type CoordinateSystemKind,
+} from "@/registry/blocks/coordinate-system-combobox"
+```
+
+## Example
+
+<ShowcaseDemo registryName="coordinate-system-combobox" title="Coordinate system selection" description="Controlled single selection, grouped search, and appended or overridden EPSG items." minHeight={420} />
+
+## Default coordinate systems
+
+Options are grouped into geographic and projected coordinate systems. The default geographic systems are WGS 84 (`EPSG:4326`), CGCS2000 (`EPSG:4490`), Beijing 1954 (`EPSG:4214`), and Xian 1980 (`EPSG:4610`). The projected defaults include Web Mercator (`EPSG:3857`) and CGCS2000-only Gauss-Kruger projections: 6-degree zones 13–23 (`EPSG:4491`–`EPSG:4501`) and 3-degree zones 25–45 (`EPSG:4513`–`EPSG:4533`).
+
+Central-meridian (CM) variants and Beijing 1954 or Xian 1980 3-degree and 6-degree projections are intentionally excluded from the defaults; add them explicitly with `extraItems` when needed.
+
+## Add and override items
+
+Use `extraItems` to append project-specific coordinate systems or override a built-in item by EPSG code. When the same EPSG occurs more than once in `extraItems`, the final item wins. Each item contains `epsg`, `name`, and `kind` (`geographic` or `projected`).
+
+## Controlled and uncontrolled
+
+For controlled mode, provide `value` and `onValueChange`; the callback returns an EPSG string or `null` after clearing. For uncontrolled mode, provide `defaultValue`. If `value` refers to an EPSG that is not present, the component safely renders an empty selection.
+
+## Accessibility
+
+The input is named with `labels.inputLabel`; the search placeholder, empty-result message, and group titles can all be overridden through `labels`. Search matches both EPSG codes and names, and the standard Combobox supplies keyboard interaction and single-selection semantics.
+
+## Dependencies
+
+<RegistryDependencies registryName="coordinate-system-combobox" />

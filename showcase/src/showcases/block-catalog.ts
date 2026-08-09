@@ -13,6 +13,11 @@ export const blockShowcases = [
   block("attr-table", "AttrTable 属性表", () => import("./AttrTableShowcase")),
   block("band-stat", "BandStat 波段统计", () => import("./BandStatShowcase")),
   block("crs-picker", "CrsPicker 坐标参考系", () => import("./CrsPickerShowcase")),
+  block(
+    "coordinate-system-combobox",
+    "CoordinateSystemCombobox 坐标系选择",
+    () => import("./CoordinateSystemComboboxShowcase"),
+  ),
   block("form-inputs", "FormInputs 表单输入", () => import("./FormInputsShowcase")),
   block("geojson-view", "GeoJSONView 要素 JSON", () => import("./GeoJSONViewShowcase")),
   block("json-editor", "JsonEditor JSON 编辑", () => import("./JsonEditorShowcase")),

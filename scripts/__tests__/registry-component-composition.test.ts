@@ -3,7 +3,11 @@ import { describe, expect, it } from "vitest"
 
 async function blockRegistryItem(name: string) {
   const registry = JSON.parse(await readFile("registry/blocks/registry.json", "utf8")) as {
-    items: Array<{ name: string; registryDependencies?: string[] }>
+    items: Array<{
+      name: string
+      registryDependencies?: string[]
+      files: Array<{ path: string }>
+    }>
   }
   const item = registry.items.find((entry) => entry.name === name)
   if (!item) throw new Error(`Missing block registry item: ${name}`)
@@ -89,9 +93,9 @@ describe("registry component composition", () => {
   it("uses one typography style for add-field form labels", async () => {
     const addFieldForm = await readFile("registry/blocks/add-field-form/AddFieldForm.tsx", "utf8")
 
-    expect(addFieldForm.match(/<FieldLabel[^>]*className="[^"]*\bfont-medium\b[^"]*"/g)).toHaveLength(
-      4,
-    )
+    expect(
+      addFieldForm.match(/<FieldLabel[^>]*className="[^"]*\bfont-medium\b[^"]*"/g),
+    ).toHaveLength(4)
     expect(addFieldForm).toContain('className="cursor-pointer font-medium leading-none"')
     expect(addFieldForm).toContain('<FieldLegend variant="label" className="mb-0">')
     expect(addFieldForm).not.toContain("text-[11px] uppercase tracking-[0.06em]")
@@ -213,6 +217,21 @@ describe("registry component composition", () => {
     expect(editor).not.toContain("<Segmented<ColormapInterpolation>")
     expect(editor).not.toContain("<Segmented<ColormapColorSpace>")
     expect(registryItem.registryDependencies).toContain("@mapseek/button-radio-group")
+  })
+
+  it("registers CoordinateSystemCombobox with the shared Combobox primitive", async () => {
+    const registryItem = await blockRegistryItem("coordinate-system-combobox")
+
+    expect(registryItem.registryDependencies).toEqual(
+      expect.arrayContaining(["@mapseek/combobox", "@mapseek/labels", "@mapseek/utils"]),
+    )
+    expect(registryItem.files.map((file) => file.path)).toEqual(
+      expect.arrayContaining([
+        "coordinate-system-combobox/CoordinateSystemCombobox.tsx",
+        "coordinate-system-combobox/built-in-coordinate-systems.ts",
+        "coordinate-system-combobox/types.ts",
+      ]),
+    )
   })
 
   it("exposes Select as standard named composition pieces", async () => {

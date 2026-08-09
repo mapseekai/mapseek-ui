@@ -484,6 +484,12 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
+    "coordinate-system-combobox",
+    {
+      category: "block",
+    },
+  ],
+  [
     "custom-colormap",
     {
       category: "block",

@@ -14,7 +14,13 @@ export type InputNumberProps = {
   rangeStep?: number
   "data-wd-key"?: string
   required?: boolean
+  disabled?: boolean
+  id?: string
+  name?: string
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"]
   "aria-label"?: string
+  "aria-labelledby"?: string
+  "aria-invalid"?: React.AriaAttributes["aria-invalid"]
   className?: string
 }
 
@@ -33,7 +39,13 @@ export const InputNumber: React.FC<InputNumberProps> = ({
   rangeStep = 1,
   "data-wd-key": dataWdKey,
   required,
+  disabled,
+  id,
+  name,
+  inputMode = "decimal",
   "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-invalid": ariaInvalid,
   className,
 }) => {
   const [editing, setEditing] = useState(false)
@@ -102,9 +114,12 @@ export const InputNumber: React.FC<InputNumberProps> = ({
     return (
       <NumberRangeInput
         aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        aria-invalid={ariaInvalid}
         className={className}
         data-wd-key={dataWdKey}
         defaultValue={defaultValue}
+        disabled={disabled}
         max={max}
         min={min}
         required={required}
@@ -119,15 +134,22 @@ export const InputNumber: React.FC<InputNumberProps> = ({
 
   return (
     <Input
+      id={id}
+      name={name}
+      type="number"
+      inputMode={inputMode}
       aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
+      aria-invalid={ariaInvalid}
       spellCheck="false"
-      className={cn("h-7 w-full text-body-md", className)}
+      className={cn("w-full", className)}
       placeholder={defaultValue?.toString()}
       value={displayValue === undefined ? "" : displayValue}
       onChange={(e) => changeValue(e.target.value)}
       onFocus={() => setEditing(true)}
       onBlur={resetValue}
       required={required}
+      disabled={disabled}
       data-wd-key={dataWdKey}
     />
   )

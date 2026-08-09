@@ -10,16 +10,33 @@ import {
 } from "@registry/blocks/form-inputs"
 import { NumberRangeInput } from "@registry/blocks/number-range-input"
 import { Button } from "@registry/ui/button"
+import { Field, FieldContent, FieldGroup, FieldLabel, FieldTitle } from "@registry/ui/field"
 import type { ReactNode } from "react"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
-function Row({ label, children }: { readonly label: string; readonly children: ReactNode }) {
+function Row({
+  label,
+  children,
+  htmlFor,
+  labelId,
+}: {
+  readonly label: string
+  readonly children: ReactNode
+  readonly htmlFor?: string
+  readonly labelId?: string
+}) {
   return (
-    <div className="grid grid-cols-[130px_minmax(0,1fr)] items-center gap-3">
-      <span className="font-mono text-xs text-muted-foreground">{label}</span>
-      {children}
-    </div>
+    <Field className="grid grid-cols-1 gap-2 sm:grid-cols-[130px_minmax(0,1fr)] sm:items-center sm:gap-3">
+      {htmlFor ? (
+        <FieldLabel id={labelId} htmlFor={htmlFor}>
+          {label}
+        </FieldLabel>
+      ) : (
+        <FieldTitle id={labelId}>{label}</FieldTitle>
+      )}
+      <FieldContent className="min-w-0">{children}</FieldContent>
+    </Field>
   )
 }
 
@@ -39,11 +56,35 @@ const labels = {
   "zh-CN": {
     intro: "commit-on-blur 输入件集合；短枚举使用内联选项，长枚举使用下拉或自动补全。",
     reset: "重置值",
+    string: "字符串",
+    multiline: "多行字符串",
+    number: "数字",
+    range: "数字范围",
+    checkbox: "复选框",
+    select: "选择",
+    enum: "短枚举",
+    multiInput: "内联选项",
+    autocomplete: "自动补全",
+    fontStack: "字体栈",
+    selectPlaceholder: "选择选项…",
+    noResults: "没有匹配结果。",
   },
   en: {
     intro:
       "Commit-on-blur inputs; short enums use inline choices and longer sets use select/autocomplete.",
     reset: "Reset values",
+    string: "String",
+    multiline: "Multiline string",
+    number: "Number",
+    range: "Number range",
+    checkbox: "Checkbox",
+    select: "Select",
+    enum: "Short enum",
+    multiInput: "Inline options",
+    autocomplete: "Autocomplete",
+    fontStack: "Font stack",
+    selectPlaceholder: "Select an option…",
+    noResults: "No matching results.",
   },
 }
 
@@ -83,28 +124,28 @@ export function FormInputsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {demoLabels.reset}
         </Button>
       </div>
-      <div className="flex flex-col gap-3 border border-border p-3">
-        <Row label="string">
+      <FieldGroup className="gap-3 border border-border p-3">
+        <Row label={demoLabels.string} htmlFor="form-inputs-string">
           <InputString
-            aria-label="string"
+            id="form-inputs-string"
             value={text}
             onChange={(value) => setText(value ?? "")}
           />
         </Row>
-        <Row label="string · multi">
+        <Row label={demoLabels.multiline} htmlFor="form-inputs-multiline">
           <InputString
-            aria-label="multiline string"
+            id="form-inputs-multiline"
             multi
             value={multi}
             onChange={(value) => setMulti(value ?? "")}
           />
         </Row>
-        <Row label="number">
-          <InputNumber aria-label="number" value={num} min={0} onChange={setNum} />
+        <Row label={demoLabels.number} htmlFor="form-inputs-number">
+          <InputNumber id="form-inputs-number" value={num} min={0} onChange={setNum} />
         </Row>
-        <Row label="number · range">
+        <Row label={demoLabels.range} labelId="form-inputs-range-label">
           <NumberRangeInput
-            aria-label="range"
+            aria-label={demoLabels.range}
             value={range}
             min={0}
             max={100}
@@ -112,28 +153,55 @@ export function FormInputsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
             onChange={setRange}
           />
         </Row>
-        <Row label="checkbox">
-          <InputCheckbox value={checked} onChange={(value) => setChecked(Boolean(value))} />
+        <Row label={demoLabels.checkbox} htmlFor="form-inputs-checkbox">
+          <InputCheckbox
+            id="form-inputs-checkbox"
+            value={checked}
+            onChange={(value) => setChecked(Boolean(value))}
+          />
         </Row>
-        <Row label="select">
-          <InputSelect value={selected} options={selectOptions} onChange={setSelected} />
+        <Row label={demoLabels.select} htmlFor="form-inputs-select">
+          <InputSelect
+            id="form-inputs-select"
+            value={selected}
+            options={selectOptions}
+            placeholder={demoLabels.selectPlaceholder}
+            onChange={setSelected}
+          />
         </Row>
-        <Row label="enum · <=3">
-          <InputEnum value={visibility} options={enumOptions} onChange={setVisibility} />
+        <Row label={demoLabels.enum} labelId="form-inputs-enum-label">
+          <InputEnum
+            id="form-inputs-enum"
+            aria-labelledby="form-inputs-enum-label"
+            value={visibility}
+            options={enumOptions}
+            onChange={setVisibility}
+          />
         </Row>
-        <Row label="multiInput">
-          <InputMultiInput value={visibility} options={enumOptions} onChange={setVisibility} />
+        <Row label={demoLabels.multiInput} labelId="form-inputs-multi-input-label">
+          <InputMultiInput
+            id="form-inputs-multi-input"
+            aria-labelledby="form-inputs-multi-input-label"
+            value={visibility}
+            options={enumOptions}
+            onChange={setVisibility}
+          />
         </Row>
-        <Row label="autocomplete">
+        <Row label={demoLabels.autocomplete} htmlFor="form-inputs-autocomplete">
           <InputAutocomplete
+            id="form-inputs-autocomplete"
             value={font}
             options={[["Open Sans Regular"], ["Arial Unicode MS Regular"], ["Roboto Mono"]]}
+            emptyMessage={demoLabels.noResults}
             onChange={(value) => setFont(value ?? "")}
           />
         </Row>
-        <Row label="font · stack">
+        <Row label={demoLabels.fontStack} labelId="form-inputs-font-stack-label">
           <InputFont
+            id="form-inputs-font-stack"
             name="text-font"
+            aria-label={demoLabels.fontStack}
+            aria-labelledby="form-inputs-font-stack-label"
             value={fontStack}
             fonts={[
               "Open Sans Regular",
@@ -141,10 +209,11 @@ export function FormInputsDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
               "Roboto Mono",
               "Arial Unicode MS Regular",
             ]}
+            emptyMessage={demoLabels.noResults}
             onChange={setFontStack}
           />
         </Row>
-      </div>
+      </FieldGroup>
       <pre className="m-0 border border-border bg-muted/30 p-2 font-mono !text-[10px] !leading-4 !overflow-auto">
         {JSON.stringify(
           { text, multi, num, range, checked, selected, visibility, font, fontStack },

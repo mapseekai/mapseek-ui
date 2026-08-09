@@ -11,7 +11,13 @@ export type InputFontProps = {
   fonts?: string[]
   style?: React.CSSProperties
   onChange(values: string[]): void
+  id?: string
+  disabled?: boolean
+  required?: boolean
+  emptyMessage?: React.ReactNode
   "aria-label"?: string
+  "aria-labelledby"?: string
+  "aria-invalid"?: React.AriaAttributes["aria-invalid"]
 }
 
 /**
@@ -25,7 +31,13 @@ export const InputFont: React.FC<InputFontProps> = ({
   fonts = [],
   style,
   onChange,
+  id,
+  disabled,
+  required,
+  emptyMessage,
   "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-invalid": ariaInvalid,
 }) => {
   const getValues = () => {
     // Guard against a non-array value: during a function-conversion the
@@ -54,7 +66,11 @@ export const InputFont: React.FC<InputFontProps> = ({
   const inputs = currentValues.map((val, i) => (
     <div key={FONT_INPUT_KEYS[i] ?? `font-input-extra-${i}`}>
       <InputAutocomplete
-        aria-label={ariaLabel || name}
+        aria-label={`${ariaLabel || name} ${i + 1}`}
+        disabled={disabled}
+        required={required}
+        aria-invalid={ariaInvalid}
+        emptyMessage={emptyMessage}
         value={val}
         options={fonts.map((f) => [f, f])}
         onChange={(v) => changeFont(i, v)}
@@ -63,8 +79,13 @@ export const InputFont: React.FC<InputFontProps> = ({
   ))
 
   return (
-    <div className="flex flex-col gap-2" style={style}>
+    <fieldset
+      id={id}
+      aria-labelledby={ariaLabelledBy}
+      className="m-0 flex min-w-0 flex-col gap-2 border-0 p-0"
+      style={style}
+    >
       {inputs}
-    </div>
+    </fieldset>
   )
 }

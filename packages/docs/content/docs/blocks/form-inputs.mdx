@@ -41,7 +41,7 @@ import {
 
 ## 公开导出与 Props
 
-导出 `InputString`、`InputNumber`、`InputCheckbox`、`InputSelect`、`InputEnum`、`InputMultiInput`、`InputAutocomplete`、`InputFont` 以及每个组件的 Props 类型。常用 props 是 `value`、`default`、`options`、`fonts`、`min`、`max`、`allowRange`、`rangeStep`、`required`、`disabled` 和 `aria-label`。
+导出 `InputString`、`InputNumber`、`InputCheckbox`、`InputSelect`、`InputEnum`、`InputMultiInput`、`InputAutocomplete`、`InputFont` 以及每个组件的 Props 类型。常用 props 是 `value`、`default`、`options`、`fonts`、`min`、`max`、`allowRange`、`rangeStep`、`required`、`disabled`、`aria-label` 和 `aria-labelledby`。`InputSelect` 的 `placeholder` 与 `InputAutocomplete` / `InputFont` 的 `emptyMessage` 由调用方注入，便于本地化。
 
 ## 状态与校验
 
@@ -49,9 +49,8 @@ import {
 
 ## 无障碍
 
-给无可见文本的输入提供 `aria-label`。短枚举和复选框使用可点击标签；下拉和自动补全依赖基础 UI 的键盘行为。禁用、必填和错误状态应由调用方在字段外层补充说明。
+用 `FieldGroup`、`Field` 和 `FieldLabel` 组织表单，并通过 `id` / `htmlFor` 关联可见标签；组合控件使用 `aria-labelledby`。短枚举和复选框保留可点击标签，下拉和自动补全继承基础 UI 的键盘行为。组件会把 `disabled`、`required` 和 `aria-invalid` 语义传递到实际控件，错误文案仍由外层 `FieldError` 提供。
 
 ## 依赖
 
 <RegistryDependencies registryName="form-inputs" />
-

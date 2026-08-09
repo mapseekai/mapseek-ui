@@ -1972,12 +1972,20 @@ export async function assertBlockInteraction(
 
   if (block === "form-inputs") {
     const demo = page.locator('[data-demo="form-inputs"]')
-    await demo.getByLabel("string", { exact: true }).fill("Buildings")
-    await demo.getByLabel("string", { exact: true }).blur()
+    const stringInput = demo.getByLabel(localized(path, "字符串", "String"), { exact: true })
+    await stringInput.fill("Buildings")
+    await stringInput.blur()
     await expect(demo.locator("pre")).toContainText("Buildings")
-    await demo.getByLabel("number", { exact: true }).fill("24")
-    await demo.getByLabel("number", { exact: true }).blur()
+    const numberInput = demo.getByLabel(localized(path, "数字", "Number"), { exact: true })
+    await numberInput.fill("24")
+    await numberInput.blur()
     await expect(demo.locator("pre")).toContainText('"num": 24')
+    await expect(
+      demo.getByRole("checkbox", { name: localized(path, "复选框", "Checkbox") }),
+    ).toBeVisible()
+    await expect(
+      demo.getByRole("radiogroup", { name: localized(path, "短枚举", "Short enum") }),
+    ).toBeVisible()
     await activateByKeyboard(demo.locator('[data-demo-action="reset-inputs"]'))
     await expect(demo.locator("pre")).toContainText('"checked": false')
   }

@@ -2,7 +2,6 @@ import type React from "react"
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/utils"
 
 export type InputStringProps = {
   "data-wd-key"?: string
@@ -15,7 +14,13 @@ export type InputStringProps = {
   required?: boolean
   disabled?: boolean
   spellCheck?: boolean
+  id?: string
+  name?: string
+  autoComplete?: string
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"]
   "aria-label"?: string
+  "aria-labelledby"?: string
+  "aria-invalid"?: React.AriaAttributes["aria-invalid"]
   title?: string
 }
 
@@ -26,7 +31,13 @@ export type InputStringProps = {
  */
 export const InputString: React.FC<InputStringProps> = ({
   "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-invalid": ariaInvalid,
   "data-wd-key": dataWdKey,
+  id,
+  name,
+  autoComplete,
+  inputMode,
   spellCheck,
   disabled,
   style,
@@ -76,7 +87,13 @@ export const InputString: React.FC<InputStringProps> = ({
 
   const commonProps = {
     "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+    "aria-invalid": ariaInvalid,
     "data-wd-key": dataWdKey,
+    id,
+    name,
+    autoComplete,
+    inputMode,
     spellCheck: spellCheck !== undefined ? spellCheck : !multi,
     disabled,
     style,
@@ -87,7 +104,6 @@ export const InputString: React.FC<InputStringProps> = ({
     onBlur: handleBlur,
     onKeyDown: handleKeyDown,
     required,
-    className: cn("w-full bg-transparent px-3 py-1", disabled && "cursor-not-allowed opacity-50"),
   }
 
   if (multi) {

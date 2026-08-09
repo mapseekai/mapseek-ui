@@ -41,7 +41,7 @@ Each input receives a current value and `onChange`; the caller stores the final 
 
 ## Public Exports and Props
 
-Exports include `InputString`, `InputNumber`, `InputCheckbox`, `InputSelect`, `InputEnum`, `InputMultiInput`, `InputAutocomplete`, `InputFont`, and each component props type. Common props are `value`, `default`, `options`, `fonts`, `min`, `max`, `allowRange`, `rangeStep`, `required`, `disabled`, and `aria-label`.
+Exports include `InputString`, `InputNumber`, `InputCheckbox`, `InputSelect`, `InputEnum`, `InputMultiInput`, `InputAutocomplete`, `InputFont`, and each component props type. Common props are `value`, `default`, `options`, `fonts`, `min`, `max`, `allowRange`, `rangeStep`, `required`, `disabled`, `aria-label`, and `aria-labelledby`. Callers inject `InputSelect`'s `placeholder` and the `emptyMessage` used by `InputAutocomplete` / `InputFont` so the copy can be localized.
 
 ## States and Validation
 
@@ -49,9 +49,8 @@ Number inputs validate against min/max; range mode reuses `NumberRangeInput`. Em
 
 ## Accessibility
 
-Provide `aria-label` for inputs without visible labels. Short enums and checkboxes use clickable labels; select and autocomplete inherit keyboard behavior from the base UI. Disabled, required, and error states should be explained by the field wrapper.
+Compose forms with `FieldGroup`, `Field`, and `FieldLabel`, associating visible labels through `id` / `htmlFor`; use `aria-labelledby` for composite controls. Short enums and checkboxes retain clickable labels, while select and autocomplete inherit keyboard behavior from the base UI. Components forward `disabled`, `required`, and `aria-invalid` semantics to the actual control; the surrounding `FieldError` still supplies visible error copy.
 
 ## Dependencies
 
 <RegistryDependencies registryName="form-inputs" />
-

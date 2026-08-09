@@ -12,14 +12,30 @@ export type InputAutocompleteProps = {
   value?: string
   options?: string[][]
   onChange?(value: string | undefined): unknown
+  id?: string
+  name?: string
+  disabled?: boolean
+  required?: boolean
+  placeholder?: string
+  emptyMessage?: React.ReactNode
   "aria-label"?: string
+  "aria-labelledby"?: string
+  "aria-invalid"?: React.AriaAttributes["aria-invalid"]
 }
 
 export function InputAutocomplete({
   value,
   options = [],
   onChange = () => {},
+  id,
+  name,
+  disabled,
+  required,
+  placeholder,
+  emptyMessage,
   "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-invalid": ariaInvalid,
 }: InputAutocompleteProps) {
   const [inputValue, setInputValue] = React.useState(value || "")
   const [prevValue, setPrevValue] = React.useState(value)
@@ -49,14 +65,20 @@ export function InputAutocomplete({
       <Combobox value={inputValue} onValueChange={handleValueChange}>
         <ComboboxInput
           ref={inputRef}
-          placeholder=""
+          id={id}
+          name={name}
+          disabled={disabled}
+          required={required}
+          placeholder={placeholder}
           aria-label={ariaLabel}
+          aria-labelledby={ariaLabelledBy}
+          aria-invalid={ariaInvalid}
           className="w-full"
           showTrigger={false}
         />
         {options.length > 0 && (
           <ComboboxContent className="min-w-50">
-            <ComboboxEmpty>No results found.</ComboboxEmpty>
+            {emptyMessage !== undefined && <ComboboxEmpty>{emptyMessage}</ComboboxEmpty>}
             <ComboboxList>
               {options.map((option) => (
                 <ComboboxItem key={option[0]} value={option[0]}>

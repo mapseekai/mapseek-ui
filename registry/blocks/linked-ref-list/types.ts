@@ -25,8 +25,18 @@ export type LinkedRefGroup = {
   items: LinkedRefItem[]
 }
 
+export type LinkedRefItemAction = {
+  label: string
+  onAction: (item: LinkedRefItem, group: LinkedRefGroup) => void
+}
+
+export type LinkedRefItemActions = {
+  open?: LinkedRefItemAction
+  copyLink?: LinkedRefItemAction
+}
+
 export type LinkedRefListProps = {
   groups: LinkedRefGroup[]
   kindIcons: Record<LinkedRefKind, ReactNode>
-  openLabel: string
+  itemActions?: LinkedRefItemActions
 }

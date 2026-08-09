@@ -22,6 +22,7 @@ LinkedRefList 汇总数据集、地图集和工作流引用，帮助用户判断
 import {
   LinkedRefList,
   type LinkedRefGroup,
+  type LinkedRefItemActions,
   type LinkedRefKind,
   type LinkedRefListProps,
 } from "@/registry/blocks/linked-ref-list"
@@ -33,11 +34,11 @@ import {
 
 ## 用法
 
-传入分组后的 `LinkedRefGroup[]` 和每类图标。顶部使用 Card Tabs 展示各分组数量，选中的内容区负责名称、ID、时间和状态。
+传入分组后的 `LinkedRefGroup[]` 和每类图标。顶部使用 Card Tabs 展示各分组数量，选中的内容区负责名称、ID、时间和状态；窄屏下摘要卡会堆叠为单列。
 
 ## 公开导出与 Props
 
-导出 `LinkedRefList`、`LinkedRefGroup`、`LinkedRefItem`、`LinkedRefKind` 和 `LinkedRefStatusTone`。`openLabel` 用于暂未接入的跳转/复制动作。
+导出 `LinkedRefList`、`LinkedRefGroup`、`LinkedRefItem`、`LinkedRefItemAction`、`LinkedRefItemActions`、`LinkedRefKind` 和 `LinkedRefStatusTone`。可选的 `itemActions` 分别注入 `open` 和 `copyLink` 的标签与回调；未提供的操作不会显示。
 
 ## 加载、空态、错误与状态
 
@@ -45,7 +46,7 @@ import {
 
 ## 无障碍
 
-分组概览使用标准 tab/tabpanel 语义，可通过方向键切换。状态 pill 包含文字和结构，不依赖颜色单独表达。
+分组概览使用标准 tab/tabpanel 语义，可通过方向键切换。分类与操作图标均为装饰性内容并从辅助技术树中隐藏；状态 Tag 包含文字和结构，不依赖颜色单独表达。
 
 ## 依赖
 

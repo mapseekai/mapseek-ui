@@ -22,6 +22,7 @@ LinkedRefList summarizes dataset, mapset, and workflow references so users can s
 import {
   LinkedRefList,
   type LinkedRefGroup,
+  type LinkedRefItemActions,
   type LinkedRefKind,
   type LinkedRefListProps,
 } from "@/registry/blocks/linked-ref-list"
@@ -33,11 +34,11 @@ import {
 
 ## Usage
 
-Pass grouped `LinkedRefGroup[]` plus icons for each kind. Card tabs summarize each group, while the selected panel shows names, IDs, times, and status.
+Pass grouped `LinkedRefGroup[]` plus icons for each kind. Card tabs summarize each group, while the selected panel shows names, IDs, times, and status; summary cards stack into one column on narrow screens.
 
 ## Public Exports and Props
 
-Exports include `LinkedRefList`, `LinkedRefGroup`, `LinkedRefItem`, `LinkedRefKind`, and `LinkedRefStatusTone`. `openLabel` names pending open/copy actions.
+Exports include `LinkedRefList`, `LinkedRefGroup`, `LinkedRefItem`, `LinkedRefItemAction`, `LinkedRefItemActions`, `LinkedRefKind`, and `LinkedRefStatusTone`. Optional `itemActions` injects distinct labels and callbacks for `open` and `copyLink`; omitted actions are not rendered.
 
 ## Loading, Empty, Error, and Status
 
@@ -45,7 +46,7 @@ The list owns only the selected group; data loading, empty groups, and errors ar
 
 ## Accessibility
 
-Group summaries use standard tab/tabpanel semantics and support arrow-key navigation. Status pills include text and structure, not color-only meaning.
+Group summaries use standard tab/tabpanel semantics and support arrow-key navigation. Kind and action icons are decorative and hidden from assistive technology; status Tags include text and structure, not color-only meaning.
 
 ## Dependencies
 

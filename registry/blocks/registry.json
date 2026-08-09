@@ -573,7 +573,7 @@
     {
       "name": "linked-ref-list",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/card-tabs", "@mapseek/icon-button", "@mapseek/utils"],
+      "registryDependencies": ["@mapseek/card-tabs", "@mapseek/icon-button", "@mapseek/tag", "@mapseek/utils"],
       "files": [
         {
           "path": "linked-ref-list/LinkedRefList.tsx",

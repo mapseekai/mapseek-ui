@@ -1,14 +1,16 @@
 import { IconExternalLink, IconLink } from "@tabler/icons-react"
-import type { ReactNode } from "react"
+import type { CSSProperties, ReactNode } from "react"
 import { useState } from "react"
 
 import { CardTabs, CardTabsContent, CardTabsList, CardTabsTrigger } from "@/components/ui/card-tabs"
 import { IconButton } from "@/components/ui/icon-button"
+import { Tag, type TagColor } from "@/components/ui/tag"
 import { cn } from "@/lib/utils"
 
 import type {
   LinkedRefGroup,
   LinkedRefItem,
+  LinkedRefItemActions,
   LinkedRefKind,
   LinkedRefListProps,
   LinkedRefStatusTone,
@@ -22,15 +24,23 @@ const KIND_BOX: Record<LinkedRefKind, string> = {
 }
 
 /** 状态药丸：边框/底色/文字 + 是否带前导圆点。 */
-const STATUS_TONE: Record<LinkedRefStatusTone, { pill: string; dot: string | null }> = {
+const STATUS_TONE: Record<
+  LinkedRefStatusTone,
+  { color: TagColor; className?: string; dot: string | null }
+> = {
   active: {
-    pill: "border-primary/25 bg-primary/10 text-primary",
+    color: "green",
     dot: "bg-primary",
   },
-  ready: { pill: "border-info/25 bg-info/10 text-info", dot: "bg-info" },
-  draft: { pill: "border-border text-muted-foreground", dot: null },
+  ready: {
+    color: "blue",
+    className: "border-info/30 bg-info/10 text-info",
+    dot: "bg-info",
+  },
+  draft: { color: "gray", dot: null },
   failed: {
-    pill: "border-destructive/25 bg-destructive/10 text-destructive",
+    color: "orange",
+    className: "border-destructive/30 bg-destructive/10 text-destructive",
     dot: "bg-destructive",
   },
 }
@@ -39,9 +49,9 @@ const STATUS_TONE: Record<LinkedRefStatusTone, { pill: string; dot: string | nul
  * 引用关系列表（Layer 2 presentational block）。
  * 顶部一排可选的 summary 卡片（数据集 / 地图集 / 工作流，带彩色图标盒 + 计数），
  * 下方 section bar + 选中分组的条目列表。所有文案 / icon 经 props 注入；
- * 无 i18n、无副作用。action 按钮恒为 disabled（尚未接入 API）。
+ * 无 i18n、无副作用。条目操作由调用方通过 itemActions 注入。
  */
-export function LinkedRefList({ groups, kindIcons, openLabel }: LinkedRefListProps) {
+export function LinkedRefList({ groups, kindIcons, itemActions }: LinkedRefListProps) {
   const [selected, setSelected] = useState(groups[0]?.key ?? "")
   const selectedValue = groups.some((group) => group.key === selected)
     ? selected
@@ -50,8 +60,8 @@ export function LinkedRefList({ groups, kindIcons, openLabel }: LinkedRefListPro
   return (
     <CardTabs value={selectedValue} onValueChange={setSelected}>
       <CardTabsList
-        className="grid h-auto gap-0"
-        style={{ gridTemplateColumns: `repeat(${groups.length}, minmax(0, 1fr))` }}
+        className="grid h-auto grid-cols-1 gap-0 sm:grid-cols-[repeat(var(--linked-ref-columns),minmax(0,1fr))]"
+        style={{ "--linked-ref-columns": groups.length } as CSSProperties}
       >
         {groups.map((group) => (
           <SummaryCard key={group.key} group={group} icon={kindIcons[group.kind]} />
@@ -61,11 +71,13 @@ export function LinkedRefList({ groups, kindIcons, openLabel }: LinkedRefListPro
       {groups.map((group) => (
         <CardTabsContent key={group.key} value={group.key} className="p-0!">
           <div className="flex items-center gap-2 bg-muted/30 px-4 py-2.5">
-            <span className="shrink-0">{kindIcons[group.kind]}</span>
-            <span className="text-headline-sm text-foreground">{group.title}</span>
-            <span className="mono border border-border bg-background px-1.5 text-body-sm text-muted-foreground">
-              {group.count}
+            <span aria-hidden="true" className="shrink-0">
+              {kindIcons[group.kind]}
             </span>
+            <span className="text-headline-sm text-foreground">{group.title}</span>
+            <Tag color="gray" size="sm" className="tnum">
+              {group.count}
+            </Tag>
             {group.summary ? (
               <span className="ml-auto truncate text-body-sm text-muted-foreground">
                 {group.summary}
@@ -79,9 +91,10 @@ export function LinkedRefList({ groups, kindIcons, openLabel }: LinkedRefListPro
                 <ItemRow
                   key={item.key}
                   item={item}
+                  group={group}
                   kind={group.kind}
                   icon={kindIcons[group.kind]}
-                  openLabel={openLabel}
+                  itemActions={itemActions}
                 />
               ))}
             </ul>
@@ -101,6 +114,7 @@ function SummaryCard({ group, icon }: { group: LinkedRefGroup; icon: ReactNode }
     >
       <span className="flex items-center gap-2 text-headline-sm text-foreground group-data-active/ref-tab:text-primary">
         <span
+          aria-hidden="true"
           className={cn("flex size-9 items-center justify-center border", KIND_BOX[group.kind])}
         >
           {icon}
@@ -108,7 +122,7 @@ function SummaryCard({ group, icon }: { group: LinkedRefGroup; icon: ReactNode }
         {group.title}
       </span>
       <span>
-        <span className="mono text-xl font-medium">{group.count}</span>{" "}
+        <span className="mono tnum text-headline-lg">{group.count}</span>{" "}
         <span className="text-body-sm text-muted-foreground group-data-active/ref-tab:text-primary">
           {unit}
         </span>
@@ -119,18 +133,21 @@ function SummaryCard({ group, icon }: { group: LinkedRefGroup; icon: ReactNode }
 
 function ItemRow({
   item,
+  group,
   kind,
   icon,
-  openLabel,
+  itemActions,
 }: {
   item: LinkedRefItem
+  group: LinkedRefGroup
   kind: LinkedRefKind
   icon: ReactNode
-  openLabel: string
+  itemActions?: LinkedRefItemActions
 }) {
   return (
     <li className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border px-3 py-3 last:border-b-0 sm:flex-nowrap sm:gap-3 sm:px-4">
       <span
+        aria-hidden="true"
         className={cn("flex size-9 shrink-0 items-center justify-center border", KIND_BOX[kind])}
       >
         {icon}
@@ -151,14 +168,30 @@ function ItemRow({
         </span>
       ) : null}
       {item.status ? <StatusPill status={item.status} /> : null}
-      <span className="flex shrink-0 items-center gap-1">
-        <IconButton size="xs" disabled label={openLabel} tooltip>
-          <IconExternalLink stroke={1.5} />
-        </IconButton>
-        <IconButton size="xs" disabled label={openLabel} tooltip>
-          <IconLink stroke={1.5} />
-        </IconButton>
-      </span>
+      {itemActions?.open || itemActions?.copyLink ? (
+        <span className="flex shrink-0 items-center gap-1">
+          {itemActions.open ? (
+            <IconButton
+              size="xs"
+              label={itemActions.open.label}
+              tooltip
+              onClick={() => itemActions.open?.onAction(item, group)}
+            >
+              <IconExternalLink aria-hidden="true" stroke={1.5} />
+            </IconButton>
+          ) : null}
+          {itemActions.copyLink ? (
+            <IconButton
+              size="xs"
+              label={itemActions.copyLink.label}
+              tooltip
+              onClick={() => itemActions.copyLink?.onAction(item, group)}
+            >
+              <IconLink aria-hidden="true" stroke={1.5} />
+            </IconButton>
+          ) : null}
+        </span>
+      ) : null}
     </li>
   )
 }
@@ -166,14 +199,11 @@ function ItemRow({
 function StatusPill({ status }: { status: { label: string; tone: LinkedRefStatusTone } }) {
   const tone = STATUS_TONE[status.tone]
   return (
-    <span
-      className={cn(
-        "inline-flex shrink-0 items-center gap-1 border px-1.5 py-0.5 text-body-sm",
-        tone.pill,
-      )}
-    >
-      {tone.dot ? <span className={cn("size-1.5 rounded-full", tone.dot)} /> : null}
+    <Tag size="sm" color={tone.color} className={cn("gap-1", tone.className)}>
+      {tone.dot ? (
+        <span aria-hidden="true" className={cn("size-1.5 rounded-full", tone.dot)} />
+      ) : null}
       {status.label}
-    </span>
+    </Tag>
   )
 }

@@ -242,7 +242,12 @@ const applicationShellStatusAndResourceDependencies = {
     "@mapseek/placeholder-glyph",
     "@mapseek/resource-grid",
   ],
-  "linked-ref-list": ["@mapseek/card-tabs", "@mapseek/icon-button", "@mapseek/utils"],
+  "linked-ref-list": [
+    "@mapseek/card-tabs",
+    "@mapseek/icon-button",
+    "@mapseek/tag",
+    "@mapseek/utils",
+  ],
 } as const
 
 const repoRoot = fileURLToPath(new URL("../..", import.meta.url))

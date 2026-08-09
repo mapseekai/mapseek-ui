@@ -39,13 +39,15 @@ describe("card tabs", () => {
     expect(trigger.props.className).toContain("group-data-vertical/card-tabs:after:end-0")
   })
 
-  it("uses the content-edge indicator as its focus treatment", () => {
+  it("uses the shared three-pixel focus ring in addition to its content-edge indicator", () => {
     const trigger = CardTabsTrigger({ value: "details" }) as ReactElement<{
       className: string
     }>
 
     expect(trigger.props.className).toContain("focus-visible:outline-none")
     expect(trigger.props.className).toContain("focus-visible:after:opacity-100")
-    expect(trigger.props.className).not.toContain("focus-visible:ring-")
+    expect(trigger.props.className).toContain("focus-visible:ring-[3px]")
+    expect(trigger.props.className).toContain("focus-visible:ring-ring/20")
+    expect(trigger.props.className).toContain("focus-visible:z-10")
   })
 })

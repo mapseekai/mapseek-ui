@@ -4,7 +4,7 @@ import {
   LinkedRefList,
 } from "@registry/blocks/linked-ref-list"
 import { IconDatabase, IconMap2, IconRoute } from "@tabler/icons-react"
-import type { ReactNode } from "react"
+import { type ReactNode, useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
 const kindIcons: Record<LinkedRefKind, ReactNode> = {
@@ -15,7 +15,10 @@ const kindIcons: Record<LinkedRefKind, ReactNode> = {
 
 const labels = {
   "zh-CN": {
-    openLabel: "待接入",
+    copyLinkLabel: "复制引用链接",
+    copied: "已复制引用链接",
+    openLabel: "打开引用",
+    opened: "已打开引用",
     groups: [
       {
         key: "datasets",
@@ -98,7 +101,10 @@ const labels = {
     ],
   },
   en: {
-    openLabel: "Open action pending",
+    copyLinkLabel: "Copy reference link",
+    copied: "Copied reference link",
+    openLabel: "Open reference",
+    opened: "Opened reference",
     groups: [
       {
         key: "datasets",
@@ -184,13 +190,32 @@ const labels = {
 
 export function LinkedRefListDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
+  const [status, setStatus] = useState("")
   return (
-    <div className="border border-border bg-background p-3">
+    <div className="flex flex-col gap-2 border border-border bg-background p-3">
       <LinkedRefList
         groups={demoLabels.groups as unknown as LinkedRefGroup[]}
         kindIcons={kindIcons}
-        openLabel={demoLabels.openLabel}
+        itemActions={{
+          open: {
+            label: demoLabels.openLabel,
+            onAction: (item) => setStatus(`${demoLabels.opened}: ${item.name}`),
+          },
+          copyLink: {
+            label: demoLabels.copyLinkLabel,
+            onAction: (item) => setStatus(`${demoLabels.copied}: ${item.name}`),
+          },
+        }}
       />
+      {status ? (
+        <p
+          data-demo-status="linked-ref-list"
+          role="status"
+          className="m-0 text-body-sm text-muted-foreground"
+        >
+          {status}
+        </p>
+      ) : null}
     </div>
   )
 }

@@ -254,7 +254,8 @@
           "type": "registry:block",
           "target": "@components/blocks/coordinate-system-combobox/types.ts"
         }
-      ]
+      ],
+      "dependencies": ["@tabler/icons-react"]
     },
     {
       "name": "custom-colormap",

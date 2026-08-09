@@ -2,6 +2,7 @@
   "name": "coordinate-system-combobox",
   "type": "registry:block",
   "registryDependencies": ["@mapseek/combobox", "@mapseek/labels", "@mapseek/utils"],
+  "dependencies": ["@tabler/icons-react"],
   "files": [
     {
       "path": "coordinate-system-combobox/CoordinateSystemCombobox.tsx",

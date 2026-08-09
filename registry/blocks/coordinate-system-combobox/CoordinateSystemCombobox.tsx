@@ -1,3 +1,4 @@
+import { IconMap2, IconWorld, type Icon as TablerIcon } from "@tabler/icons-react"
 import * as React from "react"
 
 import {
@@ -17,8 +18,51 @@ import { buildCoordinateSystemList } from "./built-in-coordinate-systems"
 import { DEFAULT_COORDINATE_SYSTEM_COMBOBOX_LABELS } from "./defaults"
 import type { CoordinateSystemComboboxProps, CoordinateSystemItem } from "./types"
 
-function formatCoordinateSystem(item: CoordinateSystemItem) {
-  return `${item.epsg} · ${item.name}`
+function matchesCoordinateSystem(item: CoordinateSystemItem, query: string) {
+  const normalizedQuery = query.trim().toLowerCase()
+
+  return (
+    normalizedQuery.length === 0 ||
+    item.name.toLowerCase().includes(normalizedQuery) ||
+    item.epsg.toLowerCase().includes(normalizedQuery)
+  )
+}
+
+function CoordinateSystemOption({ item }: { item: CoordinateSystemItem }) {
+  return (
+    <ComboboxItem value={item} aria-label={`${item.name}, ${item.epsg}`}>
+      <span className="min-w-0">
+        <span className="block truncate text-body-md-strong leading-snug text-foreground">
+          {item.name}
+        </span>
+        <span className="mt-0.5 block font-mono text-body-sm leading-snug text-muted-foreground">
+          {item.epsg}
+        </span>
+      </span>
+    </ComboboxItem>
+  )
+}
+
+function CoordinateSystemGroup({
+  items,
+  label,
+  icon: Icon,
+}: {
+  items: CoordinateSystemItem[]
+  label: string
+  icon: TablerIcon
+}) {
+  return (
+    <ComboboxGroup>
+      <ComboboxLabel className="flex items-center gap-1.5">
+        <Icon aria-hidden="true" className="shrink-0" size={12} stroke={1.75} />
+        <span>{label}</span>
+      </ComboboxLabel>
+      {items.map((item) => (
+        <CoordinateSystemOption key={item.epsg} item={item} />
+      ))}
+    </ComboboxGroup>
+  )
 }
 
 export function CoordinateSystemCombobox({
@@ -34,12 +78,15 @@ export function CoordinateSystemCombobox({
   const [uncontrolledValue, setUncontrolledValue] = React.useState<string | null>(
     defaultValue ?? null,
   )
+  const [open, setOpen] = React.useState(false)
+  const [query, setQuery] = React.useState("")
   const isControlled = valueProp !== undefined
   const selectedEpsg = isControlled ? (valueProp ?? null) : uncontrolledValue
   const items = buildCoordinateSystemList(extraItems)
   const selectedItem = items.find((item) => item.epsg === selectedEpsg) ?? null
-  const geographicItems = items.filter((item) => item.kind === "geographic")
-  const projectedItems = items.filter((item) => item.kind === "projected")
+  const filteredItems = items.filter((item) => matchesCoordinateSystem(item, query))
+  const geographicItems = filteredItems.filter((item) => item.kind === "geographic")
+  const projectedItems = filteredItems.filter((item) => item.kind === "projected")
 
   function handleValueChange(item: CoordinateSystemItem | null) {
     const nextValue = item?.epsg ?? null
@@ -52,7 +99,18 @@ export function CoordinateSystemCombobox({
     <Combobox<CoordinateSystemItem>
       value={selectedItem}
       onValueChange={handleValueChange}
-      itemToStringLabel={formatCoordinateSystem}
+      open={open}
+      inputValue={open ? query : (selectedItem?.name ?? "")}
+      onInputValueChange={(inputValue, eventDetails) => {
+        if (eventDetails.reason === "input-change" || eventDetails.reason === "input-clear") {
+          setQuery(inputValue)
+        }
+      }}
+      onOpenChange={(nextOpen) => {
+        setOpen(nextOpen)
+        setQuery("")
+      }}
+      itemToStringLabel={(item) => item.name}
       itemToStringValue={(item) => item.epsg}
       isItemEqualToValue={(left, right) => left.epsg === right.epsg}
       autoHighlight
@@ -61,7 +119,7 @@ export function CoordinateSystemCombobox({
       <ComboboxInput
         aria-label={labels.inputLabel}
         placeholder={labels.searchPlaceholder}
-        className={cn("w-full", className)}
+        className={cn("w-[calc(100%-4px)] max-w-xs", className)}
         disabled={disabled}
         showClear={selectedEpsg !== null}
       />
@@ -69,24 +127,18 @@ export function CoordinateSystemCombobox({
         <ComboboxEmpty>{labels.noResults}</ComboboxEmpty>
         <ComboboxList>
           {geographicItems.length > 0 && (
-            <ComboboxGroup>
-              <ComboboxLabel>{labels.geographic}</ComboboxLabel>
-              {geographicItems.map((item) => (
-                <ComboboxItem key={item.epsg} value={item}>
-                  {formatCoordinateSystem(item)}
-                </ComboboxItem>
-              ))}
-            </ComboboxGroup>
+            <CoordinateSystemGroup
+              items={geographicItems}
+              label={labels.geographic}
+              icon={IconWorld}
+            />
           )}
           {projectedItems.length > 0 && (
-            <ComboboxGroup>
-              <ComboboxLabel>{labels.projected}</ComboboxLabel>
-              {projectedItems.map((item) => (
-                <ComboboxItem key={item.epsg} value={item}>
-                  {formatCoordinateSystem(item)}
-                </ComboboxItem>
-              ))}
-            </ComboboxGroup>
+            <CoordinateSystemGroup
+              items={projectedItems}
+              label={labels.projected}
+              icon={IconMap2}
+            />
           )}
         </ComboboxList>
       </ComboboxContent>

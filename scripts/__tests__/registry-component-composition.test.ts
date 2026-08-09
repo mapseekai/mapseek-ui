@@ -5,6 +5,7 @@ async function blockRegistryItem(name: string) {
   const registry = JSON.parse(await readFile("registry/blocks/registry.json", "utf8")) as {
     items: Array<{
       name: string
+      dependencies?: string[]
       registryDependencies?: string[]
       files: Array<{ path: string }>
     }>
@@ -225,6 +226,7 @@ describe("registry component composition", () => {
     expect(registryItem.registryDependencies).toEqual(
       expect.arrayContaining(["@mapseek/combobox", "@mapseek/labels", "@mapseek/utils"]),
     )
+    expect(registryItem.dependencies).toContain("@tabler/icons-react")
     expect(registryItem.files.map((file) => file.path)).toEqual(
       expect.arrayContaining([
         "coordinate-system-combobox/CoordinateSystemCombobox.tsx",

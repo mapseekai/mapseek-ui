@@ -192,7 +192,7 @@ export function LinkedRefListDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
   const [status, setStatus] = useState("")
   return (
-    <div className="flex flex-col gap-2 border border-border bg-background p-3">
+    <div className="flex w-full min-w-0 flex-col gap-2 border border-border bg-background p-3">
       <LinkedRefList
         groups={demoLabels.groups as unknown as LinkedRefGroup[]}
         kindIcons={kindIcons}

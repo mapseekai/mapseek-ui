@@ -58,9 +58,9 @@ export function LinkedRefList({ groups, kindIcons, itemActions }: LinkedRefListP
     : (groups[0]?.key ?? "")
 
   return (
-    <CardTabs value={selectedValue} onValueChange={setSelected}>
+    <CardTabs value={selectedValue} onValueChange={setSelected} className="w-full min-w-0">
       <CardTabsList
-        className="grid h-auto grid-cols-1 gap-0 sm:grid-cols-[repeat(var(--linked-ref-columns),minmax(0,1fr))]"
+        className="grid h-auto w-full grid-cols-1 gap-0 sm:grid-cols-[repeat(var(--linked-ref-columns),minmax(0,1fr))]"
         style={{ "--linked-ref-columns": groups.length } as CSSProperties}
       >
         {groups.map((group) => (
@@ -110,7 +110,7 @@ function SummaryCard({ group, icon }: { group: LinkedRefGroup; icon: ReactNode }
   return (
     <CardTabsTrigger
       value={group.key}
-      className="group/ref-tab h-auto min-w-0 flex-col gap-2 px-4 py-3 text-left"
+      className="group/ref-tab h-auto w-full min-w-0 flex-col gap-2 px-4 py-3 text-left whitespace-normal"
     >
       <span className="flex items-center gap-2 text-headline-sm text-foreground group-data-active/ref-tab:text-primary">
         <span

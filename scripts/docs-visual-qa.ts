@@ -2556,13 +2556,11 @@ export async function assertBlockInteraction(
       localized(path, "派生或关联的数据集", "Derived or associated datasets"),
     )
     await demo
-      .getByRole("button", { name: new RegExp(localized(path, "工作流", "Workflows")) })
+      .getByRole("tab", { name: new RegExp(localized(path, "工作流", "Workflows")) })
       .click()
     await expect(demo).toContainText(localized(path, "栅格预处理", "Raster preprocessing"))
     await expect(demo).toContainText("workflow.5f01-72cd")
-    await demo
-      .getByRole("button", { name: new RegExp(localized(path, "地图集", "Mapsets")) })
-      .click()
+    await demo.getByRole("tab", { name: new RegExp(localized(path, "地图集", "Mapsets")) }).click()
     await expect(demo).toContainText(localized(path, "城市绿地监测", "Urban green-space monitor"))
     await expect(demo).toContainText("mapset.18bd-44f0")
     await assertNoHorizontalOverflow(demo, `${path} linked refs`)

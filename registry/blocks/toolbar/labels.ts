@@ -1,6 +1,6 @@
-import type { LoomToolbarLabels } from "./types"
+import type { ToolbarLabels } from "./types"
 
-export const LOOM_TOOLBAR_LABELS_ZH_CN: LoomToolbarLabels = {
+export const TOOLBAR_LABELS_ZH_CN: ToolbarLabels = {
   startEditing: "开始编辑",
   stopEditing: "退出编辑",
   save: "保存",
@@ -15,7 +15,7 @@ export const LOOM_TOOLBAR_LABELS_ZH_CN: LoomToolbarLabels = {
   editRequired: (tool) => `${tool} · 请先开启编辑`,
 }
 
-export const LOOM_TOOLBAR_LABELS_EN: LoomToolbarLabels = {
+export const TOOLBAR_LABELS_EN: ToolbarLabels = {
   startEditing: "Start editing",
   stopEditing: "Stop editing",
   save: "Save",

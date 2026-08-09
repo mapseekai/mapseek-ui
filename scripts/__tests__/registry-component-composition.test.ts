@@ -185,8 +185,8 @@ describe("registry component composition", () => {
     expect(layerGroup).toContain('selected ? "text-primary" : "text-foreground"')
   })
 
-  it("renders the loom toolbar with a border and no shadow", async () => {
-    const toolbar = await readFile("registry/blocks/loom-toolbar/LoomToolbar.tsx", "utf8")
+  it("renders the toolbar with a border and no shadow", async () => {
+    const toolbar = await readFile("registry/blocks/toolbar/Toolbar.tsx", "utf8")
     const floatingToolbar = toolbar.match(/<div className="max-w-full[^"]+">/)?.[0]
 
     expect(floatingToolbar).toContain("border border-border bg-card")

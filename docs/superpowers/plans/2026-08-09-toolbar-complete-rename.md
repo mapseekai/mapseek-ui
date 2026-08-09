@@ -36,79 +36,57 @@
 - Consumes: Existing controlled props and callbacks from `LoomToolbarProps` without behavioral changes.
 - Produces: `Toolbar`, `ToolbarProps`, `ToolbarTool`, `ToolbarGroup`, `ToolbarLabels`, `TOOLBAR_LABELS_ZH_CN`, and `TOOLBAR_LABELS_EN` from `@registry/blocks/toolbar`.
 
-- [ ] **Step 1: Write the failing canonical-name contract test**
+- [x] **Step 1: Write the failing canonical-name contract test**
 
 ```ts
-import { access, readFile } from "node:fs/promises"
 import { describe, expect, it } from "vitest"
-
-async function exists(path: string): Promise<boolean> {
-  return access(path).then(
-    () => true,
-    () => false,
-  )
-}
+import { loadCatalog } from "../registry-model"
 
 describe("toolbar complete rename", () => {
   it("publishes only the Toolbar registry contract", async () => {
-    const registry = JSON.parse(await readFile("registry/blocks/registry.json", "utf8")) as {
-      items: Array<{ name: string; files: Array<{ path: string; target?: string }> }>
-    }
-    const toolbar = registry.items.find((item) => item.name === "toolbar")
+    const catalog = await loadCatalog(process.cwd())
+    const toolbar = catalog.find((item) => item.name === "toolbar")
 
-    expect(toolbar?.files).toEqual([
-      {
-        path: "toolbar/Toolbar.tsx",
-        type: "registry:block",
-        target: "@components/blocks/toolbar/Toolbar.tsx",
-      },
-      {
-        path: "toolbar/index.ts",
-        type: "registry:block",
-        target: "@components/blocks/toolbar/index.ts",
-      },
-      {
-        path: "toolbar/labels.ts",
-        type: "registry:block",
-        target: "@components/blocks/toolbar/labels.ts",
-      },
-      {
-        path: "toolbar/types.ts",
-        type: "registry:block",
-        target: "@components/blocks/toolbar/types.ts",
-      },
-    ])
-    expect(registry.items.some((item) => item.name === "loom-toolbar")).toBe(false)
-    expect(await exists("registry/blocks/toolbar/Toolbar.tsx")).toBe(true)
-    expect(await exists("registry/blocks/loom-toolbar/LoomToolbar.tsx")).toBe(false)
-  })
-
-  it("exports only the canonical Toolbar symbols", async () => {
-    const [component, index, labels, types] = await Promise.all([
-      readFile("registry/blocks/toolbar/Toolbar.tsx", "utf8"),
-      readFile("registry/blocks/toolbar/index.ts", "utf8"),
-      readFile("registry/blocks/toolbar/labels.ts", "utf8"),
-      readFile("registry/blocks/toolbar/types.ts", "utf8"),
-    ])
-    const source = [component, index, labels, types].join("\n")
-
-    expect(component).toContain("export function Toolbar")
-    expect(component).toContain('data-slot="toolbar"')
-    expect(index).toContain('export { Toolbar } from "./Toolbar"')
-    expect(source).toContain("TOOLBAR_LABELS_ZH_CN")
-    expect(source).toContain("ToolbarGroup")
-    expect(source).not.toMatch(/LoomToolbar|LOOM_TOOLBAR|loom-toolbar/)
+    expect(toolbar).toEqual({
+      name: "toolbar",
+      type: "registry:block",
+      registryDependencies: ["@mapseek/badge", "@mapseek/button", "@mapseek/utils"],
+      files: [
+        {
+          path: "registry/blocks/toolbar/Toolbar.tsx",
+          type: "registry:block",
+          target: "@components/blocks/toolbar/Toolbar.tsx",
+        },
+        {
+          path: "registry/blocks/toolbar/index.ts",
+          type: "registry:block",
+          target: "@components/blocks/toolbar/index.ts",
+        },
+        {
+          path: "registry/blocks/toolbar/labels.ts",
+          type: "registry:block",
+          target: "@components/blocks/toolbar/labels.ts",
+        },
+        {
+          path: "registry/blocks/toolbar/types.ts",
+          type: "registry:block",
+          target: "@components/blocks/toolbar/types.ts",
+        },
+      ],
+      dependencies: ["@tabler/icons-react"],
+    })
+    expect(catalog.some((item) => item.name === "loom-toolbar")).toBe(false)
   })
 })
 ```
 
-- [ ] **Step 2: Run the contract test and verify the old implementation fails**
+- [x] **Step 2: Run the contract test and verify the old implementation fails**
 
 Run: `pnpm vitest run scripts/__tests__/toolbar-rename.test.ts`
 
-Expected: FAIL because `toolbar` is absent from the registry and `registry/blocks/toolbar/Toolbar.tsx` does not exist.
+Expected: FAIL because `loadCatalog()` still returns `loom-toolbar` and no canonical `toolbar` item.
 
-- [ ] **Step 3: Move the block files and rename every core public symbol**
+- [x] **Step 3: Move the block files and rename every core public symbol**
 
 The renamed barrel must be exactly:
 
@@ -144,7 +122,7 @@ export type ToolbarProps = {
 
 Apply the exact type mappings `LoomToolbarTool` → `ToolbarTool`, `LoomToolbarGroup` → `ToolbarGroup`, and `LoomToolbarLabels` → `ToolbarLabels`. Rename both label constants to `TOOLBAR_LABELS_*`, rename the component function and props annotation to `Toolbar` / `ToolbarProps`, change its default label constant to `TOOLBAR_LABELS_ZH_CN`, and change only `data-slot="loom-toolbar"` to `data-slot="toolbar"` inside the rendered markup. Update the unit test import, `describe` name, rendered component, and file name to `Toolbar` without changing its typography assertions.
 
-- [ ] **Step 4: Replace the registry item and composition-test path**
+- [x] **Step 4: Replace the registry item and composition-test path**
 
 ```json
 {
@@ -179,7 +157,7 @@ Apply the exact type mappings `LoomToolbarTool` → `ToolbarTool`, `LoomToolbarG
 
 Rename the composition assertion to `renders the toolbar with a border and no shadow` and read `registry/blocks/toolbar/Toolbar.tsx`. In the `BLOCKS` inventory, replace only `"loom-toolbar"` with `"toolbar"` and leave `"loom-toolbox"` unchanged.
 
-- [ ] **Step 5: Run focused core tests and registry validation**
+- [x] **Step 5: Run focused core tests and registry validation**
 
 Run: `pnpm vitest run scripts/__tests__/toolbar-rename.test.ts registry/blocks/toolbar/Toolbar.test.tsx scripts/__tests__/registry-component-composition.test.ts`
 

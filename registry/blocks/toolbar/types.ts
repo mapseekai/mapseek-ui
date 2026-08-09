@@ -1,6 +1,6 @@
 import type { Icon } from "@tabler/icons-react"
 
-export type LoomToolbarTool = {
+export type ToolbarTool = {
   readonly id: string
   readonly label: string
   readonly shortcut?: string
@@ -8,12 +8,12 @@ export type LoomToolbarTool = {
   readonly editOnly?: boolean
 }
 
-export type LoomToolbarGroup = {
+export type ToolbarGroup = {
   readonly label: string
-  readonly tools: readonly LoomToolbarTool[]
+  readonly tools: readonly ToolbarTool[]
 }
 
-export type LoomToolbarLabels = {
+export type ToolbarLabels = {
   readonly startEditing: string
   readonly stopEditing: string
   readonly save: string

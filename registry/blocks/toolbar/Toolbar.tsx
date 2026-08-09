@@ -8,11 +8,11 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { LOOM_TOOLBAR_LABELS_ZH_CN } from "./labels"
-import type { LoomToolbarGroup, LoomToolbarLabels } from "./types"
+import { TOOLBAR_LABELS_ZH_CN } from "./labels"
+import type { ToolbarGroup, ToolbarLabels } from "./types"
 
-export type LoomToolbarProps = {
-  readonly groups: readonly LoomToolbarGroup[]
+export type ToolbarProps = {
+  readonly groups: readonly ToolbarGroup[]
   readonly activeMode: string
   readonly activeLayerName: string
   readonly editing: boolean
@@ -20,7 +20,7 @@ export type LoomToolbarProps = {
   readonly snapping: boolean
   readonly canUndo: boolean
   readonly canRedo: boolean
-  readonly labels?: LoomToolbarLabels
+  readonly labels?: ToolbarLabels
   readonly className?: string
   readonly onEditingChange: (editing: boolean) => void
   readonly onModeChange: (mode: string) => void
@@ -34,7 +34,7 @@ function Separator() {
   return <span aria-hidden="true" className="mx-1 h-6 w-px shrink-0 bg-border" />
 }
 
-export function LoomToolbar({
+export function Toolbar({
   groups,
   activeMode,
   activeLayerName,
@@ -43,7 +43,7 @@ export function LoomToolbar({
   snapping,
   canUndo,
   canRedo,
-  labels = LOOM_TOOLBAR_LABELS_ZH_CN,
+  labels = TOOLBAR_LABELS_ZH_CN,
   className,
   onEditingChange,
   onModeChange,
@@ -51,12 +51,12 @@ export function LoomToolbar({
   onSave,
   onUndo,
   onRedo,
-}: LoomToolbarProps) {
+}: ToolbarProps) {
   const activeTool = groups.flatMap((group) => group.tools).find((tool) => tool.id === activeMode)
 
   return (
     <div
-      data-slot="loom-toolbar"
+      data-slot="toolbar"
       className={cn(
         "relative min-h-[500px] w-full overflow-hidden border border-border bg-muted/40",
         className,

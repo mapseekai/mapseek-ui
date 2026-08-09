@@ -686,29 +686,29 @@
       "dependencies": ["@tabler/icons-react"]
     },
     {
-      "name": "loom-toolbar",
+      "name": "toolbar",
       "type": "registry:block",
       "registryDependencies": ["@mapseek/badge", "@mapseek/button", "@mapseek/utils"],
       "files": [
         {
-          "path": "loom-toolbar/LoomToolbar.tsx",
+          "path": "toolbar/Toolbar.tsx",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbar/LoomToolbar.tsx"
+          "target": "@components/blocks/toolbar/Toolbar.tsx"
         },
         {
-          "path": "loom-toolbar/index.ts",
+          "path": "toolbar/index.ts",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbar/index.ts"
+          "target": "@components/blocks/toolbar/index.ts"
         },
         {
-          "path": "loom-toolbar/labels.ts",
+          "path": "toolbar/labels.ts",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbar/labels.ts"
+          "target": "@components/blocks/toolbar/labels.ts"
         },
         {
-          "path": "loom-toolbar/types.ts",
+          "path": "toolbar/types.ts",
           "type": "registry:block",
-          "target": "@components/blocks/loom-toolbar/types.ts"
+          "target": "@components/blocks/toolbar/types.ts"
         }
       ],
       "dependencies": ["@tabler/icons-react"]

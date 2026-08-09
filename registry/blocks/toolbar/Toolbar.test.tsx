@@ -7,12 +7,12 @@ vi.mock("@/lib/utils", () => ({
   cn: (...classes: Array<string | false | undefined>) => classes.filter(Boolean).join(" "),
 }))
 
-import { LoomToolbar } from "./LoomToolbar"
+import { Toolbar } from "./Toolbar"
 
-describe("LoomToolbar", () => {
+describe("Toolbar", () => {
   it("renders editing actions with the interactive control type scale", () => {
     const html = renderToStaticMarkup(
-      <LoomToolbar
+      <Toolbar
         groups={[]}
         activeMode="select"
         activeLayerName="Land use"

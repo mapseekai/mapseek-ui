@@ -49,14 +49,16 @@ export function PlaceholderGlyphDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           type="button"
           variant="outline"
           size="sm"
+          aria-pressed={mono}
           data-demo-action="placeholder-glyph-toggle"
           onClick={() => setMono((current) => !current)}
         >
           {demoLabels.toggleTone}
         </Button>
         <span
+          role="status"
           data-demo-status="placeholder-glyph"
-          className="font-mono text-xs text-muted-foreground"
+          className="text-body-sm text-muted-foreground"
         >
           {demoLabels.tone}: {mono ? demoLabels.muted : demoLabels.normal}
         </span>
@@ -68,7 +70,9 @@ export function PlaceholderGlyphDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
             className="flex aspect-square flex-col items-center justify-center gap-1.5 bg-background p-2"
           >
             <PlaceholderGlyph size={28} seed={item.seed} mono={mono} />
-            <span className="font-mono text-[9px] text-muted-foreground">{item.label}</span>
+            <span data-demo-caption="placeholder-glyph" className="text-body-sm text-foreground">
+              {item.label}
+            </span>
           </div>
         ))}
       </div>
@@ -76,7 +80,12 @@ export function PlaceholderGlyphDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         {[16, 24, 32, 48, 72].map((size) => (
           <div key={size} className="flex flex-col items-center gap-2">
             <PlaceholderGlyph size={size} seed="g_map-3" mono={mono} />
-            <span className="font-mono text-[10px] text-muted-foreground">{size}px</span>
+            <span
+              data-demo-caption="placeholder-glyph"
+              className="tnum text-body-sm text-foreground"
+            >
+              {size}px
+            </span>
           </div>
         ))}
       </div>

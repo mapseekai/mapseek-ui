@@ -2455,10 +2455,33 @@ export async function assertBlockInteraction(
 
   if (block === "placeholder-glyph") {
     const demo = page.locator('[data-demo="placeholder-glyph"]')
-    await expect(demo.locator("svg")).toHaveCount(13)
+    const glyphs = demo.locator("svg")
+    const toggle = demo.locator('[data-demo-action="placeholder-glyph-toggle"]')
+    const status = demo.locator('[data-demo-status="placeholder-glyph"]')
+    const captions = demo.locator('[data-demo-caption="placeholder-glyph"]')
+
+    await expect(glyphs).toHaveCount(13)
+    await expect(demo.getByRole("img")).toHaveCount(0)
+    await expect(demo.locator("svg title")).toHaveCount(0)
+    for (const glyph of await glyphs.all()) {
+      await expect(glyph).toHaveAttribute("stroke-width", "2")
+    }
     await expect(demo).toContainText(localized(path, "搜索", "search"))
-    await demo.locator('[data-demo-action="placeholder-glyph-toggle"]').click()
-    await expect(demo.locator('[data-demo-status="placeholder-glyph"]')).toContainText("muted")
+    await expect(toggle).toHaveAttribute("aria-pressed", "false")
+    await expect(status).toHaveAttribute("role", "status")
+    await expect(status).toHaveCSS("font-size", "11px")
+    await expect(captions).toHaveCount(13)
+    for (const caption of await captions.all()) {
+      await expect(caption).toHaveCSS("font-size", "11px")
+    }
+    await expect(demo.getByText("16px", { exact: true })).toHaveCSS(
+      "font-variant-numeric",
+      "tabular-nums",
+    )
+    await toggle.click()
+    await expect(toggle).toHaveAttribute("aria-pressed", "true")
+    await expect(status).toContainText("muted")
+    await assertNoHorizontalOverflow(demo, `${path} placeholder glyph`)
   }
 
   if (block === "processing-timeline") {
@@ -2477,23 +2500,19 @@ export async function assertBlockInteraction(
       name: localized(path, "日志", "Log"),
       exact: true,
     })
-    const copyButton = demo.getByRole("button", {
-      name: localized(path, "复制", "Copy"),
-      exact: true,
-    })
-    const [logCenter, copyCenter] = await Promise.all(
-      [logButton, copyButton].map((button) =>
-        button.evaluate((element) => {
-          const box = element.getBoundingClientRect()
-          return box.top + box.height / 2
-        }),
-      ),
+    const progress = demo.getByRole("progressbar")
+    await expect(progress).toHaveAttribute(
+      "aria-label",
+      localized(path, "处理栅格数据", "Process raster data"),
     )
-    expect(Math.abs(logCenter - copyCenter)).toBeLessThanOrEqual(0.5)
+    await expect(demo.locator('[data-slot="tag"]')).toHaveCount(5)
+    await expect(
+      demo.getByRole("button", { name: localized(path, "复制", "Copy"), exact: true }),
+    ).toHaveCount(0)
 
-    await copyButton.click()
+    await logButton.click()
     await expect(demo.locator('[data-demo-status="processing-timeline"]')).toContainText(
-      localized(path, "已复制日志", "Copied log"),
+      localized(path, "已选择日志", "Log selected"),
     )
   }
 

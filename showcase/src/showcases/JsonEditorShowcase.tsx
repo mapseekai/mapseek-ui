@@ -45,7 +45,7 @@ export function JsonEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
 
   return (
     <div className="flex w-full max-w-[960px] flex-col gap-4">
-      <p className="m-0 text-xs text-muted-foreground">{demoLabels.intro}</p>
+      <p className="m-0 text-body-md text-muted-foreground">{demoLabels.intro}</p>
       <div className="flex flex-wrap items-center gap-2">
         <ToggleGroup
           value={[theme]}
@@ -69,13 +69,16 @@ export function JsonEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
-        <span data-demo-status="json-editor" className="font-mono text-xs text-muted-foreground">
+        <span
+          data-demo-status="json-editor"
+          className="font-mono text-body-sm text-muted-foreground"
+        >
           {status}
         </span>
       </div>
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="flex min-w-0 flex-col gap-2">
-          <span className="font-mono text-[11px] text-muted-foreground">
+          <span className="font-mono text-body-sm text-muted-foreground">
             {demoLabels.untitled} · {theme}
           </span>
           <div className="h-[360px]">
@@ -90,13 +93,13 @@ export function JsonEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           </div>
         </div>
         <div className="flex min-w-0 flex-col gap-2">
-          <span className="font-mono text-[11px] text-muted-foreground">{demoLabels.titled}</span>
+          <span className="font-mono text-body-sm text-muted-foreground">{demoLabels.titled}</span>
           <div className="h-[360px]">
             <JsonEditor value={value} onChange={setValue} title="JSON" theme={theme} />
           </div>
         </div>
       </div>
-      <pre className="m-0 max-h-[180px] min-w-0 max-w-full !overflow-auto border border-border bg-muted/30 p-2 font-mono !text-[10px] !leading-4">
+      <pre className="m-0 max-h-[180px] min-w-0 max-w-full !overflow-auto border border-border bg-muted/30 p-2 font-mono text-body-sm !leading-4">
         {JSON.stringify(value, null, 2)}
       </pre>
     </div>

@@ -36,11 +36,15 @@ describe("JsonEditorDemo", () => {
     expect(source).not.toContain('from "@registry/ui/button"')
   })
 
-  it("keeps design-token typography and focus-status feedback", () => {
+  it("keeps design-token typography and focus-status feedback", async () => {
     const html = renderToStaticMarkup(<JsonEditorDemo locale="zh-CN" />)
+    const source = await readFile(new URL("./JsonEditorShowcase.tsx", import.meta.url), "utf8")
 
     expect(html).toContain("font-mono")
     expect(html).toContain("text-muted-foreground")
     expect(html).toContain('data-demo-status="json-editor"')
+    expect(source).toContain("text-body-sm")
+    expect(source).toContain("text-body-md")
+    expect(source).not.toContain("text-[")
   })
 })

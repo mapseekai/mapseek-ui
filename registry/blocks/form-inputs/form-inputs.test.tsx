@@ -65,17 +65,12 @@ describe("form inputs", () => {
     expect(html).toContain('aria-label="Opacity slider"')
     expect(html).toContain('aria-describedby="opacity-help"')
     expect(html).toContain('aria-invalid="true"')
+    expect(html).toMatch(/autocomplete="off"/i)
   })
 
   it("keeps a default-only range uncontrolled", () => {
     const html = renderToStaticMarkup(
-      <InputNumber
-        allowRange
-        aria-label="Opacity"
-        default={48}
-        min={0}
-        max={100}
-      />,
+      <InputNumber allowRange aria-label="Opacity" default={48} min={0} max={100} />,
     )
 
     expect(html).toContain('aria-valuenow="48"')
@@ -150,14 +145,10 @@ const visibleRangeLabel = {
   sliderAriaLabel: "Opacity slider",
 } satisfies React.ComponentProps<typeof InputNumber>
 
-const ordinaryNumberWithoutLabel = {} satisfies React.ComponentProps<
-  typeof InputNumber
->
+const ordinaryNumberWithoutLabel = {} satisfies React.ComponentProps<typeof InputNumber>
 
 // @ts-expect-error Range mode must have an accessible-name contract.
-const missingRangeLabel = { allowRange: true } satisfies React.ComponentProps<
-  typeof InputNumber
->
+const missingRangeLabel = { allowRange: true } satisfies React.ComponentProps<typeof InputNumber>
 
 const missingSliderLabel = {
   allowRange: true,

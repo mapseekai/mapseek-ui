@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-ServiceEndpointRow displays one GET endpoint, highlights URL template parameters, and provides copy/open actions.
+ServiceEndpointRow displays one GET endpoint, emphasizes URL template parameters with neutral typography, and provides copy/open actions.
 
 ## Installation
 
@@ -28,21 +28,29 @@ import { ServiceEndpointRow, type ServiceEndpointRowProps } from "@/registry/blo
 
 ## Usage
 
-Pass title, subtitle, URL, icon, and callbacks. When real tokens or auth are required, disable open and explain it with a tooltip.
+Pass the title, subtitle, URL, icon, and copy callback. Use `openHref` for real navigation; the component renders a native link that opens in a new window. When only `onOpen` is provided, it renders an application-controlled button. When real tokens or authentication are required, set `openDisabled` and explain the reason with `openTooltip`.
+
+If neither `openHref` nor `onOpen` is provided, the open action automatically becomes a focusable `aria-disabled` control instead of an enabled no-op.
 
 ## Public Exports and Props
 
-Exports include `ServiceEndpointRow` and `ServiceEndpointRowProps`. Key props are `title`, `subtitle`, `method`, `url`, `copyLabel`, `onCopy`, `openDisabled`, `openTooltip`, and `onOpen`.
+Exports include `ServiceEndpointRow` and `ServiceEndpointRowProps`. Its complete behavior props are:
+
+- `copyLabel` and `openLabel`: required accessible labels for the copy and open actions.
+- `copiedLabel`: optional localized success feedback; it falls back to `copyLabel`.
+- `onCopy` and `onCopyError`: called after clipboard success and failure, respectively.
+- `openHref`: the real navigation target; an enabled value renders a native link.
+- `onOpen`: the button action when `openHref` is absent, or an auxiliary status/analytics callback when both are present.
+- `openDisabled` and `openTooltip`: control the disabled state and expose its reason.
 
 ## Loading, Empty, Error, and Status
 
-The block does not touch clipboard or windows directly; copy, open, disabled, and error messaging are controlled by callbacks and props.
+The copy action uses the Clipboard API through `CopyButton`. It calls `onCopy` after a successful write and `onCopyError` after a failure; the block does not show a toast itself. Opening is controlled by `openHref` or `onOpen` and never calls `window.open` directly.
 
 ## Accessibility
 
-Copy and open buttons must provide `copyLabel` and `openLabel`. The URL is rendered in a code area with horizontal scrolling.
+Copy and open actions must provide `copyLabel` and `openLabel`. The URL is a focusable, horizontally scrollable `code` region that stays LTR and untranslated inside RTL pages. Navigation retains link semantics, while disabled actions remain keyboard-focusable so their tooltip explanation is discoverable.
 
 ## Dependencies
 
 <RegistryDependencies registryName="service-endpoint-row" />
-

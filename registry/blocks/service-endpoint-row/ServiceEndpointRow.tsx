@@ -1,12 +1,15 @@
+// biome-ignore-all lint/a11y/noNoninteractiveTabindex: The horizontally scrollable URL must be keyboard reachable.
+// biome-ignore-all lint/a11y/useSemanticElements: The URL must retain native code semantics while exposing a named region.
 import { IconExternalLink } from "@tabler/icons-react"
 import { CopyButton } from "@/components/ui/copy-button"
-import { IconButton } from "@/components/ui/icon-button"
-import { InputGroup, InputGroupText } from "@/components/ui/input-group"
+import { IconButton, iconButtonVariants } from "@/components/ui/icon-button"
+import { Tag } from "@/components/ui/tag"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import type { ServiceEndpointRowProps } from "./types"
 
 /**
  * 单个服务地址行：图标 + 标题/副标题 + 方法标签 + URL + 复制 / 新窗口打开。
- * 纯展示 block：文案经 props，复制/打开经回调；无 i18n/toast/clipboard。
+ * 纯展示 block：文案经 props，复制结果经回调，打开行为支持链接或应用回调。
  */
 export function ServiceEndpointRow({
   title,
@@ -14,64 +17,117 @@ export function ServiceEndpointRow({
   method,
   url,
   onCopy,
+  onCopyError,
   copyLabel,
+  copiedLabel,
   icon,
   openDisabled,
   openTooltip,
   openLabel,
+  openHref,
   onOpen,
 }: ServiceEndpointRowProps) {
   const urlSegments = getUrlSegments(url)
+  const isOpenDisabled = Boolean(openDisabled || (!openHref && !onOpen))
 
   return (
-    <div className="flex w-full min-w-0 max-w-full flex-col gap-2 overflow-hidden border border-border p-3">
+    <div
+      data-slot="service-endpoint-row"
+      className="flex w-full min-w-0 max-w-full flex-col gap-2 overflow-hidden border border-border p-3"
+    >
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
-          {icon}
-          <div className="flex min-w-0 flex-col">
-            <span className="text-headline-sm">{title}</span>
-            <span className="mono text-body-sm uppercase text-muted-foreground">{subtitle}</span>
+          {icon ? (
+            <span aria-hidden="true" className="shrink-0">
+              {icon}
+            </span>
+          ) : null}
+          <div className="flex min-w-0 flex-1 flex-col">
+            <span title={title} className="truncate text-headline-sm">
+              {title}
+            </span>
+            <span title={subtitle} className="mono truncate text-body-sm text-muted-foreground">
+              {subtitle}
+            </span>
           </div>
         </div>
-        <span className="mono shrink-0 border border-info/25 bg-info/10 px-1.5 py-0.5 text-body-sm text-info">
+        <Tag color="gray" variant="outline" translate="no">
           {method}
-        </span>
+        </Tag>
       </div>
-      <div className="flex min-w-0 items-center gap-1.5">
-        <InputGroup className="h-auto min-h-8 w-auto flex-1 overflow-hidden bg-muted/40">
-          <InputGroupText className="mono min-w-0 max-w-full flex-1 gap-0 overflow-x-auto whitespace-nowrap px-2 py-1.5 text-body-sm">
-            {urlSegments.map((segment) =>
-              /^\{.+\}$/.test(segment.part) ? (
-                <span key={segment.key} className="font-medium text-warning">
-                  {segment.part}
-                </span>
-              ) : (
-                <span key={segment.key} className="text-muted-foreground">
-                  {segment.part}
-                </span>
-              ),
-            )}
-          </InputGroupText>
-        </InputGroup>
+      <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-1.5">
+        <code
+          data-slot="service-endpoint-url"
+          role="region"
+          tabIndex={0}
+          dir="ltr"
+          translate="no"
+          aria-label={url}
+          title={url}
+          className="mono scroll-fade-x flex h-8 min-w-0 items-center overflow-x-auto whitespace-nowrap border border-input bg-input-surface px-2 text-body-sm text-foreground outline-none focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/20"
+        >
+          {urlSegments.map((segment) => (
+            <span
+              key={segment.key}
+              className={isTemplateParameter(segment.part) ? "font-medium" : undefined}
+            >
+              {segment.part}
+            </span>
+          ))}
+        </code>
         <CopyButton
           content={url}
           aria-label={copyLabel}
           label={copyLabel}
+          copiedLabel={copiedLabel ?? copyLabel}
           title={copyLabel}
+          iconSize="md"
           onCopy={onCopy}
+          onCopyError={onCopyError}
         />
-        <IconButton
-          size="xs"
-          disabled={openDisabled}
-          label={openLabel}
-          tooltip={openTooltip}
-          onClick={onOpen}
-        >
-          <IconExternalLink stroke={1.5} />
-        </IconButton>
+        {openHref && !isOpenDisabled ? (
+          <Tooltip>
+            <TooltipTrigger
+              render={
+                <a
+                  href={openHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={openLabel}
+                  title={openLabel}
+                  className={iconButtonVariants({ size: "md" })}
+                  onClick={onOpen}
+                >
+                  <IconExternalLink stroke={1.5} />
+                </a>
+              }
+            />
+            <TooltipContent>{openTooltip || openLabel}</TooltipContent>
+          </Tooltip>
+        ) : (
+          <IconButton
+            size="md"
+            aria-disabled={isOpenDisabled || undefined}
+            label={openLabel}
+            tooltip={openTooltip || openLabel}
+            onClick={(event) => {
+              if (isOpenDisabled) {
+                event.preventDefault()
+                return
+              }
+              onOpen?.()
+            }}
+          >
+            <IconExternalLink stroke={1.5} />
+          </IconButton>
+        )}
       </div>
     </div>
   )
+}
+
+function isTemplateParameter(part: string) {
+  return /^\{.+\}$/.test(part)
 }
 
 function getUrlSegments(url: string) {

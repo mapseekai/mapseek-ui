@@ -2,7 +2,7 @@ import { IconCheck, IconClipboard } from "@tabler/icons-react"
 import { type ComponentProps, useEffect, useRef, useState } from "react"
 
 import { Button } from "@/registry/ui/button"
-import { IconButton } from "@/registry/ui/icon-button"
+import { IconButton, type IconButtonSize } from "@/registry/ui/icon-button"
 
 type CopyButtonProps = Omit<ComponentProps<"button">, "children" | "onClick"> & {
   content: string
@@ -11,6 +11,7 @@ type CopyButtonProps = Omit<ComponentProps<"button">, "children" | "onClick"> & 
   copiedLabel?: string
   duration?: number
   textSize?: ComponentProps<typeof Button>["size"]
+  iconSize?: IconButtonSize
   onCopy?: () => void
   onCopiedChange?: (copied: boolean) => void
   onCopyError?: (error: unknown) => void
@@ -23,6 +24,7 @@ function CopyButton({
   copiedLabel = "已复制",
   duration = 2000,
   textSize = "sm",
+  iconSize = "xs",
   onCopy,
   onCopiedChange,
   onCopyError,
@@ -63,15 +65,9 @@ function CopyButton({
   const currentLabel = copied ? copiedLabel : label
   const accessibleLabel = copied ? copiedLabel : (ariaLabel ?? label)
   const icon = copied ? (
-    <IconCheck
-      data-icon="inline-start"
-      className={variant === "icon" ? "size-3.5 text-primary" : "text-primary"}
-    />
+    <IconCheck data-icon="inline-start" className="text-primary" />
   ) : (
-    <IconClipboard
-      data-icon="inline-start"
-      className={variant === "icon" ? "size-3.5" : undefined}
-    />
+    <IconClipboard data-icon="inline-start" />
   )
 
   if (variant === "icon") {
@@ -79,7 +75,7 @@ function CopyButton({
       <IconButton
         type={type}
         data-slot="copy-button"
-        size="xs"
+        size={iconSize}
         label={accessibleLabel}
         onClick={() => void handleCopy()}
         {...props}

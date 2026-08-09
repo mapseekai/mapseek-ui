@@ -5,6 +5,7 @@ import type { LocalizedDemoProps } from "./types"
 
 type ServiceEndpointRowDemoLabels = {
   readonly copied: string
+  readonly copyError: string
   readonly opened: string
   readonly copy: string
   readonly open: string
@@ -20,6 +21,7 @@ type ServiceEndpointRowDemoLabels = {
 const labels = {
   "zh-CN": {
     copied: "已复制 URL",
+    copyError: "复制 URL 失败",
     opened: "已打开服务",
     copy: "复制 URL",
     open: "新窗口打开",
@@ -33,6 +35,7 @@ const labels = {
   } satisfies ServiceEndpointRowDemoLabels,
   en: {
     copied: "Copied URL",
+    copyError: "Failed to copy URL",
     opened: "Opened service",
     copy: "Copy URL",
     open: "Open in new window",
@@ -52,24 +55,30 @@ export function ServiceEndpointRowDemo({ locale = "zh-CN" }: LocalizedDemoProps)
 
   return (
     <div className="flex w-full min-w-0 max-w-full flex-col gap-3">
-      <span
+      <output
         data-demo-status="service-endpoint-row"
+        aria-live="polite"
         className="font-mono text-xs text-muted-foreground"
       >
         {status}
-      </span>
+      </output>
       <ServiceEndpointRow
         title={demoLabels.tilesTitle}
         subtitle={demoLabels.tilesSubtitle}
         method="GET"
         url="https://api.mapseek.io/v1/raster/{uid}/tiles/{z}/{x}/{y}.png"
         icon={
-          <span className="flex size-9 items-center justify-center border border-warning/25 bg-warning/10 text-warning">
+          <span
+            aria-hidden="true"
+            className="flex size-9 items-center justify-center border border-border bg-muted/50 text-foreground"
+          >
             <IconGridDots size={16} stroke={1.75} />
           </span>
         }
         onCopy={() => setStatus(`${demoLabels.copied}: tiles`)}
+        onCopyError={() => setStatus(demoLabels.copyError)}
         copyLabel={demoLabels.copy}
+        copiedLabel={demoLabels.copied}
         openDisabled
         openLabel={demoLabels.open}
         openTooltip={demoLabels.pending}
@@ -80,14 +89,20 @@ export function ServiceEndpointRowDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         method="GET"
         url="https://api.mapseek.io/v1/raster/{uid}/tilejson.json"
         icon={
-          <span className="flex size-9 items-center justify-center border border-info/25 bg-info/10 text-info">
+          <span
+            aria-hidden="true"
+            className="flex size-9 items-center justify-center border border-border bg-muted/50 text-foreground"
+          >
             <IconBraces size={16} stroke={1.75} />
           </span>
         }
         onCopy={() => setStatus(`${demoLabels.copied}: tilejson`)}
+        onCopyError={() => setStatus(demoLabels.copyError)}
         copyLabel={demoLabels.copy}
+        copiedLabel={demoLabels.copied}
         openLabel={demoLabels.open}
         openTooltip={demoLabels.open}
+        openHref="https://api.mapseek.io/v1/raster/demo/tilejson.json"
         onOpen={() => setStatus(`${demoLabels.opened}: tilejson`)}
       />
       <ServiceEndpointRow
@@ -96,12 +111,17 @@ export function ServiceEndpointRowDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         method="GET"
         url="https://api.mapseek.io/v1/raster/{uid}/source.tif"
         icon={
-          <span className="flex size-9 items-center justify-center border border-info/25 bg-info/10 text-info">
+          <span
+            aria-hidden="true"
+            className="flex size-9 items-center justify-center border border-border bg-muted/50 text-foreground"
+          >
             <IconFileZip size={16} stroke={1.75} />
           </span>
         }
         onCopy={() => setStatus(`${demoLabels.copied}: cog`)}
+        onCopyError={() => setStatus(demoLabels.copyError)}
         copyLabel={demoLabels.copy}
+        copiedLabel={demoLabels.copied}
         openDisabled
         openLabel={demoLabels.open}
         openTooltip={demoLabels.pending}

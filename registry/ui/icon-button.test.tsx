@@ -22,7 +22,7 @@ vi.mock("@/registry/ui/tooltip", () => ({
   ),
 }))
 
-import { IconButton } from "./icon-button"
+import { IconButton, iconButtonVariants } from "./icon-button"
 
 const sizes = {
   xs: "size-6",
@@ -33,6 +33,15 @@ const sizes = {
 } as const
 
 describe("IconButton", () => {
+  it("exports the shared 32px style contract for semantic icon links", () => {
+    const classes = iconButtonVariants({ size: "md" }).split(/\s+/)
+
+    expect(classes).toContain("size-8")
+    expect(classes).toContain("focus-visible:border-ring")
+    expect(classes).toContain("[&_svg:not([class*='size-'])]:size-4")
+    expect(classes).toContain("aria-disabled:cursor-not-allowed")
+  })
+
   it.each(Object.entries(sizes))("maps %s to %s", (size, className) => {
     const button = IconButton({
       label: "Edit layer",

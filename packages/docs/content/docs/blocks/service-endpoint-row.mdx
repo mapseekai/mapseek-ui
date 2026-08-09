@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-ServiceEndpointRow 展示单个 GET 服务地址，突出 URL 模板参数并提供复制和打开入口。
+ServiceEndpointRow 展示单个 GET 服务地址，通过中性字重突出 URL 模板参数，并提供复制和打开入口。
 
 ## 安装
 
@@ -28,21 +28,29 @@ import { ServiceEndpointRow, type ServiceEndpointRowProps } from "@/registry/blo
 
 ## 用法
 
-传标题、副标题、URL、图标和回调。需要真实 token 或鉴权时可禁用打开按钮并通过 tooltip 说明。
+传标题、副标题、URL、图标和复制回调。真实导航使用 `openHref`，组件会渲染在新窗口打开的原生链接；只传 `onOpen` 时则渲染应用控制的按钮。需要真实 token 或鉴权时，可设置 `openDisabled` 并用 `openTooltip` 解释原因。
+
+如果既没有 `openHref` 也没有 `onOpen`，打开入口会自动成为可聚焦的 `aria-disabled` 状态，不会暴露无操作按钮。
 
 ## 公开导出与 Props
 
-导出 `ServiceEndpointRow` 和 `ServiceEndpointRowProps`。关键 props 是 `title`、`subtitle`、`method`、`url`、`copyLabel`、`onCopy`、`openDisabled`、`openTooltip`、`onOpen`。
+导出 `ServiceEndpointRow` 和 `ServiceEndpointRowProps`。完整行为 props 包括：
+
+- `copyLabel`、`openLabel`：复制和打开入口的必填无障碍文案。
+- `copiedLabel`：可选的本地化复制成功文案；省略时回退到 `copyLabel`。
+- `onCopy`、`onCopyError`：分别在剪贴板写入成功和失败后调用。
+- `openHref`：真实导航地址；启用时渲染原生链接。
+- `onOpen`：没有 `openHref` 时作为按钮动作；与 `openHref` 同时使用时可用于状态更新或统计。
+- `openDisabled`、`openTooltip`：控制禁用态并提供可发现的原因。
 
 ## 加载、空态、错误与状态
 
-组件不直接访问剪贴板或窗口；复制、打开、禁用和错误提示均由外层回调/props 控制。
+复制入口通过 `CopyButton` 使用 Clipboard API。写入成功后调用 `onCopy`，失败后调用 `onCopyError`；组件本身不显示 toast。打开入口由 `openHref` 或 `onOpen` 控制，不会直接调用 `window.open`。
 
 ## 无障碍
 
-复制和打开按钮必须提供 `copyLabel`、`openLabel`。URL 使用 code 区域并保持水平滚动。
+复制和打开入口必须提供 `copyLabel`、`openLabel`。URL 使用可聚焦的 `code` 区域并保持水平滚动，在 RTL 页面中仍固定为 LTR 且标记为不翻译。真实导航保留链接语义；禁用入口保留键盘焦点，因此 tooltip 仍可被发现。
 
 ## 依赖
 
 <RegistryDependencies registryName="service-endpoint-row" />
-

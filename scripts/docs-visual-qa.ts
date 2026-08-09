@@ -2352,8 +2352,15 @@ export async function assertBlockInteraction(
     await expect(demo.locator('[data-demo-status="schema-validity"]')).toContainText(
       localized(path, "valid", "valid"),
     )
-    await demo.getByLabel(localized(path, "切换为空图层选项", "Toggle empty layer options")).check()
+    await demo
+      .getByRole("checkbox", { name: localized(path, "切换为空选项", "Toggle empty options") })
+      .check()
     await expect(demo).toContainText(localized(path, "暂无图层", "No layers"))
+    await demo.getByLabel(localized(path, "算法", "Algorithm")).click()
+    await expect(
+      page.getByText(localized(path, "暂无选项", "No options"), { exact: true }),
+    ).toBeVisible()
+    await page.keyboard.press("Escape")
   }
 
   if (block === "layer-panel") {

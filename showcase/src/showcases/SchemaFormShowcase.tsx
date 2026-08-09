@@ -23,7 +23,7 @@ const labels = {
     intro: "schema 驱动表单。调用方播种 values、保存变化，并用 isSchemaFormValid 驱动提交按钮。",
     valid: "valid",
     invalid: "invalid",
-    emptyOptions: "切换为空图层选项",
+    emptyOptions: "切换为空选项",
     reset: "重置",
     fields: [
       { key: "radius", label: "缓冲半径", required: true, type: "number", min: 0 },
@@ -32,6 +32,7 @@ const labels = {
         label: "算法",
         type: "select",
         default: "dp",
+        emptyHint: "暂无选项",
         options: [
           { value: "dp", label: "Douglas-Peucker" },
           { value: "visvalingam", label: "Visvalingam" },
@@ -58,7 +59,7 @@ const labels = {
       "Schema-driven form. The caller seeds values, stores changes, and uses isSchemaFormValid for submit state.",
     valid: "valid",
     invalid: "invalid",
-    emptyOptions: "Toggle empty layer options",
+    emptyOptions: "Toggle empty options",
     reset: "Reset",
     fields: [
       { key: "radius", label: "Buffer radius", required: true, type: "number", min: 0 },
@@ -67,6 +68,7 @@ const labels = {
         label: "Algorithm",
         type: "select",
         default: "dp",
+        emptyHint: "No options",
         options: [
           { value: "dp", label: "Douglas-Peucker" },
           { value: "visvalingam", label: "Visvalingam" },
@@ -96,7 +98,9 @@ export function SchemaFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const fields = useMemo<SchemaFormField[]>(
     () =>
       demoLabels.fields.map((field) =>
-        field.type === "multiselect" && emptyOptions ? { ...field, options: [] } : field,
+        (field.type === "select" || field.type === "multiselect") && emptyOptions
+          ? { ...field, options: [] }
+          : field,
       ),
     [emptyOptions, demoLabels.fields],
   )

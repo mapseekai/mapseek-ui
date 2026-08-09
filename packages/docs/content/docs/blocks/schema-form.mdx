@@ -21,9 +21,12 @@ SchemaForm 是 schema 驱动的表单主体，支持 number、text、select 和 
 ```tsx
 import {
   SchemaForm,
+  SCHEMA_FORM_LABELS_EN,
+  SCHEMA_FORM_LABELS_ZH_CN,
   isSchemaFormValid,
   seedSchemaFormValues,
   type SchemaFormField,
+  type SchemaFormLabels,
   type SchemaFormOption,
 } from "@/registry/blocks/schema-form"
 ```
@@ -34,21 +37,24 @@ import {
 
 ## 用法
 
-用 `seedSchemaFormValues(fields)` 初始化 values，再把 `fields`、`values` 和 `onChange` 传给 `SchemaForm`。提交按钮通常读取 `isSchemaFormValid(fields, values)` 来决定是否可运行。
+`values` 是当前受控值来源；用 `seedSchemaFormValues(fields)` 只在初始化或重置时生成它。把 `fields`、`values`、`onChange` 传给 `SchemaForm`，提交按钮通常读取 `isSchemaFormValid(fields, values)` 来决定是否可运行。
 
 ## 公开导出与 Props
 
-导出 `SchemaForm`、`seedSchemaFormValues`、`isSchemaFormValid`、`SchemaFormField`、`SchemaFormOption` 和 `SchemaFormProps`。关键 props 是 `fields`、`values`、`onChange`、`idPrefix` 和 `className`。
+导出 `SchemaForm`、`seedSchemaFormValues`、`isSchemaFormValid`、`SchemaFormField`、`SchemaFormLabels`、`SchemaFormOption`、`SchemaFormProps`、`SCHEMA_FORM_LABELS_EN` 和 `SCHEMA_FORM_LABELS_ZH_CN`。关键 props 是 `fields`、`values`、`onChange`、`errors`、`labels`、`idPrefix` 和 `className`。
+
+字段可指定 `name`、`autoComplete` 和 text 字段的 `spellCheck`；未指定的 name 使用字段 key，number/text 默认 `autoComplete="off"`。`errors` 是调用方拥有的、按字段 key 索引的本地化错误文本，`SchemaFormLabels` 是可注入的 `labels` 契约，`SCHEMA_FORM_LABELS_EN` 和 `SCHEMA_FORM_LABELS_ZH_CN` 分别是可直接使用的英文和简体中文默认标签集，其中 `labels.emptyOptions` 提供全局空选项回退文案。
 
 ## 状态与校验
 
-组件不保存业务状态。number 字段支持 min/max，text 支持 placeholder，select 使用默认值，multiselect 支持空态提示、required 和 min 数量校验。
+组件不保存业务状态。number 值必须是有限数值，并校验 `min`/`max`；multiselect 在定义 `min` 时校验最小选择数，即使字段不是必填。select 和 multiselect 的空 options 使用 `field.emptyHint`，未提供时回退到 `labels.emptyOptions`。
+
+`seedSchemaFormValues` 会填充字段默认值，方便重置；之后的外部 values 更新会立即反映到受控控件。每个实例生成独立的字段 id，`idPrefix` 仅用于调用方需要稳定前缀的场景。
 
 ## 无障碍
 
-每个字段都有 `Label` 与控件关联。必填字段显示星号；调用方应在提交区域补充错误汇总或字段级错误文本，避免只用禁用按钮表达无效。
+每个字段都有与控件关联的 Label。required 会显示星号并设置原生或 ARIA 必填语义；有 `errors` 时，控件会标记为无效并关联带 `role="alert"` 的字段错误。调用方负责生成本地化错误，并可在提交区域补充错误汇总。
 
 ## 依赖
 
 <RegistryDependencies registryName="schema-form" />
-

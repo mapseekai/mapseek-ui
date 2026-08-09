@@ -21,9 +21,12 @@ SchemaForm is a schema-driven form body for number, text, select, and multiselec
 ```tsx
 import {
   SchemaForm,
+  SCHEMA_FORM_LABELS_EN,
+  SCHEMA_FORM_LABELS_ZH_CN,
   isSchemaFormValid,
   seedSchemaFormValues,
   type SchemaFormField,
+  type SchemaFormLabels,
   type SchemaFormOption,
 } from "@/registry/blocks/schema-form"
 ```
@@ -34,21 +37,24 @@ import {
 
 ## Usage
 
-Initialize values with `seedSchemaFormValues(fields)`, then pass `fields`, `values`, and `onChange` to `SchemaForm`. Submit buttons usually read `isSchemaFormValid(fields, values)` to decide whether the operation can run.
+`values` is the current controlled source; use `seedSchemaFormValues(fields)` only to initialize or reset it. Pass `fields`, `values`, and `onChange` to `SchemaForm`; submit buttons usually read `isSchemaFormValid(fields, values)` to decide whether the operation can run.
 
 ## Public Exports and Props
 
-Exports include `SchemaForm`, `seedSchemaFormValues`, `isSchemaFormValid`, `SchemaFormField`, `SchemaFormOption`, and `SchemaFormProps`. Key props are `fields`, `values`, `onChange`, `idPrefix`, and `className`.
+Exports include `SchemaForm`, `seedSchemaFormValues`, `isSchemaFormValid`, `SchemaFormField`, `SchemaFormLabels`, `SchemaFormOption`, `SchemaFormProps`, `SCHEMA_FORM_LABELS_EN`, and `SCHEMA_FORM_LABELS_ZH_CN`. Key props are `fields`, `values`, `onChange`, `errors`, `labels`, `idPrefix`, and `className`.
+
+Fields can specify `name`, `autoComplete`, and text `spellCheck`; an omitted name uses the field key, while number/text default to `autoComplete="off"`. `errors` is caller-owned localized error text by field key; `SchemaFormLabels` is the injectable `labels` contract, while `SCHEMA_FORM_LABELS_EN` and `SCHEMA_FORM_LABELS_ZH_CN` are ready-to-use English and Simplified Chinese defaults. `labels.emptyOptions` provides the global empty-option fallback copy.
 
 ## States and Validation
 
-The component stores no business state. Number fields support min/max, text supports placeholder, select uses defaults, and multiselect supports empty hints, required, and minimum count validation.
+The component stores no business state. Number values must be finite and honor `min`/`max`; multiselect honors `min` even when the field is optional. Empty select and multiselect options use `field.emptyHint`, falling back to `labels.emptyOptions`.
+
+`seedSchemaFormValues` fills field defaults for reset; subsequent external value updates immediately render in the controlled controls. Every instance generates unique field IDs, while `idPrefix` is available when callers need a stable prefix.
 
 ## Accessibility
 
-Every field has a `Label` associated with its control. Required fields show an asterisk; callers should add error summaries or field-level text around submit actions instead of relying only on a disabled button.
+Every field has a Label associated with its control. `required` renders an asterisk and native or ARIA required semantics; `errors` marks the control invalid and links it to a field error with `role="alert"`. Callers own localized errors and can add an error summary near submission.
 
 ## Dependencies
 
 <RegistryDependencies registryName="schema-form" />
-

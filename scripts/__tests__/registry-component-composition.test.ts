@@ -73,7 +73,12 @@ describe("registry component composition", () => {
     expect(schemaForm).toContain("FieldLabel")
     expect(schemaForm).not.toContain("@/components/ui/label")
     expect(registryItem.registryDependencies).toEqual(
-      expect.arrayContaining(["@mapseek/field", "@mapseek/checkbox", "@mapseek/input"]),
+      expect.arrayContaining([
+        "@mapseek/field",
+        "@mapseek/checkbox",
+        "@mapseek/input",
+        "@mapseek/empty",
+      ]),
     )
   })
 

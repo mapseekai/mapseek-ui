@@ -1,18 +1,32 @@
 import type { SchemaFormField } from "./types"
 
-function isFilled(field: SchemaFormField, value: unknown): boolean {
-  if (!field.required) return true
-  if (field.type === "multiselect") return Array.isArray(value) && value.length >= (field.min ?? 1)
-  if (field.type === "number") return typeof value === "number" && !Number.isNaN(value)
-  return value !== undefined && value !== "" && value !== null
+function isFieldValid(field: SchemaFormField, value: unknown): boolean {
+  if (field.type === "multiselect") {
+    if (value === undefined || value === null) {
+      return !field.required && field.min === undefined
+    }
+    if (!Array.isArray(value) || value.some((item) => typeof item !== "string")) return false
+    return value.length >= (field.min ?? (field.required ? 1 : 0))
+  }
+
+  if (field.type === "number") {
+    if (value === undefined || value === null || value === "") return !field.required
+    if (typeof value !== "number" || !Number.isFinite(value)) return false
+    if (field.min !== undefined && value < field.min) return false
+    if (field.max !== undefined && value > field.max) return false
+    return true
+  }
+
+  if (value === undefined || value === null || value === "") return !field.required
+  return typeof value === "string"
 }
 
-/** True when every required field has a usable value. */
+/** True when required fields are filled and all supplied values meet their configured constraints. */
 export function isSchemaFormValid(
   fields: SchemaFormField[],
   values: Record<string, unknown>,
 ): boolean {
-  return fields.every((f) => isFilled(f, values[f.key]))
+  return fields.every((field) => isFieldValid(field, values[field.key]))
 }
 
 /** Initial values built from each field's `default` (omitted fields stay unset). */

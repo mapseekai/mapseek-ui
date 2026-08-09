@@ -2344,14 +2344,43 @@ export async function assertBlockInteraction(
     await expect(demo.locator('[data-demo-status="schema-validity"]')).toContainText(
       localized(path, "invalid", "invalid"),
     )
-    await demo.getByLabel(localized(path, "缓冲半径", "Buffer radius")).fill("25")
-    await demo.getByRole("checkbox", { name: localized(path, "roads", "roads") }).check()
-    await demo.getByRole("checkbox", { name: localized(path, "rivers", "rivers") }).check()
+    const radius = demo.getByLabel(localized(path, "缓冲半径", "Buffer radius"))
+    const crs = demo.getByLabel(localized(path, "目标 CRS", "Target CRS"))
+    const algorithm = demo.getByLabel(localized(path, "算法", "Algorithm"))
+    const roads = demo.getByRole("checkbox", { name: "roads", exact: true })
+    const rivers = demo.getByRole("checkbox", { name: "rivers", exact: true })
+    await radius.fill("25")
+    await crs.fill("EPSG:3857")
+    await algorithm.click()
+    const populatedSelectContent = page.locator('[data-slot="select-content"]:visible')
+    await expect(populatedSelectContent).toBeVisible()
+    await populatedSelectContent.getByRole("option", { name: "Visvalingam", exact: true }).click()
+    await expect(algorithm).toContainText("Visvalingam")
+    await roads.check()
+    await rivers.check()
     await expect(demo.locator('[data-demo-status="schema-validity"]')).toContainText(
       localized(path, "valid", "valid"),
     )
-    await demo.getByLabel(localized(path, "切换为空图层选项", "Toggle empty layer options")).check()
-    await expect(demo).toContainText(localized(path, "暂无图层", "No layers"))
+    await activateByKeyboard(demo.locator('[data-demo-action="reset-schema"]'))
+    await expect(radius).toHaveValue("")
+    await expect(crs).toHaveValue("")
+    await expect(algorithm).toContainText("Douglas-Peucker")
+    await expect(roads).not.toBeChecked()
+    await expect(rivers).not.toBeChecked()
+    await demo
+      .getByRole("checkbox", { name: localized(path, "切换为空选项", "Toggle empty options") })
+      .check()
+    await expect(demo).toContainText(localized(path, "暂无选项", "No options"))
+    await algorithm.click()
+    const emptySelectContent = page.locator('[data-slot="select-content"]:visible')
+    await expect(emptySelectContent).toBeVisible()
+    await expect(
+      emptySelectContent.locator('[data-slot="empty"]').getByText(
+        localized(path, "暂无选项", "No options"),
+        { exact: true },
+      ),
+    ).toBeVisible()
+    await page.keyboard.press("Escape")
   }
 
   if (block === "layer-panel") {

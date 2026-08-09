@@ -32,7 +32,7 @@ import {
 
 ## 用法
 
-由调用方持有 `value`，在 `onChange` 中写回样式草稿。传入 `bandCount`、`stats`、`autoRange` 和完整 `labels` 后，面板会根据单波段或 RGB 合成切换可用控件。
+由调用方持有 `value`，在 `onChange` 中写回样式草稿。传入 `bandCount`、`autoRange` 和完整 `labels` 后，面板会根据单波段或 RGB 合成切换可用控件。该面板只负责样式设置，不展示栅格元数据。自定义拉伸和内联自定义色带值需要可信的最小/最大边界时，传入 `dataRange`；数值字段使用基础 `InputNumber`，NoData 有意不受该范围约束。
 
 ## 公开导出与 Props
 
@@ -49,4 +49,3 @@ import {
 ## 依赖
 
 <RegistryDependencies registryName="raster-style-panel" />
-

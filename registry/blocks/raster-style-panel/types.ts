@@ -74,6 +74,10 @@ export type RasterCanonicalColormap =
 export interface RasterCustomColormap {
   entries: Array<{ value: number; color: string }>
   nodataColor?: string
+  /** Preserves the editor's preview interpolation when a custom map is applied. */
+  interpolation?: ColormapInterpolation
+  /** Preserves the editor's preview color space when a custom map is applied. */
+  colorSpace?: ColormapColorSpace
 }
 
 export interface RasterStyleValue {
@@ -97,8 +101,13 @@ export interface RasterStat {
   unit?: string
 }
 
+/** Authoritative finite lower and upper bounds for data-coordinate values. */
+export type RasterDataRange = readonly [number, number]
+
 export interface RasterStyleLabels {
   band: string
+  /** Optional localized names for RGB channel selectors. */
+  channelLabels?: Partial<Record<"red" | "green" | "blue", string>>
   renderMode?: string
   renderSingle?: string
   renderRgb?: string
@@ -138,13 +147,15 @@ export interface RasterStylePanelProps {
   resetKey?: string | number
   /** Total bands available in the raster. Enables single-band/RGB choices. */
   bandCount?: number
-  /** Band/size/min/max readout shown above the form. Omit to hide. */
+  /** @deprecated Metadata belongs outside the style editor and is no longer rendered. */
   stats?: RasterStat[]
   labels: RasterStyleLabels & Partial<RasterStylePanelLabels>
   /** Opens an externally composed custom-colormap dialog. Omit to keep inline editing. */
   onEditCustomColormap?: (value: RasterCustomColormap) => void
   /** Pre-fill target for the custom-stretch "Auto" button. */
   autoRange?: [number, number]
+  /** Optional authoritative bounds for custom stretch and colormap stop values. */
+  dataRange?: RasterDataRange
   mosaic?: {
     pixelSelection: MosaicPixelSelection
     onPixelSelectionChange: (next: MosaicPixelSelection) => void

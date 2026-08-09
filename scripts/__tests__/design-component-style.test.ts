@@ -41,6 +41,7 @@ it("uses a 20% primary ring for every keyboard focus treatment", async () => {
     "registry/ui/badge.tsx",
     "registry/ui/button-radio-group.tsx",
     "registry/ui/button.tsx",
+    "registry/ui/calendar.tsx",
     "registry/ui/checkbox.tsx",
     "registry/ui/item.tsx",
     "registry/ui/navigation-menu.tsx",

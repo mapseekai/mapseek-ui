@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-MapSwitcher 是地图底图切换器。它以复合组件方式提供 Trigger、Panel 和 Item，支持图片缩略图模式与按钮列表模式；底图数据、当前选中值、打开状态和底图切换副作用由调用方维护。
+MapSwitcher 是地图底图切换器,基于 Dropdown Menu 构建。它以复合组件方式提供 Trigger、Panel 和 Item,支持两种变体:`icon`(图层图标触发 + 列表面板)和 `image`(缩略图触发 + 图片网格面板);底图数据、当前选中值、打开状态和底图切换副作用由调用方维护。
 
 ## 安装
 
@@ -28,23 +28,23 @@ import {
 
 ## 底图切换器
 
-<ShowcaseDemo registryName="map-switcher" title="底图切换器" description="示例展示图片模式、按钮模式，以及受控 value + open + 回调日志。" minHeight={980} />
+<ShowcaseDemo registryName="map-switcher" title="底图切换器" description="示例展示图标触发变体、图片触发变体,以及受控 value + open + 回调日志。" minHeight={980} />
 
 ## 用法
 
-把 `MapSwitcher` 放在地图 overlay 中，并在内部组合 `MapSwitcher.Trigger`、`MapSwitcher.Panel` 和多个 `MapSwitcher.Item`。图片模式给 item 传 `image`，按钮模式可以只传 `color` 和 `label`。受控模式下传 `value`、`onChange`、`open` 和 `onOpenChange`。
+把 `MapSwitcher` 放在地图 overlay 中,并在内部组合 `MapSwitcher.Trigger`、`MapSwitcher.Panel` 和多个 `MapSwitcher.Item`。`variant="icon"` 时触发器是一个图层图标按钮,面板是紧凑列表;`variant="image"` 时触发器显示当前选中底图的缩略图,面板以网格展示图片选项,选中项以主题色 5% 填充加 1px 主题色描边标识(与资源卡片同一选中惯例)。受控模式下传 `value`、`onChange`、`open` 和 `onOpenChange`。
 
 ## 公开导出与 Props
 
-导出 `MapSwitcher`、`MapSwitcherProps` 和 `MapSwitcherItemData`。根组件关键 props 是 `value`、`defaultValue`、`onChange`、`open`、`defaultOpen`、`onOpenChange`、`mode`、`className` 和 `children`。Item 需要 `id`、`label`，并可选 `image` 与 `color`。
+导出 `MapSwitcher`、`MapSwitcherProps` 和 `MapSwitcherItemData`。根组件关键 props 是 `value`、`defaultValue`、`onChange`、`open`、`defaultOpen`、`onOpenChange`、`variant` 和 `children`。`MapSwitcher.Trigger` 接受 `label`(icon 变体的无障碍标签)与 `className`。Item 需要 `id`、`label`,并可选 `image` 与 `color`。
 
 ## 受控状态
 
-选中底图和面板打开状态都可以受控或非受控。示例的第三组同时控制 `value` 和 `open`，外部按钮可以切换打开状态或切到下一个底图，展示调用方如何把底图状态同步到地图引擎。
+选中底图和弹出框打开状态都可以受控或非受控。示例的第三组同时控制 `value` 和 `open`,外部按钮可以切换打开状态或切到下一个底图,展示调用方如何把底图状态同步到地图引擎。选中某个底图后弹出框会自动关闭。
 
 ## 无障碍
 
-Trigger 使用 `aria-expanded` 和 `aria-haspopup="listbox"`，Panel 使用 `role="listbox"`，Item 使用 `role="option"` 与 `aria-selected`。底图缩略图需要可读 `label`，远程图片应避免成为唯一信息来源。
+组件基于 Dropdown Menu:Trigger 自动获得 `aria-haspopup="menu"` 与 `aria-expanded`,面板使用 `role="menu"`,Item 使用 `role="menuitemradio"` 并带 `aria-checked`。底图缩略图需要可读 `label`,远程图片应避免成为唯一信息来源。
 
 ## 依赖
 

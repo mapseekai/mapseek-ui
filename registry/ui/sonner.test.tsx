@@ -42,4 +42,24 @@ describe("Toaster", () => {
 
     expect(classNames?.description).toContain("!text-muted-foreground")
   })
+
+  it("gives typed toasts restrained semantic surfaces while leaving default toasts neutral", () => {
+    const element = Toaster({}) as ReactElement<ToasterProps>
+    const styles = element.props.style as Record<string, string>
+
+    expect(element.props.richColors).toBe(true)
+    expect(styles["--normal-bg"]).toBe("var(--popover)")
+    expect(styles["--success-bg"]).toBe(
+      "color-mix(in oklch shorter hue, var(--primary) 5%, var(--popover))",
+    )
+    expect(styles["--error-bg"]).toBe(
+      "color-mix(in oklch shorter hue, var(--destructive) 10%, var(--popover))",
+    )
+    expect(styles["--warning-bg"]).toBe(
+      "color-mix(in oklch shorter hue, var(--warning) 10%, var(--popover))",
+    )
+    expect(styles["--info-bg"]).toBe(
+      "color-mix(in oklch shorter hue, var(--info) 10%, var(--popover))",
+    )
+  })
 })

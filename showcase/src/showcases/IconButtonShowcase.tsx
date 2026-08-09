@@ -16,6 +16,7 @@ const labels = {
     editSm: "编辑图层（28px）",
     editMd: "编辑图层（32px）",
     editLg: "编辑图层（36px）",
+    editXl: "编辑图层（40px）",
     danger: "危险操作",
     deleteLayer: "删除图层",
     deleteSmallLayer: "删除小尺寸图层",
@@ -31,6 +32,7 @@ const labels = {
     editSm: "Edit layer (28px)",
     editMd: "Edit layer (32px)",
     editLg: "Edit layer (36px)",
+    editXl: "Edit layer (40px)",
     danger: "Danger",
     deleteLayer: "Delete layer",
     deleteSmallLayer: "Delete small layer",
@@ -42,8 +44,8 @@ export function IconButtonOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps)
   const demoLabels = labels[locale]
 
   return (
-    <div className="space-y-8">
-      <section className="space-y-3" data-demo="icon-button-default">
+    <div className="flex flex-col gap-8">
+      <section className="flex flex-col gap-3" data-demo="icon-button-default">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.default}
         </h4>
@@ -60,7 +62,7 @@ export function IconButtonOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         </div>
       </section>
 
-      <section className="space-y-3" data-demo="icon-button-sizes">
+      <section className="flex flex-col gap-3" data-demo="icon-button-sizes">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.sizes}
         </h4>
@@ -77,10 +79,13 @@ export function IconButtonOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps)
           <IconButton data-demo="icon-button-size-lg" size="lg" label={demoLabels.editLg} tooltip>
             <IconPencil {...iconProps} />
           </IconButton>
+          <IconButton data-demo="icon-button-size-xl" size="xl" label={demoLabels.editXl} tooltip>
+            <IconPencil {...iconProps} />
+          </IconButton>
         </div>
       </section>
 
-      <section className="space-y-3" data-demo="icon-button-danger">
+      <section className="flex flex-col gap-3" data-demo="icon-button-danger">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.danger}
         </h4>

@@ -56,7 +56,9 @@ function PlaceResult({
       <span className="flex min-w-0 flex-1 items-baseline gap-3">
         <span className="shrink-0 font-medium">{place.name}</span>
         <span className="truncate text-body-sm text-muted-foreground">
-          {place.description ?? `${place.longitude}, ${place.latitude}`}
+          {place.description ?? (
+            <span className="tnum">{`${place.longitude}, ${place.latitude}`}</span>
+          )}
         </span>
       </span>
     </Button>

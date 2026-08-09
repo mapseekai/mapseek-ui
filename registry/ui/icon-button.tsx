@@ -5,7 +5,7 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cn } from "@/registry/lib/utils"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/registry/ui/tooltip"
 
-type IconButtonSize = "xs" | "sm" | "md" | "lg"
+type IconButtonSize = "xs" | "sm" | "md" | "lg" | "xl"
 
 type IconButtonProps = Omit<ButtonPrimitive.Props, "aria-label"> & {
   label: string
@@ -19,6 +19,7 @@ const sizeClasses: Record<IconButtonSize, string> = {
   sm: "size-7 [&_svg:not([class*='size-'])]:size-4",
   md: "size-8 [&_svg:not([class*='size-'])]:size-4",
   lg: "size-9 [&_svg:not([class*='size-'])]:size-4",
+  xl: "size-10 [&_svg:not([class*='size-'])]:size-5",
 }
 
 function IconButton({

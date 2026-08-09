@@ -89,7 +89,9 @@ describe("registry component composition", () => {
   it("uses one typography style for add-field form labels", async () => {
     const addFieldForm = await readFile("registry/blocks/add-field-form/AddFieldForm.tsx", "utf8")
 
-    expect(addFieldForm.match(/<FieldLabel[^>]*className="font-medium"/g)).toHaveLength(4)
+    expect(addFieldForm.match(/<FieldLabel[^>]*className="[^"]*\bfont-medium\b[^"]*"/g)).toHaveLength(
+      4,
+    )
     expect(addFieldForm).toContain('className="cursor-pointer font-medium leading-none"')
     expect(addFieldForm).toContain('<FieldLegend variant="label" className="mb-0">')
     expect(addFieldForm).not.toContain("text-[11px] uppercase tracking-[0.06em]")

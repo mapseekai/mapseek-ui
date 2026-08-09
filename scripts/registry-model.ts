@@ -60,6 +60,7 @@ export const BASE_COMPONENTS = [
   "sonner",
   "switch",
   "table",
+  "tag",
   "tabs",
   "textarea",
   "toggle",

@@ -4,6 +4,7 @@
   "registryDependencies": [
     "@mapseek/button-radio-group",
     "@mapseek/input",
+    "@mapseek/input-number",
     "@mapseek/select",
     "@mapseek/tooltip",
     "@mapseek/utils",
@@ -19,6 +20,11 @@
       "path": "raster-style-panel/CustomColormapEditor.tsx",
       "type": "registry:block",
       "target": "@components/blocks/raster-style-panel/CustomColormapEditor.tsx"
+    },
+    {
+      "path": "raster-style-panel/NumberDraftInput.tsx",
+      "type": "registry:block",
+      "target": "@components/blocks/raster-style-panel/NumberDraftInput.tsx"
     },
     {
       "path": "raster-style-panel/RasterStylePanel.tsx",

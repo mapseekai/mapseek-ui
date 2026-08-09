@@ -24,7 +24,7 @@ import { IconButton } from "@/registry/ui/icon-button"
 
 ## Usage
 
-<ShowcaseDemo registryName="icon-button" demo="overview" title="Icon button states" description="Covers the 24/28/32/36px size scale, danger and disabled states, and the built-in tooltip." minHeight={336} />
+<ShowcaseDemo registryName="icon-button" demo="overview" title="Icon button states" description="Covers the 24/28/32/36/40px size scale, danger and disabled states, and the built-in tooltip." minHeight={336} />
 
 ```tsx
 import { IconPencil } from "@tabler/icons-react"
@@ -36,7 +36,9 @@ import { IconPencil } from "@tabler/icons-react"
 
 ## Exports
 
-`icon-button.tsx` exports `IconButton`. It accepts Base UI Button props plus required `label`, optional `tooltip`, `size="xs" | "sm" | "md" | "lg"` (24/28/32/36px), and `danger`; the default size is `md`.
+`icon-button.tsx` exports `IconButton`. It accepts Base UI Button props plus required `label`, optional `tooltip`, `size="xs" | "sm" | "md" | "lg" | "xl"` (24/28/32/36/40px), and `danger`; the default size is `md`.
+
+`xl` is the 40px top-level-toolbar tier with a 20px icon; use it only when the inner toolbar row is at least 40px high.
 
 ## States
 
@@ -49,4 +51,3 @@ Default buttons use muted hover styles; `danger` uses destructive foreground and
 ## Dependencies
 
 <RegistryDependencies registryName="icon-button" />
-

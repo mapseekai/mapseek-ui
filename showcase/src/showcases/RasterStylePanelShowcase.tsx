@@ -6,7 +6,6 @@ import {
 import {
   type CustomColormap as CustomColormapValue,
   DEFAULT_CUSTOM_COLORMAP,
-  type RasterStat,
   type RasterStyleLabels,
   RasterStylePanel,
   type RasterStylePanelLabels,
@@ -38,15 +37,9 @@ const labels = {
     summary: "当前编码",
     rgb: "RGB 合成",
     single: "单波段",
-    stats: {
-      bands: "波段数",
-      size: "尺寸",
-      min: "最小值",
-      max: "最大值",
-      dataType: "UInt16",
-    },
     labels: {
       band: "波段",
+      channelLabels: { red: "红", green: "绿", blue: "蓝" },
       bandAppend: "追加",
       renderMode: "渲染方式",
       renderSingle: "单波段",
@@ -89,13 +82,6 @@ const labels = {
     summary: "Current encoding",
     rgb: "RGB composite",
     single: "Single band",
-    stats: {
-      bands: "BANDS",
-      size: "SIZE",
-      min: "MIN",
-      max: "MAX",
-      dataType: "UInt16",
-    },
     labels: {
       band: "Band",
       bandAppend: "Append",
@@ -132,15 +118,6 @@ const labels = {
   },
 }
 
-function rasterStats(demoLabels: (typeof labels)[keyof typeof labels]): RasterStat[] {
-  return [
-    { label: demoLabels.stats.bands, value: "4 / 13", unit: demoLabels.stats.dataType },
-    { label: demoLabels.stats.size, value: "10,980 x 10,980" },
-    { label: demoLabels.stats.min, value: "-18.4" },
-    { label: demoLabels.stats.max, value: "3,842" },
-  ]
-}
-
 export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
   const customLabels = locale === "en" ? CUSTOM_COLORMAP_LABELS_EN : CUSTOM_COLORMAP_LABELS_ZH_CN
@@ -154,8 +131,8 @@ export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
 
   return (
     <section className="grid gap-3 lg:grid-cols-[380px_1fr]">
-      <div className="border border-border bg-card">
-        <div className="flex items-center justify-between border-b border-border px-3 py-2">
+      <div className="self-start border border-border bg-card">
+        <div className="flex h-10 items-center justify-between border-b border-border px-3">
           <h3 className="m-0 text-xs font-semibold">{demoLabels.title}</h3>
           <span
             data-demo-status="raster-style-panel-validity"
@@ -177,15 +154,20 @@ export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
             }}
             onValidityChange={setValid}
             onEditCustomColormap={(current) => {
-              const next = { ...customColormap, stops: current.entries.map((entry) => entry.color) }
+              const next = {
+                ...customColormap,
+                stops: current.entries.map((entry) => entry.color),
+                interpolation: current.interpolation ?? customColormap.interpolation,
+                colorSpace: current.colorSpace ?? customColormap.colorSpace,
+              }
               setCustomColormap(next)
               setCustomDraft(next)
               setCustomOpen(true)
             }}
             resetKey={revision}
             bandCount={13}
-            stats={rasterStats(demoLabels)}
             labels={demoLabels.labels}
+            dataRange={[-18.4, 3842]}
             autoRange={[0, 3842]}
           />
           <CustomColormap
@@ -207,6 +189,8 @@ export function RasterStylePanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
                       value: index / Math.max(1, next.stops.length - 1),
                       color,
                     })),
+                    interpolation: next.interpolation,
+                    colorSpace: next.colorSpace,
                   },
                 },
               }))

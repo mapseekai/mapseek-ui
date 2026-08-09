@@ -1,29 +1,32 @@
 import { useEffect, useId, useRef, useState } from "react"
-import { Input } from "@/components/ui/input"
+import { ButtonRadioGroup, ButtonRadioGroupItem } from "@/components/ui/button-radio-group"
+import { InputNumber } from "@/components/ui/input-number"
 import { cn } from "@/lib/utils"
-import { Segmented } from "./Segmented"
-import type { RasterStretch, StretchMode } from "./types"
+import { NumberDraftInput, RASTER_INPUT_NUMBER_CLASS } from "./NumberDraftInput"
+import { isInDataRange, normalizeDataRange } from "./numeric-range"
+import type { RasterDataRange, RasterStretch, StretchMode } from "./types"
 
 const MODES: StretchMode[] = ["minmax", "percent", "stddev", "custom"]
 
-const toRangeStrings = (ranges: [number, number][]) =>
-  ranges.map(([min, max]) => [String(min), String(max)] as [string, string])
+type DraftPair = [number | null, number | null]
 
-const validateRangeStrings = (ranges: [string, string][]) =>
+const toRangeValues = (ranges: [number, number][]): DraftPair[] =>
+  ranges.map(([min, max]) => [min, max])
+
+const isFinitePair = (pair: DraftPair): pair is [number, number] =>
+  pair[0] !== null && pair[1] !== null && Number.isFinite(pair[0]) && Number.isFinite(pair[1])
+
+const validateRangeValues = (ranges: DraftPair[], dataRange?: RasterDataRange) =>
   ranges.every(
-    ([min, max]) =>
-      min.trim() !== "" &&
-      max.trim() !== "" &&
-      Number.isFinite(Number(min)) &&
-      Number.isFinite(Number(max)) &&
-      Number(min) < Number(max),
+    (pair) =>
+      isFinitePair(pair) &&
+      pair[0] < pair[1] &&
+      isInDataRange(pair[0], dataRange) &&
+      isInDataRange(pair[1], dataRange),
   )
 
-const validatePercentStrings = (pair: [string, string]) =>
-  pair.every((item) => item.trim() !== "" && Number.isFinite(Number(item))) &&
-  Number(pair[0]) >= 0 &&
-  Number(pair[0]) < Number(pair[1]) &&
-  Number(pair[1]) <= 100
+const validatePercentValues = (pair: DraftPair) =>
+  isFinitePair(pair) && pair[0] >= 0 && pair[0] < pair[1] && pair[1] <= 100
 
 function useStableIds(count: number, prefix: string) {
   const scope = useId()
@@ -42,8 +45,10 @@ export interface StretchControlProps {
   onChange: (next: RasterStretch) => void
   labels: StretchControlLabels
   autoRange?: [number, number]
+  dataRange?: RasterDataRange
   outputCount?: number
   className?: string
+  ariaLabel?: string
   resetKey?: string | number
   reportDraft?: (key: string, valid: boolean | null) => void
 }
@@ -51,15 +56,17 @@ export interface StretchControlProps {
 function CustomRangesDraft({
   value,
   outputCount,
+  dataRange,
   report,
   onValid,
 }: {
   value: [number, number][]
   outputCount: number
+  dataRange?: RasterDataRange
   report?: StretchControlProps["reportDraft"]
   onValid: (value: [number, number][]) => void
 }) {
-  const [raw, setRaw] = useState(() => toRangeStrings(value))
+  const [raw, setRaw] = useState(() => toRangeValues(value))
   const rawRef = useRef(raw)
   const reportRef = useRef(report)
   const onValidRef = useRef(onValid)
@@ -69,92 +76,60 @@ function CustomRangesDraft({
     onValidRef.current = onValid
   })
   useEffect(() => {
-    const next = toRangeStrings(value)
+    const next = toRangeValues(value)
     rawRef.current = next
     setRaw(next)
-    reportRef.current?.("stretch-custom", validateRangeStrings(next))
+    reportRef.current?.("stretch-custom", validateRangeValues(next, dataRange))
     return () => reportRef.current?.("stretch-custom", null)
-  }, [value])
+  }, [dataRange, value])
   useEffect(() => {
     const previous = rawRef.current
     const next = previous.slice(0, outputCount)
-    while (next.length < outputCount) next.push(["", ""])
+    while (next.length < outputCount) next.push([null, null])
     rawRef.current = next
     setRaw(next)
-    const valid = validateRangeStrings(next)
+    const valid = validateRangeValues(next, dataRange)
     reportRef.current?.("stretch-custom", valid)
     if (outputCount < previous.length && valid) {
-      onValidRef.current(next.map(([min, max]) => [Number(min), Number(max)]))
+      onValidRef.current(next.filter(isFinitePair))
     }
-  }, [outputCount])
-  const update = (index: number, position: 0 | 1, next: string) => {
-    const ranges = rawRef.current.map((range) => [...range] as [string, string])
+  }, [dataRange, outputCount])
+  const update = (index: number, position: 0 | 1, next: number | null) => {
+    const ranges = rawRef.current.map((range) => [...range] as DraftPair)
     ranges[index][position] = next
     rawRef.current = ranges
     setRaw(ranges)
-    const valid = validateRangeStrings(ranges)
+    const valid = validateRangeValues(ranges, dataRange)
     report?.("stretch-custom", valid)
-    if (valid) onValid(ranges.map(([min, max]) => [Number(min), Number(max)]))
+    if (valid) onValid(ranges.filter(isFinitePair))
   }
   return (
     <div className="flex flex-col gap-1">
       {raw.map((range, index) => (
         <div key={rangeIds[index]} className="grid grid-cols-2 gap-1">
-          <Input
+          <InputNumber
+            allowOutOfRange
+            min={dataRange?.[0]}
+            max={dataRange?.[1]}
             aria-label={`Custom stretch ${index + 1} minimum`}
+            className={RASTER_INPUT_NUMBER_CLASS}
             value={range[0]}
-            onChange={(event) => update(index, 0, event.target.value)}
+            step="any"
+            onValueChange={(next) => update(index, 0, next)}
           />
-          <Input
+          <InputNumber
+            allowOutOfRange
+            min={dataRange?.[0]}
+            max={dataRange?.[1]}
             aria-label={`Custom stretch ${index + 1} maximum`}
+            className={RASTER_INPUT_NUMBER_CLASS}
             value={range[1]}
-            onChange={(event) => update(index, 1, event.target.value)}
+            step="any"
+            onValueChange={(next) => update(index, 1, next)}
           />
         </div>
       ))}
     </div>
-  )
-}
-
-function NumberDraft({
-  id,
-  label,
-  value,
-  report,
-  onValid,
-  validate = (next) => Number.isFinite(next),
-}: {
-  id: string
-  label: string
-  value: number
-  report?: (key: string, valid: boolean | null) => void
-  onValid: (value: number) => void
-  validate?: (value: number) => boolean
-}) {
-  const [raw, setRaw] = useState(String(value))
-  const reportRef = useRef(report)
-  const validateRef = useRef(validate)
-  useEffect(() => {
-    reportRef.current = report
-    validateRef.current = validate
-  })
-  useEffect(() => {
-    setRaw(String(value))
-    reportRef.current?.(id, true)
-    return () => reportRef.current?.(id, null)
-  }, [id, value])
-  return (
-    <Input
-      aria-label={label}
-      value={raw}
-      onChange={(event) => {
-        const next = event.target.value
-        setRaw(next)
-        const valid = next.trim() !== "" && Number.isFinite(Number(next)) && validate(Number(next))
-        report?.(id, valid)
-        if (valid) onValid(Number(next))
-      }}
-    />
   )
 }
 
@@ -168,36 +143,49 @@ function PercentDraft({
   onValid: (value: [number, number]) => void
 }) {
   const [low, high] = value
-  const [raw, setRaw] = useState<[string, string]>([String(value[0]), String(value[1])])
+  const [raw, setRaw] = useState<DraftPair>([value[0], value[1]])
+  const rawRef = useRef(raw)
   const reportRef = useRef(report)
   useEffect(() => {
     reportRef.current = report
   })
   useEffect(() => {
-    const next: [string, string] = [String(low), String(high)]
+    const next: DraftPair = [low, high]
+    rawRef.current = next
     setRaw(next)
-    reportRef.current?.("stretch-percent", validatePercentStrings(next))
+    reportRef.current?.("stretch-percent", validatePercentValues(next))
     return () => reportRef.current?.("stretch-percent", null)
   }, [high, low])
-  const update = (position: 0 | 1, next: string) => {
-    const pair: [string, string] = [...raw]
+  const update = (position: 0 | 1, next: number | null) => {
+    const pair: DraftPair = [...rawRef.current]
     pair[position] = next
+    rawRef.current = pair
     setRaw(pair)
-    const valid = validatePercentStrings(pair)
+    const valid = validatePercentValues(pair)
     report?.("stretch-percent", valid)
-    if (valid) onValid([Number(pair[0]), Number(pair[1])])
+    if (valid && isFinitePair(pair)) onValid(pair)
   }
   return (
     <div className="grid grid-cols-2 gap-1">
-      <Input
+      <InputNumber
+        allowOutOfRange
+        min={0}
+        max={100}
         aria-label="Stretch percentile low"
+        className={RASTER_INPUT_NUMBER_CLASS}
         value={raw[0]}
-        onChange={(event) => update(0, event.target.value)}
+        step="any"
+        onValueChange={(next) => update(0, next)}
       />
-      <Input
+      <InputNumber
+        allowOutOfRange
+        min={0}
+        max={100}
         aria-label="Stretch percentile high"
+        className={RASTER_INPUT_NUMBER_CLASS}
         value={raw[1]}
-        onChange={(event) => update(1, event.target.value)}
+        step="any"
+        onValueChange={(next) => update(1, next)}
       />
     </div>
   )
@@ -208,24 +196,26 @@ export function StretchControl({
   onChange,
   labels,
   className,
+  ariaLabel,
   resetKey,
   reportDraft,
   autoRange,
+  dataRange,
   outputCount = 1,
 }: StretchControlProps) {
   const mode = value.mode
   const percent = value.percent ?? [2, 98]
+  const normalizedDataRange = normalizeDataRange(dataRange)
   return (
     <div className={cn("flex flex-col gap-1.5", className)}>
-      <Segmented
-        columns={2}
-        options={MODES.map((item) => ({
-          value: item,
-          label: labels.modes[item],
-        }))}
+      <ButtonRadioGroup
+        aria-label={ariaLabel}
+        className="grid grid-cols-2"
+        size="xs"
+        variant="soft"
         value={mode}
-        buttonClassName="whitespace-nowrap"
-        onChange={(next) =>
+        onValueChange={(raw) => {
+          const next = raw as StretchMode
           onChange(
             next === "percent"
               ? { mode: next, percent: [2, 98] }
@@ -238,8 +228,14 @@ export function StretchControl({
                     }
                   : { mode: next },
           )
-        }
-      />
+        }}
+      >
+        {MODES.map((item) => (
+          <ButtonRadioGroupItem key={item} value={item} className="min-w-0">
+            {labels.modes[item]}
+          </ButtonRadioGroupItem>
+        ))}
+      </ButtonRadioGroup>
       {mode === "percent" ? (
         <PercentDraft
           key={`percent-${resetKey ?? "initial"}`}
@@ -249,13 +245,14 @@ export function StretchControl({
         />
       ) : null}
       {mode === "stddev" ? (
-        <NumberDraft
+        <NumberDraftInput
           id="stretch-sigma"
           key={`sigma-${resetKey ?? "initial"}`}
           label="Stretch standard deviation"
           value={value.sigma ?? 2}
           report={reportDraft}
           validate={(sigma) => sigma > 0}
+          min={0}
           onValid={(sigma) => onChange({ ...value, mode: "stddev", sigma })}
         />
       ) : null}
@@ -264,6 +261,7 @@ export function StretchControl({
           key={`custom-${resetKey ?? "initial"}`}
           value={value.ranges ?? Array.from({ length: outputCount }, () => autoRange ?? [0, 1])}
           outputCount={outputCount}
+          dataRange={normalizedDataRange}
           report={reportDraft}
           onValid={(ranges) => onChange({ mode: "custom", ranges })}
         />

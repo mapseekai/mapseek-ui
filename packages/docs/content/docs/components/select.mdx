@@ -38,7 +38,7 @@ import {
 
 ## 状态
 
-受控值使用 `value/onValueChange`；静态默认值使用 `defaultValue`。`SelectTrigger` 支持 `xs`、`sm`、`default` 和 `lg` 四档高度，展开框中的每个 item 会与对应 trigger 等高。trigger 默认使用 `width="fixed"` 保持固定宽度；使用 `width="content"` 时，外部宽度会跟随当前选中内容变化。展开框始终根据最长选项自适应宽度；根组件的 `disabled` 阻止打开列表。
+受控值使用 `value/onValueChange`；静态默认值使用 `defaultValue`。`SelectTrigger` 支持 `xs`、`sm`、`default` 和 `lg` 四档高度，展开框中的每个 item 会与对应 trigger 等高。trigger 默认使用 `width="fixed"` 保持固定宽度；使用 `width="content"` 时，外部宽度会跟随当前选中内容变化。鼠标打开且有已选项时，展开框默认将该项与 trigger 对齐；传入 `alignItemWithTrigger={false}` 可固定显示在 trigger 下方，空间不足时由 Base UI 自动回退。展开框始终根据最长选项自适应宽度；根组件的 `disabled` 阻止打开列表。
 
 ## 无障碍
 

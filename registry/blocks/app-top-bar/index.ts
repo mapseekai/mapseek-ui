@@ -1,2 +1,2 @@
 export { AppTopBar } from "./AppTopBar"
-export type { AppTopBarLabels, AppTopBarProps } from "./types"
+export type { AppTopBarLabels, AppTopBarProps, AppTopBarSize } from "./types"

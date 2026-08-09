@@ -38,7 +38,7 @@ import {
 
 ## States
 
-Use `value/onValueChange` for controlled state and `defaultValue` for static defaults. `SelectTrigger` supports `xs`, `sm`, `default`, and `lg` heights, and every item in the popup matches its trigger height. The trigger defaults to `width="fixed"`; use `width="content"` to make its external width follow the selected value. The popup always grows to the longest option; root-level `disabled` prevents opening the list.
+Use `value/onValueChange` for controlled state and `defaultValue` for static defaults. `SelectTrigger` supports `xs`, `sm`, `default`, and `lg` heights, and every item in the popup matches its trigger height. The trigger defaults to `width="fixed"`; use `width="content"` to make its external width follow the selected value. When opened with a mouse and a value is selected, the popup aligns that item with the trigger by default; pass `alignItemWithTrigger={false}` to keep it below the trigger, with Base UI falling back automatically when space is limited. The popup always grows to the longest option; root-level `disabled` prevents opening the list.
 
 ## Accessibility
 

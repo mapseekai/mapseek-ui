@@ -24,7 +24,7 @@ import { IconButton } from "@/registry/ui/icon-button"
 
 ## 用法
 
-<ShowcaseDemo registryName="icon-button" demo="overview" title="图标按钮状态" description="覆盖 24/28/32/36px 尺寸刻度、危险和禁用状态，并展示内置 tooltip。" minHeight={336} />
+<ShowcaseDemo registryName="icon-button" demo="overview" title="图标按钮状态" description="覆盖 24/28/32/36/40px 尺寸刻度、危险和禁用状态，并展示内置 tooltip。" minHeight={336} />
 
 ```tsx
 import { IconPencil } from "@tabler/icons-react"
@@ -36,7 +36,9 @@ import { IconPencil } from "@tabler/icons-react"
 
 ## 导出
 
-`icon-button.tsx` 导出 `IconButton`。它接受 Base UI Button props，以及必填 `label`、可选 `tooltip`、`size="xs" | "sm" | "md" | "lg"`（24/28/32/36px）和 `danger`；默认尺寸为 `md`。
+`icon-button.tsx` 导出 `IconButton`。它接受 Base UI Button props，以及必填 `label`、可选 `tooltip`、`size="xs" | "sm" | "md" | "lg" | "xl"`（24/28/32/36/40px）和 `danger`；默认尺寸为 `md`。
+
+`xl` 是 40px 的顶级工具栏档位，内部图标为 20px；仅在内部工具栏行高至少为 40px 时使用。
 
 ## 状态
 
@@ -49,4 +51,3 @@ import { IconPencil } from "@tabler/icons-react"
 ## 依赖
 
 <RegistryDependencies registryName="icon-button" />
-

@@ -15,7 +15,7 @@ vi.mock("@/registry/ui/input-group", () => ({
   InputGroupAddon: (props: ButtonHTMLAttributes<HTMLDivElement>) => <div {...props} />,
 }))
 
-import { Command } from "./command"
+import { Command, CommandInput } from "./command"
 
 describe("Command", () => {
   it("owns a visible boundary when used standalone", () => {
@@ -24,5 +24,17 @@ describe("Command", () => {
 
     expect(classes).toContain("border")
     expect(classes).toContain("border-border")
+  })
+
+  it("inherits the input group's transparent surface without a conflicting border color", () => {
+    const wrapper = CommandInput({}) as ReactElement<{
+      children: ReactElement<{ className: string }>
+    }>
+    const inputGroup = wrapper.props.children
+    const classes = inputGroup.props.className.split(/\s+/)
+
+    expect(classes).toContain("border-none")
+    expect(classes).not.toContain("bg-input/30")
+    expect(classes).not.toContain("border-input/30")
   })
 })

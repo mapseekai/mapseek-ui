@@ -146,9 +146,10 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                     <Button
                       key={c}
                       variant="ghost"
+                      size="xs"
                       onClick={() => updateRow(f.id, { conn: c })}
                       className={cn(
-                        "h-5 rounded-none border border-border px-1.5 font-mono text-[10px] tracking-[0.04em] leading-none",
+                        "border border-border font-mono text-label-md",
                         ci > 0 && "-ml-px",
                         isCur
                           ? "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
@@ -246,12 +247,13 @@ function FilterPanelSql({ keywords, className }: { keywords: string[]; className
           <Button
             key={kw}
             variant="ghost"
+            size="xs"
             onClick={() =>
               patch(value, onChange, {
                 sql: value.sql ? `${value.sql} ${kw} ` : `${kw} `,
               })
             }
-            className="h-5 rounded-none border border-border bg-background px-[5px] font-mono text-[10px] font-medium leading-none text-primary hover:text-primary"
+            className="border border-border bg-background font-mono text-label-md text-primary hover:text-primary"
           >
             {kw}
           </Button>

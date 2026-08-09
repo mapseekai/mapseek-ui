@@ -179,6 +179,10 @@ components:
     rounded: "{rounded.none}"
     height: 36px
     padding: 0px 10px
+  icon-button-xl:
+    rounded: "{rounded.none}"
+    size: 40px
+    iconSize: 20px
   accent-surface:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.accent-foreground}"
@@ -259,7 +263,7 @@ Mapseek UI 是 GIS 分析、地图样式配置、数据检查与资源管理的�
 - 中性亮暗画布；绿色具备功能性，而非装饰性。
 - Geist Mono Variable 用于所有 UI 文字和技术数据。
 - 控件、面板、卡片、菜单和弹窗均为零圆角矩形。
-- 控件高度使用 24px、28px、32px、36px，并遵循 4px 间距节奏。
+- 控件高度使用 24px、28px、32px、36px、40px，并遵循 4px 间距节奏；40px 的 `xl` 档位仅用于顶级图标工具组。
 - 通过边界和轻微底色变化建立层级；组件默认不使用阴影。
 - 选中、加载、空、错误和禁用状态绝不只依赖颜色。
 - 桌面优先的数据与面板布局在空间收窄时仍可理解。
@@ -281,7 +285,7 @@ Mapseek 使用由低彩度中性色包围的绿色轴 OKLCH 调色板。主绿�
 - **Primary**（`{colors.primary}`）是唯一高强调动作、选中导航样式、键盘焦点来源和有限的进度强调；其前景色为 `{colors.primary-foreground}`。
 - **焦点环** 统一使用 20% 透明度的 `{colors.ring}`，宽度为 3px，适用于所有键盘可聚焦控件。
 - **Secondary**（`{colors.secondary}`）和 **accent**（`{colors.accent}`）用于低强调动作和成组选项；前景色使用对应的 `*-foreground` 令牌。
-- **交互与选择** 使用不同表面：普通可交互元素默认使用 50% 透明度的 `{colors.accent}`，与文档侧栏 hover 处理保持一致。持续选中状态使用完整的 `{colors.selection-bg}` token 和 `{colors.primary}` 文字，并可递进至 `{colors.selection-bg-deep}`；选中、展开和激活元素在 hover 时保持原状态表面与主色文字，不再应用普通 hover 处理。同时必须搭配选中语义、边缘、勾选或其他持续性标识。卡片类元素（资源卡片、图标瓦片）为醒目例外:hover 与选中均使用 `{colors.primary}` 5% 填充加 1px 主色绿框；选中态以同样的填充和绿框作为持续标识，并搭配选中语义或勾选标记。拖拽与缩放手柄（分割条、排序握把）是另一类例外:hover 使用 `{colors.primary}` 色调（如 40%）作为动作可供性信号，因为中性 50% accent 填充在细条手柄上无法辨识。
+- **交互与选择** 使用不同表面：普通可交互元素默认使用 50% 透明度的 `{colors.accent}`，与文档侧栏 hover 处理保持一致。持续选中和激活控件使用完整的 `{colors.selection-bg}` token 和 `{colors.primary}` 文字，并可递进至 `{colors.selection-bg-deep}`；它们在 hover 时保持原状态表面与主色文字，不再应用普通 hover 处理，同时必须搭配选中语义、边缘、勾选或其他持续性标识。`aria-expanded` 展开触发器不属于持续选中：打开时与其普通 hover 使用完全相同的表面和文字处理。卡片类元素（资源卡片、图标瓦片）为醒目例外:hover 与选中均使用 `{colors.primary}` 5% 填充加 1px 主色绿框；选中态以同样的填充和绿框作为持续标识，并搭配选中语义或勾选标记。拖拽与缩放手柄（分割条、排序握把）是另一类例外:hover 使用 `{colors.primary}` 色调（如 40%）作为动作可供性信号，因为中性 50% accent 填充在细条手柄上无法辨识。
 - **透明度混合。** 对单一语义颜色 token 与 `transparent` 的混合，应明确目标 alpha（例如 primary 保留 80% 不透明度）。此场景下，`color-mix(in oklch, ...)` 与 Tailwind 透明度工具生成的 `color-mix(in oklab, ...)` 等效，均符合规范。此例外不适用于两个可见颜色的混合：必须显式指定插值空间；使用 OKLCH 时还必须指定色相插值方法。
 - **Destructive**、**warning** 与 **info** 是语义信号，不是装饰分类；必须搭配文字或图标，破坏性动作使用浅色调而非实心红色。
 
@@ -345,10 +349,11 @@ Mapseek 将 **Geist Mono Variable** 同时作为 UI 与数据字体。统一的�
 ### Application Structure
 
 - 通用框架为**顶部栏 → 导航或资源栏 → 工作画布 → 上下文面板或浮层**。
-- 工具栏的同一控件簇使用一种高度；持久动作保留在顶部栏或面板 footer。
+- 工具栏的同一控件簇使用一种高度；持久动作保留在顶部栏或面板 footer。居中的 `xl` 图标工具组应拥有预留的中间列；中等桌面宽度下先折叠次要上下文，避免与中间控件重叠。
 - 侧栏和编辑器应有稳定宽度、1px 边界和独立滚动。主工作区占用剩余宽度，并必须保持 `min-width: 0`。
 - 资源网格使用带领域最小卡片宽度的 `auto-fill`；表格使用有边界的容器和横向滚动，不压缩列宽。
 - 字段行可纵向、行内或响应式排列；空间允许时编辑器保留稳定的标签列与弹性内容列。
+- 必填字段名称使用 `FieldLabel required` 或 `FieldLegend required`。这些基础组件会在可读名称后直接追加破坏色红色 `*`；控件本身仍保留对应的原生 `required` 或 `aria-required` 语义。
 
 ### Responsive Behavior
 
@@ -381,7 +386,7 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 零圆角是 Mapseek 的决定性特征。矩形控件、字段、卡片、表格、菜单、popover、dialog、sheet 和面板均使用 `{rounded.none}`；不得重新引入框架默认圆角。
 
 - `{rounded.full}` 仅用于天然圆形的状态点、头像遮罩、radio 控件、switch 轨道和 switch 拇指，以及细窄的拖拽/缩放握把。
-- 纯图标控件为正方形，并遵循 24px、28px、32px、36px 尺寸体系。
+- 纯图标控件为正方形，并遵循 24px、28px、32px、36px、40px（`xl`）尺寸体系。`xl` 内部图标为 20px，仅用于内部工具栏行高至少为 40px 的场景。
 - Tabler Icons 是默认图标语言；同一工具栏或行中保持一致的图标尺寸和 stroke。
 - 分隔线为 1px；不要叠加描边、使用粗线或增加装饰边框来制造层级。
 - `public/img/mapseek.png` 必须保持完整、透明且不修改。
@@ -397,7 +402,7 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 - **outline、secondary、ghost、link 变体**在不创建新动作色的前提下保持层级；`link` 仅用于真实行内导航或低框架动作。
 - **`button-destructive`** 使用浅色危险表面、`border-destructive/10` 边框与危险文字；hover 时表面与边框同时提升为 `hover:bg-destructive/20` 和 `hover:border-destructive/20`。结果不可逆或难以恢复时要求确认。
 - **`button-group`** 以共用边缘连接相关 Button 控件；可横向或纵向排列，折叠相邻内部边框，并将获得焦点的子项提升至相邻项之上。
-- **图标按钮**为 24–36px 正方形，必须有可访问名称；图标含义不自明时增加 tooltip。
+- **图标按钮**为 24–40px 正方形。`xl` 为 40px，内部图标为 20px，用于提供 40px 内部行高的顶级工具栏。必须有可访问名称；图标含义不自明时增加 tooltip。
 
 ### Forms and Selection
 
@@ -444,4 +449,3 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 - 存在语义令牌时，不在组件中复制颜色字面量。
 - 不通过无标签图标、仅 hover 处理或仅颜色可供性隐藏关键动作。
 - 不重复基础组件行为，也不在领域 blocks 中嵌入不可注入的产品文案和网络行为。
-- 必填字段名称使用 `FieldLabel required` 或 `FieldLegend required`。这些基础组件会在可读名称后直接追加破坏色红色 `*`；控件本身仍保留对应的原生 `required` 或 `aria-required` 语义。

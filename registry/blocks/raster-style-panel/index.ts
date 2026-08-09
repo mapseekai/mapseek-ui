@@ -26,6 +26,7 @@ export type {
   RasterBandAssignments,
   RasterCanonicalColormap,
   RasterCustomColormap,
+  RasterDataRange,
   RasterFormatValue,
   RasterNoData,
   RasterSelector,

@@ -121,7 +121,7 @@ export function StorageMeter({
         />
 
         {(det.fileSystem != null || det.indexedDB != null || det.caches != null) && (
-          <div className="mb-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-body-sm text-muted-foreground">
+          <div className="mb-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-body-sm text-muted-foreground tnum">
             {det.fileSystem != null && (
               <span>
                 <em className="not-italic mr-1 font-medium text-foreground">OPFS</em>

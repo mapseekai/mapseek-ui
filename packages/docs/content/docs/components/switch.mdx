@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-Switch 表达立即生效的开关设置，例如缓存、可见性和同步状态。它使用圆形轨道与 thumb，是 Mapseek 方角规则中的例外。
+Switch 表达立即生效的开关设置，例如缓存、可见性和同步状态。默认的圆形轨道与 thumb 是 Mapseek 方角规则中的有意例外。
 
 ## 安装
 
@@ -24,11 +24,15 @@ import { Switch } from "@/registry/ui/switch"
 
 ## 用法
 
-<ShowcaseDemo registryName="switch" demo="overview" title="开关状态" description="覆盖 sm/default 尺寸、checked/unchecked、disabled checked、invalid 和受控状态。" minHeight={340} />
+<ShowcaseDemo registryName="switch" demo="overview" title="开关状态" description="覆盖 sm/default 尺寸、默认与 square 变体的 checked/unchecked、disabled checked、invalid 和受控状态。" minHeight={430} />
 
 ## 导出
 
-`switch.tsx` 导出 `Switch`。组件继承 Base UI Switch root props，并额外接受 `size="sm" | "default"`。
+`switch.tsx` 导出 `Switch`。组件继承 Base UI Switch root props，并额外接受 `size="sm" | "default"` 与 `variant="default" | "square"`。
+
+## 变体
+
+默认圆形轨道用于一般设置。`variant="square"` 保留配置弹层头部使用的 24×16px 直角紧凑开关；仅用于这种高密度配置上下文，不应用于一般表单。
 
 ## 状态
 
@@ -41,4 +45,3 @@ Switch 需要可读名称。它适合即时开关，不适合需要“保存”�
 ## 依赖
 
 <RegistryDependencies registryName="switch" />
-

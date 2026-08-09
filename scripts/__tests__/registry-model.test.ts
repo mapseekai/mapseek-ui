@@ -187,6 +187,10 @@ describe("validateCatalog", () => {
 })
 
 describe("assertCompleteInventory", () => {
+  it("includes Tag in the base component inventory", () => {
+    expect(BASE_COMPONENTS).toContain("tag")
+  })
+
   const completeCatalog = () => [
     ...BASE_COMPONENTS.map((name) => ({ name, type: "registry:ui", files: [] })),
     ...BLOCKS.map((name) => ({ name, type: "registry:block", files: [] })),

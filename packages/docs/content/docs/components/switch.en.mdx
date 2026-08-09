@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-Switch represents immediate on/off settings such as cache, visibility, and sync state. Its rounded track and thumb are an intentional exception to Mapseek's square control rule.
+Switch represents immediate on/off settings such as cache, visibility, and sync state. Its default rounded track and thumb are an intentional exception to Mapseek's square control rule.
 
 ## Installation
 
@@ -24,11 +24,15 @@ import { Switch } from "@/registry/ui/switch"
 
 ## Usage
 
-<ShowcaseDemo registryName="switch" demo="overview" title="Switch states" description="Covers sm/default sizes, checked/unchecked, disabled checked, invalid, and controlled state." minHeight={340} />
+<ShowcaseDemo registryName="switch" demo="overview" title="Switch states" description="Covers sm/default sizes, default and square variant checked/unchecked states, disabled checked, invalid, and controlled state." minHeight={430} />
 
 ## Exports
 
-`switch.tsx` exports `Switch`. The component inherits Base UI Switch root props and adds `size="sm" | "default"`.
+`switch.tsx` exports `Switch`. The component inherits Base UI Switch root props and adds `size="sm" | "default"` plus `variant="default" | "square"`.
+
+## Variants
+
+Use the default rounded track for general settings. `variant="square"` preserves the compact 24×16px square-cornered switch used in configuration popover headers; reserve it for that dense configuration context rather than general forms.
 
 ## States
 
@@ -41,4 +45,3 @@ Switch needs an accessible name. Use it for immediate toggles, not form choices 
 ## Dependencies
 
 <RegistryDependencies registryName="switch" />
-

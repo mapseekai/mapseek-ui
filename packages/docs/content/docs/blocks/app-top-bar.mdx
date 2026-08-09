@@ -19,20 +19,44 @@ AppTopBar 是地图编辑器的应用顶栏。它负责返回按钮、品牌槽�
 ## 导入
 
 ```tsx
-import { AppTopBar, type AppTopBarLabels, type AppTopBarProps } from "@/registry/blocks/app-top-bar"
+import {
+  AppTopBar,
+  type AppTopBarLabels,
+  type AppTopBarProps,
+  type AppTopBarSize,
+} from "@/registry/blocks/app-top-bar"
 ```
 
 ## 受控保存状态
 
-<ShowcaseDemo registryName="app-top-bar" title="受控保存状态" description="示例展示品牌槽、dirty 状态 pill、保存、另存为和快照动作。" minHeight={220} />
+<ShowcaseDemo registryName="app-top-bar" title="受控保存状态" description="示例展示品牌槽、dirty 状态 Tag、保存、另存为、快照动作，以及 `xs`、`sm`、`default`、`lg` 尺寸对比。" minHeight={460} />
+
+## 居中图标操作
+
+<ShowcaseDemo registryName="app-top-bar" demo="center-actions" title="居中图标操作" description="展示通过 `centerActions` 在顶栏几何中心放置带提示的地图工具图标按钮。" minHeight={160} />
 
 ## 用法
 
 把 `projectName`、`brand`、`status` 和 `labels` 作为展示输入传给组件，并把 `onBack`、`onSave` 接到应用路由与保存流程。`beforeSaveActions`、`afterSaveActions`、`centerActions` 和 `endActions` 用于放置调用方自己的导出、历史、快照或共享按钮。
 
+传入 `centerActions` 时，桌面端通过左右等宽列与中间列保持工具组几何居中；在 `md` 至 `lg` 之前，品牌与状态会暂时隐藏，工程名收缩省略，以避免遮挡中间工具组。
+
+## 尺寸
+
+`size` 提供 `xs`、`sm`、`default` 和 `lg`，默认值为 `default`。桌面端始终保留上下各 4px 的外层留白：
+
+| `size` | 内置 Button | 内部工具栏 | 外层顶栏 |
+| --- | ---: | ---: | ---: |
+| `xs` | 24px | 24px | 32px |
+| `sm` | 28px | 28px | 36px |
+| `default` | 32px | 40px | 48px |
+| `lg` | 36px | 48px | 56px |
+
+该 prop 会同步调整内置返回与保存按钮到对应的 Button 尺寸。动作插槽、`brand` 与 `status` 由调用方提供；动作 Button 也应使用同一尺寸档位。
+
 ## 公开导出与 Props
 
-导出 `AppTopBar`、`AppTopBarProps` 和 `AppTopBarLabels`。关键 props 是 `projectName`、`labels`、`onBack`、`onSave`、`saveDisabled`、`savePending`、`brand`、`status` 和四个动作插槽。组件不内置品牌资源或状态 badge 样式。
+导出 `AppTopBar`、`AppTopBarProps`、`AppTopBarLabels` 和 `AppTopBarSize`。关键 props 是 `size`、`projectName`、`labels`、`onBack`、`onSave`、`saveDisabled`、`savePending`、`brand`、`status` 和四个动作插槽。组件不内置品牌资源或状态 Tag 样式。
 
 ## 受控状态
 
@@ -45,4 +69,3 @@ import { AppTopBar, type AppTopBarLabels, type AppTopBarProps } from "@/registry
 ## 依赖
 
 <RegistryDependencies registryName="app-top-bar" />
-

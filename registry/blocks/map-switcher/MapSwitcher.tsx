@@ -1,9 +1,21 @@
-import { IconChevronDown, IconChevronUp } from "@tabler/icons-react"
+import { IconChevronDown, IconStack2 } from "@tabler/icons-react"
 import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
-import type { MapSwitcherContextValue, MapSwitcherItemData, MapSwitcherProps } from "./types"
+import type {
+  MapSwitcherContextValue,
+  MapSwitcherItemData,
+  MapSwitcherPanelProps,
+  MapSwitcherProps,
+  MapSwitcherTriggerProps,
+} from "./types"
 
 // ---------------------------------------------------------------------------
 // Context
@@ -25,61 +37,25 @@ function MapSwitcherRoot({
   value: valueProp,
   defaultValue,
   onChange,
-  open: openProp,
-  defaultOpen = false,
+  open,
+  defaultOpen,
   onOpenChange,
-  mode = "image",
-  className,
+  variant = "icon",
   children,
 }: MapSwitcherProps) {
   const [selectedUncontrolled, setSelectedUncontrolled] = React.useState(defaultValue ?? null)
   const isValueControlled = valueProp !== undefined
   const selectedId = isValueControlled ? (valueProp ?? null) : selectedUncontrolled
 
-  const [openUncontrolled, setOpenUncontrolled] = React.useState(defaultOpen)
-  const isOpenControlled = openProp !== undefined
-  const open = openProp ?? openUncontrolled
-
   const [items, setItems] = React.useState<Map<string, MapSwitcherItemData>>(new Map())
-  const rootRef = React.useRef<HTMLDivElement>(null)
-
-  const setOpen = React.useCallback(
-    (nextOpen: boolean) => {
-      if (!isOpenControlled) setOpenUncontrolled(nextOpen)
-      onOpenChange?.(nextOpen)
-    },
-    [isOpenControlled, onOpenChange],
-  )
-
-  React.useEffect(() => {
-    if (!open) return
-    function handleMouseDown(e: MouseEvent) {
-      if (!rootRef.current?.contains(e.target as Node)) {
-        setOpen(false)
-      }
-    }
-    document.addEventListener("mousedown", handleMouseDown)
-    return () => document.removeEventListener("mousedown", handleMouseDown)
-  }, [open, setOpen])
-
-  React.useEffect(() => {
-    if (!open) return
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        setOpen(false)
-      }
-    }
-    document.addEventListener("keydown", handleKeyDown)
-    return () => document.removeEventListener("keydown", handleKeyDown)
-  }, [open, setOpen])
 
   const onSelect = React.useCallback(
     (id: string) => {
       if (!isValueControlled) setSelectedUncontrolled(id)
       onChange?.(id)
-      setOpen(false)
+      // The menu closes itself after a radio-item selection.
     },
-    [isValueControlled, onChange, setOpen],
+    [isValueControlled, onChange],
   )
 
   const registerItem = React.useCallback((data: MapSwitcherItemData) => {
@@ -100,26 +76,19 @@ function MapSwitcherRoot({
     () => ({
       selectedId,
       onSelect,
-      open,
-      mode,
+      variant,
       registerItem,
       unregisterItem,
       getItem,
     }),
-    [selectedId, onSelect, open, mode, registerItem, unregisterItem, getItem],
+    [selectedId, onSelect, variant, registerItem, unregisterItem, getItem],
   )
 
   return (
     <MapSwitcherContext.Provider value={ctx}>
-      <Collapsible
-        ref={rootRef}
-        open={open}
-        onOpenChange={setOpen}
-        data-slot="map-switcher"
-        className={cn("relative inline-block", className)}
-      >
+      <DropdownMenu open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
         {children}
-      </Collapsible>
+      </DropdownMenu>
     </MapSwitcherContext.Provider>
   )
 }
@@ -129,12 +98,12 @@ function MapSwitcherRoot({
 // ---------------------------------------------------------------------------
 
 function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
-  const { selectedId, onSelect, mode, registerItem, unregisterItem } = useMapSwitcherContext()
-  const isActive = selectedId === id
+  const { variant, registerItem, unregisterItem } = useMapSwitcherContext()
 
   React.useEffect(() => {
     registerItem({ id, label, image, color })
-    // Preload the thumbnail before trigger changes (button mode has no <img> DOM).
+    // Preload the thumbnail before the trigger needs it (icon-variant panels
+    // are only mounted while open).
     if (image) {
       const preload = new window.Image()
       preload.src = image
@@ -142,65 +111,50 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
     return () => unregisterItem(id)
   }, [id, label, image, color, registerItem, unregisterItem])
 
-  if (mode === "image") {
+  if (variant === "image") {
     return (
-      <Button
-        variant="ghost"
-        size="sm"
-        type="button"
-        role="option"
-        aria-selected={isActive}
-        onClick={() => onSelect(id)}
-        className="flex h-auto w-[76px] flex-col items-center gap-0.5 cursor-pointer bg-transparent p-0 border-0"
+      <DropdownMenuRadioItem
+        value={id}
+        closeOnClick
         title={label}
+        className={cn(
+          "flex w-[88px] cursor-pointer flex-col items-center gap-1 p-1.5 ring-inset transition-colors",
+          // Card-type tile: hover and selected share the primary 5% fill + 1px ring.
+          "hover:bg-primary/5 hover:ring-1 hover:ring-primary focus:bg-primary/5 focus:text-foreground focus:ring-1 focus:ring-primary",
+          "data-checked:bg-primary/5 data-checked:ring-1 data-checked:ring-primary",
+          // The persistent fill + ring is the selection indicator — no check badge.
+          "[&_[data-slot=dropdown-menu-radio-item-indicator]]:hidden",
+        )}
       >
         {/* Thumbnail: 76×52px */}
-        <div
-          className={cn(
-            "flex h-[52px] w-[76px] items-center justify-center overflow-hidden",
-            isActive && "outline-2 -outline-offset-2 outline-primary",
-          )}
-        >
+        <span className="flex h-[52px] w-[76px] items-center justify-center overflow-hidden">
           {image ? (
             <img src={image} alt={label} className="h-full w-full object-cover" />
           ) : (
-            <div
-              className="flex h-full w-full items-center justify-center text-[10px] text-foreground"
+            <span
+              className="flex h-full w-full items-center justify-center font-mono text-label-md text-foreground"
               style={{ background: color ?? "var(--muted)" }}
             >
               {label}
-            </div>
+            </span>
           )}
-        </div>
-        {/* Label below thumbnail */}
-        <span className="text-[10px] text-foreground truncate max-w-[76px] px-0.5">{label}</span>
-      </Button>
+        </span>
+        <span className="max-w-[76px] truncate px-0.5 font-mono text-label-md text-foreground">
+          {label}
+        </span>
+      </DropdownMenuRadioItem>
     )
   }
 
-  // mode="button"
+  // variant === "icon"
   return (
-    <Button
-      variant="ghost"
-      size="sm"
-      type="button"
-      role="option"
-      aria-selected={isActive}
-      onClick={() => onSelect(id)}
-      className={cn(
-        "flex w-full items-center justify-start gap-2 border-0 border-l-2 bg-transparent px-2 py-1.5 text-left cursor-pointer",
-        isActive
-          ? "border-l-primary bg-selection-bg text-headline-sm text-primary hover:bg-selection-bg hover:text-primary"
-          : "border-l-transparent hover:bg-accent/50 text-body-lg text-foreground",
-      )}
-    >
-      {/* Color dot */}
+    <DropdownMenuRadioItem value={id} closeOnClick title={label} className="cursor-pointer">
       <span
         className="size-2 shrink-0"
         style={{ background: color ?? "var(--muted-foreground)" }}
       />
       <span className="truncate">{label}</span>
-    </Button>
+    </DropdownMenuRadioItem>
   )
 }
 
@@ -208,29 +162,26 @@ function MapSwitcherItem({ id, label, image, color }: MapSwitcherItemData) {
 // Trigger
 // ---------------------------------------------------------------------------
 
-function MapSwitcherTrigger() {
-  const { selectedId, open, getItem, mode } = useMapSwitcherContext()
+function MapSwitcherTrigger({ label = "Basemap", className }: MapSwitcherTriggerProps) {
+  const { selectedId, getItem, variant } = useMapSwitcherContext()
   const item = selectedId ? getItem(selectedId) : undefined
-  const chevron = open ? (
-    <IconChevronUp strokeWidth={1.75} className="text-muted-foreground shrink-0" />
-  ) : (
-    <IconChevronDown strokeWidth={1.75} className="text-muted-foreground shrink-0" />
-  )
 
-  if (mode === "button") {
+  if (variant === "icon") {
     return (
-      <CollapsibleTrigger
+      <DropdownMenuTrigger
         render={
           <Button
             variant="ghost"
-            size="sm"
+            size="icon"
             type="button"
-            aria-haspopup="listbox"
-            className="flex h-8 w-auto min-w-[72px] justify-center gap-2 bg-transparent px-2 cursor-pointer"
-            title={item?.label}
+            aria-label={label}
+            title={label}
+            className={cn(
+              "size-8 rounded-none border border-border bg-card text-muted-foreground hover:text-foreground",
+              className,
+            )}
           >
-            <span className="truncate text-center text-foreground">{item?.label ?? ""}</span>
-            {chevron}
+            <IconStack2 size={14} stroke={1.5} />
           </Button>
         }
       />
@@ -238,18 +189,20 @@ function MapSwitcherTrigger() {
   }
 
   return (
-    <CollapsibleTrigger
+    <DropdownMenuTrigger
       render={
         <Button
           variant="ghost"
           size="sm"
           type="button"
-          aria-haspopup="listbox"
-          className="flex h-auto w-[76px] flex-col border-border bg-card p-0 cursor-pointer"
           title={item?.label}
+          className={cn(
+            "group flex h-auto w-[76px] cursor-pointer flex-col gap-0 border-border bg-card p-0",
+            className,
+          )}
         >
           {/* Top area: thumbnail or color block */}
-          <div className="flex h-11 w-full items-center justify-center overflow-hidden">
+          <span className="flex h-11 w-full items-center justify-center overflow-hidden">
             {item?.image ? (
               <img
                 src={item.image}
@@ -257,22 +210,27 @@ function MapSwitcherTrigger() {
                 className="block h-full w-full object-cover object-center"
               />
             ) : (
-              <div
-                className="flex h-full w-full items-center justify-center text-[10px] text-foreground"
+              <span
+                className="flex h-full w-full items-center justify-center font-mono text-label-md text-foreground"
                 style={{ background: item?.color ?? "var(--muted)" }}
               >
                 {item?.label ?? ""}
-              </div>
+              </span>
             )}
-          </div>
+          </span>
           {/* Bottom row: label + chevron */}
-          <div className="grid h-6 w-full grid-cols-[1rem_minmax(0,1fr)_1rem] items-center">
+          <span className="grid h-6 w-full grid-cols-[1rem_minmax(0,1fr)_1rem] items-center pe-1">
             <span aria-hidden="true" />
             <span className="min-w-0 truncate text-center text-body-sm text-foreground">
               {item?.label ?? ""}
             </span>
-            <span className="flex items-center justify-center">{chevron}</span>
-          </div>
+            <span className="flex items-center justify-center">
+              <IconChevronDown
+                strokeWidth={1.75}
+                className="size-3.5 shrink-0 text-muted-foreground transition-transform group-data-[popup-open]:rotate-180"
+              />
+            </span>
+          </span>
         </Button>
       }
     />
@@ -283,30 +241,28 @@ function MapSwitcherTrigger() {
 // Panel
 // ---------------------------------------------------------------------------
 
-function MapSwitcherPanel({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  const { mode } = useMapSwitcherContext()
+function MapSwitcherPanel({ className, children }: MapSwitcherPanelProps) {
+  const { variant, selectedId, onSelect } = useMapSwitcherContext()
 
   return (
-    <CollapsibleContent
+    <DropdownMenuContent
+      // Keep items mounted so the image-variant trigger can resolve the
+      // selected basemap thumbnail while the menu is closed.
       keepMounted
+      side="top"
+      align="end"
+      sideOffset={4}
       data-slot="map-switcher-panel"
-      role="listbox"
-      className={cn(
-        "absolute right-0 bottom-[calc(100%+4px)] z-10 overflow-hidden border border-border bg-card",
-        mode === "image"
-          ? "grid w-[174px] grid-cols-2 gap-1.5 p-2"
-          : "flex min-w-[130px] flex-col items-stretch p-1",
-        className,
-      )}
+      className={cn(variant === "image" && "w-[196px] whitespace-normal", className)}
     >
-      {children}
-    </CollapsibleContent>
+      <DropdownMenuRadioGroup
+        value={selectedId ?? ""}
+        onValueChange={onSelect}
+        className={cn(variant === "image" && "grid grid-cols-2 gap-1")}
+      >
+        {children}
+      </DropdownMenuRadioGroup>
+    </DropdownMenuContent>
   )
 }
 

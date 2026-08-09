@@ -141,9 +141,10 @@ export function MapCoordinateStatus({
             render={
               <Button
                 variant="ghost"
+                size="xs"
                 aria-label={labels.switchCrs}
                 className={cn(
-                  "h-5 gap-[3px] rounded-none border border-primary/25 px-1.5 font-mono text-[10px] tracking-[0.04em] text-primary hover:text-primary",
+                  "border border-primary/25 font-mono text-label-md text-primary hover:text-primary",
                   open ? "bg-primary/[0.18]" : "bg-primary/10",
                 )}
               >

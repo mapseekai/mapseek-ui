@@ -40,4 +40,25 @@ describe("SchemaForm", () => {
       expect(className).toContain("py-1.5")
     }
   })
+
+  it("uses the shared primary marker for every required field name", () => {
+    const html = renderToStaticMarkup(
+      <SchemaForm
+        fields={[
+          { key: "radius", label: "Radius", required: true, type: "number" },
+          {
+            key: "layers",
+            label: "Layers",
+            required: true,
+            type: "multiselect",
+            options: [{ label: "roads", value: "roads" }],
+          },
+        ]}
+        values={{ radius: undefined, layers: [] }}
+        onChange={() => undefined}
+      />,
+    )
+
+    expect(html.match(/data-slot="field-required-indicator"/g) ?? []).toHaveLength(2)
+  })
 })

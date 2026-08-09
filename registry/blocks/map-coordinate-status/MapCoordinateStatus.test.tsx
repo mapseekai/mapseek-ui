@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises"
+import { resolve } from "node:path"
 import type { ReactElement, ReactNode } from "react"
 import { renderToStaticMarkup } from "react-dom/server"
 import { describe, expect, it, vi } from "vitest"
@@ -28,5 +30,18 @@ describe("MapCoordinateStatus", () => {
     )
 
     expect(html.match(/class="tnum"/g)).toHaveLength(3)
+  })
+
+  it("uses the standard 24px button size for the CRS selector", async () => {
+    const source = await readFile(resolve(import.meta.dirname, "MapCoordinateStatus.tsx"), "utf8")
+    const crsSelector = source.slice(
+      source.indexOf("<Popover open={open}"),
+      source.indexOf('<PopoverContent side="top"'),
+    )
+
+    expect(crsSelector).toContain('size="xs"')
+    expect(crsSelector).toContain("text-label-md")
+    expect(crsSelector).not.toContain("h-5")
+    expect(crsSelector).not.toContain("text-[10px]")
   })
 })

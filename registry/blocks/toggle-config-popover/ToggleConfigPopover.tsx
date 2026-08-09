@@ -2,6 +2,7 @@ import { IconChevronDown, type Icon as TablerIcon } from "@tabler/icons-react"
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
@@ -140,26 +141,13 @@ function ToggleConfigPopover({
             <Icon size={14} className={checked ? "text-primary" : "text-muted-foreground"} />
             <span className="text-body-md-strong leading-none">{label}</span>
             <span className="flex-1" />
-            <Button
-              type="button"
-              variant="ghost"
-              role="switch"
-              aria-checked={checked}
+            <Switch
+              variant="square"
+              checked={checked}
               aria-label={resolvedSwitchLabel}
               disabled={disabled}
-              onClick={() => onCheckedChange(!checked)}
-              className={cn(
-                "relative h-4 w-7 rounded-none border p-0",
-                checked
-                  ? "border-transparent bg-primary hover:bg-primary"
-                  : "border-border bg-muted",
-              )}
-            >
-              <span
-                className="absolute top-px size-3 bg-background transition-[left] duration-[120ms]"
-                style={{ left: checked ? 13 : 1 }}
-              />
-            </Button>
+              onCheckedChange={onCheckedChange}
+            />
           </header>
           <div className={cn("transition-opacity duration-150", !checked && "opacity-50")}>
             {children}

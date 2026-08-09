@@ -179,6 +179,10 @@ components:
     rounded: "{rounded.none}"
     height: 36px
     padding: 0px 10px
+  icon-button-xl:
+    rounded: "{rounded.none}"
+    size: 40px
+    iconSize: 20px
   accent-surface:
     backgroundColor: "{colors.accent}"
     textColor: "{colors.accent-foreground}"
@@ -259,7 +263,7 @@ The defining visual rhythm is a near-neutral canvas, square 1px-bounded surfaces
 - Neutral light and dark canvases; green is functional rather than decorative.
 - Geist Mono Variable for all UI text and technical data.
 - Zero-radius rectangular controls, panels, cards, menus, and dialogs.
-- Compact 24px, 28px, 32px, and 36px control sizes on a 4px spacing rhythm.
+- Compact 24px, 28px, 32px, 36px, and 40px control sizes on a 4px spacing rhythm; reserve the 40px `xl` tier for top-level icon-tool clusters.
 - Borders and small surface changes establish hierarchy; components are shadowless by default.
 - Selected, loading, empty, error, and disabled states never rely on color alone.
 - Desktop-first data and panel layouts remain understandable when space narrows.
@@ -281,7 +285,7 @@ Mapseek uses a green-axis OKLCH palette surrounded by low-chroma neutrals. The p
 - **Primary** (`{colors.primary}`) is the single high-emphasis action, selected navigation treatment, keyboard focus source, and limited progress accent. Its foreground is `{colors.primary-foreground}`.
 - **Focus ring** uses `{colors.ring}` at 20% opacity and a 3px width consistently across keyboard-focusable controls.
 - **Secondary** (`{colors.secondary}`) and **accent** (`{colors.accent}`) provide lower-emphasis actions and grouped choices. Their foregrounds are the matching `*-foreground` tokens.
-- **Interaction and selection** use separate surfaces: ordinary interactive elements use `{colors.accent}` at 50% opacity, matching the documentation sidebar hover treatment. Persistent selections use the full `{colors.selection-bg}` token with `{colors.primary}` text and may progress toward `{colors.selection-bg-deep}`; selected, expanded, and active elements retain both their state surface and primary text on hover instead of applying the ordinary hover treatment. They must also use selected semantics, an edge, a checkmark, or another lasting indicator. Card-type elements (resource cards, icon tiles) are an exception for prominence: both hover and selected use a `{colors.primary}` 5% fill with a 1px primary ring; the selected state persists the same fill and ring as its lasting indicator, paired with selected semantics or a checkmark. Drag and resize handles (splitter strips, reorder grips) are another exception: their hover uses a `{colors.primary}` tint (e.g. 40%) as an action affordance, since the neutral 50% accent fill is not legible on thin handles.
+- **Interaction and selection** use separate surfaces: ordinary interactive elements use `{colors.accent}` at 50% opacity, matching the documentation sidebar hover treatment. Persistent selections and active controls use the full `{colors.selection-bg}` token with `{colors.primary}` text and may progress toward `{colors.selection-bg-deep}`; they retain both their state surface and primary text on hover instead of applying the ordinary hover treatment. They must also use selected semantics, an edge, a checkmark, or another lasting indicator. `aria-expanded` disclosure triggers are not persistent selections: while open, they use exactly their normal hover surface and text treatment. Card-type elements (resource cards, icon tiles) are an exception for prominence: both hover and selected use a `{colors.primary}` 5% fill with a 1px primary ring; the selected state persists the same fill and ring as its lasting indicator, paired with selected semantics or a checkmark. Drag and resize handles (splitter strips, reorder grips) are another exception: their hover uses a `{colors.primary}` tint (e.g. 40%) as an action affordance, since the neutral 50% accent fill is not legible on thin handles.
 - **Transparency mixing.** For a single semantic color token mixed with `transparent`, specify the intended alpha (for example, primary at 80%). `color-mix(in oklch, ...)` and Tailwind opacity utilities that compile to `color-mix(in oklab, ...)` are equivalent in this single-color case and both conform. This exception does not extend to mixing two visible colors: their interpolation space must be explicit, and an OKLCH mix must also state its hue interpolation method.
 - **Destructive**, **warning**, and **info** are semantic signals, not decorative categories. Pair them with text or an icon; destructive actions remain tinted rather than solid red.
 
@@ -345,10 +349,11 @@ The layout system is desktop-first and built on a 4px baseline, with 2px and 6px
 ### Application Structure
 
 - The common shell is **top bar → navigation or resource rail → working canvas → contextual panel or overlay**.
-- Toolbars use one control height per cluster. Keep persistent actions in the top bar or a panel footer.
+- Toolbars use one control height per cluster. Keep persistent actions in the top bar or a panel footer. A centered `xl` icon-tool cluster has a reserved middle column; at intermediate desktop widths, collapse secondary context before it can overlap the center controls.
 - Sidebars and editors have stable widths, a 1px boundary, and independent scrolling. The primary working area owns remaining width and must retain `min-width: 0` behavior.
 - Resource grids use `auto-fill` with domain-specific minimum card widths. Tables use an explicit bounded container and horizontal overflow rather than compressed columns.
 - Field rows can be vertical, inline, or responsive, but editor layouts retain a stable label column and a flexible content column when space permits.
+- Required field names use `FieldLabel required` or `FieldLegend required`. These primitives append a destructive-red `*` directly after the human-readable name; preserve the matching native `required` or `aria-required` semantics on the control itself.
 
 ### Responsive Behavior
 
@@ -381,7 +386,7 @@ Mapseek is **border-first and surface-first**. Static panels do not float above 
 Zero radius is a defining Mapseek characteristic. Rectangular controls, fields, cards, tables, menus, popovers, dialogs, sheets, and panels use `{rounded.none}`. Do not reintroduce framework corner radii.
 
 - `{rounded.full}` is reserved for naturally circular status dots, avatar masks, radio controls, switch tracks, and switch thumbs, plus thin drag/resize grips.
-- Icon-only controls are square and follow the 24px, 28px, 32px, and 36px size scale.
+- Icon-only controls are square and follow the 24px, 28px, 32px, 36px, and 40px (`xl`) size scale. The `xl` tier uses a 20px icon and is reserved for toolbars with an inner row at least 40px high.
 - Tabler Icons are the default icon language. Within a toolbar or row, keep icon size and stroke consistent.
 - Separators are 1px; do not stack outlines, use thick strokes, or add decorative frames to create hierarchy.
 - Preserve `public/img/mapseek.png` in its full, transparent, unmodified form.
@@ -397,7 +402,7 @@ Components follow a fixed ownership model: theme → primitives → domain block
 - **Outline, secondary, ghost, and link variants** preserve hierarchy without creating a new action color. `link` is for genuine inline navigation or low-chrome actions.
 - **`button-destructive`** uses a tinted destructive surface, `border-destructive/10` border, and destructive text. Hover raises both surface and border to `hover:bg-destructive/20` and `hover:border-destructive/20`; ask for confirmation when an action is irreversible or difficult to recover.
 - **`button-group`** connects related Button controls on one shared edge. It may be horizontal or vertical, collapses adjacent interior borders, and raises a focused child above its neighbours.
-- **Icon buttons** are square and sized 24–36px. They need an accessible name and, where the symbol is not self-evident, a tooltip.
+- **Icon buttons** are square and sized 24–40px. `xl` is 40px with a 20px icon, for a top-level toolbar that affords a 40px inner row. They need an accessible name and, where the symbol is not self-evident, a tooltip.
 
 ### Forms and Selection
 
@@ -444,4 +449,3 @@ Components follow a fixed ownership model: theme → primitives → domain block
 - Do not copy color literals into components when a semantic token exists.
 - Do not hide essential actions behind an unlabeled icon, hover-only treatment, or color-only affordance.
 - Do not duplicate primitive behavior or embed non-injectable product copy and network behavior inside domain blocks.
-- Required field names use `FieldLabel required` or `FieldLegend required`. These primitives append a destructive-red `*` directly after the human-readable name; preserve the matching native `required` or `aria-required` semantics on the control itself.

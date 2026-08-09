@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useId, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { ButtonRadioGroup, ButtonRadioGroupItem } from "@/components/ui/button-radio-group"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -13,13 +14,16 @@ import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
 import { ColormapPicker } from "./ColormapPicker"
 import { DEFAULT_RASTER_STYLE_PANEL_LABELS } from "./defaults"
+import { buildColormapGradient } from "./gradient"
+import { NumberDraftInput } from "./NumberDraftInput"
+import { isInDataRange, normalizeDataRange } from "./numeric-range"
 import { Segmented } from "./Segmented"
 import { StretchControl } from "./StretchControl"
 import type {
   MosaicPixelSelection,
+  RasterCustomColormap,
   RasterFormatValue,
   RasterSelector,
-  RasterStat,
   RasterStylePanelProps,
   Resampling,
   TileSize,
@@ -38,7 +42,7 @@ const TILE_SIZES: TileSize[] = [64, 128, 256, 512, 1024]
 const FORMATS: RasterFormatValue[] = ["png", "webp", "jpeg"]
 const MOSAIC_SELECTIONS: MosaicPixelSelection[] = ["first", "highest", "lowest", "mean", "median"]
 const CHANNELS = ["red", "green", "blue"] as const
-const CHANNEL_LABEL = { red: "R", green: "G", blue: "B" } as const
+const DEFAULT_CHANNEL_LABEL = { red: "R", green: "G", blue: "B" } as const
 
 function normalizeSelector(selector: RasterSelector): Extract<RasterSelector, { kind: "bands" }> {
   if (selector.kind === "bands") return selector
@@ -46,7 +50,7 @@ function normalizeSelector(selector: RasterSelector): Extract<RasterSelector, { 
   return { kind: "bands", bands: [band], assignments: {} }
 }
 
-const labelCls = "self-center font-sans text-label-sm uppercase text-muted-foreground"
+const labelCls = "self-center font-sans text-body-md uppercase text-muted-foreground"
 const colorPattern = /^#(?:[0-9a-f]{6}|[0-9a-f]{8})$/i
 
 type DraftReporter = (key: string, valid: boolean | null) => void
@@ -98,19 +102,53 @@ function DraftInput({
   )
 }
 
-function StatGrid({ stats }: { stats: RasterStat[] }) {
+function CustomColormapPreview({
+  value,
+  label,
+  onEdit,
+}: {
+  value: RasterCustomColormap
+  label: string
+  onEdit?: () => void
+}) {
+  const gradient = buildColormapGradient({
+    stops: value.entries.map((entry) => entry.color),
+    interpolation: value.interpolation ?? "linear",
+    colorSpace: value.colorSpace ?? "oklch",
+  })
+  const content = (
+    <>
+      <span
+        className="h-3.5 w-full border border-primary ring-1 ring-primary"
+        style={{ background: gradient }}
+      />
+      <span className="font-mono text-[10px] tracking-[0.04em] text-primary">{label}</span>
+    </>
+  )
+
+  if (!onEdit) {
+    return (
+      <div
+        data-slot="custom-colormap-preview"
+        className="flex h-auto flex-col gap-1 border border-transparent p-1"
+      >
+        {content}
+      </div>
+    )
+  }
+
   return (
-    <div className="mb-2 grid grid-cols-2 gap-1.5 border border-border bg-muted p-2">
-      {stats.map((s) => (
-        <div key={s.label}>
-          <div className="font-mono text-[10px] text-muted-foreground">{s.label}</div>
-          <div className="font-mono text-body-sm">
-            {s.value}
-            {s.unit}
-          </div>
-        </div>
-      ))}
-    </div>
+    <Button
+      aria-label={label}
+      data-slot="custom-colormap-preview"
+      variant="ghost"
+      size="sm"
+      type="button"
+      onClick={onEdit}
+      className="flex h-auto cursor-pointer flex-col gap-1 border border-transparent p-1 text-left bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
+    >
+      {content}
+    </Button>
   )
 }
 
@@ -126,14 +164,15 @@ export function RasterStylePanel({
   onValidityChange,
   resetKey,
   bandCount = 1,
-  stats,
   labels,
   onEditCustomColormap,
   autoRange,
+  dataRange,
   mosaic,
   className,
 }: RasterStylePanelProps) {
   const resolvedLabels = resolveLabels(DEFAULT_RASTER_STYLE_PANEL_LABELS, labels)
+  const normalizedDataRange = normalizeDataRange(dataRange)
   const drafts = useRef(new Map<string, boolean>())
   const [, refresh] = useState(0)
   const report = useCallback<DraftReporter>(
@@ -226,7 +265,6 @@ export function RasterStylePanel({
     })
   return (
     <div className={cn("flex flex-col", className)}>
-      {stats?.length ? <StatGrid stats={stats} /> : null}
       <div className="grid grid-cols-[72px_minmax(0,1fr)] gap-x-3 gap-y-2.5">
         {mosaic ? (
           <>
@@ -243,39 +281,44 @@ export function RasterStylePanel({
           </>
         ) : null}
         <div className={labelCls}>{labels.renderMode ?? "Render"}</div>
-        <Segmented
-          className="flex-wrap"
-          options={[
-            {
-              value: "single" as const,
-              label: labels.renderSingle ?? "Single",
-            },
-            { value: "rgb" as const, label: labels.renderRgb ?? "RGB" },
-          ]}
+        <ButtonRadioGroup
+          aria-label={labels.renderMode ?? "Render"}
+          className="grid grid-cols-2"
+          size="xs"
+          variant="soft"
           value={selectorMode}
-          onChange={switchSelector}
-          buttonClassName="whitespace-nowrap"
-        />
+          onValueChange={(raw) => switchSelector(raw as "single" | "rgb")}
+        >
+          <ButtonRadioGroupItem value="single" className="min-w-0 whitespace-nowrap">
+            {labels.renderSingle ?? "Single"}
+          </ButtonRadioGroupItem>
+          <ButtonRadioGroupItem value="rgb" className="min-w-0 whitespace-nowrap">
+            {labels.renderRgb ?? "RGB"}
+          </ButtonRadioGroupItem>
+        </ButtonRadioGroup>
         <div className={labelCls}>{labels.band}</div>
         {isRgb ? (
           <div className="flex flex-col gap-1.5">
-            {CHANNELS.map((key) => (
-              <div key={key} className="grid grid-cols-[42px_minmax(0,1fr)] items-center gap-1">
-                <span className="font-mono text-[10px]">{CHANNEL_LABEL[key]}</span>
-                {selectBand(`${CHANNEL_LABEL[key]} ${labels.band}`, assignments[key], (band) => {
-                  const next = { ...assignments, [key]: band }
-                  const rgbBands = CHANNELS.map((channel) => next[channel]).filter(
-                    (value): value is number => value !== undefined,
-                  )
-                  if (rgbBands.length !== CHANNELS.length) return
-                  updateSelector({
-                    kind: "bands",
-                    bands: rgbBands,
-                    assignments: next,
-                  })
-                })}
-              </div>
-            ))}
+            {CHANNELS.map((key) => {
+              const channelLabel = labels.channelLabels?.[key] ?? DEFAULT_CHANNEL_LABEL[key]
+              return (
+                <div key={key} className="grid grid-cols-[42px_minmax(0,1fr)] items-center gap-1">
+                  <span className="font-mono text-[10px]">{channelLabel}</span>
+                  {selectBand(`${channelLabel} ${labels.band}`, assignments[key], (band) => {
+                    const next = { ...assignments, [key]: band }
+                    const rgbBands = CHANNELS.map((channel) => next[channel]).filter(
+                      (value): value is number => value !== undefined,
+                    )
+                    if (rgbBands.length !== CHANNELS.length) return
+                    updateSelector({
+                      kind: "bands",
+                      bands: rgbBands,
+                      assignments: next,
+                    })
+                  })}
+                </div>
+              )
+            })}
           </div>
         ) : (
           selectBand(labels.band, selector.bands[0], (band) =>
@@ -286,30 +329,29 @@ export function RasterStylePanel({
           <>
             <div className={labelCls}>{labels.colormap}</div>
             <div className="flex flex-col gap-1">
-              <Segmented
-                className="flex-wrap"
-                options={[
-                  {
-                    value: "none" as const,
-                    label: resolvedLabels.colormapNone,
-                  },
-                  {
-                    value: "named" as const,
-                    label: resolvedLabels.colormapNamed,
-                  },
-                  {
-                    value: "custom" as const,
-                    label: resolvedLabels.colormapCustom,
-                  },
-                ]}
+              <ButtonRadioGroup
+                aria-label={labels.colormap}
+                className="grid grid-cols-3"
+                size="xs"
+                variant="soft"
                 value={value.colormap.kind}
-                buttonClassName="whitespace-nowrap"
-                onChange={(kind) => {
+                onValueChange={(raw) => {
+                  const kind = raw as "none" | "named" | "custom"
                   if (kind === "none") setColormap({ kind: "none" })
                   else if (kind === "named") setColormap({ kind: "named", name: "viridis" })
                   else editCustomColormap()
                 }}
-              />
+              >
+                <ButtonRadioGroupItem value="none" className="min-w-0 whitespace-nowrap">
+                  {resolvedLabels.colormapNone}
+                </ButtonRadioGroupItem>
+                <ButtonRadioGroupItem value="named" className="min-w-0 whitespace-nowrap">
+                  {resolvedLabels.colormapNamed}
+                </ButtonRadioGroupItem>
+                <ButtonRadioGroupItem value="custom" className="min-w-0 whitespace-nowrap">
+                  {resolvedLabels.colormapCustom}
+                </ButtonRadioGroupItem>
+              </ButtonRadioGroup>
               {value.colormap.kind === "named" ? (
                 <ColormapPicker
                   value={value.colormap.name}
@@ -317,18 +359,27 @@ export function RasterStylePanel({
                   customLabel={labels.customColormap}
                 />
               ) : null}
+              {custom ? (
+                <CustomColormapPreview
+                  value={custom}
+                  label={resolvedLabels.colormapCustom}
+                  onEdit={onEditCustomColormap ? editCustomColormap : undefined}
+                />
+              ) : null}
               {custom && !onEditCustomColormap ? (
                 <>
                   {custom.entries.map((entry, index) => (
                     <div key={customEntryIds[index]} className="grid grid-cols-2 gap-1">
-                      <DraftInput
+                      <NumberDraftInput
                         key={`value-${resetKey ?? "initial"}`}
                         id={`cmap-value-${index}`}
                         label={`Colormap stop ${index + 1} value`}
-                        value={String(entry.value)}
+                        value={entry.value}
                         report={report}
-                        validate={numberValid}
-                        onValid={(raw) => updateEntry(index, { value: Number(raw) })}
+                        min={normalizedDataRange?.[0]}
+                        max={normalizedDataRange?.[1]}
+                        validate={(next) => isInDataRange(next, normalizedDataRange)}
+                        onValid={(next) => updateEntry(index, { value: next })}
                       />
                       <DraftInput
                         key={`color-${resetKey ?? "initial"}`}
@@ -410,6 +461,7 @@ export function RasterStylePanel({
           value={value.stretch ?? { mode: "minmax" }}
           onChange={(stretch) => onChange({ ...panelValue, stretch })}
           autoRange={autoRange}
+          dataRange={normalizedDataRange}
           labels={{
             modes: labels.stretchModes,
             percentHint: labels.percentHint,
@@ -417,6 +469,7 @@ export function RasterStylePanel({
             sigmaSuffix: labels.sigmaSuffix,
             auto: labels.auto,
           }}
+          ariaLabel={labels.stretch}
           resetKey={resetKey}
           reportDraft={report}
           outputCount={selector.bands.length}
@@ -450,34 +503,69 @@ export function RasterStylePanel({
           }
         />
         <div className={labelCls}>{labels.resampling}</div>
-        <Segmented
-          columns={3}
-          options={RESAMPLINGS.map((x) => ({
-            value: x,
-            label: labels.resamplingModes[x],
-          }))}
+        <Select
           value={value.resampling}
-          onChange={(resampling) => onChange({ ...panelValue, resampling })}
-          buttonClassName="whitespace-nowrap"
-        />
+          onValueChange={(resampling) =>
+            onChange({ ...panelValue, resampling: resampling as Resampling })
+          }
+        >
+          <SelectTrigger aria-label={labels.resampling}>
+            <SelectValue>
+              {(resampling: Resampling | null) =>
+                resampling ? labels.resamplingModes[resampling] : null
+              }
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {RESAMPLINGS.map((resampling) => (
+                <SelectItem key={resampling} value={resampling}>
+                  {labels.resamplingModes[resampling]}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
         <div className={labelCls}>{labels.format}</div>
-        <Segmented
-          options={FORMATS.map((x) => ({
-            value: x,
-            label: labels.formatModes[x],
-          }))}
+        <Select
           value={value.format}
-          onChange={(format) => onChange({ ...panelValue, format })}
-          buttonClassName="whitespace-nowrap"
-        />
+          onValueChange={(format) =>
+            onChange({ ...panelValue, format: format as RasterFormatValue })
+          }
+        >
+          <SelectTrigger aria-label={labels.format}>
+            <SelectValue>
+              {(format: RasterFormatValue | null) => (format ? labels.formatModes[format] : null)}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {FORMATS.map((format) => (
+                <SelectItem key={format} value={format}>
+                  {labels.formatModes[format]}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
         <div className={labelCls}>{labels.tileSize}</div>
-        <Segmented
-          className="flex-wrap"
-          options={TILE_SIZES.map((x) => ({ value: String(x), label: x }))}
+        <Select
           value={String(value.tileSize)}
-          onChange={(raw) => onChange({ ...panelValue, tileSize: Number(raw) as TileSize })}
-          buttonClassName="whitespace-nowrap"
-        />
+          onValueChange={(raw) => onChange({ ...panelValue, tileSize: Number(raw) as TileSize })}
+        >
+          <SelectTrigger aria-label={labels.tileSize}>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {TILE_SIZES.map((tileSize) => (
+                <SelectItem key={tileSize} value={String(tileSize)}>
+                  {tileSize}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   )

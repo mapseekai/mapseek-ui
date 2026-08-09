@@ -17,10 +17,11 @@ const mapThumbnails = {
 
 const labels = {
   "zh-CN": {
-    imageMode: "图片模式",
-    buttonMode: "按钮模式",
+    iconVariant: "变体 1:图标触发",
+    imageVariant: "变体 2:图片触发",
     controlled: "受控模式",
     mapPlaceholder: "地图背景占位",
+    basemap: "底图切换",
     current: "当前选中",
     panelState: "面板状态",
     open: "open",
@@ -58,10 +59,11 @@ const labels = {
     ],
   },
   en: {
-    imageMode: "Image mode",
-    buttonMode: "Button mode",
+    iconVariant: "Variant 1: icon trigger",
+    imageVariant: "Variant 2: image trigger",
     controlled: "Controlled mode",
     mapPlaceholder: "Map background placeholder",
+    basemap: "Basemap",
     current: "Current",
     panelState: "Panel state",
     open: "open",
@@ -119,8 +121,8 @@ function MapFrame({
 
 export function MapSwitcherDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
+  const [iconActive, setIconActive] = useState("road")
   const [imageActive, setImageActive] = useState("road")
-  const [buttonActive, setButtonActive] = useState("road")
   const [controlledActive, setControlledActive] = useState("satellite")
   const [open, setOpen] = useState(false)
   const [log, setLog] = useState<string[]>([])
@@ -143,12 +145,31 @@ export function MapSwitcherDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
 
   return (
     <div className="space-y-8">
-      <section className="space-y-3" data-demo-section="map-switcher-image">
+      <section className="space-y-3" data-demo-section="map-switcher-icon">
         <h3 className="m-0 font-mono text-xs text-muted-foreground uppercase">
-          {demoLabels.imageMode}
+          {demoLabels.iconVariant}
         </h3>
         <MapFrame demoLabels={demoLabels}>
-          <MapSwitcher value={imageActive} onChange={setImageActive} mode="image">
+          <MapSwitcher value={iconActive} onChange={setIconActive} variant="icon">
+            <MapSwitcher.Trigger label={demoLabels.basemap} />
+            <MapSwitcher.Panel>
+              {demoLabels.items.map(({ id, label, color }) => (
+                <MapSwitcher.Item key={id} id={id} label={label} color={color} />
+              ))}
+            </MapSwitcher.Panel>
+          </MapSwitcher>
+        </MapFrame>
+        <p className="m-0 text-xs text-muted-foreground">
+          {demoLabels.current}: <code className="font-mono text-[11px]">{iconActive}</code>
+        </p>
+      </section>
+
+      <section className="space-y-3" data-demo-section="map-switcher-image">
+        <h3 className="m-0 font-mono text-xs text-muted-foreground uppercase">
+          {demoLabels.imageVariant}
+        </h3>
+        <MapFrame demoLabels={demoLabels}>
+          <MapSwitcher value={imageActive} onChange={setImageActive} variant="image">
             <MapSwitcher.Trigger />
             <MapSwitcher.Panel>
               {demoLabels.items.map((item) => (
@@ -159,25 +180,6 @@ export function MapSwitcherDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         </MapFrame>
         <p className="m-0 text-xs text-muted-foreground">
           {demoLabels.current}: <code className="font-mono text-[11px]">{imageActive}</code>
-        </p>
-      </section>
-
-      <section className="space-y-3" data-demo-section="map-switcher-button">
-        <h3 className="m-0 font-mono text-xs text-muted-foreground uppercase">
-          {demoLabels.buttonMode}
-        </h3>
-        <MapFrame demoLabels={demoLabels}>
-          <MapSwitcher value={buttonActive} onChange={setButtonActive} mode="button">
-            <MapSwitcher.Trigger />
-            <MapSwitcher.Panel>
-              {demoLabels.items.map(({ id, label, color }) => (
-                <MapSwitcher.Item key={id} id={id} label={label} color={color} />
-              ))}
-            </MapSwitcher.Panel>
-          </MapSwitcher>
-        </MapFrame>
-        <p className="m-0 text-xs text-muted-foreground">
-          {demoLabels.current}: <code className="font-mono text-[11px]">{buttonActive}</code>
         </p>
       </section>
 
@@ -192,7 +194,7 @@ export function MapSwitcherDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
               open={open}
               onChange={handleControlledChange}
               onOpenChange={handleOpenChange}
-              mode="image"
+              variant="image"
             >
               <MapSwitcher.Trigger />
               <MapSwitcher.Panel>

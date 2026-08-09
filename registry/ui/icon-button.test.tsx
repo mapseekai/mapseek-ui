@@ -29,6 +29,7 @@ const sizes = {
   sm: "size-7",
   md: "size-8",
   lg: "size-9",
+  xl: "size-10",
 } as const
 
 describe("IconButton", () => {
@@ -43,6 +44,15 @@ describe("IconButton", () => {
 
     expect(button.props["aria-label"]).toBe("Edit layer")
     expect(button.props.className.split(/\s+/)).toContain(className)
+  })
+
+  it("uses a 20px icon inside the 40px xl button", () => {
+    const button = IconButton({
+      label: "Edit layer",
+      size: "xl",
+    }) as ReactElement<{ className: string }>
+
+    expect(button.props.className.split(/\s+/)).toContain("[&_svg:not([class*='size-'])]:size-5")
   })
 
   it("renders through the Base UI button primitive", () => {

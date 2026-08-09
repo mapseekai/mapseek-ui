@@ -5,7 +5,7 @@ vi.mock("@/registry/lib/utils", () => ({
   cn: (...values: Array<string | undefined>) => values.filter(Boolean).join(" "),
 }))
 
-import { SelectContent, SelectItem, SelectTrigger } from "./select"
+import { SelectContent, SelectGroup, SelectItem, SelectTrigger } from "./select"
 
 describe("SelectTrigger size variants", () => {
   it.each([
@@ -59,9 +59,33 @@ describe("SelectContent width", () => {
   })
 })
 
-describe("SelectContent document behavior", () => {
-  it("does not align items with the trigger by default so it does not lock document scroll", () => {
+describe("SelectGroup popup layout", () => {
+  it("matches the upstream Select group without synthetic popup padding", () => {
+    const group = SelectGroup({ children: "Options" }) as ReactElement<{
+      className: string
+    }>
+    const classes = group.props.className.split(/\s+/)
+
+    expect(classes).toContain("scroll-my-1")
+    expect(classes).not.toContain("p-1")
+    expect(classes).not.toContain("py-1")
+  })
+})
+
+describe("SelectContent positioning", () => {
+  it("aligns the selected item with the trigger by default", () => {
     const portal = SelectContent({ children: "Options" }) as ReactElement<{
+      children: ReactElement<{ alignItemWithTrigger: boolean }>
+    }>
+
+    expect(portal.props.children.props.alignItemWithTrigger).toBe(true)
+  })
+
+  it("allows consumers to opt out of selected-item alignment", () => {
+    const portal = SelectContent({
+      alignItemWithTrigger: false,
+      children: "Options",
+    }) as ReactElement<{
       children: ReactElement<{ alignItemWithTrigger: boolean }>
     }>
 

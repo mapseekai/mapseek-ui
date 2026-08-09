@@ -1,2 +1,7 @@
 export { MapSwitcher } from "./MapSwitcher"
-export type { MapSwitcherItemData, MapSwitcherProps } from "./types"
+export type {
+  MapSwitcherItemData,
+  MapSwitcherPanelProps,
+  MapSwitcherProps,
+  MapSwitcherTriggerProps,
+} from "./types"

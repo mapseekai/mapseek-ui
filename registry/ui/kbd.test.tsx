@@ -13,8 +13,10 @@ describe("Kbd", () => {
     const classes = kbd.props.className.split(/\s+/)
 
     expect(classes).toEqual(
-      expect.arrayContaining(["not-prose", "bg-muted", "text-muted-foreground"]),
+      expect.arrayContaining(["not-prose", "bg-muted", "text-label-md", "text-muted-foreground"]),
     )
+    expect(classes).not.toContain("text-[10px]")
+    expect(classes).not.toContain("font-medium")
     expect(classes.some((className) => className.startsWith("border"))).toBe(false)
     expect(classes.some((className) => className.startsWith("shadow"))).toBe(false)
     expect(classes.some((className) => className.includes("primary"))).toBe(false)

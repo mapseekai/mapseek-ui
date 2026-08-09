@@ -23,6 +23,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={theme as ToasterProps["theme"]}
       position="top-center"
+      richColors
       className="toaster group"
       icons={{
         success: <IconCircleCheckFilled className="size-4 text-primary" />,
@@ -40,14 +41,14 @@ const Toaster = ({ ...props }: ToasterProps) => {
           // Calm popover surface; data-type classes supply the semantic border.
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
-          // Per-type: keep surfaces calm and carry the signal with the icon.
-          "--success-bg": "var(--popover)",
+          // Per-type: retain a quiet surface with a restrained semantic tint.
+          "--success-bg": "color-mix(in oklch shorter hue, var(--primary) 5%, var(--popover))",
           "--success-text": "var(--popover-foreground)",
-          "--error-bg": "var(--popover)",
+          "--error-bg": "color-mix(in oklch shorter hue, var(--destructive) 10%, var(--popover))",
           "--error-text": "var(--popover-foreground)",
-          "--warning-bg": "var(--popover)",
+          "--warning-bg": "color-mix(in oklch shorter hue, var(--warning) 10%, var(--popover))",
           "--warning-text": "var(--popover-foreground)",
-          "--info-bg": "var(--popover)",
+          "--info-bg": "color-mix(in oklch shorter hue, var(--info) 10%, var(--popover))",
           "--info-text": "var(--popover-foreground)",
           "--shadow": "none",
         } as React.CSSProperties

@@ -41,18 +41,12 @@ export function SchemaForm({
     <FieldGroup className={cn("gap-3", className)}>
       {fields.map((f: SchemaFormField) => {
         const id = `${idPrefix}-${f.key}`
-        const label = (
-          <>
-            {f.label}
-            {f.required && <span className="text-destructive"> *</span>}
-          </>
-        )
 
         if (f.type === "multiselect") {
           return (
             <FieldSet key={f.key} className="gap-2">
-              <FieldLegend variant="label" className="mb-0 text-body-md">
-                {label}
+              <FieldLegend required={f.required} variant="label" className="mb-0 text-body-md">
+                {f.label}
               </FieldLegend>
               <FieldGroup className="max-h-[140px] gap-0 overflow-auto border border-border bg-background py-1">
                 {f.options.length === 0 ? (
@@ -87,8 +81,8 @@ export function SchemaForm({
 
         return (
           <Field key={f.key} className="gap-1.5">
-            <FieldLabel htmlFor={id} className="text-body-md">
-              {label}
+            <FieldLabel required={f.required} htmlFor={id} className="text-body-md">
+              {f.label}
             </FieldLabel>
             {f.type === "number" && (
               <Input

@@ -19,20 +19,44 @@ AppTopBar is the application chrome for map editors. It owns the layout for back
 ## Import
 
 ```tsx
-import { AppTopBar, type AppTopBarLabels, type AppTopBarProps } from "@/registry/blocks/app-top-bar"
+import {
+  AppTopBar,
+  type AppTopBarLabels,
+  type AppTopBarProps,
+  type AppTopBarSize,
+} from "@/registry/blocks/app-top-bar"
 ```
 
 ## Controlled Save State
 
-<ShowcaseDemo registryName="app-top-bar" title="Controlled save state" description="Shows brand slot, dirty status pill, save, save-as, and snapshot actions." minHeight={220} />
+<ShowcaseDemo registryName="app-top-bar" title="Controlled save state" description="Shows brand slot, dirty status Tag, save, save-as, snapshot actions, and `xs`, `sm`, `default`, and `lg` size comparisons." minHeight={460} />
+
+## Centered icon actions
+
+<ShowcaseDemo registryName="app-top-bar" demo="center-actions" title="Centered icon actions" description="Shows a tooltip-enabled map-tool group placed at the top bar's geometric center through `centerActions`." minHeight={160} />
 
 ## Usage
 
 Pass `projectName`, `brand`, `status`, and `labels` as display inputs, then connect `onBack` and `onSave` to app routing and persistence. Use `beforeSaveActions`, `afterSaveActions`, `centerActions`, and `endActions` for caller-owned export, history, snapshot, or sharing buttons.
 
+When `centerActions` is present, equal outer desktop columns and a middle column keep the tool group geometrically centered. From `md` up to `lg`, brand and status temporarily collapse and the project name truncates before it can overlap the center controls.
+
+## Sizes
+
+`size` supports `xs`, `sm`, `default`, and `lg`; `default` is the default value. On desktop, every variant retains 4px of top and bottom shell padding:
+
+| `size` | Built-in Button | Inner toolbar | Outer top bar |
+| --- | ---: | ---: | ---: |
+| `xs` | 24px | 24px | 32px |
+| `sm` | 28px | 28px | 36px |
+| `default` | 32px | 40px | 48px |
+| `lg` | 36px | 48px | 56px |
+
+The prop also scales the built-in back and Save buttons to their matching Button variants. Action slots, `brand`, and `status` remain caller-owned; action Buttons should use the same size tier.
+
 ## Public Exports and Props
 
-Exports include `AppTopBar`, `AppTopBarProps`, and `AppTopBarLabels`. Key props are `projectName`, `labels`, `onBack`, `onSave`, `saveDisabled`, `savePending`, `brand`, `status`, and the four action slots. The block does not include brand assets or status badge styles.
+Exports include `AppTopBar`, `AppTopBarProps`, `AppTopBarLabels`, and `AppTopBarSize`. Key props are `size`, `projectName`, `labels`, `onBack`, `onSave`, `saveDisabled`, `savePending`, `brand`, `status`, and the four action slots. The block does not include brand assets or status Tag styles.
 
 ## Controlled State
 
@@ -45,4 +69,3 @@ The back button uses `labels.back` as its accessible name, and the save button u
 ## Dependencies
 
 <RegistryDependencies registryName="app-top-bar" />
-

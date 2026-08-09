@@ -808,7 +808,7 @@
     {
       "name": "map-switcher",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/button", "@mapseek/collapsible", "@mapseek/utils"],
+      "registryDependencies": ["@mapseek/button", "@mapseek/dropdown-menu", "@mapseek/utils"],
       "files": [
         {
           "path": "map-switcher/MapSwitcher.tsx",
@@ -973,6 +973,7 @@
         "@mapseek/button-radio-group",
         "@mapseek/color-input",
         "@mapseek/input",
+        "@mapseek/input-number",
         "@mapseek/select",
         "@mapseek/tooltip",
         "@mapseek/utils",
@@ -988,6 +989,11 @@
           "path": "raster-style-panel/CustomColormapEditor.tsx",
           "type": "registry:block",
           "target": "@components/blocks/raster-style-panel/CustomColormapEditor.tsx"
+        },
+        {
+          "path": "raster-style-panel/NumberDraftInput.tsx",
+          "type": "registry:block",
+          "target": "@components/blocks/raster-style-panel/NumberDraftInput.tsx"
         },
         {
           "path": "raster-style-panel/RasterStylePanel.tsx",

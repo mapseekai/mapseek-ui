@@ -13,6 +13,11 @@ const labels = {
     disabledSwitch: "禁用开关",
     disabledCheckedSwitch: "禁用已选中开关",
     invalidSwitch: "错误开关",
+    variants: "变体",
+    roundedUnchecked: "默认圆角开关（未选中）",
+    roundedChecked: "默认圆角开关（已选中）",
+    squareUnchecked: "紧凑直角开关（未选中）",
+    squareChecked: "紧凑直角开关（已选中）",
     controlled: "受控",
     enableTileCache: "启用瓦片缓存",
     checkedValue: (checked: boolean) => `checked = ${String(checked)}`,
@@ -27,6 +32,11 @@ const labels = {
     disabledSwitch: "Disabled switch",
     disabledCheckedSwitch: "Disabled checked switch",
     invalidSwitch: "Invalid switch",
+    variants: "Variants",
+    roundedUnchecked: "Default rounded switch, unchecked",
+    roundedChecked: "Default rounded switch, checked",
+    squareUnchecked: "Compact square switch, unchecked",
+    squareChecked: "Compact square switch, checked",
     controlled: "Controlled",
     enableTileCache: "Enable tile cache",
     checkedValue: (checked: boolean) => `checked = ${String(checked)}`,
@@ -59,6 +69,18 @@ export function SwitchOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           <Switch disabled aria-label={demoLabels.disabledSwitch} />
           <Switch disabled defaultChecked aria-label={demoLabels.disabledCheckedSwitch} />
           <Switch aria-invalid aria-label={demoLabels.invalidSwitch} />
+        </div>
+      </section>
+
+      <section className="space-y-3" data-demo="switch-variants">
+        <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
+          {demoLabels.variants}
+        </h4>
+        <div className="flex flex-wrap items-center gap-4">
+          <Switch aria-label={demoLabels.roundedUnchecked} />
+          <Switch defaultChecked aria-label={demoLabels.roundedChecked} />
+          <Switch variant="square" aria-label={demoLabels.squareUnchecked} />
+          <Switch variant="square" defaultChecked aria-label={demoLabels.squareChecked} />
         </div>
       </section>
 

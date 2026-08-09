@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-MapSwitcher is a basemap switcher. It exposes Trigger, Panel, and Item as a compound component, supports thumbnail image mode and compact button-list mode, and leaves basemap data, selected value, open state, and basemap side effects to the caller.
+MapSwitcher is a basemap switcher built on the Dropdown Menu primitives. It exposes Trigger, Panel, and Item as a compound component with two variants: `icon` (layers-icon trigger with a compact list panel) and `image` (thumbnail trigger showing the selected basemap with a thumbnail grid panel). Basemap data, selected value, open state, and basemap side effects stay with the caller.
 
 ## Installation
 
@@ -28,23 +28,23 @@ import {
 
 ## Basemap Switcher
 
-<ShowcaseDemo registryName="map-switcher" title="Basemap switcher" description="Shows image mode, button mode, and controlled value + open + callback log." minHeight={980} />
+<ShowcaseDemo registryName="map-switcher" title="Basemap switcher" description="Shows the icon-trigger variant, the image-trigger variant, and controlled value + open + callback log." minHeight={980} />
 
 ## Usage
 
-Place `MapSwitcher` in a map overlay and compose `MapSwitcher.Trigger`, `MapSwitcher.Panel`, and multiple `MapSwitcher.Item` children inside it. In image mode, pass `image` to items; in button mode, `color` and `label` are enough. For controlled mode, pass `value`, `onChange`, `open`, and `onOpenChange`.
+Place `MapSwitcher` in a map overlay and compose `MapSwitcher.Trigger`, `MapSwitcher.Panel`, and multiple `MapSwitcher.Item` children inside it. With `variant="icon"` the trigger is a layers-icon button and the panel is a compact list; with `variant="image"` the trigger shows the selected basemap thumbnail and the panel presents a thumbnail grid whose checked tile carries the card-type selection treatment: a primary 5% fill with a 1px primary ring. For controlled mode, pass `value`, `onChange`, `open`, and `onOpenChange`.
 
 ## Public Exports and Props
 
-Exports include `MapSwitcher`, `MapSwitcherProps`, and `MapSwitcherItemData`. Root props are `value`, `defaultValue`, `onChange`, `open`, `defaultOpen`, `onOpenChange`, `mode`, `className`, and `children`. Items require `id` and `label`, with optional `image` and `color`.
+Exports include `MapSwitcher`, `MapSwitcherProps`, and `MapSwitcherItemData`. Root props are `value`, `defaultValue`, `onChange`, `open`, `defaultOpen`, `onOpenChange`, `variant`, and `children`. `MapSwitcher.Trigger` accepts `label` (accessible label for the icon variant) and `className`. Items require `id` and `label`, with optional `image` and `color`.
 
 ## Controlled State
 
-The selected basemap and panel open state can be controlled or uncontrolled. The third demo controls both `value` and `open`, so external buttons can toggle the panel or advance to the next basemap, showing how callers can synchronize basemap state with a map engine.
+The selected basemap and popup open state can be controlled or uncontrolled. The third demo controls both `value` and `open`, so external buttons can toggle the popup or advance to the next basemap, showing how callers can synchronize basemap state with a map engine. The popup closes automatically after a basemap is selected.
 
 ## Accessibility
 
-Trigger uses `aria-expanded` and `aria-haspopup="listbox"`, Panel uses `role="listbox"`, and Item uses `role="option"` with `aria-selected`. Basemap thumbnails need readable labels, and remote images should not be the only source of information.
+The component is built on Dropdown Menu: the trigger automatically gets `aria-haspopup="menu"` and `aria-expanded`, the panel uses `role="menu"`, and items use `role="menuitemradio"` with `aria-checked`. Basemap thumbnails need readable labels, and remote images should not be the only source of information.
 
 ## Dependencies
 

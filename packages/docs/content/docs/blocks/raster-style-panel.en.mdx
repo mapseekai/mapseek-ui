@@ -32,7 +32,7 @@ import {
 
 ## Usage
 
-Keep `value` in caller state and write drafts back through `onChange`. Pass `bandCount`, `stats`, `autoRange`, and complete `labels` so the panel can switch available controls for single-band and RGB rendering.
+Keep `value` in caller state and write drafts back through `onChange`. Pass `bandCount`, `autoRange`, and complete `labels` so the panel can switch available controls for single-band and RGB rendering. The panel is dedicated to style settings and does not render raster metadata. Pass `dataRange` when custom stretch and inline custom-colormap values need authoritative minimum and maximum bounds; numeric fields use the shared `InputNumber`, while NoData intentionally remains outside that range contract.
 
 ## Public Exports and Props
 
@@ -49,4 +49,3 @@ Provide localized labels for every form control. Validation should not be color-
 ## Dependencies
 
 <RegistryDependencies registryName="raster-style-panel" />
-

@@ -162,13 +162,13 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 })}
               </div>
             )}
-            <div className="grid grid-cols-[64px_auto_minmax(0,1fr)_24px] items-center gap-x-1">
+            <div className="grid grid-cols-[max-content_auto_minmax(0,1fr)_24px] items-center gap-x-1">
               <Select
                 value={f.field}
                 onValueChange={(val) => val != null && updateRow(f.id, { field: val })}
               >
-                <SelectTrigger size="xs" className={miniSelect}>
-                  <SelectValue className="min-w-0 truncate" title={f.field} />
+                <SelectTrigger size="xs" width="content" className={miniSelect}>
+                  <SelectValue title={f.field} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>

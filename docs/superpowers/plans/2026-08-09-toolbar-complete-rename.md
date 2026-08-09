@@ -92,9 +92,9 @@ Expected: FAIL because `loadCatalog()` still returns `loom-toolbar` and no canon
 The renamed barrel must be exactly:
 
 ```ts
+export { TOOLBAR_LABELS_EN, TOOLBAR_LABELS_ZH_CN } from "./labels"
 export type { ToolbarProps } from "./Toolbar"
 export { Toolbar } from "./Toolbar"
-export { TOOLBAR_LABELS_EN, TOOLBAR_LABELS_ZH_CN } from "./labels"
 export type { ToolbarGroup, ToolbarLabels, ToolbarTool } from "./types"
 ```
 
@@ -279,7 +279,7 @@ Run: `pnpm run docs:check-examples`
 
 Expected: PASS with the canonical install and example imports.
 
-- [ ] **Step 7: Commit documentation and Showcase surfaces**
+- [x] **Step 7: Commit documentation and Showcase surfaces**
 
 ```bash
 git add showcase/src/showcases/ToolbarShowcase.tsx showcase/src/showcases/LoomToolbarShowcase.tsx showcase/src/showcases/block-catalog.ts packages/docs/content/docs/blocks/toolbar.mdx packages/docs/content/docs/blocks/toolbar.en.mdx packages/docs/content/docs/blocks/loom-toolbar.mdx packages/docs/content/docs/blocks/loom-toolbar.en.mdx packages/docs/content/docs/blocks/meta.json packages/docs/content/docs/blocks/meta.en.json packages/docs/src/components/ShowcaseDemo/source-catalog.generated.ts scripts/__tests__/docs-coverage.test.ts scripts/docs-required-registry-docs.ts scripts/docs-visual-qa.ts TODO.md
@@ -296,13 +296,13 @@ git commit -m "docs(toolbar): publish canonical block name"
 - Consumes: The complete canonical source, registry, Showcase, docs, and QA contract from Tasks 1–2.
 - Produces: Evidence that the new URL/API work, the old URL/API are removed, and unrelated design behavior remains unchanged.
 
-- [ ] **Step 1: Prove no legacy identifiers remain in active source surfaces**
+- [x] **Step 1: Prove no legacy identifiers remain in active source surfaces**
 
 Run: `git grep -n -E "loom-toolbar|LoomToolbar|LOOM_TOOLBAR|loomToolbar" -- registry showcase packages scripts TODO.md`
 
 Expected: no output. The approved specification and this implementation plan may retain old names only as historical mappings.
 
-- [ ] **Step 2: Run repository static verification**
+- [x] **Step 2: Run repository static verification**
 
 Run: `pnpm run typecheck`
 
@@ -324,7 +324,7 @@ Run: `pnpm run docs:check-examples`
 
 Expected: PASS.
 
-- [ ] **Step 3: Run focused and full test suites**
+- [x] **Step 3: Run focused and full test suites**
 
 Run: `pnpm vitest run scripts/__tests__/toolbar-rename.test.ts registry/blocks/toolbar/Toolbar.test.tsx scripts/__tests__/docs-coverage.test.ts scripts/__tests__/registry-component-composition.test.ts`
 
@@ -334,7 +334,7 @@ Run: `pnpm test`
 
 Expected: PASS.
 
-- [ ] **Step 4: Verify the generated source catalog is stable**
+- [x] **Step 4: Verify the generated source catalog is stable**
 
 Run: `pnpm run docs:sources`
 
@@ -344,7 +344,7 @@ Run: `git diff --exit-code -- packages/docs/src/components/ShowcaseDemo/source-c
 
 Expected: exit 0.
 
-- [ ] **Step 5: Verify new and removed routes with Playwright**
+- [x] **Step 5: Verify new and removed routes with Playwright**
 
 With the existing documentation server running on port 3000, run:
 
@@ -354,7 +354,7 @@ pnpm exec tsx -e 'import { chromium } from "playwright"; void (async()=>{ const 
 
 Expected: exit 0; `[data-slot="toolbar"]` renders at both widths with no console errors, and the legacy URL returns a non-success status.
 
-- [ ] **Step 6: Review the scoped diff and commits**
+- [x] **Step 6: Review the scoped diff and commits**
 
 Run: `git status --short`
 

@@ -13,12 +13,7 @@ function docsIdentity(category: "block" | "primitive", registryName: string): st
   return `${category}:${registryName}`
 }
 
-const promotedShowcaseBlocks = [
-  "custom-colormap",
-  "layer-panel",
-  "toolbox",
-  "toolbar",
-] as const
+const promotedShowcaseBlocks = ["custom-colormap", "layer-panel", "toolbox", "toolbar"] as const
 
 describe("docs coverage", () => {
   it("publishes promoted showcase components as registry blocks", async () => {

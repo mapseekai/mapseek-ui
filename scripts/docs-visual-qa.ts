@@ -2469,7 +2469,7 @@ export async function assertBlockInteraction(
 
   if (block === "number-range-input") {
     const demo = page.locator('[data-demo="number-range-input"]')
-    const percent = demo.getByLabel("percent").last()
+    const percent = demo.getByLabel(localized(path, "百分比", "Percentage")).last()
     await percent.fill("60")
     await percent.blur()
     await expect(demo.locator("pre")).toContainText('"percent": 60')

@@ -44,7 +44,11 @@ export function ToggleGroupOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.singleSelect}
         </h4>
-        <ToggleGroup value={alignment} onValueChange={setAlignment}>
+        <ToggleGroup
+          className="max-w-full flex-wrap"
+          value={alignment}
+          onValueChange={setAlignment}
+        >
           <ToggleGroupItem value="left">{demoLabels.left}</ToggleGroupItem>
           <ToggleGroupItem value="center">{demoLabels.center}</ToggleGroupItem>
           <ToggleGroupItem value="right">{demoLabels.right}</ToggleGroupItem>
@@ -58,7 +62,7 @@ export function ToggleGroupOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           {demoLabels.multiSelect}
         </h4>
-        <ToggleGroup value={styles} onValueChange={setStyles}>
+        <ToggleGroup className="max-w-full flex-wrap" value={styles} onValueChange={setStyles}>
           <ToggleGroupItem value="bold">{demoLabels.bold}</ToggleGroupItem>
           <ToggleGroupItem value="italic">{demoLabels.italic}</ToggleGroupItem>
           <ToggleGroupItem value="underline">{demoLabels.underline}</ToggleGroupItem>

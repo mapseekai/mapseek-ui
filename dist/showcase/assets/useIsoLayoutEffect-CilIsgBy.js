@@ -1,1 +1,0 @@
-import{o as e}from"./jsx-runtime-RY6-jGAi.js";import{t}from"./react-CRsFT4JH.js";var n=e(t(),1),r={...n},i=typeof document<`u`?n.useLayoutEffect:()=>{};export{r as n,i as t};

@@ -42,12 +42,11 @@ const examples = [
   },
 ] as const
 
-function inputMarkup(html: string, id: string) {
-  const start = html.indexOf(`id="${id}"`)
-  const end = html.indexOf(">", start)
+function elementMarkups(html: string, pattern: RegExp, description: string) {
+  const elements = html.match(pattern) ?? []
 
-  expect(start).toBeGreaterThan(-1)
-  return html.slice(start, end + 1)
+  expect(elements, `expected four ${description} in showcase order`).toHaveLength(examples.length)
+  return elements
 }
 
 describe("NumberRangeInput showcase", () => {
@@ -67,26 +66,39 @@ describe("NumberRangeInput showcase", () => {
     expect(html).not.toContain("text-xs")
     expect(html).not.toContain("text-[10px]")
 
-    for (const example of examples) {
+    const sliderRoots = elementMarkups(html, /<div[^>]*data-slot="slider"[^>]*>/g, "Slider roots")
+    const rangeThumbs = elementMarkups(html, /<input[^>]*type="range"[^>]*>/g, "range thumbs")
+    const numericInputs = elementMarkups(html, /<input[^>]*type="number"[^>]*>/g, "numeric inputs")
+
+    for (const [index, example] of examples.entries()) {
       const sliderAriaLabel = example.sliderAriaLabel[locale]
-      const input = inputMarkup(html, example.inputId)
-      const labelledBy = html.match(new RegExp(`aria-labelledby="${example.labelId}"`, "g")) ?? []
-      const describedBy =
-        html.match(new RegExp(`aria-describedby="${example.describedBy}"`, "g")) ?? []
+      const sliderRoot = sliderRoots[index]
+      const rangeThumb = rangeThumbs[index]
+      const numericInput = numericInputs[index]
 
       expect(html).toContain(`id="${example.labelId}"`)
       expect(html).toContain(`for="${example.inputId}"`)
-      expect(input).toContain(`aria-labelledby="${example.labelId}"`)
-      expect(input).toContain(`aria-describedby="${example.describedBy}"`)
-      expect(labelledBy).toHaveLength(2)
-      expect(describedBy).toHaveLength(2)
+      expect(sliderRoot).toContain(`aria-labelledby="${example.labelId}"`)
+      expect(sliderRoot).toContain(`aria-describedby="${example.describedBy}"`)
+      expect(numericInput).toContain(`id="${example.inputId}"`)
+      expect(numericInput).toContain(`aria-labelledby="${example.labelId}"`)
+      expect(numericInput).toContain(`aria-describedby="${example.describedBy}"`)
       expect(sliderAriaLabel.trim()).not.toBe("")
-      expect(html).toMatch(new RegExp(`<input aria-label="${sliderAriaLabel}"[^>]*type="range"`))
+      expect(rangeThumb).toContain(`aria-label="${sliderAriaLabel}"`)
     }
 
-    expect(html.match(/aria-invalid="true"/g) ?? []).toHaveLength(2)
+    expect(sliderRoots[0]).toContain('aria-invalid="true"')
+    expect(sliderRoots[0]).toContain(
+      'aria-describedby="number-range-percent-help number-range-percent-error"',
+    )
+    expect(numericInputs[0]).toContain('aria-invalid="true"')
+    expect(numericInputs[0]).toContain(
+      'aria-describedby="number-range-percent-help number-range-percent-error"',
+    )
     expect(html).toContain('id="number-range-percent-error"')
     expect(html).toContain(locale === "zh-CN" ? "请输入百分比。" : "Enter a percentage.")
-    expect(inputMarkup(html, "number-range-disabled")).toContain('disabled=""')
+    expect(sliderRoots[3]).toContain('data-disabled=""')
+    expect(rangeThumbs[3]).toContain('disabled=""')
+    expect(numericInputs[3]).toContain('disabled=""')
   })
 })

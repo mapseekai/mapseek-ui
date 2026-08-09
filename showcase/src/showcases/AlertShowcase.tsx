@@ -23,12 +23,12 @@ export function AlertOverviewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   return (
     <div className="flex max-w-xl flex-col gap-3">
       <Alert data-demo="alert-default">
-        <IconCircleCheck />
+        <IconCircleCheck aria-hidden="true" />
         <AlertTitle>{demoLabels.readyTitle}</AlertTitle>
         <AlertDescription>{demoLabels.readyDescription}</AlertDescription>
       </Alert>
       <Alert data-demo="alert-destructive" variant="destructive">
-        <IconAlertTriangle />
+        <IconAlertTriangle aria-hidden="true" />
         <AlertTitle>{demoLabels.errorTitle}</AlertTitle>
         <AlertDescription>{demoLabels.errorDescription}</AlertDescription>
       </Alert>

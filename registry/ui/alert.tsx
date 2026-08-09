@@ -8,7 +8,7 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        default: "border-primary/20 bg-primary/5 text-primary",
+        default: "border-info/30 bg-info/10 text-info",
         destructive: "border-destructive/30 bg-destructive/10 text-destructive",
       },
     },
@@ -21,12 +21,13 @@ const alertVariants = cva(
 function Alert({
   className,
   variant,
+  role,
   ...props
 }: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
   return (
     <div
       data-slot="alert"
-      role="alert"
+      role={role ?? (variant === "destructive" ? "alert" : "status")}
       className={cn(alertVariants({ variant }), className)}
       {...props}
     />

@@ -61,7 +61,9 @@ describe("registry style syntax", () => {
       ),
     ).toEqual([])
     expect(
-      await violations(/(?:hover:!?bg|focus:bg|data-(?:highlighted|selected):bg)-accent(?!\/50)/g),
+      await violations(
+        /(?:hover:!?bg|focus:bg|data-(?:highlighted|selected):bg)-accent(?!\\?\/50)/g,
+      ),
     ).toEqual([])
   })
 

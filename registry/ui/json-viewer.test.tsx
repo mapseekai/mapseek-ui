@@ -68,6 +68,18 @@ describe("JsonViewer", () => {
     expect(triggers.some((trigger) => trigger.includes('aria-controls="'))).toBe(true)
   })
 
+  it("keeps expanded tree rows visually neutral when they are not hovered", () => {
+    const html = renderToStaticMarkup(<JsonViewer data={data} />)
+    const expandedTrigger = html.match(
+      /<button[^>]*data-slot="collapsible-trigger"[^>]*aria-expanded="true"[^>]*>/,
+    )?.[0]
+
+    expect(expandedTrigger).toBeTruthy()
+    expect(expandedTrigger).toContain("aria-expanded:bg-transparent")
+    expect(expandedTrigger).not.toContain("aria-expanded:bg-accent/50")
+    expect(expandedTrigger).toContain("hover:bg-accent/50")
+  })
+
   it("uses one 24px toolbar control height", () => {
     const html = renderToStaticMarkup(<JsonViewer data={data} />)
     const toolbar = html.slice(0, html.indexOf('class="min-h-0 w-full flex-1'))

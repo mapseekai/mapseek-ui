@@ -368,7 +368,7 @@ const JsonCollapseTrigger: React.FC<{
           type="button"
           variant="ghost"
           size="xs"
-          className="group -ml-1 w-full justify-start rounded-none px-1 text-left font-[inherit] leading-6 text-foreground"
+          className="group -ml-1 w-full justify-start rounded-none px-1 text-left font-[inherit] leading-6 text-foreground aria-expanded:bg-transparent"
         />
       }
       onDoubleClick={collapseOn === "doubleClick" ? onToggle : undefined}

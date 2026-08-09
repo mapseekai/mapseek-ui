@@ -1,0 +1,48 @@
+---
+title: "Tag"
+registryName: tag
+category: primitive
+stability: stable
+showcase: tag
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Tag 基于 Badge 改造，用于分类、简短元数据和轻量状态的紧凑彩色标签。默认使用轮廓态，实底变体则提供更高强调度的语义填充。
+
+## 安装
+
+<RegistryInstall registryName="tag" />
+
+## 导入
+
+```tsx
+import { Tag, tagVariants, type TagColor, type TagSize, type TagVariant } from "@/registry/ui/tag"
+```
+
+## 颜色与尺寸
+
+<ShowcaseDemo registryName="tag" demo="overview" title="颜色与尺寸" description="展示轮廓与实底分类色、12/16/20/24/28px 五档尺寸，以及常见元数据用法。" minHeight={400} />
+
+## 导出
+
+`Tag` 导出组件，`tagVariants` 导出 class-variance-authority 样式函数，`TagColor` / `TagSize` / `TagVariant` 分别导出具名颜色、尺寸和变体联合类型。组件默认以非交互 `span` 展示。
+
+## 状态与行为
+
+`color` 支持 `green`、`blue`、`yellow`、`orange`、`purple`、`cyan` 和 `gray`。`green` 为默认值，对应主题主色；其他颜色对应分类 token，`gray` 使用中性的 muted 表面。
+
+`variant` 支持 `outline`（默认）和 `solid`。`solid` 移除边框、使用完整的分类语义色，并应用 `primary-foreground`：亮色主题为白字，暗色主题为深色文字，均由设计 token 定义。
+
+`size` 支持 `xs`（12px）、`sm`（16px）、`default`（20px，默认）、`lg`（24px）和 `xl`（28px）。每档会同时调整高度、内边距、间距和直接 SVG 图标尺寸；同一行内保持相同尺寸以便扫描。Tag 仅承载简短、可自解释的文本；长元数据、文件名和标识符应使用能完整披露内容的组件。
+
+在文本前放置装饰性 SVG，即可加入行内图标。Tag 会自动设置直接 SVG 子元素的尺寸；添加 `data-icon="inline-start"` 可应用紧凑的图标间距。
+
+## 无障碍
+
+使用“待审核”这类自解释文本，不要只依赖颜色。Tag 当前不提供可点击用法；导航或操作请使用带明确目的的链接或按钮。
+
+## 依赖
+
+<RegistryDependencies registryName="tag" />

@@ -1,0 +1,48 @@
+---
+title: "Tag"
+registryName: tag
+category: primitive
+stability: stable
+showcase: tag
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Tag is a compact colored label derived from Badge for categories, brief metadata, and lightweight state. It uses an outline form by default, while the solid variant provides a higher-emphasis semantic fill.
+
+## Installation
+
+<RegistryInstall registryName="tag" />
+
+## Import
+
+```tsx
+import { Tag, tagVariants, type TagColor, type TagSize, type TagVariant } from "@/registry/ui/tag"
+```
+
+## Colors and Sizes
+
+<ShowcaseDemo registryName="tag" demo="overview" title="Colors and sizes" description="Shows outline and solid category fills, the 12/16/20/24/28px five-step scale, and typical metadata uses." minHeight={400} />
+
+## Exports
+
+`Tag` exports the component, `tagVariants` exports the class-variance-authority style helper, and `TagColor` / `TagSize` / `TagVariant` export the named color, size, and variant unions. The component renders as a non-interactive `span` by default.
+
+## States and Behavior
+
+`color` supports `green`, `blue`, `yellow`, `orange`, `purple`, `cyan`, and `gray`. `green` is the default and maps to the theme primary color. The other colors map to category tokens, and gray uses the neutral muted surface.
+
+`variant` supports `outline` (default) and `solid`. `solid` removes the border, uses the full semantic category color, and applies `primary-foreground`, which is white in the light theme and dark text in the dark theme as defined by the design tokens.
+
+`size` supports `xs` (12px), `sm` (16px), `default` (20px, default), `lg` (24px), and `xl` (28px). Each tier adjusts height, padding, gap, and direct SVG icon size together; keep one size within a row for easy scanning. Tag only carries brief, self-explanatory text; use a component that can disclose the full value for long metadata, filenames, and identifiers.
+
+Place a decorative SVG before the text to add an inline icon. Tag automatically sizes direct SVG children; add `data-icon="inline-start"` to apply its compact icon spacing.
+
+## Accessibility
+
+Use self-explanatory text such as “In review” instead of relying on color alone. Tag does not currently provide a clickable use case; use a link or button with a clear purpose for navigation or actions.
+
+## Dependencies
+
+<RegistryDependencies registryName="tag" />

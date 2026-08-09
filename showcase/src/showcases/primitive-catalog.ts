@@ -35,6 +35,7 @@ export const primitiveShowcases = [
   primitive("sonner", "Sonner 消息通知", () => import("./SonnerShowcase")),
   primitive("switch", "Switch 开关", () => import("./SwitchShowcase")),
   primitive("table", "Table 表格", () => import("./TableShowcase")),
+  primitive("tag", "Tag 标签", () => import("./TagShowcase")),
   primitive("tabs", "Tabs 标签页", () => import("./TabsShowcase")),
   primitive("textarea", "Textarea 多行输入", () => import("./TextareaShowcase")),
   primitive("toggle", "Toggle 切换", () => import("./ToggleShowcase")),

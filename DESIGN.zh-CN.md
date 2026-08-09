@@ -234,6 +234,9 @@ components:
     rounded: "{rounded.none}"
     height: 20px
     padding: 0px 8px
+  tag:
+    rounded: "{rounded.none}"
+    height: 20px
   table-header:
     backgroundColor: "{colors.muted}"
     textColor: "{colors.muted-foreground}"
@@ -416,6 +419,7 @@ Mapseek 采用**边界优先、表面优先**的层级。静态面板不应漂�
 
 - **`table`** 有边界并可横向滚动；表头高 40px，紧凑单元格使用可读的 13px/400 数据字体，表头使用 13px/500 字重。
 - **`badge`** 高 20px、水平内边距 8px，仅承载短状态或分类标签。默认表面为品牌绿底配反白文字；`secondary`、着色 `destructive`、`outline`（primary 描边与文字）、`ghost`、`link` 变体覆盖其余层级。
+- **`tag`** 基于 Badge 改造，是用于分类、简短元数据和轻量状态的静态短文本标签。`xs`/`sm`/`default`/`lg`/`xl` 高度依次为 12px、16px、20px、24px、28px。这是 24–40px 控件高度体系之外的标签例外；每档保持零圆角，并同步调整内边距、间距和直接 SVG 尺寸。不得在 Tag 中放置长值，也不得将其用作链接或按钮。
 - **progress、skeleton、empty、sonner、notification center** 的反馈范围应匹配任务范围；持久状态不得只存在于短暂 toast。
 - **MapControls、MapCoordinateStatus、MapSwitcher** 使用地图专用浮动层级，并保留标签或 tooltip。
 - **ResourceSidebar、ResourceGrid、LayerPanel、LayerStyleEditor、AttrTable、AttrInspector、GeoJSONView、JSONEditor** 应保持与基础组件一致的数据密度、注入标签、溢出处理和状态可见性。

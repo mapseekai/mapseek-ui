@@ -234,6 +234,9 @@ components:
     rounded: "{rounded.none}"
     height: 20px
     padding: 0px 8px
+  tag:
+    rounded: "{rounded.none}"
+    height: 20px
   table-header:
     backgroundColor: "{colors.muted}"
     textColor: "{colors.muted-foreground}"
@@ -416,6 +419,7 @@ Components follow a fixed ownership model: theme → primitives → domain block
 
 - **`table`** is bordered and horizontally scrollable. Its header is 40px high; compact cells preserve readable 13px regular data type, while headers use 13px medium type.
 - **`badge`** is 20px high with 8px horizontal padding and holds short state or category labels only. The default surface is primary green with primary-foreground text; `secondary`, tinted `destructive`, `outline` (primary border and text), `ghost`, and `link` variants cover the remaining hierarchy.
+- **`tag`** is a Badge-derived, static short-text label for categories, brief metadata, and lightweight state. Its `xs`/`sm`/`default`/`lg`/`xl` heights are 12px, 16px, 20px, 24px, and 28px. This is a label exception to the 24–40px control-height scale; every tier retains zero radius and scales padding, gap, and direct SVG dimensions together. Do not put long values in a Tag, and do not use it as a link or button.
 - **Progress, skeleton, empty, sonner, and notification center** match feedback scope. Persistent state must not live only in a temporary toast.
 - **MapControls, MapCoordinateStatus, and MapSwitcher** use map-specific floating elevation and retain labels or tooltips.
 - **ResourceSidebar, ResourceGrid, LayerPanel, LayerStyleEditor, AttrTable, AttrInspector, GeoJSONView, and JSONEditor** keep data density, injected labels, overflow handling, and state visibility consistent with the primitives.

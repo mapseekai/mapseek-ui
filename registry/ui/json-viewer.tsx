@@ -1,12 +1,13 @@
-import { IconCheck, IconChevronRight, IconCopy } from "@tabler/icons-react"
+import { IconChevronRight } from "@tabler/icons-react"
 import type { JSX } from "react"
 import React, { useMemo } from "react"
 import { cn } from "@/registry/lib/utils"
 import { Button } from "@/registry/ui/button"
-import { Collapsible, CollapsibleContent } from "@/registry/ui/collapsible"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/registry/ui/collapsible"
+import { CopyButton } from "@/registry/ui/copy-button"
 
 interface JsonViewerProps {
-  data: Record<string, unknown>
+  data: Record<string, unknown> | unknown[]
   className?: string
   showLineNumbers?: boolean
   showColorIndent?: boolean
@@ -15,6 +16,11 @@ interface JsonViewerProps {
   title?: string
   expandAllLabel?: string
   collapseAllLabel?: string
+  copyLabel?: string
+  copiedLabel?: string
+  itemLabel?: string
+  itemsLabel?: string
+  copyContent?: string
   copyFeedbackDurationMs?: number
 }
 
@@ -63,6 +69,9 @@ const LeafValue: React.FC<{ value: unknown; type: DataType }> = ({ value, type }
 
 const isPlainObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value)
+
+const isKeyboardTriggeredChange = (event: Event): boolean =>
+  event instanceof KeyboardEvent || (event instanceof MouseEvent && event.detail === 0)
 
 const calculateLineCount = (data: unknown, expandedPaths: Set<string>, path = "root"): number => {
   if (isPlainObject(data)) {
@@ -132,10 +141,13 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
   title,
   expandAllLabel = "全部展开",
   collapseAllLabel = "全部收起",
+  copyLabel = "复制",
+  copiedLabel = "已复制",
+  itemLabel = "项",
+  itemsLabel = "项",
+  copyContent,
   copyFeedbackDurationMs = 3000,
 }) => {
-  const [copied, setCopied] = React.useState(false)
-  const copyFeedbackTimerRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const [expandedPaths, setExpandedPaths] = React.useState<Set<string>>(() => {
     if (typeof defaultExpanded === "number") {
       return generateAllPaths(data, defaultExpanded)
@@ -146,44 +158,23 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
     return new Set<string>(["root"])
   })
 
-  const toggleNode = (path: string) => {
-    setExpandedPaths((prev) => {
-      const newPaths = new Set(prev)
-      if (newPaths.has(path)) {
-        newPaths.delete(path)
+  const setNodeExpanded = (path: string, open?: boolean) => {
+    setExpandedPaths((previous) => {
+      const next = new Set(previous)
+      const shouldOpen = open ?? !next.has(path)
+      if (shouldOpen) {
+        next.add(path)
       } else {
-        newPaths.add(path)
+        next.delete(path)
       }
-      return newPaths
+      return next
     })
   }
 
   const expandAll = () => setExpandedPaths(generateAllPaths(data))
   const collapseAll = () => setExpandedPaths(new Set<string>(["root"]))
-  const copyToClipboard = async () => {
-    setCopied(true)
-    if (copyFeedbackTimerRef.current) {
-      clearTimeout(copyFeedbackTimerRef.current)
-    }
-    copyFeedbackTimerRef.current = setTimeout(() => {
-      setCopied(false)
-      copyFeedbackTimerRef.current = undefined
-    }, copyFeedbackDurationMs)
-    try {
-      await navigator.clipboard?.writeText(JSON.stringify(data, null, 2))
-    } catch {
-      // The visual acknowledgement should not disappear just because the
-      // browser blocks clipboard writes in a restricted environment.
-    }
-  }
-
-  React.useEffect(() => {
-    return () => {
-      if (copyFeedbackTimerRef.current) {
-        clearTimeout(copyFeedbackTimerRef.current)
-      }
-    }
-  }, [])
+  const serializedData = useMemo(() => JSON.stringify(data, null, 2), [data])
+  const resolvedCopyContent = copyContent ?? serializedData
 
   const lineCount = useMemo(
     () => calculateLineCount(data, expandedPaths, "root"),
@@ -203,61 +194,49 @@ const JsonViewer: React.FC<JsonViewerProps> = ({
         <Button
           type="button"
           variant="ghost"
+          size="xs"
           onClick={expandAll}
-          className="h-6 rounded-none px-2 text-body-sm-medium text-muted-foreground hover:text-foreground"
+          className="rounded-none px-2 text-body-sm-medium text-muted-foreground hover:text-foreground"
         >
           {expandAllLabel}
         </Button>
         <Button
           type="button"
           variant="ghost"
+          size="xs"
           onClick={collapseAll}
-          className="h-6 rounded-none px-2 text-body-sm-medium text-muted-foreground hover:text-foreground"
+          className="rounded-none px-2 text-body-sm-medium text-muted-foreground hover:text-foreground"
         >
           {collapseAllLabel}
         </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="xs"
-          onClick={() => {
-            void copyToClipboard()
-          }}
-          className={cn(
-            "h-7 rounded-none bg-transparent text-foreground hover:bg-accent/50",
-            copied ? "gap-1.5 px-2" : "w-7 px-0",
-          )}
-          title={copied ? "已复制" : "复制"}
-          aria-live="polite"
-        >
-          {copied ? (
-            <>
-              <IconCheck size={14} stroke={1.7} />
-              <span className="text-body-sm-medium">已复制</span>
-            </>
-          ) : (
-            <IconCopy size={14} stroke={1.5} />
-          )}
-        </Button>
+        <CopyButton
+          content={resolvedCopyContent}
+          label={copyLabel}
+          copiedLabel={copiedLabel}
+          duration={copyFeedbackDurationMs}
+          className="rounded-none bg-transparent text-foreground hover:bg-accent/50"
+        />
       </div>
       <div className="min-h-0 w-full flex-1 overflow-auto p-3">
-        <pre className="flex">
+        <div className="flex">
           {showLineNumbers && (
             <div className="hidden sm:block">
               <LineNumbers lineCount={lineCount} />
             </div>
           )}
-          <code className="min-w-0 flex-1 rounded-none">
+          <div className="min-w-0 flex-1 rounded-none">
             <JsonNode
               data={data}
               path="root"
               expandedPaths={expandedPaths}
-              toggleNode={toggleNode}
+              setNodeExpanded={setNodeExpanded}
               showColorIndent={showColorIndent}
               collapseOn={collapseOn}
+              itemLabel={itemLabel}
+              itemsLabel={itemsLabel}
             />
-          </code>
-        </pre>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -280,11 +259,13 @@ interface JsonNodeProps {
   level?: number
   path: string
   expandedPaths: Set<string>
-  toggleNode: (path: string) => void
+  setNodeExpanded: (path: string, open?: boolean) => void
   showComma?: boolean
   objectKey?: string
   showColorIndent?: boolean
   collapseOn?: "click" | "doubleClick"
+  itemLabel: string
+  itemsLabel: string
 }
 
 const JsonNode: React.FC<JsonNodeProps> = ({
@@ -292,11 +273,13 @@ const JsonNode: React.FC<JsonNodeProps> = ({
   level = 0,
   path,
   expandedPaths,
-  toggleNode,
+  setNodeExpanded,
   showComma,
   objectKey,
   showColorIndent,
   collapseOn,
+  itemLabel,
+  itemsLabel,
 }) => {
   const dataType = getDataType(data)
 
@@ -308,11 +291,13 @@ const JsonNode: React.FC<JsonNodeProps> = ({
         level={level}
         path={path}
         expandedPaths={expandedPaths}
-        toggleNode={toggleNode}
+        setNodeExpanded={setNodeExpanded}
         showComma={showComma}
         objectKey={objectKey}
         showColorIndent={showColorIndent}
         collapseOn={collapseOn}
+        itemLabel={itemLabel}
+        itemsLabel={itemsLabel}
       />
     )
   } else if (isPlainObject(data)) {
@@ -322,11 +307,13 @@ const JsonNode: React.FC<JsonNodeProps> = ({
         level={level}
         path={path}
         expandedPaths={expandedPaths}
-        toggleNode={toggleNode}
+        setNodeExpanded={setNodeExpanded}
         showComma={showComma}
         objectKey={objectKey}
         showColorIndent={showColorIndent}
         collapseOn={collapseOn}
+        itemLabel={itemLabel}
+        itemsLabel={itemsLabel}
       />
     )
   } else {
@@ -351,7 +338,7 @@ const indentColors = [
   "border-cat-5/60",
 ]
 
-const CollapseTrigger: React.FC<{
+const JsonCollapseTrigger: React.FC<{
   objectKey?: string
   isOpen: boolean
   bracket: string
@@ -359,26 +346,32 @@ const CollapseTrigger: React.FC<{
   count: number
   showComma?: boolean
   collapseOn?: "click" | "doubleClick"
+  itemLabel: string
+  itemsLabel: string
   onToggle: () => void
-}> = ({ objectKey, isOpen, bracket, closeBracket, count, showComma, collapseOn, onToggle }) => {
-  const handleKeyDown: React.KeyboardEventHandler<HTMLButtonElement> = (event) => {
-    if (collapseOn !== "doubleClick" || (event.key !== "Enter" && event.key !== " ")) {
-      return
-    }
-    event.preventDefault()
-    onToggle()
-  }
-
+}> = ({
+  objectKey,
+  isOpen,
+  bracket,
+  closeBracket,
+  count,
+  showComma,
+  collapseOn,
+  itemLabel,
+  itemsLabel,
+  onToggle,
+}) => {
   return (
-    <button
-      type="button"
-      className={cn(
-        "group -ml-1 inline-flex h-6 w-full cursor-pointer appearance-none items-center rounded-none border-0 bg-transparent px-1 text-left font-[inherit] leading-6 select-none",
-        isOpen && "hover:bg-accent/50",
-      )}
+    <CollapsibleTrigger
+      render={
+        <Button
+          type="button"
+          variant="ghost"
+          size="xs"
+          className="group -ml-1 w-full justify-start rounded-none px-1 text-left font-[inherit] leading-6 text-foreground"
+        />
+      }
       onDoubleClick={collapseOn === "doubleClick" ? onToggle : undefined}
-      onClick={collapseOn === "doubleClick" ? undefined : onToggle}
-      onKeyDown={handleKeyDown}
     >
       {objectKey && (
         <span
@@ -395,30 +388,28 @@ const CollapseTrigger: React.FC<{
         <IconChevronRight
           size={14}
           stroke={1.5}
-          className={cn("shrink-0 transition-transform", isOpen && "rotate-90")}
+          className={cn(
+            "shrink-0 transition-transform motion-reduce:transition-none",
+            isOpen && "rotate-90",
+          )}
         />
       </span>
       <span className="text-muted-foreground">{bracket}</span>
       {!isOpen && (
         <>
-          <span className="text-muted-foreground">...</span>
+          <span className="text-muted-foreground">…</span>
           <span className="text-muted-foreground">
-            {closeBracket} ({count} {count === 1 ? "item" : "items"})
+            {closeBracket} ({count} {count === 1 ? itemLabel : itemsLabel})
           </span>
           {showComma && <span className="text-muted-foreground">,</span>}
         </>
       )}
-    </button>
+    </CollapsibleTrigger>
   )
 }
 
 const indentClass = (level: number, showColorIndent?: boolean): string =>
-  cn(
-    "border-l pl-5",
-    showColorIndent
-      ? indentColors[level % indentColors.length]
-      : "border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.1)]",
-  )
+  cn("border-l pl-5", showColorIndent ? indentColors[level % indentColors.length] : "border-border")
 
 const JsonObject: React.FC<{
   objectKey?: string
@@ -426,28 +417,41 @@ const JsonObject: React.FC<{
   level: number
   path: string
   expandedPaths: Set<string>
-  toggleNode: (path: string) => void
+  setNodeExpanded: (path: string, open?: boolean) => void
   showComma?: boolean
   showColorIndent?: boolean
   collapseOn?: "click" | "doubleClick"
+  itemLabel: string
+  itemsLabel: string
 }> = ({
   data,
   level,
   path,
   expandedPaths,
-  toggleNode,
+  setNodeExpanded,
   showComma,
   objectKey,
   showColorIndent,
   collapseOn,
+  itemLabel,
+  itemsLabel,
 }) => {
   const entries = Object.entries(data)
   const isOpen = expandedPaths.has(path)
 
   return (
-    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)}>
+    <Collapsible
+      open={isOpen}
+      onOpenChange={(open, eventDetails) => {
+        if (collapseOn === "doubleClick" && !isKeyboardTriggeredChange(eventDetails.event)) {
+          eventDetails.cancel()
+          return
+        }
+        setNodeExpanded(path, open)
+      }}
+    >
       <div>
-        <CollapseTrigger
+        <JsonCollapseTrigger
           objectKey={objectKey}
           isOpen={isOpen}
           bracket="{"
@@ -455,9 +459,11 @@ const JsonObject: React.FC<{
           count={entries.length}
           showComma={showComma}
           collapseOn={collapseOn}
-          onToggle={() => toggleNode(path)}
+          itemLabel={itemLabel}
+          itemsLabel={itemsLabel}
+          onToggle={() => setNodeExpanded(path)}
         />
-        <CollapsibleContent className="transition-all duration-200">
+        <CollapsibleContent keepMounted>
           <div className={indentClass(level, showColorIndent)}>
             {entries.map(([key, value], index) => {
               const childPath = `${path}.${key}`
@@ -480,11 +486,13 @@ const JsonObject: React.FC<{
                       level={level + 1}
                       path={childPath}
                       expandedPaths={expandedPaths}
-                      toggleNode={toggleNode}
+                      setNodeExpanded={setNodeExpanded}
                       showComma={index < entries.length - 1}
                       objectKey={key}
                       showColorIndent={showColorIndent}
                       collapseOn={collapseOn}
+                      itemLabel={itemLabel}
+                      itemsLabel={itemsLabel}
                     />
                   ) : (
                     <>
@@ -495,10 +503,12 @@ const JsonObject: React.FC<{
                         level={level + 1}
                         path={childPath}
                         expandedPaths={expandedPaths}
-                        toggleNode={toggleNode}
+                        setNodeExpanded={setNodeExpanded}
                         showComma={index < entries.length - 1}
                         showColorIndent={showColorIndent}
                         collapseOn={collapseOn}
+                        itemLabel={itemLabel}
+                        itemsLabel={itemsLabel}
                       />
                     </>
                   )}
@@ -522,27 +532,40 @@ const JsonArray: React.FC<{
   level: number
   path: string
   expandedPaths: Set<string>
-  toggleNode: (path: string) => void
+  setNodeExpanded: (path: string, open?: boolean) => void
   showComma?: boolean
   showColorIndent?: boolean
   collapseOn?: "click" | "doubleClick"
+  itemLabel: string
+  itemsLabel: string
 }> = ({
   data,
   level,
   path,
   expandedPaths,
-  toggleNode,
+  setNodeExpanded,
   showComma,
   objectKey,
   showColorIndent,
   collapseOn,
+  itemLabel,
+  itemsLabel,
 }) => {
   const isOpen = expandedPaths.has(path)
 
   return (
-    <Collapsible open={isOpen} onOpenChange={() => toggleNode(path)}>
+    <Collapsible
+      open={isOpen}
+      onOpenChange={(open, eventDetails) => {
+        if (collapseOn === "doubleClick" && !isKeyboardTriggeredChange(eventDetails.event)) {
+          eventDetails.cancel()
+          return
+        }
+        setNodeExpanded(path, open)
+      }}
+    >
       <div>
-        <CollapseTrigger
+        <JsonCollapseTrigger
           objectKey={objectKey}
           isOpen={isOpen}
           bracket="["
@@ -550,9 +573,11 @@ const JsonArray: React.FC<{
           count={data.length}
           showComma={showComma}
           collapseOn={collapseOn}
-          onToggle={() => toggleNode(path)}
+          itemLabel={itemLabel}
+          itemsLabel={itemsLabel}
+          onToggle={() => setNodeExpanded(path)}
         />
-        <CollapsibleContent className="transition-all duration-200">
+        <CollapsibleContent keepMounted>
           <div className={indentClass(level, showColorIndent)}>
             {data.map((item, index) => {
               const childPath = `${path}[${index}]`
@@ -574,10 +599,12 @@ const JsonArray: React.FC<{
                     level={level + 1}
                     path={childPath}
                     expandedPaths={expandedPaths}
-                    toggleNode={toggleNode}
+                    setNodeExpanded={setNodeExpanded}
                     showComma={index < data.length - 1}
                     showColorIndent={showColorIndent}
                     collapseOn={collapseOn}
+                    itemLabel={itemLabel}
+                    itemsLabel={itemsLabel}
                   />
                 </div>
               )

@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-GeoJSONView is a read-only GeoJSON viewer. The caller passes a pre-formatted JSON string; successful parses render a collapsible JSON tree, while empty values, parse failures, and primitives fall back to a line-numbered `<pre>`.
+GeoJSONView is a read-only GeoJSON viewer. The caller passes a pre-formatted JSON string; successful parses render a collapsible JSON tree, while empty values, parse failures, and unsupported primitives receive distinct, explicit states.
 
 ## Installation
 
@@ -29,7 +29,7 @@ import {
 
 ## GeoJSON Tree and Fallback
 
-<ShowcaseDemo registryName="geojson-view" title="GeoJSON tree and fallback" description="Shows the collapsible tree, no-selection empty state, parse-failure fallback, and stringifyGeoJSON input path." minHeight={560} />
+<ShowcaseDemo registryName="geojson-view" title="GeoJSON tree and states" description="Shows the collapsible tree, no-selection empty state, parse failure, unsupported primitive, and stringifyGeoJSON input path." minHeight={560} />
 
 ## Usage
 
@@ -37,17 +37,16 @@ Use `stringifyGeoJSON(data)` in the caller and pass the result to `json`. Pass `
 
 ## Public Exports and Props
 
-Exports include `GeoJSONView`, `stringifyGeoJSON`, `GeoJSONViewProps`, and `GeoJSONViewLabels`. Key props are `json`, `emptyLabel`, `title`, `expandAllLabel`, `collapseAllLabel`, `copyFeedbackDurationMs`, `labels`, and `className`.
+Exports include `GeoJSONView`, `stringifyGeoJSON`, `GeoJSONViewProps`, and `GeoJSONViewLabels`. Key props are `json`, `emptyLabel`, `title`, `expandAllLabel`, `collapseAllLabel`, `copyFeedbackDurationMs`, `labels`, and `className`. The `labels` object injects all visible expand, collapse, copy, copied, count, parse-error, and unsupported-value text.
 
 ## States, Empty, and Error
 
-The component is display-only and stores no selected feature. `null` or an empty string shows the empty state; invalid JSON preserves the raw text with line numbers so the user can locate the problem.
+The component is display-only and stores no selected feature. `null` or an empty string shows the empty state; invalid JSON preserves the raw text and line numbers in an `alert`; a parsed primitive receives a separate warning state.
 
 ## Accessibility
 
-The tree view inherits JsonViewer expand, collapse, and copy behavior. Localize the title and expand/collapse text; never leave an empty selection as a blank panel.
+The tree uses Base UI collapsible triggers for expanded state, content association, keyboard support, and the shared focus ring. Localize title, toolbar, count, and state text; never leave an empty selection as a blank panel.
 
 ## Dependencies
 
 <RegistryDependencies registryName="geojson-view" />
-

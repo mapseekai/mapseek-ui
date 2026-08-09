@@ -334,7 +334,8 @@ it("uses direct demo descriptions and readable showcase section headings", async
 it("lets JsonViewer content use the available preview width", async () => {
   const source = await readFile("registry/ui/json-viewer.tsx", "utf8")
 
-  expect(source).toContain('<code className="min-w-0 flex-1 rounded-none">')
+  expect(source).toContain('<div className="min-w-0 flex-1 rounded-none">')
+  expect(source).not.toContain('<pre className="flex">')
 })
 
 it("uses the theme primary color for active Tabs states", async () => {

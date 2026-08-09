@@ -23,19 +23,40 @@ const sample = {
 
 const labels = {
   "zh-CN": {
-    intro: "只读 GeoJSON 树。空值和解析失败会回退到带行号的 pre 视图。",
+    intro: "只读 GeoJSON 树。空值、解析失败和不支持的 primitive 会显示明确状态。",
     emptyToggle: "模拟无选中",
     invalidToggle: "模拟解析失败",
+    primitiveToggle: "模拟 primitive 值",
     empty: "无选中要素",
     title: "GeoJSON",
+    viewer: {
+      expandAll: "全部展开",
+      collapseAll: "全部收起",
+      copy: "复制 GeoJSON",
+      copied: "已复制 GeoJSON",
+      item: "项",
+      items: "项",
+      parseError: "GeoJSON 解析失败",
+      unsupportedValue: "GeoJSON 必须是对象或数组",
+    },
   },
   en: {
-    intro:
-      "Read-only GeoJSON tree. Empty values and parse failures fall back to a line-numbered pre view.",
+    intro: "Read-only GeoJSON tree with explicit empty, parse-error, and primitive-value states.",
     emptyToggle: "Simulate no selection",
     invalidToggle: "Simulate parse failure",
+    primitiveToggle: "Simulate primitive value",
     empty: "No selected feature",
     title: "GeoJSON",
+    viewer: {
+      expandAll: "Expand all",
+      collapseAll: "Collapse all",
+      copy: "Copy GeoJSON",
+      copied: "Copied GeoJSON",
+      item: "item",
+      items: "items",
+      parseError: "GeoJSON could not be parsed",
+      unsupportedValue: "GeoJSON must be an object or array",
+    },
   },
 }
 
@@ -43,7 +64,14 @@ export function GeoJSONViewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
   const [empty, setEmpty] = useState(false)
   const [invalid, setInvalid] = useState(false)
-  const json = empty ? null : invalid ? "{ invalid geojson" : stringifyGeoJSON(sample)
+  const [primitive, setPrimitive] = useState(false)
+  const json = empty
+    ? null
+    : invalid
+      ? "{ invalid geojson"
+      : primitive
+        ? '"point"'
+        : stringifyGeoJSON(sample)
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -57,14 +85,34 @@ export function GeoJSONViewDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           <Checkbox
             id="docs-geojson-view-invalid"
             checked={invalid}
-            onCheckedChange={setInvalid}
+            onCheckedChange={(checked) => {
+              setInvalid(checked)
+              if (checked) setPrimitive(false)
+            }}
             disabled={empty}
           />
           <Label htmlFor="docs-geojson-view-invalid">{demoLabels.invalidToggle}</Label>
         </div>
+        <div className="flex items-center gap-2">
+          <Checkbox
+            id="docs-geojson-view-primitive"
+            checked={primitive}
+            onCheckedChange={(checked) => {
+              setPrimitive(checked)
+              if (checked) setInvalid(false)
+            }}
+            disabled={empty}
+          />
+          <Label htmlFor="docs-geojson-view-primitive">{demoLabels.primitiveToggle}</Label>
+        </div>
       </div>
       <div className="h-[360px] min-w-0">
-        <GeoJSONView json={json} emptyLabel={demoLabels.empty} title={demoLabels.title} />
+        <GeoJSONView
+          json={json}
+          emptyLabel={demoLabels.empty}
+          title={demoLabels.title}
+          labels={demoLabels.viewer}
+        />
       </div>
     </div>
   )

@@ -20,7 +20,7 @@ export interface GeoJSONViewProps {
 /**
  * Read-only JSON viewer. Parses the pre-formatted `json` and renders it as an
  * interactive collapsible tree (`JsonViewer`). Falls back to a line-numbered
- * `<pre>` when `json` is empty, fails to parse, or decodes to a primitive.
+ * read-only view when `json` is empty, fails to parse, or decodes to a primitive.
  * Pure display — copy/download and size counters live in the consumer's chrome,
  * built from the same `stringifyGeoJSON` output to avoid stringifying twice.
  */
@@ -50,7 +50,11 @@ export function GeoJSONView({
     data = JSON.parse(json)
   } catch {
     return (
-      <ViewShell title={title} className={className}>
+      <ViewShell
+        title={title}
+        className={className}
+        status={{ label: labels.parseError, role: "alert", tone: "destructive" }}
+      >
         <PreView lines={json.split("\n")} emptyLabel={emptyLabel} />
       </ViewShell>
     )
@@ -58,7 +62,11 @@ export function GeoJSONView({
 
   if (typeof data !== "object" || data === null) {
     return (
-      <ViewShell title={title} className={className}>
+      <ViewShell
+        title={title}
+        className={className}
+        status={{ label: labels.unsupportedValue, role: "status", tone: "warning" }}
+      >
         <PreView lines={json.split("\n")} emptyLabel={emptyLabel} />
       </ViewShell>
     )
@@ -72,10 +80,15 @@ export function GeoJSONView({
       )}
     >
       <JsonViewer
-        data={data as Record<string, unknown>}
+        data={data as Record<string, unknown> | unknown[]}
         title={title}
         expandAllLabel={resolvedExpandAllLabel}
         collapseAllLabel={resolvedCollapseAllLabel}
+        copyLabel={labels.copy}
+        copiedLabel={labels.copied}
+        itemLabel={labels.item}
+        itemsLabel={labels.items}
+        copyContent={json}
         copyFeedbackDurationMs={copyFeedbackDurationMs}
         showLineNumbers
         className="min-h-0 flex-1 overflow-hidden"
@@ -87,10 +100,12 @@ export function GeoJSONView({
 function ViewShell({
   title,
   className,
+  status,
   children,
 }: {
   title: string
   className?: string
+  status?: ViewStatus
   children: ReactNode
 }) {
   return (
@@ -100,10 +115,21 @@ function ViewShell({
         className,
       )}
     >
-      <div className="flex h-8 shrink-0 items-center border-b border-border px-3">
+      <div className="flex h-8 shrink-0 items-center gap-2 border-b border-border px-3">
         <span className="font-mono text-label-sm leading-none text-muted-foreground uppercase">
           {title}
         </span>
+        {status ? (
+          <span
+            role={status.role}
+            className={cn(
+              "text-body-sm-medium leading-none",
+              status.tone === "destructive" ? "text-destructive" : "text-warning",
+            )}
+          >
+            {status.label}
+          </span>
+        ) : null}
       </div>
       {children}
     </div>
@@ -118,13 +144,12 @@ function PreView({
 }: {
   lines: string[] | null
   emptyLabel: string
-  labels?: Partial<GeoJSONViewLabels>
   className?: string
 }) {
   const lineRows = lines === null ? null : getLineRows(lines)
 
   return (
-    <pre
+    <div
       className={cn(
         "m-0 min-h-0 flex-1 overflow-auto bg-muted/50 px-3.5 py-3 font-mono text-body-sm-medium leading-[1.6] text-foreground [tab-size:2]",
         className,
@@ -133,7 +158,7 @@ function PreView({
       {lines === null ? (
         <div className="grid grid-cols-[32px_1fr] gap-x-3">
           <span className="text-right text-muted-foreground tabular-nums select-none">1</span>
-          <span className="text-muted-foreground">{emptyLabel}</span>
+          <code className="whitespace-pre-wrap text-foreground">{emptyLabel}</code>
         </div>
       ) : (
         lineRows?.map((row) => (
@@ -141,12 +166,18 @@ function PreView({
             <span className="text-right text-muted-foreground tabular-nums select-none">
               {row.number}
             </span>
-            <span>{row.line}</span>
+            <code className="whitespace-pre-wrap text-foreground">{row.line}</code>
           </div>
         ))
       )}
-    </pre>
+    </div>
   )
+}
+
+type ViewStatus = {
+  label: string
+  role: "alert" | "status"
+  tone: "destructive" | "warning"
 }
 
 function getLineRows(lines: string[]) {

@@ -1335,12 +1335,40 @@ export async function assertPrimitiveInteraction(
 
   if (primitive === "json-viewer") {
     const viewer = page.locator('[data-demo="json-viewer-overview"]')
-    await page.getByRole("button", { name: "全部收起", exact: true }).click()
+    const expandAllButton = page.getByRole("button", {
+      name: localized(path, "全部展开", "Expand all"),
+      exact: true,
+    })
+    const collapseAllButton = page.getByRole("button", {
+      name: localized(path, "全部收起", "Collapse all"),
+      exact: true,
+    })
+    const nodeTrigger = viewer.locator('[data-slot="collapsible-trigger"]').first()
+    await expandAllButton.click()
+    await expect(nodeTrigger).toHaveAttribute("aria-expanded", "true")
+    await expect(nodeTrigger).toHaveAttribute("aria-controls", /.+/)
+    await nodeTrigger.click()
+    await expect(nodeTrigger).toHaveAttribute("aria-expanded", "true")
+    await nodeTrigger.dblclick()
+    await expect(nodeTrigger).toHaveAttribute("aria-expanded", "false")
+    await nodeTrigger.press("Enter")
+    await expect(nodeTrigger).toHaveAttribute("aria-expanded", "true")
+    await collapseAllButton.click()
     await expect(viewer).toContainText("Feature")
-    await page.getByRole("button", { name: "全部展开", exact: true }).click()
+    await expandAllButton.click()
     await expect(viewer).toContainText("coordinates")
-    await viewer.locator('button[title="复制"]').click()
-    await expect(viewer.locator('button[title="已复制"]')).toBeVisible()
+    await viewer
+      .getByRole("button", {
+        name: localized(path, "复制 GeoJSON", "Copy GeoJSON"),
+        exact: true,
+      })
+      .click()
+    await expect(
+      viewer.getByRole("button", {
+        name: localized(path, "已复制 GeoJSON", "Copied GeoJSON"),
+        exact: true,
+      }),
+    ).toBeVisible()
   }
 
   if (primitive === "pagination") {
@@ -1961,7 +1989,18 @@ export async function assertBlockInteraction(
     await expect(demo).toContainText(localized(path, "无选中要素", "No selected feature"))
     await emptyToggle.click()
     await invalidToggle.click()
+    await expect(demo.getByRole("alert")).toContainText(
+      localized(path, "GeoJSON 解析失败", "GeoJSON could not be parsed"),
+    )
     await expect(demo).toContainText("{ invalid geojson")
+    await demo
+      .getByRole("checkbox", {
+        name: localized(path, "模拟 primitive 值", "Simulate primitive value"),
+      })
+      .click()
+    await expect(demo.getByRole("status")).toContainText(
+      localized(path, "GeoJSON 必须是对象或数组", "GeoJSON must be an object or array"),
+    )
   }
 
   if (block === "json-editor") {

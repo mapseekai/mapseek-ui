@@ -28,17 +28,16 @@ import { JsonViewer } from "@/registry/ui/json-viewer"
 
 ## 导出
 
-`json-viewer.tsx` 导出 `JsonViewer`。它接受 `data`、`title`、`defaultExpanded`、`showLineNumbers`、`showColorIndent`、`collapseOn` 和复制反馈相关 props。
+`json-viewer.tsx` 导出 `JsonViewer`。它接受 `data`、`title`、`defaultExpanded`、`showLineNumbers`、`showColorIndent`、`collapseOn`、`expandAllLabel`、`collapseAllLabel`、`copyLabel`、`copiedLabel`、`itemLabel`、`itemsLabel`、`copyContent` 和 `copyFeedbackDurationMs`。
 
 ## 状态与行为
 
-`defaultExpanded` 可以是布尔值或展开层级数字。对象和数组节点可点击折叠，工具栏按钮可以全量展开、收起到根节点或复制格式化 JSON。
+`defaultExpanded` 可以是布尔值或展开层级数字。对象和数组节点可点击或双击折叠，工具栏按钮可以全量展开、收起到根节点或复制格式化 JSON。复制成功后才显示完成反馈；写入失败时保持原状态。
 
 ## 无障碍
 
-为 JSON 区域提供清晰标题。复制按钮需要可读文案；结构很深时，页面附近应说明数据来源和关键字段，避免用户只能从树中推断含义。
+为 JSON 区域提供清晰标题。折叠按钮提供 `aria-expanded` 和关联内容，复制按钮需要可读文案；所有交互控件使用统一 24px 高度和设计系统 focus ring。结构很深时，页面附近应说明数据来源和关键字段。
 
 ## 依赖
 
 <RegistryDependencies registryName="json-viewer" />
-

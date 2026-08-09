@@ -705,6 +705,7 @@
         "@mapseek/theme",
         "@mapseek/button",
         "@mapseek/collapsible",
+        "@mapseek/copy-button",
         "@mapseek/utils"
       ],
       "dependencies": ["@tabler/icons-react"],

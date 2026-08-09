@@ -75,7 +75,12 @@ const overlayDataAndFeedbackDependencies = {
   "confirm-dialog": ["@mapseek/button", "@mapseek/dialog", "@mapseek/utils"],
   "context-menu": ["@mapseek/utils"],
   "dropdown-menu": ["@mapseek/utils"],
-  "json-viewer": ["@mapseek/button", "@mapseek/collapsible", "@mapseek/utils"],
+  "json-viewer": [
+    "@mapseek/button",
+    "@mapseek/collapsible",
+    "@mapseek/copy-button",
+    "@mapseek/utils",
+  ],
   sheet: ["@mapseek/utils"],
   sonner: [],
   table: ["@mapseek/utils"],

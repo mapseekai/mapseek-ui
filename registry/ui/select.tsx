@@ -48,7 +48,7 @@ function SelectTrigger({
       data-size={size}
       data-width={width}
       className={cn(
-        "flex items-center justify-between gap-1.5 border border-input bg-input-surface pe-2 ps-2.5 text-body-md-medium text-foreground whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=xs]:h-6 data-[size=sm]:h-7 data-[size=default]:h-8 data-[size=lg]:h-9 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5",
+        "flex min-w-0 items-center justify-between gap-1.5 border border-input bg-input-surface pe-2 ps-2.5 text-body-md-medium text-foreground whitespace-nowrap transition-colors outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/20 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=xs]:h-6 data-[size=sm]:h-7 data-[size=default]:h-8 data-[size=lg]:h-9 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-1.5",
         width === "content" ? "w-fit" : "w-full",
         className,
       )}
@@ -96,7 +96,7 @@ function SelectContent({
           data-slot="select-content"
           data-align-trigger={alignItemWithTrigger}
           className={cn(
-            "relative max-h-(--available-height) w-max min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) overflow-x-hidden overflow-y-auto border border-border bg-popover text-popover-foreground outline-none duration-100 data-[align-trigger=true]:animate-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "relative max-h-(--available-height) w-max min-w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin) overflow-x-hidden overflow-y-auto border border-border bg-popover text-popover-foreground outline-none duration-100 data-[align-trigger=true]:animate-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 motion-reduce:data-open:animate-none motion-reduce:data-closed:animate-none motion-reduce:transition-none",
             className,
           )}
           {...props}

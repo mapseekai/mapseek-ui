@@ -1897,6 +1897,54 @@ export async function assertBlockInteraction(
   if (block === "filter-panel") {
     const demo = page.locator('[data-demo="filter-panel"]')
     await expect(demo.locator('[data-demo-status="filter-mode"]')).toContainText("builder")
+    const field = demo.getByRole("combobox").first()
+    const initialFieldWidth = await field.evaluate(
+      (element) => element.getBoundingClientRect().width,
+    )
+    await field.click()
+    await page.getByRole("option", { name: "area_m2", exact: true }).click()
+    const selectedFieldWidth = await field.evaluate(
+      (element) => element.getBoundingClientRect().width,
+    )
+    expect(Math.abs(selectedFieldWidth - initialFieldWidth)).toBeLessThanOrEqual(1)
+    const selectedFieldValue = field.locator('[data-slot="select-value"]')
+    await expect(selectedFieldValue).toHaveAttribute("title", "area_m2")
+    const selectedFieldValueStyle = await selectedFieldValue.evaluate((element) => {
+      const style = getComputedStyle(element)
+
+      return { textOverflow: style.textOverflow, whiteSpace: style.whiteSpace }
+    })
+    expect(selectedFieldValueStyle).toEqual({ textOverflow: "ellipsis", whiteSpace: "nowrap" })
+
+    for (const action of [
+      demo.getByRole("button", { name: /^(添加条件|Add condition)$/ }),
+      demo.getByRole("button", { name: /^(清空|Clear)$/ }),
+      demo.getByRole("button", { name: /^(应用|Apply)$/ }),
+    ]) {
+      const actionStyle = await action.evaluate((element) => {
+        const style = getComputedStyle(element)
+
+        return {
+          fontSize: style.fontSize,
+          height: Math.round(element.getBoundingClientRect().height),
+        }
+      })
+      expect(actionStyle).toEqual({ fontSize: "13px", height: 24 })
+    }
+
+    const removeCondition = demo.getByRole("button", {
+      name: /^(删除条件|Remove condition)$/,
+    })
+    const removeConditionSize = await removeCondition.evaluate((element) => {
+      const rect = element.getBoundingClientRect()
+
+      return { height: Math.round(rect.height), width: Math.round(rect.width) }
+    })
+    expect(removeConditionSize).toEqual({ height: 24, width: 24 })
+
+    const estimate = demo.locator('[data-slot="filter-panel-footer"] > span')
+    await expect(estimate).toHaveCSS("font-size", "11px")
+
     const operator = demo.getByRole("combobox").nth(1)
     const conditionRow = operator.locator("..")
     const valueInput = conditionRow.locator('[data-slot="input"]')
@@ -1915,7 +1963,7 @@ export async function assertBlockInteraction(
     expect(Math.abs(selectedWidths[0] - initialWidths[0])).toBeLessThanOrEqual(1)
     expect(selectedWidths[1]).toBeGreaterThan(initialWidths[1])
     expect(selectedWidths[2]).toBeLessThan(initialWidths[2])
-    await demo.getByRole("button", { name: "SQL", exact: true }).click()
+    await demo.getByRole("tab", { name: "SQL", exact: true }).click()
     await expect(demo.locator('[data-demo-status="filter-mode"]')).toContainText("sql")
     await demo.locator("textarea").fill('code = "R2"')
     await expect(demo.locator("pre")).toContainText("R2")

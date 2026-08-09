@@ -59,6 +59,20 @@ describe("SelectContent width", () => {
   })
 })
 
+describe("SelectContent motion", () => {
+  it("disables popup animations when reduced motion is requested", () => {
+    const portal = SelectContent({ children: "Options" }) as ReactElement<{
+      children: ReactElement<{ children: ReactElement<{ className: string }> }>
+    }>
+    const popup = portal.props.children.props.children
+    const classes = popup.props.className.split(/\s+/)
+
+    expect(classes).toContain("motion-reduce:data-open:animate-none")
+    expect(classes).toContain("motion-reduce:data-closed:animate-none")
+    expect(classes).toContain("motion-reduce:transition-none")
+  })
+})
+
 describe("SelectGroup popup layout", () => {
   it("matches the upstream Select group without synthetic popup padding", () => {
     const group = SelectGroup({ children: "Options" }) as ReactElement<{
@@ -102,6 +116,15 @@ describe("SelectTrigger width", () => {
 
     expect(classes).toContain("w-full")
     expect(classes).not.toContain("w-fit")
+  })
+
+  it("can shrink within a constrained fixed-width layout", () => {
+    const trigger = SelectTrigger({ children: "Value" }) as ReactElement<{
+      className: string
+    }>
+    const classes = trigger.props.className.split(/\s+/)
+
+    expect(classes).toContain("min-w-0")
   })
 
   it("can follow the selected content width", () => {

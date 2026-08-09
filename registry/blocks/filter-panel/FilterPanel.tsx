@@ -41,7 +41,7 @@ function patch(
   onChange({ ...value, ...delta })
 }
 
-const miniSelect = "rounded-none px-2 font-mono text-body-sm"
+const miniSelect = "min-w-0 rounded-none px-2 font-mono text-body-sm"
 
 // ---------------------------------------------------------------------------
 // Root
@@ -162,18 +162,18 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 })}
               </div>
             )}
-            <div className="grid grid-cols-[64px_auto_minmax(0,1fr)_20px] items-center gap-x-1">
+            <div className="grid grid-cols-[64px_auto_minmax(0,1fr)_24px] items-center gap-x-1">
               <Select
                 value={f.field}
                 onValueChange={(val) => val != null && updateRow(f.id, { field: val })}
               >
                 <SelectTrigger size="xs" className={miniSelect}>
-                  <SelectValue />
+                  <SelectValue className="min-w-0 truncate" title={f.field} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     {fields.map((o) => (
-                      <SelectItem key={o} value={o}>
+                      <SelectItem key={o} value={o} title={o}>
                         {o}
                       </SelectItem>
                     ))}
@@ -208,10 +208,10 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
               />
               <Button
                 variant="ghost"
-                size="icon"
+                size="icon-xs"
                 onClick={() => removeRow(f.id)}
                 aria-label={labels.removeCondition}
-                className="size-5 rounded-none text-muted-foreground"
+                className="text-muted-foreground"
               >
                 <IconX />
               </Button>
@@ -222,8 +222,9 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
       <div className="mt-2 flex items-center gap-2">
         <Button
           variant="ghost"
+          size="xs"
           onClick={addRow}
-          className="h-6 flex-1 gap-1 rounded-none border border-dashed border-primary/40 px-1.5 text-body-sm-medium leading-none text-primary hover:text-primary"
+          className="flex-1 border border-dashed border-primary/40 px-1.5 text-body-md leading-none text-primary hover:text-primary"
         >
           <IconPlus data-icon="inline-start" /> {labels.addCondition}
         </Button>
@@ -288,12 +289,7 @@ function FilterPanelEstimate({
 }) {
   const { labels } = useFilterPanelContext()
   return (
-    <span
-      className={cn(
-        "flex-1 font-mono text-[10px] tracking-[0.04em] uppercase text-muted-foreground",
-        className,
-      )}
-    >
+    <span className={cn("flex-1 font-mono text-body-sm text-muted-foreground", className)}>
       <IconEye size={11} className="mr-1 align-[-1px]" />
       {labels.estimate} <span className="text-primary">{count}</span> / {total} {labels.rows}
     </span>
@@ -311,8 +307,9 @@ function FilterPanelClearButton({
   return (
     <Button
       variant="outline"
+      size="xs"
       onClick={() => onChange({ ...EMPTY_FILTER, mode: value.mode })}
-      className={cn("h-6 rounded-none px-2 text-body-sm", className)}
+      className={className}
     >
       {children ?? labels.clear}
     </Button>
@@ -330,10 +327,7 @@ function FilterPanelApplyButton({
 }) {
   const { labels } = useFilterPanelContext()
   return (
-    <Button
-      onClick={onClick}
-      className={cn("-ml-px h-6 rounded-none px-2 text-body-sm", className)}
-    >
+    <Button size="xs" onClick={onClick} className={cn("-ml-px", className)}>
       {children ?? labels.apply}
     </Button>
   )

@@ -39,6 +39,7 @@ describe("PixelProbe", () => {
     )
 
     expect(html).toContain("<section")
+    expect(html).toMatch(/<section[^>]*class="[^"]*\bnot-prose\b[^"]*"/u)
     expect(html).toContain('aria-label="Pixel probe"')
     expect(html).toContain("<dl")
     expect(html).toContain("<dt")

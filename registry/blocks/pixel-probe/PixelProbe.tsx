@@ -74,7 +74,7 @@ export function PixelProbe({
       aria-label={labels.title}
       data-testid="pixel-probe"
       className={cn(
-        "flex min-w-0 flex-col overflow-hidden border border-border bg-card",
+        "not-prose flex min-w-0 flex-col overflow-hidden border border-border bg-card",
         className,
       )}
     >

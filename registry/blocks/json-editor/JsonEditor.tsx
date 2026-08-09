@@ -10,7 +10,12 @@ import {
 import { linter, lintGutter } from "@codemirror/lint"
 import { highlightSelectionMatches } from "@codemirror/search"
 import { EditorState, type Extension } from "@codemirror/state"
-import { EditorView, lineNumbers } from "@codemirror/view"
+import {
+  EditorView,
+  highlightActiveLine,
+  highlightActiveLineGutter,
+  lineNumbers,
+} from "@codemirror/view"
 import { tags } from "@lezer/highlight"
 import CodeMirror from "@uiw/react-codemirror"
 import stringifyPretty from "json-stringify-pretty-compact"
@@ -257,11 +262,13 @@ export function JsonEditor({
     () => [
       jsonEditorStructureTheme,
       lineNumbers(),
+      highlightActiveLineGutter(),
       foldGutter(),
       indentOnInput(),
       bracketMatching(),
       autocompletion(),
       highlightSelectionMatches(),
+      highlightActiveLine(),
       json(),
       lintGutter(),
       linter(jsonParseLinter()),

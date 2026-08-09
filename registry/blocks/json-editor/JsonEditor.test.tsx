@@ -99,6 +99,13 @@ describe("JsonEditor", () => {
     expect(html).not.toContain("focus-within:ring-ring/20")
   })
 
+  it("installs active-line feedback for editor content and the line-number gutter", async () => {
+    const source = await readFile(new URL("./JsonEditor.tsx", import.meta.url), "utf8")
+
+    expect(source).toContain("highlightActiveLine(),")
+    expect(source).toContain("highlightActiveLineGutter(),")
+  })
+
   it("installs a custom theme extension without enabling a UIW palette", () => {
     const customTheme = StateField.define({
       create: () => "custom-theme",

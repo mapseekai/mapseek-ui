@@ -1,9 +1,9 @@
 import {
-  LOOM_TOOLBAR_LABELS_EN,
-  LOOM_TOOLBAR_LABELS_ZH_CN,
-  LoomToolbar,
-  type LoomToolbarGroup,
-} from "@registry/blocks/loom-toolbar"
+  TOOLBAR_LABELS_EN,
+  TOOLBAR_LABELS_ZH_CN,
+  Toolbar,
+  type ToolbarGroup,
+} from "@registry/blocks/toolbar"
 import {
   IconArrowsMove,
   IconHandStop,
@@ -17,7 +17,7 @@ import {
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
-function loomToolbarGroups(locale: "zh-CN" | "en"): readonly LoomToolbarGroup[] {
+function toolbarGroups(locale: "zh-CN" | "en"): readonly ToolbarGroup[] {
   const english = locale === "en"
   return [
     {
@@ -91,17 +91,17 @@ function loomToolbarGroups(locale: "zh-CN" | "en"): readonly LoomToolbarGroup[] 
   ]
 }
 
-export function LoomToolbarDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function ToolbarDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const [editing, setEditing] = useState(true)
   const [dirty, setDirty] = useState(true)
   const [mode, setMode] = useState("select")
   const [snapping, setSnapping] = useState(true)
   const [historyIndex, setHistoryIndex] = useState(1)
-  const labels = locale === "en" ? LOOM_TOOLBAR_LABELS_EN : LOOM_TOOLBAR_LABELS_ZH_CN
+  const labels = locale === "en" ? TOOLBAR_LABELS_EN : TOOLBAR_LABELS_ZH_CN
 
   return (
-    <LoomToolbar
-      groups={loomToolbarGroups(locale)}
+    <Toolbar
+      groups={toolbarGroups(locale)}
       activeMode={mode}
       activeLayerName={locale === "en" ? "Urban land use" : "城市用地现状"}
       editing={editing}

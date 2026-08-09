@@ -736,10 +736,10 @@ const blockPages = [
     importPath: "@registry/blocks/toolbox",
   },
   {
-    name: "loom-toolbar",
-    demo: "loom-toolbar",
-    sourceFunction: "LoomToolbarDemo",
-    importPath: "@registry/blocks/loom-toolbar",
+    name: "toolbar",
+    demo: "toolbar",
+    sourceFunction: "ToolbarDemo",
+    importPath: "@registry/blocks/toolbar",
   },
   {
     name: "app-top-bar",

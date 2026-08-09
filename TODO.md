@@ -97,11 +97,11 @@
 - [x] **39. MapSearch 选中结果无可视选中态**：✅ 已修复（694373e）：选中结果同时提供 `aria-selected` 与 `bg-selection-bg text-primary` 的可视持久状态。
 - [x] **40. 卡片类 hover 偏离裁决 + 普通行滥用 primary 边**：✅ 已修复（694373e）：三处卡片 hover 均为 `hover:border-primary hover:bg-primary/5`；普通 ToolList 行已移除 `hover:border-primary`。
 - [x] **41. LayerPanel 行操作按钮隐形但可聚焦**：✅ 已修复：替换后的 `LayerActions` 仅在当前图层真正渲染定位、属性表和更多操作，不再留下透明但可聚焦的按钮；可见性操作始终可见且具有可注入的 accessible name 与 `title`。
-- [x] **42. 交互控件标签降为 11px ×4**：✅ 已修复（694373e）：AppTopBar、AttrInspector、LoomToolbar 和 FilterPanel 的相关交互标签均使用 `text-body-md-medium`。
+- [x] **42. 交互控件标签降为 11px ×4**：✅ 已修复（694373e）：AppTopBar、AttrInspector、Toolbar 和 FilterPanel 的相关交互标签均使用 `text-body-md-medium`。
 - [x] **43. font-normal 覆盖 typography token 残留 ×5（#17 未修干净）**：✅ 已修复（694373e）：列出的 ResourceSidebar、ResourceDetailDrawer 与 StyleEditorModal 消费点均已移除 `font-normal`，保留 token 字重。
 - [x] **44. 区块/小节标题排版自造或误用**：✅ 已修复（694373e）：相关 dialog / section 标题改为 `text-headline-md`；StyleFunctionEditor 的紧凑面板标题按 DESIGN.md 允许保留 `text-body-md-strong`。
 - [x] **45. tnum 缺口：时间戳/统计/存储**：✅ 已修复：`ProcessingTimeline` 原已通过 `.mono` 启用 `tnum`；RasterStylePanel 的统计值、StorageMeter 的详细存储值及 MapSearch 的经纬度 fallback 现均显式使用 `.tnum`。新增回归测试覆盖三处。
-- [ ] **46. 离刻度尺寸与手搓开关（部分收口）**：✅ FilterPanel 的连接符与 SQL keyword 按钮、MapCoordinateStatus 的 CRS 触发器均已改为标准 `size="xs"`（24px）与 `text-label-md`；✅ ToggleConfigPopover 的 32×18px 设置箭头、SplitToolPicker 的 32×18px 下拉箭头均裁决为分段控件的有意例外，保留原样；✅ ToggleConfigPopover 的手搓 28×16px 开关已抽为共享 `Switch variant="square"` 并保留原视觉；仍待确认：`registry/blocks/loom-toolbar/LoomToolbar.tsx` 同一 cluster 的高度混用。契约：24/28/32/36 刻度、"Icon-only controls are square"、"Toolbars use one control height per cluster"。
+- [ ] **46. 离刻度尺寸与手搓开关（部分收口）**：✅ FilterPanel 的连接符与 SQL keyword 按钮、MapCoordinateStatus 的 CRS 触发器均已改为标准 `size="xs"`（24px）与 `text-label-md`；✅ ToggleConfigPopover 的 32×18px 设置箭头、SplitToolPicker 的 32×18px 下拉箭头均裁决为分段控件的有意例外，保留原样；✅ ToggleConfigPopover 的手搓 28×16px 开关已抽为共享 `Switch variant="square"` 并保留原视觉；仍待确认：`registry/blocks/toolbar/Toolbar.tsx` 同一 cluster 的高度混用。契约：24/28/32/36 刻度、"Icon-only controls are square"、"Toolbars use one control height per cluster"。
 - [x] **47. calendar 日格 focus ring 25%**：✅ 已修复：`registry/ui/calendar.tsx:179` 现使用 `group-data-[focused=true]/day:ring-ring/20`，保持既有 3px 宽度；`design-component-style` 契约测试已纳入 Calendar。~~契约 20%（#23 统一时漏网）。~~
 - [x] **48. kbd 手写 10px 而非 text-label-md**：✅ 已修复：`registry/ui/kbd.tsx:10` 现使用 `font-mono text-label-md`，保留 10px/500 的视觉规格并继承 token 的行高与 0.04em tracking；组件回归测试覆盖该契约。~~原实现为 `font-mono text-[10px] font-medium`，无 0.04em tracking。~~
 - [x] **49. card-tabs 选中用 bg-primary/10**：✅ 已修复：`registry/ui/card-tabs.tsx:37` 现使用 `data-active:bg-selection-bg data-active:text-primary`；绿色边缘指示条保持不变，组件测试锁定选中背景 token。~~原实现使用 `data-active:bg-primary/10`。~~

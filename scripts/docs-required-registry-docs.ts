@@ -376,7 +376,7 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
     },
   ],
   [
-    "loom-toolbar",
+    "toolbar",
     {
       category: "block",
     },

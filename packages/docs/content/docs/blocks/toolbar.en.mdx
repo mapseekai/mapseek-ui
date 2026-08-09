@@ -1,0 +1,34 @@
+---
+title: "Toolbar"
+registryName: toolbar
+category: block
+stability: experimental
+showcase: toolbar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Toolbar is a controlled map-editing toolbar that composes editing state, tool groups, snapping, save, and undo/redo controls.
+
+## Installation
+
+<RegistryInstall registryName="toolbar" />
+
+## Import
+
+```tsx
+import { Toolbar, type ToolbarGroup } from "@/components/blocks/toolbar"
+```
+
+## Editing toolbar
+
+<ShowcaseDemo registryName="toolbar" title="Editing toolbar" description="Group tools by business workflow and gate editing-only actions with editOnly." minHeight={560} />
+
+## Tool model
+
+Each tool provides an `id`, `label`, `icon`, and optional shortcut. Tools marked `editOnly` are disabled outside editing mode. The product owns persistence, history, and map interaction.
+
+## Dependencies
+
+<RegistryDependencies registryName="toolbar" />

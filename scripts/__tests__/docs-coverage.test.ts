@@ -17,7 +17,7 @@ const promotedShowcaseBlocks = [
   "custom-colormap",
   "layer-panel",
   "toolbox",
-  "loom-toolbar",
+  "toolbar",
 ] as const
 
 describe("docs coverage", () => {

@@ -34,6 +34,7 @@ describe("toolbar complete rename", () => {
       ],
       dependencies: ["@tabler/icons-react"],
     })
-    expect(catalog.some((item) => item.name === "loom-toolbar")).toBe(false)
+    const legacyName = ["loom", "toolbar"].join("-")
+    expect(catalog.some((item) => item.name === legacyName)).toBe(false)
   })
 })

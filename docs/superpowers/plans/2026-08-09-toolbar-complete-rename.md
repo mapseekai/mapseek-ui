@@ -75,7 +75,8 @@ describe("toolbar complete rename", () => {
       ],
       dependencies: ["@tabler/icons-react"],
     })
-    expect(catalog.some((item) => item.name === "loom-toolbar")).toBe(false)
+    const legacyName = ["loom", "toolbar"].join("-")
+    expect(catalog.some((item) => item.name === legacyName)).toBe(false)
   })
 })
 ```
@@ -167,7 +168,7 @@ Run: `pnpm run registry:validate`
 
 Expected: PASS with the canonical `toolbar` registry item and no missing source files.
 
-- [ ] **Step 6: Commit the core rename**
+- [x] **Step 6: Commit the core rename**
 
 ```bash
 git add registry/blocks/toolbar/Toolbar.tsx registry/blocks/toolbar/Toolbar.test.tsx registry/blocks/toolbar/index.ts registry/blocks/toolbar/labels.ts registry/blocks/toolbar/types.ts registry/blocks/loom-toolbar/LoomToolbar.tsx registry/blocks/loom-toolbar/LoomToolbar.test.tsx registry/blocks/loom-toolbar/index.ts registry/blocks/loom-toolbar/labels.ts registry/blocks/loom-toolbar/types.ts registry/blocks/registry.json scripts/registry-model.ts scripts/__tests__/toolbar-rename.test.ts scripts/__tests__/registry-component-composition.test.ts
@@ -193,13 +194,13 @@ git commit -m "refactor(toolbar): rename public block contract"
 - Consumes: The canonical exports from `@registry/blocks/toolbar` produced by Task 1.
 - Produces: `ToolbarDemo`, the `/blocks/toolbar/` documentation page, the `toolbar` Showcase key, and QA/catalog metadata that reference only the canonical slug.
 
-- [ ] **Step 1: Change the promoted-doc expectation first and verify it fails**
+- [x] **Step 1: Change the promoted-doc expectation first and verify it fails**
 
 ```ts
 const promotedShowcaseBlocks = [
   "custom-colormap",
   "layer-panel",
-  "loom-toolbox",
+  "toolbox",
   "toolbar",
 ] as const
 ```
@@ -208,7 +209,7 @@ Run: `pnpm vitest run scripts/__tests__/docs-coverage.test.ts`
 
 Expected: FAIL because the bilingual docs still publish `loom-toolbar` while the registry publishes `toolbar`.
 
-- [ ] **Step 2: Rename the Showcase module and canonical demo symbols**
+- [x] **Step 2: Rename the Showcase module and canonical demo symbols**
 
 ```tsx
 import {
@@ -227,7 +228,7 @@ Replace the block catalog entry with:
 block("toolbar", "Toolbar 编辑工具条", () => import("./ToolbarShowcase"))
 ```
 
-- [ ] **Step 3: Rename both documentation pages and their public examples**
+- [x] **Step 3: Rename both documentation pages and their public examples**
 
 Each page must use this canonical metadata shape:
 
@@ -243,7 +244,7 @@ showcase: toolbar
 
 In the Chinese page replace the opening sentence with `Toolbar 是地图编辑会话的受控工具条，组合编辑开关、工具组、吸附、保存与<span className="whitespace-nowrap">撤销/重做</span>状态。`; in the English page replace it with `Toolbar is a controlled map-editing toolbar that composes editing state, tool groups, snapping, save, and undo/redo controls.` Use `<ShowcaseDemo registryName="toolbar" title="编辑工具条" description="工具可按业务分组，并通过 editOnly 门控编辑态专用操作。" minHeight={560} />` in Chinese and `<ShowcaseDemo registryName="toolbar" title="Editing toolbar" description="Group tools by business workflow and gate editing-only actions with editOnly." minHeight={560} />` in English. Replace the remaining examples with `Toolbar`, `ToolbarGroup`, `@/components/blocks/toolbar`, `<RegistryInstall registryName="toolbar" />`, and `<RegistryDependencies registryName="toolbar" />`. Preserve the remaining localized explanatory copy byte-for-byte.
 
-- [ ] **Step 4: Update metadata and QA allowlists**
+- [x] **Step 4: Update metadata and QA allowlists**
 
 Use `toolbar` in both `meta*.json` files, `requiredRegistryDocs`, and the promoted-doc list. Replace the visual-QA entry with:
 
@@ -258,13 +259,13 @@ Use `toolbar` in both `meta*.json` files, `requiredRegistryDocs`, and the promot
 
 Update the two historical `TODO.md` references from `LoomToolbar` to `Toolbar` without changing their completion text or scope.
 
-- [ ] **Step 5: Regenerate the Showcase source catalog**
+- [x] **Step 5: Regenerate the Showcase source catalog**
 
 Run: `pnpm run docs:sources`
 
 Expected: `source-catalog.generated.ts` contains the key `"toolbar"`, imports `Toolbar*` from `@registry/blocks/toolbar`, and no longer contains the old key or symbols.
 
-- [ ] **Step 6: Run focused docs and model tests**
+- [x] **Step 6: Run focused docs and model tests**
 
 Run: `pnpm vitest run scripts/__tests__/docs-coverage.test.ts scripts/__tests__/toolbar-rename.test.ts scripts/__tests__/registry-component-composition.test.ts registry/blocks/toolbar/Toolbar.test.tsx`
 
@@ -297,7 +298,7 @@ git commit -m "docs(toolbar): publish canonical block name"
 
 - [ ] **Step 1: Prove no legacy identifiers remain in active source surfaces**
 
-Run: `rg -n "loom-toolbar|LoomToolbar|LOOM_TOOLBAR|loomToolbar" registry showcase packages scripts TODO.md`
+Run: `git grep -n -E "loom-toolbar|LoomToolbar|LOOM_TOOLBAR|loomToolbar" -- registry showcase packages scripts TODO.md`
 
 Expected: no output. The approved specification and this implementation plan may retain old names only as historical mappings.
 

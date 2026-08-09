@@ -4,7 +4,7 @@ const block = defineCategory("block")
 
 export const blockShowcases = [
   block("toolbox", "Toolbox 编辑工具箱", () => import("./ToolboxShowcase")),
-  block("loom-toolbar", "LoomToolbar 编辑工具条", () => import("./LoomToolbarShowcase")),
+  block("toolbar", "Toolbar 编辑工具条", () => import("./ToolbarShowcase")),
   block("add-field-form", "AddFieldForm 添加字段", () => import("./AddFieldFormShowcase")),
   block("app-top-bar", "AppTopBar 应用顶栏", () => import("./AppTopBarShowcase")),
   block("product-logo", "ProductLogo 产品 Logo", () => import("./ProductLogoShowcase")),

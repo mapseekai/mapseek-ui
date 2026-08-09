@@ -1906,15 +1906,14 @@ export async function assertBlockInteraction(
     const selectedFieldWidth = await field.evaluate(
       (element) => element.getBoundingClientRect().width,
     )
-    expect(Math.abs(selectedFieldWidth - initialFieldWidth)).toBeLessThanOrEqual(1)
+    expect(selectedFieldWidth).toBeGreaterThan(initialFieldWidth)
     const selectedFieldValue = field.locator('[data-slot="select-value"]')
-    await expect(selectedFieldValue).toHaveAttribute("title", "area_m2")
-    const selectedFieldValueStyle = await selectedFieldValue.evaluate((element) => {
-      const style = getComputedStyle(element)
-
-      return { textOverflow: style.textOverflow, whiteSpace: style.whiteSpace }
+    const selectedFieldValueWidth = await selectedFieldValue.evaluate((element) => {
+      return { clientWidth: element.clientWidth, scrollWidth: element.scrollWidth }
     })
-    expect(selectedFieldValueStyle).toEqual({ textOverflow: "ellipsis", whiteSpace: "nowrap" })
+    expect(selectedFieldValueWidth.scrollWidth).toBeLessThanOrEqual(
+      selectedFieldValueWidth.clientWidth,
+    )
 
     for (const action of [
       demo.getByRole("button", { name: /^(添加条件|Add condition)$/ }),

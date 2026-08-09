@@ -33,7 +33,7 @@ import {
 
 ## Usage
 
-When `allowedEpsgs` is omitted, all built-in entries are shown. Pass `allowedEpsgs` to restrict the choices to what the map engine supports; pass `extraItems` to add project-specific CRS entries or override built-in names. Use `value` plus `onChange` for controlled mode, or `defaultValue` for uncontrolled mode.
+When `allowedEpsgs` is omitted, all built-in entries are shown. Each entry always uses two lines: its EPSG code and CRS name. Pass `allowedEpsgs` to restrict the choices to what the map engine supports; pass `extraItems` to add project-specific CRS entries or override built-in names. Use `value` plus `onChange` for controlled mode, or `defaultValue` for uncontrolled mode.
 
 ## Public Exports and Props
 
@@ -45,9 +45,8 @@ The component can keep its own initial selection or be fully controlled by the c
 
 ## Accessibility
 
-The trigger and search input use label text, the list is named by `labels.listLabel`, and empty results use `labels.noResults`. When localizing `labels`, keep EPSG codes intact and make the geographic/projected group names readable.
+`labels.searchLabel` provides the search input's accessible name, `labels.listLabel` names the list, and `labels.noResults` describes an empty result. The shared Command primitive provides arrow-key navigation and Enter selection. When localizing `labels`, keep EPSG codes intact and make the geographic/projected group names readable.
 
 ## Dependencies
 
 <RegistryDependencies registryName="crs-picker" />
-

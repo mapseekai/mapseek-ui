@@ -5,7 +5,6 @@ export type CrsKind = "geographic" | "projected"
 export interface CrsItem {
   epsg: string // e.g. "EPSG:4326"
   name: string // e.g. "WGS 84"
-  description: string // e.g. "Global standard · longitude/latitude"
   kind: CrsKind
 }
 

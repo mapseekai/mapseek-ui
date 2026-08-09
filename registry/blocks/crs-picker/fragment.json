@@ -1,7 +1,7 @@
 {
   "name": "crs-picker",
   "type": "registry:block",
-  "registryDependencies": ["@mapseek/utils", "@mapseek/labels"],
+  "registryDependencies": ["@mapseek/command", "@mapseek/utils", "@mapseek/labels"],
   "files": [
     {
       "path": "crs-picker/CrsPicker.tsx",

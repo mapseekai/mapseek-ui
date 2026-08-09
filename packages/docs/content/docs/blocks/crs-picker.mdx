@@ -33,7 +33,7 @@ import {
 
 ## 用法
 
-默认不传 `allowedEpsgs` 时展示全部内置条目。需要限制地图引擎支持范围时传入 `allowedEpsgs`；需要追加工程私有 CRS 或覆盖内置名称时传入 `extraItems`。受控模式下传 `value` 和 `onChange`，非受控模式下传 `defaultValue`。
+默认不传 `allowedEpsgs` 时展示全部内置条目。每项固定显示两行：EPSG 编号与 CRS 名称。需要限制地图引擎支持范围时传入 `allowedEpsgs`；需要追加工程私有 CRS 或覆盖内置名称时传入 `extraItems`。受控模式下传 `value` 和 `onChange`，非受控模式下传 `defaultValue`。
 
 ## 公开导出与 Props
 
@@ -45,9 +45,8 @@ import {
 
 ## 无障碍
 
-触发器和搜索输入使用标签文案，列表用 `labels.listLabel` 命名，空结果使用 `labels.noResults`。调用方本地化 `labels` 时应保留 EPSG 代码本身，并让地理坐标系与投影坐标系分组名称保持可读。
+搜索输入由 `labels.searchLabel` 提供可访问名称，列表用 `labels.listLabel` 命名，空结果使用 `labels.noResults`。搜索结果基于共享 Command 原语，支持方向键导航和 Enter 选择。调用方本地化 `labels` 时应保留 EPSG 代码本身，并让地理坐标系与投影坐标系分组名称保持可读。
 
 ## 依赖
 
 <RegistryDependencies registryName="crs-picker" />
-

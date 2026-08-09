@@ -18,18 +18,17 @@ const labels = {
       {
         epsg: "EPSG:32650",
         name: "WGS 84 / UTM 50N",
-        description: "测绘项目 · 米",
         kind: "projected",
       },
       {
         epsg: "EPSG:4326",
         name: "WGS 84（覆盖）",
-        description: "外部条目覆盖",
         kind: "geographic",
       },
     ] satisfies CrsItem[],
     picker: {
       title: "坐标参考系",
+      searchLabel: "搜索坐标系",
       searchPlaceholder: "搜索 EPSG 或名称",
       listLabel: "坐标参考系列表",
       noResults: "没有匹配的坐标参考系",
@@ -56,18 +55,17 @@ const labels = {
       {
         epsg: "EPSG:32650",
         name: "WGS 84 / UTM 50N",
-        description: "Survey project · meters",
         kind: "projected",
       },
       {
         epsg: "EPSG:4326",
         name: "WGS 84 (override)",
-        description: "External item override",
         kind: "geographic",
       },
     ] satisfies CrsItem[],
     picker: {
       title: "Coordinate reference system",
+      searchLabel: "Search coordinate reference systems",
       searchPlaceholder: "Search EPSG or name",
       listLabel: "Coordinate reference systems",
       noResults: "No coordinate reference system found",

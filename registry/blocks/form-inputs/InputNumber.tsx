@@ -4,13 +4,12 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { NumberRangeInput } from "../number-range-input"
 
-export type InputNumberProps = {
+type InputNumberBaseProps = {
   value?: number
   default?: number
   min?: number
   max?: number
   onChange?(value: number | undefined): unknown
-  allowRange?: boolean
   rangeStep?: number
   "data-wd-key"?: string
   required?: boolean
@@ -18,36 +17,65 @@ export type InputNumberProps = {
   id?: string
   name?: string
   inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"]
-  "aria-label"?: string
-  "aria-labelledby"?: string
+  "aria-describedby"?: string
   "aria-invalid"?: React.AriaAttributes["aria-invalid"]
+  autoComplete?: string
   className?: string
 }
+
+type InputNumberRangeDirectName = {
+  "aria-label": string
+  "aria-labelledby"?: never
+  sliderAriaLabel?: string
+}
+
+type InputNumberRangeVisibleName = {
+  "aria-label"?: never
+  "aria-labelledby": string
+  sliderAriaLabel: string
+}
+
+type InputNumberRangeProps = InputNumberBaseProps & { allowRange: true } & (
+    | InputNumberRangeDirectName
+    | InputNumberRangeVisibleName
+  )
+
+type InputNumberSingleProps = InputNumberBaseProps & {
+  allowRange?: false | undefined
+  "aria-label"?: string
+  "aria-labelledby"?: string
+  sliderAriaLabel?: string
+}
+
+export type InputNumberProps = InputNumberRangeProps | InputNumberSingleProps
 
 /**
  * Numeric input with commit-on-blur validation and an optional inline range
  * slider (when both `min` and `max` are set and `allowRange`). Domain-free.
  * See BLOCKS-EXTRACTION.md § form-inputs.
  */
-export const InputNumber: React.FC<InputNumberProps> = ({
-  value: propsValue,
-  default: defaultValue,
-  min,
-  max,
-  onChange,
-  allowRange,
-  rangeStep = 1,
-  "data-wd-key": dataWdKey,
-  required,
-  disabled,
-  id,
-  name,
-  inputMode = "decimal",
-  "aria-label": ariaLabel,
-  "aria-labelledby": ariaLabelledBy,
-  "aria-invalid": ariaInvalid,
-  className,
-}) => {
+export const InputNumber: React.FC<InputNumberProps> = (props) => {
+  const controlled = Object.hasOwn(props, "value")
+  const {
+    value: propsValue,
+    default: defaultValue,
+    min,
+    max,
+    onChange,
+    rangeStep = 1,
+    "data-wd-key": dataWdKey,
+    required,
+    disabled,
+    id,
+    name,
+    inputMode = "decimal",
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+    "aria-describedby": ariaDescribedBy,
+    "aria-invalid": ariaInvalid,
+    autoComplete,
+    className,
+  } = props
   const [editing, setEditing] = useState(false)
   const [value, setValue] = useState(propsValue)
   const [dirtyValue, setDirtyValue] = useState<number | string | undefined>(propsValue)
@@ -108,14 +136,28 @@ export const InputNumber: React.FC<InputNumberProps> = ({
     }
   }, [value, propsValue, isValid, changeValue])
 
-  const isRangeMode = min !== undefined && max !== undefined && allowRange
+  if (props.allowRange === true && min !== undefined && max !== undefined) {
+    const valueProps = controlled ? { value: propsValue } : {}
+    const accessibleNameProps =
+      "aria-label" in props && props["aria-label"] !== undefined
+        ? {
+            "aria-label": props["aria-label"],
+            sliderAriaLabel: props.sliderAriaLabel,
+          }
+        : {
+            "aria-labelledby": props["aria-labelledby"],
+            sliderAriaLabel: props.sliderAriaLabel,
+          }
 
-  if (isRangeMode) {
     return (
       <NumberRangeInput
-        aria-label={ariaLabel}
-        aria-labelledby={ariaLabelledBy}
+        {...valueProps}
+        {...accessibleNameProps}
+        id={id}
+        name={name}
+        aria-describedby={ariaDescribedBy}
         aria-invalid={ariaInvalid}
+        autoComplete={autoComplete}
         className={className}
         data-wd-key={dataWdKey}
         defaultValue={defaultValue}
@@ -124,7 +166,6 @@ export const InputNumber: React.FC<InputNumberProps> = ({
         min={min}
         required={required}
         step={rangeStep}
-        value={propsValue}
         onChange={onChange}
       />
     )
@@ -140,7 +181,9 @@ export const InputNumber: React.FC<InputNumberProps> = ({
       inputMode={inputMode}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
+      aria-describedby={ariaDescribedBy}
       aria-invalid={ariaInvalid}
+      autoComplete={autoComplete}
       spellCheck="false"
       className={cn("w-full", className)}
       placeholder={defaultValue?.toString()}

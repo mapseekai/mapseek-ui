@@ -27,25 +27,30 @@ import {
 
 ## 数字范围输入
 
-<ShowcaseDemo registryName="number-range-input" title="数字范围输入" description="示例保留整数、0.5 小数步进、0.001 精度、直接输入、键盘步进和清空状态。" minHeight={560} />
+<ShowcaseDemo registryName="number-range-input" title="数字范围输入" description="示例包含必填错误、整数、0.5 小数步进、0.001 精度、禁用状态、直接输入、键盘步进和清空状态。" minHeight={720} />
 
 ## 用法
 
 传入受控 `value`、`min`、`max`、`step` 和 `onChange`。用户可以拖动滑块，也可以直接输入数字；失焦后组件会根据范围和 step 归一化显示。
 
+未传入 `value` 时，`defaultValue` 提供真实的非受控初始值。受控模式下传入 `value={undefined}` 会清空数值；由调用方决定这是否应显示为必填错误。
+
 ## 公开导出与 Props
 
-导出 `NumberRangeInput` 和 `NumberRangeInputProps`。关键 props 是 `value`、`defaultValue`、`min`、`max`、`step`、`onChange`、`required`、`disabled`、`name`、`aria-label`、`className`、`sliderClassName` 和 `inputClassName`。
+导出 `NumberRangeInput` 和 `NumberRangeInputProps`。关键 props 是 `value`、`defaultValue`、`min`、`max`、`step`、`onChange`、`required`、`disabled`、`name`、`id`、`autoComplete`、`aria-label`、`aria-labelledby`、`aria-describedby`、`sliderAriaLabel`、`className`、`sliderClassName` 和 `inputClassName`。
 
 ## 状态与校验
 
-组件保存编辑中字符串，合法值才通过 `onChange` 提交。滑块会 clamp 到 min/max 并按 step 舍入；小数 step 会限制显示精度。
+组件保存编辑中字符串，合法值才通过 `onChange` 提交。滑块会 clamp 到 min/max 并按 step 舍入；小数 step 会限制显示精度。组件把内部编辑错误和调用方传入的 `aria-invalid` 合并；表单的提示与错误文案由调用方通过 `FieldDescription` 和 `FieldError` 提供，并使用 `aria-describedby` 关联。
+
+数字 `Input` 使用标准 32px 高度。Slider 的滑块 thumb 与指针目标几何保持不变。
 
 ## 无障碍
 
-为每个实例提供 `aria-label`，尤其是同一表单中有多个范围输入时。滑块和数字框都支持键盘操作；调用方应在字段外层提供单位和错误说明。
+每个实例必须有非空的可访问名称。可访问命名是 TypeScript 的严格互斥联合：调用方只能选择一种方式，不能同时提供两个命名 props。没有可见标签时，直接传入 `aria-label`；可选的 `sliderAriaLabel` 未传入时会默认使用它。使用可见的 `FieldLabel` 时，传入 `aria-labelledby` 指向标签 ID，**同时必须**传入非空 `sliderAriaLabel` 作为 Slider thumb 名称。
+
+为数字输入提供稳定的 `id`，使用 `aria-describedby` 关联提示和错误信息，并在需要时传入 `autoComplete`。滑块和数字框都支持键盘操作；调用方拥有 `FieldDescription`、`FieldError`、本地化文案和外部 `aria-invalid` 状态。
 
 ## 依赖
 
 <RegistryDependencies registryName="number-range-input" />
-

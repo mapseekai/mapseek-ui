@@ -1,46 +1,69 @@
-import { type CSSProperties, useCallback, useMemo, useState } from "react"
+import { type AriaAttributes, type CSSProperties, useCallback, useState } from "react"
 
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 import { cn } from "@/lib/utils"
 
-export type NumberRangeInputProps = {
+import {
+  getCommittedNumberRangeValue,
+  type NumberRangeDraft,
+  parseNumberRangeDraft,
+  resetNumberRangeDraft,
+  snapNumberRangeValue,
+  updateUncontrolledNumberRangeValue,
+} from "./NumberRangeInput.model"
+
+type DirectAccessibleName = {
+  "aria-label": string
+  "aria-labelledby"?: never
+  sliderAriaLabel?: string
+}
+
+type VisibleAccessibleName = {
+  "aria-label"?: never
+  "aria-labelledby": string
+  sliderAriaLabel: string
+}
+
+type NumberRangeInputBaseProps = {
   value?: number
   defaultValue?: number
   min?: number
   max?: number
   step?: number
   onChange?(value: number | undefined): unknown
+  id?: string
+  name?: string
   required?: boolean
   disabled?: boolean
-  name?: string
+  autoComplete?: string
+  "aria-describedby"?: string
+  "aria-invalid"?: AriaAttributes["aria-invalid"]
   "data-wd-key"?: string
-  "aria-label"?: string
   className?: string
   sliderClassName?: string
   inputClassName?: string
 }
 
-function getRangeValue(
-  val: number | string | undefined,
-  fallback: number,
-  min: number,
-  max: number,
-): number {
-  if (val === undefined || val === "") return fallback
-  const parsed = +val
-  return Number.isNaN(parsed) ? fallback : Math.max(min, Math.min(max, parsed))
-}
+export type NumberRangeInputProps = NumberRangeInputBaseProps &
+  (DirectAccessibleName | VisibleAccessibleName)
 
-function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value))
+const hasOwn = Object.prototype.hasOwnProperty
+
+function assertNonBlankAccessibleName(
+  value: string | undefined,
+  propName: string,
+): asserts value is string {
+  if (value?.trim()) return
+  throw new Error(`NumberRangeInput requires a non-blank ${propName}`)
 }
 
 function decimalPlaces(value: number): number {
   const text = String(value)
-  if (text.includes("e-")) {
-    const [, exponent] = text.split("e-")
-    return Number(exponent) || 0
+  if (text.includes("e")) {
+    const [mantissa, exponent] = text.split("e")
+    const [, fraction = ""] = mantissa.split(".")
+    return Math.max(0, fraction.length - (Number(exponent) || 0))
   }
   const [, fraction = ""] = text.split(".")
   return fraction.length
@@ -51,20 +74,14 @@ function roundToStepPrecision(value: number, step: number): number {
   return Number(value.toFixed(precision))
 }
 
-function snapToStep(value: number, min: number, max: number, step: number): number {
-  if (!step) return clamp(value, min, max)
-  const snapped = Math.round((value - min) / step) * step + min
-  return clamp(roundToStepPrecision(snapped, step), min, max)
-}
-
-function formatNumberValue(value: number | string | undefined, step: number) {
+function formatNumberValue(value: NumberRangeDraft, step: number) {
   if (value === undefined || value === "") return ""
   if (typeof value === "string") return value
   return String(roundToStepPrecision(value, step))
 }
 
 function inputWidthStyle(
-  value: number | string | undefined,
+  value: NumberRangeDraft,
   min: number,
   max: number,
   step: number,
@@ -95,177 +112,136 @@ function inputWidthStyle(
  * Accepts typed numbers, clamps slider values to min/max, and snaps slider
  * movement to `step`.
  */
-export function NumberRangeInput({
-  value: propsValue,
-  defaultValue,
-  min = 0,
-  max = 100,
-  step = 1,
-  onChange,
-  required,
-  disabled,
-  name,
-  "data-wd-key": dataWdKey,
-  "aria-label": ariaLabel,
-  className,
-  sliderClassName,
-  inputClassName,
-}: NumberRangeInputProps) {
+export function NumberRangeInput(props: NumberRangeInputProps) {
+  const controlled = hasOwn.call(props, "value")
+  const {
+    value: controlledValue,
+    defaultValue,
+    min = 0,
+    max = 100,
+    step = 1,
+    onChange,
+    id,
+    name,
+    required,
+    disabled,
+    autoComplete,
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledBy,
+    "aria-describedby": ariaDescribedBy,
+    "aria-invalid": ariaInvalid,
+    "data-wd-key": dataWdKey,
+    className,
+    sliderClassName,
+    inputClassName,
+  } = props
+  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue)
+  const [draft, setDraft] = useState<NumberRangeDraft>(defaultValue)
   const [editing, setEditing] = useState(false)
-  const [editingRange, setEditingRange] = useState(false)
-  const [keyboardEvent, setKeyboardEvent] = useState(false)
-  const [value, setValue] = useState(propsValue)
-  const [dirtyValue, setDirtyValue] = useState<number | string | undefined>(propsValue)
-  const [prevProps, setPrevProps] = useState(propsValue)
-  const [prevEditing, setPrevEditing] = useState(editing)
-
-  // Keep local edit state stable while the user is typing, then resync from
-  // controlled props once the edit commits.
-  if (propsValue !== prevProps || editing !== prevEditing) {
-    setPrevProps(propsValue)
-    setPrevEditing(editing)
-    if (!editing) {
-      setValue(propsValue)
-      setDirtyValue(propsValue)
-    }
-  }
-
-  const isValid = useCallback(
-    (v: number | string | undefined) => {
-      if (v === undefined || v === "") return true
-      const num = +v
-      if (Number.isNaN(num)) return false
-      if (num < min) return false
-      if (num > max) return false
-      return true
-    },
-    [min, max],
-  )
-
-  const changeValue = useCallback(
-    (newValue: number | string | undefined) => {
-      const parsedValue = newValue === "" || newValue === undefined ? undefined : +newValue
-      const numValue =
-        typeof parsedValue === "number" ? roundToStepPrecision(parsedValue, step) : parsedValue
-      const hasChanged = propsValue !== numValue
-
-      if (isValid(numValue) && hasChanged) {
-        onChange?.(numValue)
-        setValue(numValue)
-      } else if (!isValid(numValue) && hasChanged) {
-        setValue(undefined)
-      }
-      setDirtyValue(isValid(numValue) ? numValue : newValue)
-    },
-    [propsValue, onChange, isValid, step],
+  const committedValue = getCommittedNumberRangeValue(
+    controlled,
+    controlledValue,
+    uncontrolledValue,
   )
 
   const commitValue = useCallback(
-    (nextValue: number) => {
-      const normalized = snapToStep(nextValue, min, max, step)
-      setKeyboardEvent(false)
-      setValue(normalized)
-      setDirtyValue(normalized)
-      onChange?.(normalized)
+    (next: number | undefined) => {
+      setUncontrolledValue((current) =>
+        updateUncontrolledNumberRangeValue(controlled, current, next),
+      )
+      if (next !== committedValue) onChange?.(next)
     },
-    [min, max, step, onChange],
+    [committedValue, controlled, onChange],
   )
 
-  const resetValue = useCallback(() => {
+  const handleInputChange = useCallback(
+    (nextDraft: string) => {
+      setDraft(nextDraft)
+      const parsed = parseNumberRangeDraft(nextDraft, min, max, step)
+      if (parsed.valid) commitValue(parsed.value)
+    },
+    [commitValue, max, min, step],
+  )
+
+  const handleInputFocus = useCallback(() => {
+    setDraft(resetNumberRangeDraft(committedValue))
+    setEditing(true)
+  }, [committedValue])
+
+  const handleInputBlur = useCallback(() => {
+    const parsed = parseNumberRangeDraft(draft, min, max, step)
     setEditing(false)
-    if (!value) return
+    if (!parsed.valid) setDraft(resetNumberRangeDraft(committedValue))
+  }, [committedValue, draft, max, min, step])
 
-    if (!isValid(value)) {
-      if (isValid(propsValue)) {
-        changeValue(propsValue)
-        setDirtyValue(propsValue)
-      } else {
-        changeValue(undefined)
-        setDirtyValue(undefined)
-      }
-    }
-  }, [value, propsValue, isValid, changeValue])
+  const handleSliderChange = useCallback(
+    (next: number | readonly number[]) => {
+      const rawValue = Array.isArray(next) ? next[0] : next
+      if (rawValue === undefined) return
+      const snappedValue = snapNumberRangeValue(rawValue, min, max, step)
+      setDraft(snappedValue)
+      commitValue(snappedValue)
+    },
+    [commitValue, max, min, step],
+  )
 
-  const onChangeRange = (next: number | readonly number[]) => {
-    const raw = Array.isArray(next) ? next[0] : (next as number)
-    if (raw === undefined) return
-    let val = raw
+  const parsedDraft = parseNumberRangeDraft(draft, min, max, step)
+  const internalInvalid = editing && !parsedDraft.valid
+  const effectiveInvalid = internalInvalid ? true : ariaInvalid
+  const inputDisplayValue = editing ? draft : resetNumberRangeDraft(committedValue)
+  const sliderValue = snapNumberRangeValue(committedValue ?? min, min, max, step)
+  const usesDirectName = "aria-label" in props && props["aria-label"] !== undefined
+  const thumbLabel = usesDirectName
+    ? (props.sliderAriaLabel ?? props["aria-label"])
+    : props.sliderAriaLabel
 
-    if (step) {
-      if (keyboardEvent) {
-        val = val < +(dirtyValue || 0) ? (value || 0) - step : (value || 0) + step
-      }
-    }
-
-    commitValue(val)
+  if (usesDirectName) {
+    assertNonBlankAccessibleName(props["aria-label"], "aria-label")
+  } else {
+    assertNonBlankAccessibleName(props["aria-labelledby"], "aria-labelledby")
   }
-
-  const rangeState = useMemo(() => {
-    const displayValue = editing ? dirtyValue : value
-    const inputValue = editingRange ? value : displayValue
-    const fallbackValue = defaultValue ?? min
-    const sliderValue = snapToStep(
-      getRangeValue(editingRange ? value : displayValue, fallbackValue, min, max),
-      min,
-      max,
-      step,
-    )
-    return {
-      inputValue,
-      sliderValue,
-    }
-  }, [editing, dirtyValue, editingRange, value, defaultValue, min, max, step])
-  const displayedInputValue = formatNumberValue(rangeState.inputValue, step)
+  assertNonBlankAccessibleName(thumbLabel, "sliderAriaLabel")
 
   return (
     <div className={cn("flex w-full items-center gap-2", className)}>
       <Slider
         aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={effectiveInvalid}
+        getAriaLabel={() => thumbLabel}
         className={cn("flex-1", sliderClassName)}
         data-wd-key={dataWdKey ? `${dataWdKey}-range` : undefined}
         disabled={disabled}
-        max={max}
         min={min}
+        max={max}
         step={step}
-        value={rangeState.sliderValue}
-        onBlur={() => {
-          setEditing(false)
-          setEditingRange(false)
-          setDirtyValue(value)
-        }}
-        onKeyDown={() => setKeyboardEvent(true)}
-        onPointerDown={() => {
-          setEditing(true)
-          setEditingRange(true)
-        }}
-        onPointerUp={() => {
-          setEditing(false)
-          setEditingRange(false)
-        }}
-        onValueChange={onChangeRange}
+        value={sliderValue}
+        onValueChange={handleSliderChange}
       />
       <Input
+        id={id}
         aria-label={ariaLabel}
-        className={cn("h-7 shrink-0 text-body-md tabular-nums", inputClassName)}
+        aria-labelledby={ariaLabelledBy}
+        aria-describedby={ariaDescribedBy}
+        aria-invalid={effectiveInvalid}
+        autoComplete={autoComplete ?? "off"}
+        className={cn("shrink-0 text-body-md tabular-nums", inputClassName)}
         data-wd-key={dataWdKey ? `${dataWdKey}-text` : undefined}
         disabled={disabled}
         inputMode="decimal"
-        max={max}
         min={min}
+        max={max}
         name={name}
-        placeholder={defaultValue?.toString()}
         required={required}
         spellCheck="false"
         step={step}
-        style={inputWidthStyle(rangeState.inputValue, min, max, step)}
+        style={inputWidthStyle(inputDisplayValue, min, max, step)}
         type="number"
-        value={displayedInputValue}
-        onBlur={() => {
-          setEditing(false)
-          resetValue()
-        }}
-        onChange={(event) => changeValue(event.target.value)}
-        onFocus={() => setEditing(true)}
+        value={formatNumberValue(inputDisplayValue, step)}
+        onBlur={handleInputBlur}
+        onChange={(event) => handleInputChange(event.target.value)}
+        onFocus={handleInputFocus}
       />
     </div>
   )

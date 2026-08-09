@@ -888,6 +888,11 @@
           "target": "@components/blocks/number-range-input/NumberRangeInput.tsx"
         },
         {
+          "path": "number-range-input/NumberRangeInput.model.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/number-range-input/NumberRangeInput.model.ts"
+        },
+        {
           "path": "number-range-input/index.ts",
           "type": "registry:block",
           "target": "@components/blocks/number-range-input/index.ts"

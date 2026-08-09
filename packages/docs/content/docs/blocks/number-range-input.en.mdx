@@ -27,25 +27,30 @@ import {
 
 ## Number Range Input
 
-<ShowcaseDemo registryName="number-range-input" title="Number range input" description="Shows integer steps, 0.5 decimal steps, 0.001 precision, direct typing, keyboard stepping, and clear state." minHeight={560} />
+<ShowcaseDemo registryName="number-range-input" title="Number range input" description="Shows required error, integer steps, 0.5 decimal steps, 0.001 precision, disabled state, direct typing, keyboard stepping, and clear state." minHeight={720} />
 
 ## Usage
 
 Pass controlled `value`, `min`, `max`, `step`, and `onChange`. Users can drag the slider or type directly; on blur, the component normalizes display according to range and step.
 
+When `value` is omitted, `defaultValue` supplies a real uncontrolled initial value. In controlled mode, `value={undefined}` clears the numeric value; the caller decides whether that state should show a required error.
+
 ## Public Exports and Props
 
-Exports include `NumberRangeInput` and `NumberRangeInputProps`. Key props are `value`, `defaultValue`, `min`, `max`, `step`, `onChange`, `required`, `disabled`, `name`, `aria-label`, `className`, `sliderClassName`, and `inputClassName`.
+Exports include `NumberRangeInput` and `NumberRangeInputProps`. Key props are `value`, `defaultValue`, `min`, `max`, `step`, `onChange`, `required`, `disabled`, `name`, `id`, `autoComplete`, `aria-label`, `aria-labelledby`, `aria-describedby`, `sliderAriaLabel`, `className`, `sliderClassName`, and `inputClassName`.
 
 ## States and Validation
 
-The component stores in-progress edit text and commits valid values through `onChange`. Slider values clamp to min/max and round to step precision; decimal steps constrain displayed precision.
+The component stores in-progress edit text and commits valid values through `onChange`. Slider values clamp to min/max and round to step precision; decimal steps constrain displayed precision. It merges internal editing errors with caller-provided `aria-invalid`; callers supply form help and error copy through `FieldDescription` and `FieldError`, linked with `aria-describedby`.
+
+The numeric `Input` uses the standard 32px height. Slider thumb and pointer-target geometry are unchanged.
 
 ## Accessibility
 
-Provide an `aria-label` for every instance, especially when a form contains multiple range inputs. Both slider and number input support keyboard operation; put units and errors in the field wrapper.
+Every instance needs a non-blank accessible name. Accessible naming is a strict mutually exclusive TypeScript union: callers choose one naming path and must not supply both naming props. Without a visible label, pass `aria-label`; an omitted `sliderAriaLabel` defaults from it. With a visible `FieldLabel`, pass `aria-labelledby` pointing to the label ID and **also provide** a non-blank `sliderAriaLabel` for the Slider thumb.
+
+Give the numeric input a stable `id`, link help and errors with `aria-describedby`, and pass `autoComplete` where appropriate. Both slider and number input support keyboard operation; callers own `FieldDescription`, `FieldError`, localized copy, and external `aria-invalid` state.
 
 ## Dependencies
 
 <RegistryDependencies registryName="number-range-input" />
-

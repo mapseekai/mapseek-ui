@@ -43,6 +43,70 @@ describe("form inputs", () => {
     expect(html).not.toContain("h-7")
   })
 
+  it("forwards field semantics through the ordinary number input", () => {
+    const html = renderToStaticMarkup(
+      <InputNumber
+        aria-label="Opacity"
+        value={48}
+        aria-describedby="opacity-help"
+        autoComplete="off"
+      />,
+    )
+
+    expect(html).toContain('aria-describedby="opacity-help"')
+    expect(html).toMatch(/autocomplete="off"/i)
+  })
+
+  it("forwards the strict field contract in range mode", () => {
+    const html = renderToStaticMarkup(
+      <InputNumber
+        allowRange
+        id="opacity"
+        name="opacity"
+        min={0}
+        max={100}
+        value={48}
+        aria-labelledby="opacity-label"
+        sliderAriaLabel="Opacity slider"
+        aria-describedby="opacity-help"
+        aria-invalid
+        autoComplete="off"
+      />,
+    )
+
+    expect(html).toContain('id="opacity"')
+    expect(html).toContain('name="opacity"')
+    expect(html).toContain('aria-label="Opacity slider"')
+    expect(html).toContain('aria-describedby="opacity-help"')
+    expect(html).toContain('aria-invalid="true"')
+    expect(html).toMatch(/autocomplete="off"/i)
+  })
+
+  it("keeps a default-only range uncontrolled", () => {
+    const html = renderToStaticMarkup(
+      <InputNumber allowRange aria-label="Opacity" default={48} min={0} max={100} />,
+    )
+
+    expect(html).toContain('aria-valuenow="48"')
+  })
+
+  it("keeps an explicitly undefined range value controlled", () => {
+    const html = renderToStaticMarkup(
+      <InputNumber
+        allowRange
+        aria-label="Opacity"
+        default={48}
+        value={undefined}
+        min={0}
+        max={100}
+      />,
+    )
+
+    expect(html).toContain('aria-valuenow="0"')
+    expect(html).not.toContain('aria-valuenow="48"')
+    expect(html).toMatch(/<input[^>]*type="number"[^>]*value=""/)
+  })
+
   it("preserves the input primitive spacing and semantic surface", () => {
     const html = renderToStaticMarkup(
       <InputString aria-label="Layer name" value="Roads" onChange={() => {}} />,
@@ -100,3 +164,31 @@ describe("form inputs", () => {
     expect(html).toContain('aria-label="Font stack 2"')
   })
 })
+
+const directRangeLabel = {
+  allowRange: true,
+  "aria-label": "Opacity",
+} satisfies React.ComponentProps<typeof InputNumber>
+
+const visibleRangeLabel = {
+  allowRange: true,
+  "aria-labelledby": "opacity-label",
+  sliderAriaLabel: "Opacity slider",
+} satisfies React.ComponentProps<typeof InputNumber>
+
+const ordinaryNumberWithoutLabel = {} satisfies React.ComponentProps<typeof InputNumber>
+
+// @ts-expect-error Range mode must have an accessible-name contract.
+const missingRangeLabel = { allowRange: true } satisfies React.ComponentProps<typeof InputNumber>
+
+const missingSliderLabel = {
+  allowRange: true,
+  "aria-labelledby": "opacity-label",
+  // @ts-expect-error Visible labels require a separate slider label in range mode.
+} satisfies React.ComponentProps<typeof InputNumber>
+
+void directRangeLabel
+void visibleRangeLabel
+void ordinaryNumberWithoutLabel
+void missingRangeLabel
+void missingSliderLabel

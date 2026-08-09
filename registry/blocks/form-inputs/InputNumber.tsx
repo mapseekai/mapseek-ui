@@ -181,7 +181,9 @@ export const InputNumber: React.FC<InputNumberProps> = (props) => {
       inputMode={inputMode}
       aria-label={ariaLabel}
       aria-labelledby={ariaLabelledBy}
+      aria-describedby={ariaDescribedBy}
       aria-invalid={ariaInvalid}
+      autoComplete={autoComplete}
       spellCheck="false"
       className={cn("w-full", className)}
       placeholder={defaultValue?.toString()}

@@ -43,6 +43,20 @@ describe("form inputs", () => {
     expect(html).not.toContain("h-7")
   })
 
+  it("forwards field semantics through the ordinary number input", () => {
+    const html = renderToStaticMarkup(
+      <InputNumber
+        aria-label="Opacity"
+        value={48}
+        aria-describedby="opacity-help"
+        autoComplete="off"
+      />,
+    )
+
+    expect(html).toContain('aria-describedby="opacity-help"')
+    expect(html).toMatch(/autocomplete="off"/i)
+  })
+
   it("forwards the strict field contract in range mode", () => {
     const html = renderToStaticMarkup(
       <InputNumber
@@ -74,6 +88,23 @@ describe("form inputs", () => {
     )
 
     expect(html).toContain('aria-valuenow="48"')
+  })
+
+  it("keeps an explicitly undefined range value controlled", () => {
+    const html = renderToStaticMarkup(
+      <InputNumber
+        allowRange
+        aria-label="Opacity"
+        default={48}
+        value={undefined}
+        min={0}
+        max={100}
+      />,
+    )
+
+    expect(html).toContain('aria-valuenow="0"')
+    expect(html).not.toContain('aria-valuenow="48"')
+    expect(html).toMatch(/<input[^>]*type="number"[^>]*value=""/)
   })
 
   it("preserves the input primitive spacing and semantic surface", () => {

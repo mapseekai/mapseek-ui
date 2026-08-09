@@ -219,7 +219,7 @@ const applicationShellStatusAndResourceDependencies = {
   "service-endpoint-row": [
     "@mapseek/copy-button",
     "@mapseek/icon-button",
-    "@mapseek/input-group",
+    "@mapseek/tag",
     "@mapseek/tooltip",
   ],
   "resource-status": ["@mapseek/utils"],

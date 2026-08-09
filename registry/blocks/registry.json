@@ -1231,7 +1231,7 @@
       "registryDependencies": [
         "@mapseek/copy-button",
         "@mapseek/icon-button",
-        "@mapseek/input-group",
+        "@mapseek/tag",
         "@mapseek/tooltip"
       ],
       "files": [

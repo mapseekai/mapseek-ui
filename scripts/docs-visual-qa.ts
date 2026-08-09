@@ -2697,10 +2697,52 @@ export async function assertBlockInteraction(
 
   if (block === "service-endpoint-row") {
     const demo = page.locator('[data-demo="service-endpoint-row"]')
+    const rows = demo.locator('[data-slot="service-endpoint-row"]')
+    const urls = demo.locator('code[data-slot="service-endpoint-url"]')
+    const openLabel = localized(path, "新窗口打开", "Open in new window")
+    const pendingLabel = localized(path, "接口待接入", "Endpoint pending")
+    const firstRow = rows.first()
+    const firstUrl = firstRow.locator('[data-slot="service-endpoint-url"]')
+    const firstCopy = firstRow.locator('[data-slot="copy-button"]')
+    const firstOpen = firstRow.getByRole("button", { name: openLabel, exact: true })
     await expect(demo).toContainText(localized(path, "栅格瓦片服务", "Raster tile service"))
     await expect(demo).toContainText(
       localized(path, "云优化 GeoTIFF · HTTP Range", "Cloud Optimized GeoTIFF · HTTP Range"),
     )
+    await expect(urls).toHaveCount(3)
+    await expect(firstUrl).toHaveAttribute("tabindex", "0")
+    await expect(firstUrl).toHaveAttribute("dir", "ltr")
+    await expect(firstUrl).toHaveAttribute("translate", "no")
+    const [urlBox, copyBox, openBox] = await Promise.all([
+      firstUrl.boundingBox(),
+      firstCopy.boundingBox(),
+      firstOpen.boundingBox(),
+    ])
+    expect(urlBox?.height).toBe(32)
+    expect(copyBox?.height).toBe(32)
+    expect(openBox?.height).toBe(32)
+
+    const openLink = demo.getByRole("link", { name: openLabel, exact: true })
+    await expect(openLink).toHaveAttribute("target", "_blank")
+    await expect(openLink).toHaveAttribute("rel", /noopener/)
+    await expect(firstOpen).toHaveAttribute("aria-disabled", "true")
+    expect(await firstOpen.getAttribute("disabled")).toBeNull()
+    await firstOpen.focus()
+    await page.keyboard.press("Shift+Tab")
+    await page.keyboard.press("Tab")
+    await expect(firstOpen).toBeFocused()
+    await expect(page.locator('[data-slot="tooltip-content"]')).toContainText(pendingLabel)
+
+    await firstUrl.focus()
+    await expect(firstUrl).toBeFocused()
+    if ((page.viewportSize()?.width ?? 0) <= 390) {
+      expect(await firstUrl.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(
+        true,
+      )
+    }
+
+    await demo.evaluate((element) => element.setAttribute("dir", "rtl"))
+    await expect(firstUrl).toHaveCSS("direction", "ltr")
     await demo
       .getByRole("button", { name: localized(path, "复制 URL", "Copy URL"), exact: true })
       .first()
@@ -2708,16 +2750,39 @@ export async function assertBlockInteraction(
     await expect(demo.locator('[data-demo-status="service-endpoint-row"]')).toContainText(
       localized(path, "已复制 URL", "Copied URL"),
     )
-    await demo
-      .getByRole("button", {
-        name: localized(path, "新窗口打开", "Open in new window"),
+    await expect(
+      demo.getByRole("button", {
+        name: localized(path, "已复制 URL", "Copied URL"),
         exact: true,
+      }),
+    ).toBeVisible()
+    await page.evaluate(() => {
+      const rejectWrite = Function(
+        'return function writeText() { return Promise.reject(new Error("Clipboard unavailable")) }',
+      )()
+      Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: {
+          writeText: rejectWrite,
+        },
       })
+    })
+    await demo
+      .getByRole("button", { name: localized(path, "复制 URL", "Copy URL"), exact: true })
       .nth(1)
       .click()
     await expect(demo.locator('[data-demo-status="service-endpoint-row"]')).toContainText(
+      localized(path, "复制 URL 失败", "Failed to copy URL"),
+    )
+    await openLink.evaluate((element) => {
+      const event = new MouseEvent("click", { bubbles: true, cancelable: true })
+      event.preventDefault()
+      element.dispatchEvent(event)
+    })
+    await expect(demo.locator('[data-demo-status="service-endpoint-row"]')).toContainText(
       localized(path, "已打开服务", "Opened service"),
     )
+    await assertNoHorizontalOverflow(demo, `${path} service endpoint row`)
   }
 
   if (block === "service-status") {

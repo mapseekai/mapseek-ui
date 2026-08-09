@@ -28,11 +28,11 @@ import { PlaceholderGlyph, type PlaceholderGlyphProps } from "@/registry/blocks/
 
 ## Usage
 
-Pass a stable `seed` for each resource, control pixel size with `size`, and use `mono` for lower visual weight.
+Pass a stable `seed` for each resource, control pixel size with `size`, and use `mono` for lower visual weight. Pass a localized `title` when the glyph independently carries image meaning.
 
 ## Public Exports and Props
 
-Exports include `PlaceholderGlyph` and `PlaceholderGlyphProps`. Key props are `seed`, `size`, `mono`, and `className`.
+Exports include `PlaceholderGlyph` and `PlaceholderGlyphProps`. Key props are `seed`, `size`, `mono`, `title`, and `className`.
 
 ## Loading, Empty, Error, and Status
 
@@ -40,9 +40,8 @@ The component has no internal state; callers usually fall back to it when real S
 
 ## Accessibility
 
-The SVG includes a title; when used inside buttons or image semantics, provide the specific resource name from the wrapper.
+Without `title`, the SVG is decorative and hidden from the accessibility tree, which suits named buttons, cards, and sprite cells. When the glyph independently carries image meaning, pass a localized `title`; the component creates a unique title ID and exposes it through `role="img"` and `aria-labelledby`.
 
 ## Dependencies
 
 <RegistryDependencies registryName="placeholder-glyph" />
-

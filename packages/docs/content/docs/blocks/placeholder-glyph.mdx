@@ -28,11 +28,11 @@ import { PlaceholderGlyph, type PlaceholderGlyphProps } from "@/registry/blocks/
 
 ## 用法
 
-为每个资源传稳定 `seed`，用 `size` 控制像素尺寸，用 `mono` 降低视觉权重。
+为每个资源传稳定 `seed`，用 `size` 控制像素尺寸，用 `mono` 降低视觉权重。当图形独立承担图片语义时，传入本地化 `title`。
 
 ## 公开导出与 Props
 
-导出 `PlaceholderGlyph` 和 `PlaceholderGlyphProps`。关键 props 是 `seed`、`size`、`mono` 和 `className`。
+导出 `PlaceholderGlyph` 和 `PlaceholderGlyphProps`。关键 props 是 `seed`、`size`、`mono`、`title` 和 `className`。
 
 ## 加载、空态、错误与状态
 
@@ -40,9 +40,8 @@ import { PlaceholderGlyph, type PlaceholderGlyphProps } from "@/registry/blocks/
 
 ## 无障碍
 
-SVG 内含 title；如果在按钮或图片语义中使用，应由外层提供更具体的资源名称。
+未传 `title` 时，SVG 默认为装饰性并从无障碍树隐藏，适合已有可见名称的按钮、卡片和 sprite 单元格。图形独立承担图片语义时，传入本地化 `title`；组件会生成唯一的 title ID，并通过 `role="img"` 与 `aria-labelledby` 暴露该名称。
 
 ## 依赖
 
 <RegistryDependencies registryName="placeholder-glyph" />
-

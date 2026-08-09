@@ -7,12 +7,13 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@registry/ui/empty"
+import { Separator } from "@registry/ui/separator"
 import { IconBox, IconMap2, IconSearch } from "@tabler/icons-react"
 import type { LocalizedDemoProps } from "./types"
 
 export function EmptyOverviewDemo(_props: LocalizedDemoProps) {
   return (
-    <div className="grid w-full max-w-xl gap-5">
+    <div className="grid w-full max-w-xl">
       <Empty data-demo="empty-default">
         <EmptyHeader>
           <EmptyMedia variant="icon">
@@ -22,6 +23,8 @@ export function EmptyOverviewDemo(_props: LocalizedDemoProps) {
           <EmptyDescription>Upload your first dataset to get started.</EmptyDescription>
         </EmptyHeader>
       </Empty>
+
+      <Separator />
 
       <Empty data-demo="empty-action">
         <EmptyHeader>
@@ -35,6 +38,8 @@ export function EmptyOverviewDemo(_props: LocalizedDemoProps) {
           <Button size="sm">New project</Button>
         </EmptyContent>
       </Empty>
+
+      <Separator />
 
       <Empty data-demo="empty-no-action">
         <EmptyHeader>

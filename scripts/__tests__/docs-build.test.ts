@@ -308,7 +308,7 @@ it("uses direct demo descriptions and readable showcase section headings", async
   expect(avatarShowcase).toContain('<div className="w-full space-y-8">')
 
   const emptyShowcase = await readFile("showcase/src/showcases/EmptyShowcase.tsx", "utf8")
-  expect(emptyShowcase).toContain('<div className="grid w-full max-w-xl gap-5">')
+  expect(emptyShowcase).toContain('<div className="grid w-full max-w-xl">')
   expect(emptyShowcase).not.toContain("md:grid-cols-3")
 
   const fieldShowcase = await readFile("showcase/src/showcases/FieldShowcase.tsx", "utf8")

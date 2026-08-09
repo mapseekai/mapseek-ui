@@ -14,6 +14,9 @@ type SchemaFormDemoLabels = {
   readonly valid: string
   readonly invalid: string
   readonly emptyOptions: string
+  readonly toggleEmptyOptions: string
+  readonly radiusError: string
+  readonly targetsError: string
   readonly reset: string
   readonly fields: SchemaFormField[]
 }
@@ -23,7 +26,10 @@ const labels = {
     intro: "schema 驱动表单。调用方播种 values、保存变化，并用 isSchemaFormValid 驱动提交按钮。",
     valid: "valid",
     invalid: "invalid",
-    emptyOptions: "切换为空选项",
+    emptyOptions: "暂无选项",
+    toggleEmptyOptions: "切换为空选项",
+    radiusError: "输入 0 或更大的缓冲半径。",
+    targetsError: "至少选择 2 个图层。",
     reset: "重置",
     fields: [
       { key: "radius", label: "缓冲半径", required: true, type: "number", min: 0 },
@@ -38,14 +44,13 @@ const labels = {
           { value: "visvalingam", label: "Visvalingam" },
         ],
       },
-      { key: "crs", label: "目标 CRS", type: "text", placeholder: "EPSG:3857 / proj4 / WKT" },
+      { key: "crs", label: "目标 CRS", type: "text", placeholder: "EPSG:3857 / proj4 / WKT…" },
       {
         key: "targets",
         label: "要合并的图层",
         required: true,
         type: "multiselect",
         min: 2,
-        emptyHint: "暂无图层",
         options: [
           { value: "roads", label: "roads" },
           { value: "rivers", label: "rivers" },
@@ -59,7 +64,10 @@ const labels = {
       "Schema-driven form. The caller seeds values, stores changes, and uses isSchemaFormValid for submit state.",
     valid: "valid",
     invalid: "invalid",
-    emptyOptions: "Toggle empty options",
+    emptyOptions: "No options",
+    toggleEmptyOptions: "Toggle empty options",
+    radiusError: "Enter a buffer radius of 0 or greater.",
+    targetsError: "Select at least 2 layers.",
     reset: "Reset",
     fields: [
       { key: "radius", label: "Buffer radius", required: true, type: "number", min: 0 },
@@ -74,14 +82,13 @@ const labels = {
           { value: "visvalingam", label: "Visvalingam" },
         ],
       },
-      { key: "crs", label: "Target CRS", type: "text", placeholder: "EPSG:3857 / proj4 / WKT" },
+      { key: "crs", label: "Target CRS", type: "text", placeholder: "EPSG:3857 / proj4 / WKT…" },
       {
         key: "targets",
         label: "Layers to merge",
         required: true,
         type: "multiselect",
         min: 2,
-        emptyHint: "No layers",
         options: [
           { value: "roads", label: "roads" },
           { value: "rivers", label: "rivers" },
@@ -105,6 +112,15 @@ export function SchemaFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
     [emptyOptions, demoLabels.fields],
   )
   const [values, setValues] = useState<Record<string, unknown>>(() => seedSchemaFormValues(fields))
+  const radius = values.radius
+  const targets = values.targets
+  const errors = {
+    radius:
+      typeof radius === "number" && Number.isFinite(radius) && radius >= 0
+        ? undefined
+        : demoLabels.radiusError,
+    targets: Array.isArray(targets) && targets.length >= 2 ? undefined : demoLabels.targetsError,
+  }
   const valid = isSchemaFormValid(fields, values)
 
   return (
@@ -120,7 +136,7 @@ export function SchemaFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
               setValues(seedSchemaFormValues(fields))
             }}
           />
-          {demoLabels.emptyOptions}
+          {demoLabels.toggleEmptyOptions}
         </label>
         <Button
           type="button"
@@ -137,10 +153,14 @@ export function SchemaFormDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           fields={fields}
           values={values}
           onChange={(key, value) => setValues((current) => ({ ...current, [key]: value }))}
+          errors={errors}
+          labels={{ emptyOptions: demoLabels.emptyOptions }}
         />
       </div>
       <span
         data-demo-status="schema-validity"
+        role="status"
+        aria-live="polite"
         className={[
           "w-fit border px-2 py-1 font-mono text-xs",
           valid

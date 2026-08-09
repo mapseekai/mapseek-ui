@@ -2346,16 +2346,22 @@ export async function assertBlockInteraction(
     await expect(demo.locator('[data-demo-status="schema-validity"]')).toContainText(
       localized(path, "invalid", "invalid"),
     )
-    await demo.getByLabel(localized(path, "缓冲半径", "Buffer radius")).fill("25")
-    await demo.getByRole("checkbox", { name: localized(path, "roads", "roads") }).check()
-    await demo.getByRole("checkbox", { name: localized(path, "rivers", "rivers") }).check()
+    const radius = demo.getByLabel(localized(path, "缓冲半径", "Buffer radius"))
+    const crs = demo.getByLabel(localized(path, "目标 CRS", "Target CRS"))
+    await radius.fill("25")
+    await crs.fill("EPSG:3857")
+    await demo.getByRole("checkbox", { name: "roads" }).check()
+    await demo.getByRole("checkbox", { name: "rivers" }).check()
     await expect(demo.locator('[data-demo-status="schema-validity"]')).toContainText(
       localized(path, "valid", "valid"),
     )
+    await activateByKeyboard(demo.locator('[data-demo-action="reset-schema"]'))
+    await expect(radius).toHaveValue("")
+    await expect(crs).toHaveValue("")
     await demo
       .getByRole("checkbox", { name: localized(path, "切换为空选项", "Toggle empty options") })
       .check()
-    await expect(demo).toContainText(localized(path, "暂无图层", "No layers"))
+    await expect(demo).toContainText(localized(path, "暂无选项", "No options"))
     await demo.getByLabel(localized(path, "算法", "Algorithm")).click()
     await expect(
       page.getByText(localized(path, "暂无选项", "No options"), { exact: true }),

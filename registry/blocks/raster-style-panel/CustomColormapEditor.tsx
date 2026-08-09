@@ -134,7 +134,7 @@ export function CustomColormapEditor({
                   aria-label={labels.removeStop}
                   title={labels.removeStop}
                   onClick={() => removeStop(i)}
-                  className="group/delete absolute -top-1.5 left-1/2 z-10 grid size-3.5 -translate-x-1/2 place-items-center rounded-full border border-border bg-background p-0 opacity-0 transition-opacity group-hover/stop:opacity-100 hover:bg-background hover:border-destructive"
+                  className="group/delete absolute -top-1.5 left-1/2 z-10 grid size-3.5 -translate-x-1/2 place-items-center rounded-full border border-border bg-background p-0 opacity-0 transition-opacity group-hover/stop:opacity-100 hover:bg-(--background) hover:border-destructive"
                 >
                   <IconX
                     aria-hidden="true"

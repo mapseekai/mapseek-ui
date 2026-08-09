@@ -8,7 +8,7 @@ export type TimelineEvent = {
   tone?: "default" | "error"
   errorText?: ReactNode // red mono line (error cards)
   hint?: ReactNode // muted line under error
-  log?: string // when present on an error, show 日志/复制 buttons
+  log?: string // when present on an error, enables the caller-owned 日志 action
 }
 
 export type TimelineStep = {
@@ -19,16 +19,21 @@ export type TimelineStep = {
   retry?: string // amber pill text e.g. "重试 1 次"
   time?: string // right-aligned timestamp
   duration?: string // right-aligned duration
-  progressKind?: "percent" | "indeterminate" | "none" | string
+  progressKind?: "percent" | "indeterminate" | "none"
   percent?: number | null
   message?: ReactNode
   events: TimelineEvent[]
 }
 
-export type ProcessingTimelineLabels = { copy: string; log: string }
+export type ProcessingTimelineLabels = {
+  emptyTitle: string
+  emptyDescription: string
+  log: string
+}
 
 export type ProcessingTimelineProps = {
   steps: TimelineStep[]
   labels: ProcessingTimelineLabels
-  onCopyLog?: (text: string) => void
+  /** Lets the caller open a log dialog or panel for the selected error log. */
+  onLogClick?: (text: string) => void
 }

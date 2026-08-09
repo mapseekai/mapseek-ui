@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-ProcessingTimeline 渲染上传、入库、发布等长任务步骤，包含进度条、重试标记、事件卡和错误日志操作。
+ProcessingTimeline 渲染上传、入库、发布等长任务步骤，包含进度条、标准 Tag 状态标记、事件卡和错误日志入口。
 
 ## 安装
 
@@ -27,9 +27,9 @@ import {
 } from "@/registry/blocks/processing-timeline"
 ```
 
-## 处理时间线与日志复制
+## 处理时间线与日志入口
 
-<ShowcaseDemo registryName="processing-timeline" title="处理时间线与日志复制" description="示例复用同一个 TSX 模块作为预览和源码，覆盖原示例的核心状态与交互。" minHeight={720} />
+<ShowcaseDemo registryName="processing-timeline" title="处理时间线与日志入口" description="示例复用同一个 TSX 模块作为预览和源码，覆盖原示例的核心状态与交互。" minHeight={720} />
 
 ## 用法
 
@@ -37,17 +37,16 @@ import {
 
 ## 公开导出与 Props
 
-导出 `ProcessingTimeline`、`TimelineStep`、`TimelineEvent`、`ProcessingTimelineLabels` 和 props。`onCopyLog` 只在错误事件包含 log 时调用。
+导出 `ProcessingTimeline`、`TimelineStep`、`TimelineEvent`、`ProcessingTimelineLabels` 和 props。错误事件包含 `log` 且传入 `onLogClick` 时会显示“日志”操作；调用方可在回调中打开日志弹框或面板。
 
 ## 加载、空态、错误与状态
 
-进度、失败和重试都来自 props；示例覆盖 active percent 与完成后含错误重试的历史流程。
+进度、失败和重试都来自 props；`progressKind` 支持 `percent`、`indeterminate` 和 `none`。传入空数组时使用标准 Empty 状态，示例覆盖 active percent 与完成后含错误重试的历史流程。
 
 ## 无障碍
 
-步骤使用有序列表，百分比进度使用 `role="progressbar"` 与 aria 数值。
+步骤使用有序列表；状态标记提供文本化状态，进度条使用带名称的 `role="progressbar"` 与 aria 数值。长步骤名会截断并保留完整 title，事件内容会自动换行以避免横向溢出；动效在减少动态效果偏好下会关闭。
 
 ## 依赖
 
 <RegistryDependencies registryName="processing-timeline" />
-

@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-ProcessingTimeline renders long-running upload, ingest, and publish steps with progress bars, retry markers, event cards, and error log actions.
+ProcessingTimeline renders long-running upload, ingest, and publish steps with progress bars, standard Tag state markers, event cards, and error-log entry points.
 
 ## Installation
 
@@ -27,9 +27,9 @@ import {
 } from "@/registry/blocks/processing-timeline"
 ```
 
-## Processing timeline and log copy
+## Processing timeline and log entry
 
-<ShowcaseDemo registryName="processing-timeline" title="Processing timeline and log copy" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={720} />
+<ShowcaseDemo registryName="processing-timeline" title="Processing timeline and log entry" description="The preview and source share the same TSX module and show the core states and interactions." minHeight={720} />
 
 ## Usage
 
@@ -37,17 +37,16 @@ Pass ordered `TimelineStep[]`. Each step can be done, active, pending, or failed
 
 ## Public Exports and Props
 
-Exports include `ProcessingTimeline`, `TimelineStep`, `TimelineEvent`, `ProcessingTimelineLabels`, and props. `onCopyLog` fires only when an error event includes a log.
+Exports include `ProcessingTimeline`, `TimelineStep`, `TimelineEvent`, `ProcessingTimelineLabels`, and props. An error event shows the Log action only when it includes `log` and the caller provides `onLogClick`; callers can open a log dialog or panel from that callback.
 
 ## Loading, Empty, Error, and Status
 
-Progress, failure, and retry state all come from props; the demo covers active percent progress and a completed history with an error retry.
+Progress, failure, and retry state all come from props; `progressKind` supports `percent`, `indeterminate`, and `none`. An empty steps array renders the standard Empty state, and the demo covers active percent progress and a completed history with an error retry.
 
 ## Accessibility
 
-Steps render as an ordered list, and percent progress uses `role="progressbar"` with aria values.
+Steps render as an ordered list; state markers have text alternatives, and progress bars use a named `role="progressbar"` with aria values. Long step labels truncate with their full value in a title, event content wraps to avoid horizontal overflow, and motion is disabled when users prefer reduced motion.
 
 ## Dependencies
 
 <RegistryDependencies registryName="processing-timeline" />
-

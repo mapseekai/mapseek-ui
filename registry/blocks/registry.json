@@ -945,9 +945,9 @@
       "name": "processing-timeline",
       "type": "registry:block",
       "registryDependencies": [
-        "@mapseek/badge",
         "@mapseek/button",
-        "@mapseek/copy-button",
+        "@mapseek/empty",
+        "@mapseek/tag",
         "@mapseek/utils"
       ],
       "files": [

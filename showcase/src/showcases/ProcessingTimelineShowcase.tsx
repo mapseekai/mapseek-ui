@@ -69,10 +69,11 @@ function createCompleteSteps(demoLabels: (typeof labels)[keyof typeof labels]): 
 
 const labels = {
   "zh-CN": {
-    copy: "复制",
     log: "日志",
     advance: "推进进度",
-    copied: "已复制日志",
+    logSelected: "已选择日志",
+    emptyTitle: "暂无处理步骤",
+    emptyDescription: "开始处理后将在这里显示进度和日志。",
     status: "进度",
     done: "已完成",
     retryOne: "重试 1 次",
@@ -94,10 +95,11 @@ const labels = {
     processingMessage: "正在重投影栅格并写入 Cloud-Optimized GeoTIFF",
   },
   en: {
-    copy: "Copy",
     log: "Log",
     advance: "Advance progress",
-    copied: "Copied log",
+    logSelected: "Log selected",
+    emptyTitle: "No processing steps",
+    emptyDescription: "Start a processing task to see its status and logs.",
     status: "Progress",
     done: "Done",
     retryOne: "Retry 1",
@@ -153,8 +155,8 @@ export function ProcessingTimelineDemo({ locale = "zh-CN" }: LocalizedDemoProps)
   }
 
   return (
-    <div className="flex flex-col gap-5">
-      <div className="flex items-center gap-2">
+    <div className="flex min-w-0 flex-col gap-5">
+      <div className="flex flex-wrap items-center gap-2">
         <Button
           type="button"
           variant="outline"
@@ -171,14 +173,14 @@ export function ProcessingTimelineDemo({ locale = "zh-CN" }: LocalizedDemoProps)
           {status}
         </span>
       </div>
-      <div className="border border-border p-4">
+      <div className="min-w-0 border border-border p-4">
         <ProcessingTimeline steps={processingSteps} labels={demoLabels} />
       </div>
-      <div className="border border-border p-4">
+      <div className="min-w-0 border border-border p-4">
         <ProcessingTimeline
           steps={completeSteps}
           labels={demoLabels}
-          onCopyLog={() => setStatus(demoLabels.copied)}
+          onLogClick={() => setStatus(demoLabels.logSelected)}
         />
       </div>
     </div>

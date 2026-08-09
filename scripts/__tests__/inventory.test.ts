@@ -215,9 +215,9 @@ const applicationShellStatusAndResourceDependencies = {
     "@mapseek/utils",
   ],
   "processing-timeline": [
-    "@mapseek/badge",
     "@mapseek/button",
-    "@mapseek/copy-button",
+    "@mapseek/empty",
+    "@mapseek/tag",
     "@mapseek/utils",
   ],
   "service-status": ["@mapseek/switch", "@mapseek/utils", "@mapseek/labels"],

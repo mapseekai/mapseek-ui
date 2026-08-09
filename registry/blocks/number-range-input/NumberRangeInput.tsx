@@ -50,6 +50,14 @@ export type NumberRangeInputProps = NumberRangeInputBaseProps &
 
 const hasOwn = Object.prototype.hasOwnProperty
 
+function assertNonBlankAccessibleName(
+  value: string | undefined,
+  propName: string,
+): asserts value is string {
+  if (value?.trim()) return
+  throw new Error(`NumberRangeInput requires a non-blank ${propName}`)
+}
+
 function decimalPlaces(value: number): number {
   const text = String(value)
   if (text.includes("e")) {
@@ -181,16 +189,18 @@ export function NumberRangeInput(props: NumberRangeInputProps) {
   const internalInvalid = editing && !parsedDraft.valid
   const effectiveInvalid = internalInvalid ? true : ariaInvalid
   const inputDisplayValue = editing ? draft : resetNumberRangeDraft(committedValue)
-  const sliderValue = snapNumberRangeValue(
-    committedValue ?? (controlled ? min : (defaultValue ?? min)),
-    min,
-    max,
-    step,
-  )
-  const thumbLabel =
-    "aria-label" in props && props["aria-label"] !== undefined
-      ? (props.sliderAriaLabel ?? props["aria-label"])
-      : props.sliderAriaLabel
+  const sliderValue = snapNumberRangeValue(committedValue ?? min, min, max, step)
+  const usesDirectName = "aria-label" in props && props["aria-label"] !== undefined
+  const thumbLabel = usesDirectName
+    ? (props.sliderAriaLabel ?? props["aria-label"])
+    : props.sliderAriaLabel
+
+  if (usesDirectName) {
+    assertNonBlankAccessibleName(props["aria-label"], "aria-label")
+  } else {
+    assertNonBlankAccessibleName(props["aria-labelledby"], "aria-labelledby")
+  }
+  assertNonBlankAccessibleName(thumbLabel, "sliderAriaLabel")
 
   return (
     <div className={cn("flex w-full items-center gap-2", className)}>

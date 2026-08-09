@@ -3,6 +3,18 @@ import { describe, expect, it } from "vitest"
 
 import { NumberRangeInput, type NumberRangeInputProps } from "./NumberRangeInput"
 
+function getSliderRoot(html: string): string {
+  const sliderRoot = html.match(/<div\b[^>]*role="group"[^>]*>/)?.[0]
+  if (!sliderRoot) throw new Error("Expected the Slider root")
+  return sliderRoot
+}
+
+function getInputByType(html: string, type: "number" | "range"): string {
+  const input = html.match(/<input\b[^>]*>/g)?.find((element) => element.includes(`type="${type}"`))
+  if (!input) throw new Error(`Expected a ${type} input`)
+  return input
+}
+
 describe("NumberRangeInput", () => {
   it("names the group, spinbutton, and actual slider thumb from aria-label", () => {
     const html = renderToStaticMarkup(
@@ -23,12 +35,19 @@ describe("NumberRangeInput", () => {
         value={48}
       />,
     )
-    expect(html).toContain('id="opacity"')
-    expect(html).toContain('aria-labelledby="opacity-label"')
-    expect(html).toContain('aria-label="Opacity slider"')
-    expect(html).toContain('aria-describedby="opacity-help opacity-error"')
-    expect(html).toContain('aria-invalid="true"')
-    expect(html).toContain('autoComplete="off"')
+    const sliderRoot = getSliderRoot(html)
+    const sliderThumb = getInputByType(html, "range")
+    const spinbutton = getInputByType(html, "number")
+
+    expect(sliderRoot).toContain('aria-labelledby="opacity-label"')
+    expect(sliderRoot).toContain('aria-describedby="opacity-help opacity-error"')
+    expect(sliderRoot).toContain('aria-invalid="true"')
+    expect(sliderThumb).toContain('aria-label="Opacity slider"')
+    expect(spinbutton).toContain('id="opacity"')
+    expect(spinbutton).toContain('aria-labelledby="opacity-label"')
+    expect(spinbutton).toContain('aria-describedby="opacity-help opacity-error"')
+    expect(spinbutton).toContain('aria-invalid="true"')
+    expect(spinbutton).toContain('autoComplete="off"')
   })
 
   it("uses the standard Input height", () => {
@@ -42,6 +61,33 @@ describe("NumberRangeInput", () => {
       <NumberRangeInput aria-label="Opacity" value={undefined} defaultValue={48} />,
     )
     expect(html).toContain('aria-valuenow="0"')
+  })
+
+  it("uses defaultValue as the initial uncontrolled committed slider value", () => {
+    const html = renderToStaticMarkup(<NumberRangeInput aria-label="Opacity" defaultValue={48} />)
+    expect(getInputByType(html, "range")).toContain('aria-valuenow="48"')
+  })
+
+  it("rejects a blank direct accessible name", () => {
+    expect(() => renderToStaticMarkup(<NumberRangeInput aria-label="  " value={48} />)).toThrow(
+      "aria-label",
+    )
+  })
+
+  it("rejects a blank visible accessible name", () => {
+    expect(() =>
+      renderToStaticMarkup(
+        <NumberRangeInput aria-labelledby="  " sliderAriaLabel="Opacity slider" value={48} />,
+      ),
+    ).toThrow("aria-labelledby")
+  })
+
+  it("rejects blank explicit slider labels", () => {
+    expect(() =>
+      renderToStaticMarkup(
+        <NumberRangeInput aria-label="Opacity" sliderAriaLabel="  " value={48} />,
+      ),
+    ).toThrow("sliderAriaLabel")
   })
 })
 

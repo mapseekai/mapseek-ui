@@ -1,7 +1,7 @@
 import type { LayerEditorGroupSection } from "@registry/blocks/layer-editor-group"
+import { Field, FieldGroup, FieldLabel } from "@registry/ui/field"
 import { Input } from "@registry/ui/input"
 import { JsonViewer } from "@registry/ui/json-viewer"
-import { Label } from "@registry/ui/label"
 import { Textarea } from "@registry/ui/textarea"
 import { IconBraces, IconBrush, IconFilter, IconLayout, IconStack2 } from "@tabler/icons-react"
 import type { LocalizedDemoProps } from "./types"
@@ -61,12 +61,20 @@ export const layerEditorGroupLabels = {
   },
 }
 
-function FieldRow({ label, value }: { readonly label: string; readonly value: string }) {
+function FieldRow({
+  id,
+  label,
+  value,
+}: {
+  readonly id: string
+  readonly label: string
+  readonly value: string
+}) {
   return (
-    <Label className="grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3">
-      <span className="text-xs font-medium text-muted-foreground">{label}</span>
-      <Input value={value} readOnly className="font-mono" />
-    </Label>
+    <Field className="grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3">
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <Input id={id} value={value} readOnly />
+    </Field>
   )
 }
 
@@ -81,18 +89,31 @@ export function buildLayerEditorSections(
       title: demoLabels.sections.layer,
       icon: IconStack2,
       children: (
-        <div className="space-y-3 p-4">
-          <FieldRow label={demoLabels.fields.layerId} value="background" />
-          <FieldRow label={demoLabels.fields.type} value="background" />
-          <FieldRow label={demoLabels.fields.minZoom} value="0" />
-          <FieldRow label={demoLabels.fields.maxZoom} value="24" />
-          <Label className="grid grid-cols-[88px_minmax(0,1fr)] gap-3">
-            <span className="pt-2 text-xs font-medium text-muted-foreground">
+        <FieldGroup className="gap-3 p-4">
+          <FieldRow
+            id="layer-editor-group-layer-id"
+            label={demoLabels.fields.layerId}
+            value="background"
+          />
+          <FieldRow
+            id="layer-editor-group-layer-type"
+            label={demoLabels.fields.type}
+            value="background"
+          />
+          <FieldRow id="layer-editor-group-min-zoom" label={demoLabels.fields.minZoom} value="0" />
+          <FieldRow id="layer-editor-group-max-zoom" label={demoLabels.fields.maxZoom} value="24" />
+          <Field className="grid grid-cols-[88px_minmax(0,1fr)] gap-3">
+            <FieldLabel className="self-start pt-2" htmlFor="layer-editor-group-note">
               {demoLabels.fields.note}
-            </span>
-            <Textarea value={demoLabels.values.note} readOnly className="min-h-20 resize-none" />
-          </Label>
-        </div>
+            </FieldLabel>
+            <Textarea
+              id="layer-editor-group-note"
+              value={demoLabels.values.note}
+              readOnly
+              className="min-h-20 resize-none"
+            />
+          </Field>
+        </FieldGroup>
       ),
     },
     {
@@ -101,11 +122,15 @@ export function buildLayerEditorSections(
       title: demoLabels.sections.paint,
       icon: IconBrush,
       children: (
-        <div className="space-y-3 p-4">
-          <FieldRow label={demoLabels.fields.color} value="rgb(242,243,240)" />
-          <FieldRow label={demoLabels.fields.pattern} value="" />
-          <FieldRow label={demoLabels.fields.opacity} value="1" />
-        </div>
+        <FieldGroup className="gap-3 p-4">
+          <FieldRow
+            id="layer-editor-group-color"
+            label={demoLabels.fields.color}
+            value="rgb(242,243,240)"
+          />
+          <FieldRow id="layer-editor-group-pattern" label={demoLabels.fields.pattern} value="" />
+          <FieldRow id="layer-editor-group-opacity" label={demoLabels.fields.opacity} value="1" />
+        </FieldGroup>
       ),
     },
     {
@@ -114,10 +139,14 @@ export function buildLayerEditorSections(
       title: demoLabels.sections.layout,
       icon: IconLayout,
       children: (
-        <div className="space-y-3 p-4">
-          <FieldRow label={demoLabels.fields.visibility} value="visible" />
-          <FieldRow label={demoLabels.fields.sortKey} value="0" />
-        </div>
+        <FieldGroup className="gap-3 p-4">
+          <FieldRow
+            id="layer-editor-group-visibility"
+            label={demoLabels.fields.visibility}
+            value="visible"
+          />
+          <FieldRow id="layer-editor-group-sort-key" label={demoLabels.fields.sortKey} value="0" />
+        </FieldGroup>
       ),
     },
     {
@@ -126,9 +155,18 @@ export function buildLayerEditorSections(
       title: demoLabels.sections.filter,
       icon: IconFilter,
       children: (
-        <div className="space-y-2 p-4">
-          <Input value='["==", "class", "park"]' readOnly className="font-mono" />
-        </div>
+        <FieldGroup className="gap-2 p-4">
+          <Field>
+            <FieldLabel className="sr-only" htmlFor="layer-editor-group-filter-expression">
+              {demoLabels.sections.filter}
+            </FieldLabel>
+            <Input
+              id="layer-editor-group-filter-expression"
+              value='["==", "class", "park"]'
+              readOnly
+            />
+          </Field>
+        </FieldGroup>
       ),
     },
     {

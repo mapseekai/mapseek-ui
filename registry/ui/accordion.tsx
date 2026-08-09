@@ -28,18 +28,24 @@ function AccordionTrigger({ className, children, ...props }: AccordionPrimitive.
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-none border border-transparent py-2.5 text-start text-body-md-medium transition-all outline-none hover:underline focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/20 focus-visible:after:border-ring aria-disabled:pointer-events-none aria-disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ms-auto **:data-[slot=accordion-trigger-icon]:size-4 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
+          "group/accordion-trigger relative flex flex-1 items-start justify-between rounded-none border border-transparent py-2.5 text-start text-body-md-medium transition-[background-color,border-color,color] outline-none motion-reduce:transition-none hover:underline focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/20 focus-visible:after:border-ring aria-disabled:pointer-events-none aria-disabled:opacity-50 **:data-[slot=accordion-trigger-icon]:ms-auto **:data-[slot=accordion-trigger-icon]:size-3.5 **:data-[slot=accordion-trigger-icon]:text-muted-foreground",
           className,
         )}
         {...props}
       >
         {children}
         <IconChevronDown
+          aria-hidden="true"
           data-slot="accordion-trigger-icon"
+          size={14}
+          stroke={1.5}
           className="pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
         />
         <IconChevronUp
+          aria-hidden="true"
           data-slot="accordion-trigger-icon"
+          size={14}
+          stroke={1.5}
           className="pointer-events-none hidden shrink-0 group-aria-expanded/accordion-trigger:inline"
         />
       </AccordionPrimitive.Trigger>
@@ -51,7 +57,7 @@ function AccordionContent({ className, children, ...props }: AccordionPrimitive.
   return (
     <AccordionPrimitive.Panel
       data-slot="accordion-content"
-      className="overflow-hidden text-body-md opacity-100 transition-[height,opacity] duration-200 ease-out data-ending-style:h-0 data-ending-style:opacity-0 data-starting-style:h-0 data-starting-style:opacity-0"
+      className="overflow-hidden text-body-md opacity-100 transition-[height,opacity] duration-200 ease-out motion-reduce:transition-none data-ending-style:h-0 data-ending-style:opacity-0 data-starting-style:h-0 data-starting-style:opacity-0"
       {...props}
     >
       <div

@@ -24,14 +24,13 @@ export function LayerEditorGroup({
     <Accordion
       multiple
       defaultValue={defaultOpenIds ?? sections.map((section) => section.id)}
-      className={className}
+      className={cn("isolate", className)}
     >
       {sections.map((section, stickyIndex) => {
         const Icon = section.icon ?? IconFlag
         const headerStyle = {
           height: `${headerHeight}px`,
           top: `${stickyOffset + stickyIndex * headerHeight}px`,
-          zIndex: sections.length + 10 - stickyIndex,
         }
 
         return (
@@ -46,7 +45,7 @@ export function LayerEditorGroup({
           >
             <div
               className={cn(
-                "sticky flex items-stretch border-b border-border bg-muted [&>h3]:flex [&>h3]:h-full [&>h3]:w-full",
+                "sticky z-10 flex items-stretch border-b border-border bg-muted [&>h3]:flex [&>h3]:h-full [&>h3]:w-full",
                 headerClassName,
                 section.headerClassName,
               )}
@@ -57,13 +56,13 @@ export function LayerEditorGroup({
                   section.dataWdKey ? `layer-editor-group:${section.dataWdKey}` : undefined
                 }
                 className={cn(
-                  "flex h-full w-full items-center border-0 px-3 py-0 text-headline-sm leading-5 hover:bg-accent/50 [&_[data-slot=accordion-trigger-icon]]:ms-auto [&_[data-slot=accordion-trigger-icon]]:self-center",
+                  "flex h-full w-full items-center border-0 px-3 py-0 text-headline-sm hover:bg-accent/50 hover:text-foreground aria-expanded:bg-accent/50 aria-expanded:text-foreground [&_[data-slot=accordion-trigger-icon]]:ms-auto [&_[data-slot=accordion-trigger-icon]]:self-center",
                   triggerClassName,
                   section.triggerClassName,
                 )}
               >
-                <span className="flex h-full min-w-0 flex-1 items-center gap-2 leading-5">
-                  <Icon size={14} stroke={1.5} className="shrink-0" />
+                <span className="flex h-full min-w-0 flex-1 items-center gap-2">
+                  <Icon aria-hidden="true" size={14} stroke={1.5} className="shrink-0" />
                   <span className="truncate">{section.title}</span>
                 </span>
               </AccordionTrigger>

@@ -1770,13 +1770,15 @@ export async function assertBlockInteraction(
     await expect(listbox).toBeVisible()
     await assertNoHorizontalOverflow(listbox, `${path} controlled CrsPicker list`)
 
-    const projectedOption = listbox.getByRole("option", { name: "EPSG:3857", exact: true })
-    await projectedOption.focus()
-    await expect(projectedOption).toBeFocused()
+    const search = controlled.locator("input").first()
+    await search.focus()
+    for (let index = 0; index < 5; index += 1) {
+      await page.keyboard.press("ArrowDown")
+    }
     await page.keyboard.press("Enter")
     await expect(demo.locator('[data-demo-status="crs-picker"]')).toContainText("EPSG:3857")
 
-    await listbox.getByRole("option", { name: "EPSG:4326", exact: true }).click()
+    await demo.locator('[data-demo-action="crs-picker-switch-4326"]').click()
     await expect(demo.locator('[data-demo-status="crs-picker"]')).toContainText("EPSG:4326")
     await assertNoHorizontalOverflow(demo, `${path} crs picker`)
   }

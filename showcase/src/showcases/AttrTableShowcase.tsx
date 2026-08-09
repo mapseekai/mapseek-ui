@@ -59,6 +59,10 @@ function buildRows(): FeatureRow[] {
   }))
 }
 
+function getCellText(row: FeatureRow, column: ColumnDef) {
+  return String(row.properties[column.name as keyof FeatureRow["properties"]])
+}
+
 const labels = {
   "zh-CN": {
     schema: "字段 Schema",
@@ -121,9 +125,8 @@ export function AttrTableDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
       columns={columns}
       source={source}
       getRowKey={(row, index) => row?.id ?? index}
-      renderCell={(row, column) =>
-        String(row.properties[column.name as keyof FeatureRow["properties"]])
-      }
+      renderCell={getCellText}
+      getCellText={getCellText}
       selectedRowKey={selected}
       onRowClick={(row) => setSelected(row.id)}
       emptyLabel={demoLabels.noRows}
@@ -209,8 +212,8 @@ export function AttrTableDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
             {demoLabels.openSheet}
           </Button>
           {sheetOpen ? (
-            <div className="fixed inset-0 z-50 bg-background/80" data-demo="attr-table-sheet">
-              <div className="relative h-full w-full overflow-hidden bg-[repeating-linear-gradient(45deg,var(--muted),var(--muted)_10px,transparent_10px,transparent_20px)]">
+            <div className="fixed inset-0 z-50 bg-black/10" data-demo="attr-table-sheet">
+              <div className="relative h-full w-full overflow-hidden">
                 <AttrTableSheet
                   ariaLabel={demoLabels.sheet}
                   onClose={() => setSheetOpen(false)}

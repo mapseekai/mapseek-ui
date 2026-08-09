@@ -1,7 +1,8 @@
-import { IconAlertTriangle } from "@tabler/icons-react"
+import { IconAlertTriangle, IconTable } from "@tabler/icons-react"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Empty, EmptyContent, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
@@ -18,7 +19,7 @@ export type VirtualTableProps<TRow> = {
   source: RowSource<TRow>
   getRowKey: (row: TRow | undefined, index: number) => string | number
   renderCell: (row: TRow, col: ColumnDef) => React.ReactNode
-  getCellText?: (row: TRow, col: ColumnDef) => string | undefined
+  getCellText: (row: TRow, col: ColumnDef) => string | undefined
   selectedRowKey?: string | number | null
   onRowClick?: (row: TRow) => void
   emptyLabel: string
@@ -64,39 +65,45 @@ export function VirtualTable<TRow>({
   }, [cb, visibleStart, visibleEnd])
 
   const tableMinWidth = columns.length * COL_WIDTH + INDEX_COL_WIDTH
+  const emptyStateContainerClassName = cn(
+    "flex h-full min-h-0 items-center justify-center p-4",
+    className,
+  )
 
   if (source.error) {
     return (
-      <div
-        className={cn(
-          "flex h-full flex-col items-center justify-center gap-2 text-body-md text-muted-foreground",
-          className,
-        )}
-      >
-        <IconAlertTriangle size={20} stroke={1.5} className="text-destructive" />
-        <span>{source.error.message}</span>
-        <Button
-          variant="outline"
-          size="sm"
-          type="button"
-          onClick={source.refetch}
-          className="rounded-none bg-card"
-        >
-          {errorRetryLabel}
-        </Button>
+      <div className={emptyStateContainerClassName}>
+        <Empty role="alert" className="w-full max-w-sm min-h-32 flex-none border-0 bg-transparent">
+          <EmptyHeader>
+            <EmptyMedia
+              variant="icon"
+              className="border-destructive/30 bg-destructive/10 text-destructive"
+            >
+              <IconAlertTriangle size={20} stroke={1.5} aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyTitle>{source.error.message}</EmptyTitle>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button variant="default" size="default" type="button" onClick={source.refetch}>
+              {errorRetryLabel}
+            </Button>
+          </EmptyContent>
+        </Empty>
       </div>
     )
   }
 
   if (!source.isInitialLoading && totalCount === 0) {
     return (
-      <div
-        className={cn(
-          "flex h-full items-center justify-center text-body-md text-muted-foreground",
-          className,
-        )}
-      >
-        {emptyLabel}
+      <div className={emptyStateContainerClassName}>
+        <Empty className="w-full max-w-sm min-h-32 flex-none">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <IconTable size={20} stroke={1.5} aria-hidden="true" />
+            </EmptyMedia>
+            <EmptyTitle>{emptyLabel}</EmptyTitle>
+          </EmptyHeader>
+        </Empty>
       </div>
     )
   }
@@ -109,7 +116,11 @@ export function VirtualTable<TRow>({
         key={source.scrollKey}
         ref={scrollRef}
         className={cn(
-          "h-full overflow-auto [scrollbar-color:var(--border)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar]:size-1.5 [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-border [&::-webkit-scrollbar-track]:bg-transparent",
+          "h-full overflow-auto [scrollbar-color:var(--border)_transparent] [scrollbar-width:thin]",
+          "[&::-webkit-scrollbar]:size-1.5 [&::-webkit-scrollbar]:rounded-none",
+          "[&::-webkit-scrollbar-track]:rounded-none [&::-webkit-scrollbar-track]:bg-transparent",
+          "[&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-border",
+          "[&::-webkit-scrollbar-corner]:rounded-none",
           className,
         )}
       >
@@ -186,11 +197,7 @@ export function VirtualTable<TRow>({
                             const cellContent = renderCell(row, c)
 
                             return (
-                              <Cell
-                                key={c.name}
-                                width={COL_WIDTH}
-                                fullText={getCellText?.(row, c) ?? getPlainText(cellContent)}
-                              >
+                              <Cell key={c.name} width={COL_WIDTH} fullText={getCellText(row, c)}>
                                 {cellContent}
                               </Cell>
                             )
@@ -256,10 +263,6 @@ function HeaderCell({
       {children}
     </div>
   )
-}
-
-function getPlainText(content: React.ReactNode): string | undefined {
-  return typeof content === "string" || typeof content === "number" ? String(content) : undefined
 }
 
 function Cell({

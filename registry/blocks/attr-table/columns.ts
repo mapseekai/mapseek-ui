@@ -1,3 +1,4 @@
+import type { TagColor } from "@/components/ui/tag"
 import type { ColumnDef } from "./types"
 
 const GEOMETRY_RAW_TYPES = new Set([
@@ -49,14 +50,14 @@ const TEMPORAL_RAW_TYPES = new Set([
 
 const STRUCTURED_RAW_TYPES = new Set(["array", "json", "jsonb", "object", "record"])
 
-const RAW_TYPE_BADGE_CLASSES = {
-  text: "border-cat-1/30 bg-cat-1/10 text-cat-1",
-  number: "border-cat-5/30 bg-cat-5/10 text-cat-5",
-  boolean: "border-cat-2/30 bg-cat-2/10 text-cat-2",
-  temporal: "border-cat-3/30 bg-cat-3/10 text-cat-3",
-  structured: "border-cat-4/30 bg-cat-4/10 text-cat-4",
-  unknown: "border-border bg-muted/50 text-muted-foreground",
-} as const
+const RAW_TYPE_TAG_COLORS = {
+  text: "green",
+  number: "purple",
+  boolean: "blue",
+  temporal: "yellow",
+  structured: "orange",
+  unknown: "gray",
+} as const satisfies Record<string, TagColor>
 
 function rawTypeHead(rawType: string): string {
   return (
@@ -67,15 +68,15 @@ function rawTypeHead(rawType: string): string {
   )
 }
 
-export function rawTypeBadgeClass(rawType: string): string {
+export function rawTypeTagColor(rawType: string): TagColor {
   const head = rawTypeHead(rawType)
 
-  if (TEXT_RAW_TYPES.has(head)) return RAW_TYPE_BADGE_CLASSES.text
-  if (NUMBER_RAW_TYPES.has(head)) return RAW_TYPE_BADGE_CLASSES.number
-  if (BOOLEAN_RAW_TYPES.has(head)) return RAW_TYPE_BADGE_CLASSES.boolean
-  if (TEMPORAL_RAW_TYPES.has(head)) return RAW_TYPE_BADGE_CLASSES.temporal
-  if (STRUCTURED_RAW_TYPES.has(head)) return RAW_TYPE_BADGE_CLASSES.structured
-  return RAW_TYPE_BADGE_CLASSES.unknown
+  if (TEXT_RAW_TYPES.has(head)) return RAW_TYPE_TAG_COLORS.text
+  if (NUMBER_RAW_TYPES.has(head)) return RAW_TYPE_TAG_COLORS.number
+  if (BOOLEAN_RAW_TYPES.has(head)) return RAW_TYPE_TAG_COLORS.boolean
+  if (TEMPORAL_RAW_TYPES.has(head)) return RAW_TYPE_TAG_COLORS.temporal
+  if (STRUCTURED_RAW_TYPES.has(head)) return RAW_TYPE_TAG_COLORS.structured
+  return RAW_TYPE_TAG_COLORS.unknown
 }
 
 export function isGeometryColumn(rawType: string): boolean {

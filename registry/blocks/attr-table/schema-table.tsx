@@ -1,10 +1,10 @@
 import { IconSearch } from "@tabler/icons-react"
-import { useMemo, useState } from "react"
-import { Badge } from "@/components/ui/badge"
+import { useId, useMemo, useState } from "react"
 import { CopyButton } from "@/components/ui/copy-button"
 import { Input } from "@/components/ui/input"
+import { Tag } from "@/components/ui/tag"
 import { cn } from "@/lib/utils"
-import { attributeColumns, rawTypeBadgeClass } from "./columns"
+import { attributeColumns, rawTypeTagColor } from "./columns"
 import type { ColumnDef } from "./types"
 import { useStaticRowSource } from "./use-static-row-source"
 import { VirtualTable } from "./virtual-table"
@@ -36,6 +36,7 @@ export function SchemaTable({
   className,
 }: SchemaTableProps) {
   const [query, setQuery] = useState("")
+  const searchInputId = useId()
 
   const items = useMemo<SchemaRow[]>(() => attributeColumns(attributes), [attributes])
 
@@ -53,13 +54,21 @@ export function SchemaTable({
     <div className={cn("flex h-full flex-col", className)}>
       <div className="flex shrink-0 items-center border-b border-border bg-card px-2 py-1.5">
         <div className="relative flex items-center">
+          <label className="sr-only" htmlFor={searchInputId}>
+            {searchPlaceholder}
+          </label>
           <IconSearch
             size={13}
             stroke={1.5}
             className="pointer-events-none absolute left-2 text-muted-foreground"
+            aria-hidden="true"
           />
           <Input
-            className="h-7 w-[200px] rounded-none pl-7 text-body-md"
+            id={searchInputId}
+            type="search"
+            name="schema-field-search"
+            autoComplete="off"
+            className="h-8 w-[200px] rounded-none pl-7 text-body-md"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={searchPlaceholder}
@@ -84,9 +93,7 @@ export function SchemaTable({
                 />
               </span>
             ) : (
-              <Badge variant="outline" className={rawTypeBadgeClass(row.rawType)}>
-                {row.rawType}
-              </Badge>
+              <Tag color={rawTypeTagColor(row.rawType)}>{row.rawType}</Tag>
             )
           }
           getCellText={(row, column) => (column.name === "name" ? row.name : row.rawType)}

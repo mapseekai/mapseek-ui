@@ -135,7 +135,8 @@ export function AttrTableSheet({
         // Only animate height for programmatic transitions (open/close,
         // fullscreen toggle) — never during a drag, otherwise the
         // cursor races ahead of the easing curve.
-        !isDragging && "transition-[height] duration-[180ms] ease-(--ease-out)",
+        !isDragging &&
+          "transition-[height] duration-[180ms] ease-(--ease-out) motion-reduce:transition-none",
         className,
       )}
     >

@@ -1,9 +1,37 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@registry/ui/tabs"
+import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
 export function TabsOverviewDemo(_props: LocalizedDemoProps) {
+  const [controlledValue, setControlledValue] = useState("schema")
+
   return (
     <div className="grid gap-8">
+      <section className="space-y-3" data-demo="tabs-controlled">
+        <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
+          Controlled tabs
+        </h4>
+        <div className="max-w-md border border-border p-3">
+          <Tabs value={controlledValue} onValueChange={setControlledValue}>
+            <TabsList>
+              <TabsTrigger data-demo="tabs-trigger-schema" value="schema">
+                Schema
+              </TabsTrigger>
+              <TabsTrigger data-demo="tabs-trigger-export" value="export">
+                Export
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="schema">
+              <p className="pt-3 text-sm text-muted-foreground">Field structure content.</p>
+            </TabsContent>
+            <TabsContent value="export">
+              <p className="pt-3 text-sm text-muted-foreground">Export format content.</p>
+            </TabsContent>
+          </Tabs>
+        </div>
+        <p data-demo="tabs-controlled-value">Selected: {controlledValue}</p>
+      </section>
+
       <section className="space-y-3" data-demo="tabs-basic">
         <h4 className="font-mono text-sm font-semibold tracking-wide text-foreground uppercase">
           Basic tabs

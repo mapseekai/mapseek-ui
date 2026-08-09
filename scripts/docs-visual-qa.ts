@@ -22,6 +22,26 @@ type BlockPage = {
   readonly importPath: string
 }
 
+const docsBasePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/u, "")
+
+function stripDocsBasePath(pathname: string): string {
+  if (!docsBasePath) return pathname
+  if (pathname === docsBasePath) return "/"
+  return pathname.startsWith(`${docsBasePath}/`) ? pathname.slice(docsBasePath.length) : pathname
+}
+
+function withDocsBasePath(pathname: string): string {
+  if (!docsBasePath || pathname === docsBasePath || pathname.startsWith(`${docsBasePath}/`)) {
+    return pathname
+  }
+  if (pathname === "/") return `${docsBasePath}/`
+  return `${docsBasePath}${pathname.startsWith("/") ? pathname : `/${pathname}`}`
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")
+}
+
 type CliOptions = {
   readonly baseUrl?: string
   readonly browserChannel?: string
@@ -129,7 +149,7 @@ async function startStaticPreview(
         void (async () => {
           const file = await resolveStaticFile(
             buildRoot,
-            new URL(request.url ?? "/", "http://127.0.0.1").pathname,
+            stripDocsBasePath(new URL(request.url ?? "/", "http://127.0.0.1").pathname),
           )
           if (!file) {
             response.writeHead(404).end("Not found")
@@ -178,7 +198,7 @@ async function runSmokeCase(baseUrl: string, browserChannel?: string) {
       })
     ).newPage()
 
-    await page.goto("/components/_smoke")
+    await page.goto(withDocsBasePath("/components/_smoke"))
     await expect(page.getByRole("heading", { level: 1, name: "Smoke", exact: true })).toBeVisible()
     await expect(page.getByText("Smoke demo rendered")).toBeVisible()
 
@@ -215,7 +235,7 @@ async function runButtonCase(baseUrl: string, browserChannel?: string) {
       })
     ).newPage()
 
-    await page.goto("/components/button")
+    await page.goto(withDocsBasePath("/components/button"))
     await assertButtonPilot(page, "/components/button")
   } finally {
     await browser.close()
@@ -235,7 +255,7 @@ async function runColorInputCase(baseUrl: string, browserChannel?: string) {
       })
     ).newPage()
 
-    await page.goto("/components/color-input")
+    await page.goto(withDocsBasePath("/components/color-input"))
     await assertPrimitiveInteraction(page, "color-input", "/components/color-input")
   } finally {
     await browser.close()
@@ -358,7 +378,7 @@ async function runDialogCase(baseUrl: string, browserChannel?: string) {
 
     for (const path of ["/components/dialog", "/en/components/dialog"] as const) {
       for (const theme of ["light", "dark"] as const) {
-        await page.goto(path)
+        await page.goto(withDocsBasePath(path))
         await setDocsTheme(page, theme)
         await assertDialogPilot(page, path)
       }
@@ -539,7 +559,9 @@ async function assertLayerPanelPilot(page: Page, path: string): Promise<void> {
     .click()
   await expect(panel).not.toHaveAttribute("data-collapsed", "true")
 
-  const search = panel.getByLabel(path.startsWith("/en/") ? "Search layers" : "搜索图层")
+  const search = panel.getByRole("searchbox", {
+    name: path.startsWith("/en/") ? "Search layers" : "搜索图层",
+  })
   await search.fill(path.startsWith("/en/") ? "road" : "道路")
   await expect(
     panel.getByText(path.startsWith("/en/") ? "Road centerlines" : "道路中心线"),
@@ -581,7 +603,7 @@ async function runPilotsCase(baseUrl: string, browserChannel?: string): Promise<
       try {
         for (const path of ["/components/button", "/en/components/button"] as const) {
           for (const theme of ["light", "dark"] as const) {
-            await page.goto(path)
+            await page.goto(withDocsBasePath(path))
             await setDocsTheme(page, theme)
             await assertButtonPilot(page, path)
           }
@@ -589,7 +611,7 @@ async function runPilotsCase(baseUrl: string, browserChannel?: string): Promise<
 
         for (const path of ["/components/dialog", "/en/components/dialog"] as const) {
           for (const theme of ["light", "dark"] as const) {
-            await page.goto(path)
+            await page.goto(withDocsBasePath(path))
             await setDocsTheme(page, theme)
             await assertDialogPilot(page, path)
           }
@@ -597,7 +619,7 @@ async function runPilotsCase(baseUrl: string, browserChannel?: string): Promise<
 
         for (const path of ["/blocks/layer-panel", "/en/blocks/layer-panel"] as const) {
           for (const theme of ["light", "dark"] as const) {
-            await page.goto(path)
+            await page.goto(withDocsBasePath(path))
             await setDocsTheme(page, theme)
             await assertLayerPanelPilot(page, path)
           }
@@ -619,7 +641,7 @@ async function assertLocalizedIndexFilter(
   expectedCard: string,
   hiddenCard?: string,
 ): Promise<void> {
-  await page.goto(path)
+  await page.goto(withDocsBasePath(path))
   const search = page.getByLabel(searchLabel, { exact: true })
   await expect(search).toBeVisible()
   await search.fill(query)
@@ -628,15 +650,15 @@ async function assertLocalizedIndexFilter(
 }
 
 async function assertLocaleDropdownPreservesPath(page: Page, path: string): Promise<void> {
-  await page.goto(path)
+  await page.goto(withDocsBasePath(path))
   const localeDropdown = page.getByRole("button", { name: "简体中文", exact: true })
   await expect(localeDropdown).toBeVisible()
   await localeDropdown.click()
 
-  const englishLink = page.getByRole("link", { name: "English", exact: true })
+  const englishLink = page.getByRole("menuitem", { name: "English", exact: true })
   await expect(englishLink).toBeVisible()
   await englishLink.click()
-  await expect(page).toHaveURL(new RegExp(`/en${path.replaceAll("/", "\\/")}\\/?$`))
+  await expect(page).toHaveURL(new RegExp(`${escapeRegExp(withDocsBasePath(`/en${path}`))}/?$`))
   await expect(
     page.getByRole("heading", { level: 1, name: "Install Mapseek UI", exact: true }),
   ).toBeVisible()
@@ -656,7 +678,7 @@ async function runOnboardingCase(baseUrl: string, browserChannel?: string): Prom
       })
     ).newPage()
 
-    await page.goto("/")
+    await page.goto(withDocsBasePath("/"))
     await page.getByRole("link", { name: "安装", exact: true }).click()
     await expect(
       page.getByRole("heading", { level: 1, name: "安装 Mapseek UI", exact: true }),
@@ -664,11 +686,11 @@ async function runOnboardingCase(baseUrl: string, browserChannel?: string): Prom
     const article = page.getByRole("article")
     await expect(article.getByRole("link", { name: "主题", exact: true })).toHaveAttribute(
       "href",
-      /^\/getting-started\/theming\/?$/,
+      withDocsBasePath("/getting-started/theming/"),
     )
     await expect(article.getByRole("link", { name: "Registry", exact: true })).toHaveAttribute(
       "href",
-      /^\/getting-started\/registry\/?$/,
+      withDocsBasePath("/getting-started/registry/"),
     )
 
     await assertLocalizedIndexFilter(page, "/components", "搜索组件", "Button", "button", "dialog")
@@ -3233,7 +3255,7 @@ async function runPrimitiveCategoryCase(
           : primitivePages) {
           for (const path of [`/components/${primitive}`, `/en/components/${primitive}`] as const) {
             for (const theme of ["light", "dark"] as const) {
-              await page.goto(path)
+              await page.goto(withDocsBasePath(path))
               await setDocsTheme(page, theme)
               await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
               await assertLocalizedSentinelLabels(page, path, registryWidgetSentinels)
@@ -3280,7 +3302,7 @@ async function runBlockCategoryCase(
           : blockPages) {
           for (const path of [`/blocks/${block.name}`, `/en/blocks/${block.name}`] as const) {
             for (const theme of ["light", "dark"] as const) {
-              await page.goto(path)
+              await page.goto(withDocsBasePath(path))
               await setDocsTheme(page, theme)
               await expect(page.getByRole("heading", { level: 1, exact: true })).toBeVisible()
               await assertBlockDemoPreviewAndSource(page, block)

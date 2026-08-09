@@ -21,4 +21,14 @@ describe("tabs primary variant", () => {
       "group-data-[variant=primary]/tabs-list:data-active:text-primary-foreground",
     )
   })
+
+  it("keeps selected primary tab text readable on dark-mode hover", () => {
+    const trigger = TabsTrigger({ value: "schema", children: "Schema" }) as ReactElement<{
+      className: string
+    }>
+
+    expect(trigger.props.className).toContain(
+      "dark:group-data-[variant=primary]/tabs-list:data-active:hover:text-primary-foreground",
+    )
+  })
 })

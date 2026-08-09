@@ -3,6 +3,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from "@/components/ui/input-group"
+import { InputNumber } from "@/components/ui/input-number"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import {
   Select,
@@ -12,12 +19,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Tag } from "@/components/ui/tag"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import { inferAttrFieldKind } from "./infer-hint"
 import type { AttrFieldKind, AttrFieldMeta } from "./types"
 
-const inputBase = "w-full rounded-none border-input bg-input-surface px-2 text-body-md"
+const inputBase = "w-full rounded-none border-input bg-input-surface px-2.5 text-body-md"
 
 type Resolved = {
   kind: AttrFieldKind
@@ -50,6 +58,14 @@ function formatReadValue(kind: AttrFieldKind, value: unknown): string {
     return value.replace(/\//g, "-").slice(0, 10)
   }
   return String(value)
+}
+
+function toInputNumberValue(value: unknown): number | null {
+  if (typeof value === "number") return Number.isFinite(value) ? value : null
+  if (typeof value !== "string" || value.trim() === "") return null
+
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : null
 }
 
 function parseDateValue(value: string): Date | undefined {
@@ -88,6 +104,7 @@ function DateEditField({
           <Button
             type="button"
             variant="outline"
+            size="default"
             aria-label={name}
             className={cn(inputBase, "justify-between font-mono font-normal")}
           >
@@ -124,11 +141,11 @@ function FieldHeader({
   primaryKeyLabel: string
 }) {
   return (
-    <div className="mb-[3px] flex items-center gap-1.5">
+    <div className="mb-1 flex items-center gap-1.5">
       <span className="font-mono text-label-md uppercase text-muted-foreground">{name}</span>
-      <span className="border border-border bg-muted px-1 py-px font-mono text-label-md uppercase text-muted-foreground">
+      <Tag color="gray" size="sm">
         {badge}
-      </span>
+      </Tag>
       {readOnly && <span className="flex-1" />}
       {readOnly && (
         <Tooltip>
@@ -157,6 +174,8 @@ export function ReadField({
 }) {
   const { kind, readOnly, unit, badge } = resolve(name, value, meta)
   const mono = kind !== "text"
+  const readValue = formatReadValue(kind, value)
+  const readInputClassName = cn(mono && "font-mono tabular-nums")
   return (
     <div>
       <FieldHeader
@@ -165,17 +184,21 @@ export function ReadField({
         readOnly={readOnly}
         primaryKeyLabel={primaryKeyLabel}
       />
-      <div
-        className={cn(
-          "min-h-7 w-full border border-border bg-muted/40 px-2 py-1 text-body-md break-words",
-          mono && "font-mono tabular-nums",
-        )}
-      >
-        {formatReadValue(kind, value)}
-        {unit && value != null && value !== "" && (
-          <span className="ml-1 text-muted-foreground">{unit}</span>
-        )}
-      </div>
+      {unit && value != null && value !== "" ? (
+        <InputGroup>
+          <InputGroupInput
+            aria-label={name}
+            className={readInputClassName}
+            disabled
+            value={readValue}
+          />
+          <InputGroupAddon align="inline-end" disabled>
+            <InputGroupText className="font-mono">{unit}</InputGroupText>
+          </InputGroupAddon>
+        </InputGroup>
+      ) : (
+        <Input aria-label={name} className={readInputClassName} disabled value={readValue} />
+      )}
     </div>
   )
 }
@@ -209,13 +232,14 @@ export function EditField({
       />
       {readOnly ? (
         <Input
-          className={cn(inputBase, "bg-muted font-mono text-muted-foreground")}
+          aria-label={name}
+          className={cn(inputBase, "font-mono text-muted-foreground")}
           value={strVal}
-          readOnly
+          disabled
         />
       ) : isEnum ? (
         <Select value={strVal} onValueChange={(val) => onChange(name, val)}>
-          <SelectTrigger className={cn(inputBase, "font-normal")}>
+          <SelectTrigger aria-label={name} className={cn(inputBase, "font-normal")}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -231,21 +255,16 @@ export function EditField({
       ) : kind === "date" ? (
         <DateEditField name={name} value={dateValue} onChange={onChange} />
       ) : kind === "number" ? (
-        <div className="group relative">
-          <Input
-            type="number"
-            className={cn(inputBase, "font-mono tabular-nums")}
-            value={strVal}
-            onChange={(e) => onChange(name, e.target.value)}
-          />
-          {unit && (
-            <span className="pointer-events-none absolute top-1/2 right-2 -translate-y-1/2 font-mono text-[10px] text-muted-foreground group-focus-within:hidden">
-              {unit}
-            </span>
-          )}
-        </div>
+        <InputNumber
+          aria-label={name}
+          className="font-mono tabular-nums"
+          unit={unit}
+          value={toInputNumberValue(value)}
+          onValueChange={(next) => onChange(name, next)}
+        />
       ) : kind === "code" ? (
         <Input
+          aria-label={name}
           className={cn(inputBase, "font-mono uppercase tracking-[0.04em]")}
           value={strVal}
           maxLength={8}
@@ -253,6 +272,7 @@ export function EditField({
         />
       ) : (
         <Input
+          aria-label={name}
           className={inputBase}
           value={strVal}
           onChange={(e) => onChange(name, e.target.value)}

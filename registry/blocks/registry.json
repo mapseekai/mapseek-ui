@@ -60,8 +60,11 @@
         "@mapseek/button",
         "@mapseek/calendar",
         "@mapseek/input",
+        "@mapseek/input-group",
+        "@mapseek/input-number",
         "@mapseek/popover",
         "@mapseek/select",
+        "@mapseek/tag",
         "@mapseek/tooltip",
         "@mapseek/utils"
       ],

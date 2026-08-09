@@ -97,9 +97,14 @@ describe("registry component composition", () => {
 
   it("lets attr-inspector edit controls use their default heights", async () => {
     const attrField = await readFile("registry/blocks/attr-inspector/attr-field.tsx", "utf8")
+    const dateEditField = attrField.slice(
+      attrField.indexOf("function DateEditField"),
+      attrField.indexOf("function FieldHeader"),
+    )
 
     expect(attrField).not.toMatch(/const inputBase = "[^"]*\bh-/)
-    expect(attrField).not.toContain('size="sm"')
+    expect(dateEditField).toContain('size="default"')
+    expect(dateEditField).not.toContain('size="sm"')
   })
 
   it("composes loom toolbox detail with Separator Alert and Field", async () => {

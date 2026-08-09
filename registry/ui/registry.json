@@ -764,6 +764,22 @@
       ]
     },
     {
+      "name": "tag",
+      "type": "registry:ui",
+      "title": "Tag",
+      "description": "Compact colored category label.",
+      "categories": ["display"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "tag.tsx",
+          "type": "registry:ui",
+          "target": "@ui/tag.tsx"
+        }
+      ]
+    },
+    {
       "name": "alert-dialog",
       "type": "registry:ui",
       "title": "Alert Dialog",

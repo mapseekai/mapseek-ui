@@ -106,7 +106,7 @@ export function AttrInspectorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         </span>
       </div>
       <p className="m-0 text-xs text-muted-foreground">{demoLabels.intro}</p>
-      <div className="relative h-[520px] overflow-hidden border border-border bg-muted/20">
+      <div className="relative h-[544px] overflow-hidden border border-border bg-muted/20">
         <AttrInspector
           className="absolute top-4 left-1/2 w-[340px] max-w-[calc(100%-2rem)] -translate-x-1/2 shadow-none"
           feature={feature}

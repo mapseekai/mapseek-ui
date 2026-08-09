@@ -11,8 +11,6 @@ import { cn } from "@/lib/utils"
 import { EditField, ReadField } from "./attr-field"
 import type { AttrFieldMeta, AttrInspectorProps } from "./types"
 
-const actionBtn = "h-6 gap-1.5 rounded-none px-2.5 text-body-md-medium"
-
 /**
  * Floating attribute panel for a single picked feature, decoupled from any
  * map engine. Renders only the bordered card body — the consumer positions
@@ -111,8 +109,9 @@ export function AttrInspector({
           {isEdit && onAddField && (
             <Button
               variant="ghost"
+              size="xs"
               onClick={onAddField}
-              className="mt-2.5 h-6 w-full justify-start gap-1.5 rounded-none px-2.5 text-body-md-medium"
+              className="mt-2.5 w-full justify-start"
             >
               <IconColumnInsertRight data-icon="inline-start" /> {labels.addField}
             </Button>
@@ -122,26 +121,22 @@ export function AttrInspector({
         {showFooter && (
           <div className="flex gap-1.5 border-t border-border px-2.5 py-2">
             {showDelete && (
-              <Button variant="ghost" onClick={onDelete} className={actionBtn}>
+              <Button variant="destructive" size="xs" onClick={onDelete}>
                 <IconTrash data-icon="inline-start" /> {labels.delete}
               </Button>
             )}
             {showGeoJSON && (
-              <Button variant="ghost" onClick={onViewGeoJSON} className={actionBtn}>
+              <Button variant="ghost" size="xs" onClick={onViewGeoJSON}>
                 <IconBraces data-icon="inline-start" /> {labels.viewGeoJSON}
               </Button>
             )}
             {showConfirm && (
               <>
                 <div className="flex-1" />
-                <Button
-                  variant="outline"
-                  onClick={onCancel}
-                  className="h-6 rounded-none px-2.5 text-body-md-medium"
-                >
+                <Button variant="outline" size="xs" onClick={onCancel}>
                   {labels.cancel}
                 </Button>
-                <Button onClick={onConfirm} className="h-6 rounded-none px-2.5 text-body-md-medium">
+                <Button size="xs" onClick={onConfirm}>
                   {labels.confirm}
                 </Button>
               </>

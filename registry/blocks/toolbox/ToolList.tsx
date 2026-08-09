@@ -64,11 +64,10 @@ export function ToolList({
         <span className="flex size-7 items-center justify-center bg-muted text-muted-foreground">
           <IconTools className="size-4" aria-hidden="true" />
         </span>
-        <span className="flex-1 text-headline-sm">{labels.title}</span>
+        <h2 className="flex-1 text-headline-sm">{labels.title}</h2>
         <Button
           variant="ghost"
-          size="icon"
-          className="size-7"
+          size="icon-sm"
           aria-label={labels.close}
           onClick={() => onOpenChange(false)}
         >
@@ -111,13 +110,13 @@ export function ToolList({
         {tab === "all" && query.trim().length === 0 && tools.length > 0 && (
           <section className="mb-4">
             <h3 className="mb-2 text-body-md-strong">{labels.quickAccess}</h3>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {tools.slice(0, 2).map((tool) => {
                 const ToolIcon = tool.icon
                 return (
                   <div
                     key={tool.id}
-                    className="border border-border p-2.5 transition-colors hover:border-primary hover:bg-primary/5"
+                    className="border border-border p-2.5 transition-colors hover:border-primary hover:bg-primary/5 motion-reduce:transition-none"
                   >
                     <div className="mb-2 flex items-center gap-2">
                       <Button
@@ -169,7 +168,7 @@ export function ToolList({
               return (
                 <div
                   key={tool.id}
-                  className="flex items-center gap-2 border border-transparent px-2 py-1.5 transition-colors hover:bg-accent/50"
+                  className="flex items-center gap-2 border border-transparent px-2 py-1.5 transition-colors hover:bg-accent/50 motion-reduce:transition-none"
                 >
                   <Button
                     variant="link"

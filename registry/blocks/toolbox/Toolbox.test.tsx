@@ -51,6 +51,7 @@ it("uses the stable responsive toolbox panel width", () => {
   const html = renderToStaticMarkup(<Toolbox {...openProps} />)
 
   expect(html).toContain('data-slot="toolbox"')
+  expect(html).toContain('aria-label="工具箱"')
   expect(html).toContain("w-[360px]")
   expect(html).toContain("min-w-0")
   expect(html).toContain("max-w-full")

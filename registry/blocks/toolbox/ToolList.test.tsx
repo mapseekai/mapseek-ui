@@ -57,6 +57,7 @@ const labels = {
   parameters: "Parameters",
   inputLayer: "Input layer",
   distance: "Distance",
+  distanceRequired: "Enter a buffer distance",
   parametersValid: "Parameters valid",
   completed: "Completed",
   run: (tool: string) => `Run ${tool}`,
@@ -92,7 +93,7 @@ describe("ToolList", () => {
     const html = renderToolList()
 
     expect(html).toContain(
-      'class="flex items-center gap-2 border border-transparent px-2 py-1.5 transition-colors hover:bg-accent/50"',
+      'class="flex items-center gap-2 border border-transparent px-2 py-1.5 transition-colors hover:bg-accent/50 motion-reduce:transition-none"',
     )
     expect(html).not.toContain("hover:border-primary")
   })
@@ -100,6 +101,9 @@ describe("ToolList", () => {
   it("keeps compact toolbox content discoverable and design-token aligned", () => {
     const html = renderToolList("all")
 
+    expect(html).toContain("<h2")
+    expect(html).toContain("grid-cols-1")
+    expect(html).toContain("sm:grid-cols-2")
     expect(html).toContain('name="toolbox-search"')
     expect(html).toContain('autoComplete="off"')
     expect(html).toContain('title="Buffer analysis"')
@@ -108,6 +112,7 @@ describe("ToolList", () => {
     expect(html).toContain("hover:border-primary")
     expect(html).toContain("hover:bg-primary/5")
     expect(html).toContain("tnum")
+    expect(html.match(/motion-reduce:transition-none/g)).toHaveLength(2)
     expect(html).toContain(
       'class="flex size-7 items-center justify-center bg-muted text-muted-foreground"',
     )

@@ -27,6 +27,7 @@ export type ToolboxLabels = {
   readonly parameters: string
   readonly inputLayer: string
   readonly distance: string
+  readonly distanceRequired: string
   readonly parametersValid: string
   readonly completed: string
   readonly run: (tool: string) => string

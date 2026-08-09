@@ -6,9 +6,10 @@ import {
   IconTools,
   IconX,
 } from "@tabler/icons-react"
+import { useId } from "react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import type { ToolboxLabels, ToolboxTool } from "./types"
@@ -41,6 +42,12 @@ export function ToolDetail({
   onRun,
 }: ToolDetailProps) {
   const ToolIcon = tool.icon
+  const fieldId = useId()
+  const inputLayerId = `${fieldId}-input-layer`
+  const distanceId = `${fieldId}-distance`
+  const distanceErrorId = `${fieldId}-distance-error`
+  const distanceValid = tool.parameterKind !== "distance" || distance.trim().length > 0
+
   return (
     <>
       <header className="flex items-center gap-2 border-b border-border px-3 py-2.5">
@@ -48,15 +55,16 @@ export function ToolDetail({
           variant="link"
           size="sm"
           type="button"
-          className="h-auto gap-1 rounded-none p-0 text-body-md text-primary hover:no-underline"
+          className="gap-1 rounded-none text-primary hover:no-underline"
           onClick={onBack}
         >
-          <IconArrowLeft data-icon="inline-start" aria-hidden="true" /> {labels.back}
+          <IconArrowLeft data-icon="inline-start" className="rtl:rotate-180" aria-hidden="true" />{" "}
+          {labels.back}
         </Button>
         <span className="flex-1" />
         <Button
           variant="ghost"
-          size="icon-xs"
+          size="icon-sm"
           type="button"
           aria-label={favored ? labels.unfavorite(tool.label) : labels.favorite(tool.label)}
           aria-pressed={favored}
@@ -70,8 +78,7 @@ export function ToolDetail({
         </Button>
         <Button
           variant="ghost"
-          size="icon"
-          className="size-7"
+          size="icon-sm"
           aria-label={labels.close}
           onClick={() => onOpenChange(false)}
         >
@@ -92,14 +99,11 @@ export function ToolDetail({
         <h3 className="mb-3 text-body-md-strong">{labels.parameters}</h3>
         <FieldGroup className="gap-3">
           <Field className="gap-1.5">
-            <FieldLabel
-              htmlFor="toolbox-input-layer"
-              className="text-body-md text-muted-foreground"
-            >
+            <FieldLabel htmlFor={inputLayerId} className="text-body-md">
               {labels.inputLayer}
             </FieldLabel>
             <Input
-              id="toolbox-input-layer"
+              id={inputLayerId}
               name="toolbox-input-layer"
               autoComplete="off"
               value={inputLayerName}
@@ -107,25 +111,33 @@ export function ToolDetail({
             />
           </Field>
           {tool.parameterKind === "distance" && (
-            <Field className="gap-1.5">
-              <FieldLabel htmlFor="toolbox-distance" className="text-body-md text-muted-foreground">
+            <Field className="gap-1.5" data-invalid={!distanceValid || undefined}>
+              <FieldLabel htmlFor={distanceId} className="text-body-md" required>
                 {labels.distance}
               </FieldLabel>
               <Input
-                id="toolbox-distance"
+                id={distanceId}
                 name="toolbox-distance"
                 autoComplete="off"
                 inputMode="decimal"
+                required
+                aria-invalid={!distanceValid}
+                aria-describedby={!distanceValid ? distanceErrorId : undefined}
                 value={distance}
                 onChange={(event) => onDistanceChange(event.target.value)}
               />
+              <FieldError id={distanceErrorId}>
+                {!distanceValid ? labels.distanceRequired : null}
+              </FieldError>
             </Field>
           )}
         </FieldGroup>
-        <Alert className="mt-4">
-          <IconCircleCheck aria-hidden="true" />
-          <AlertDescription>{labels.parametersValid}</AlertDescription>
-        </Alert>
+        {distanceValid && (
+          <Alert className="mt-4">
+            <IconCircleCheck aria-hidden="true" />
+            <AlertDescription>{labels.parametersValid}</AlertDescription>
+          </Alert>
+        )}
       </div>
       <Separator />
       <footer className="p-3">
@@ -134,11 +146,7 @@ export function ToolDetail({
             {labels.completed}
           </div>
         )}
-        <Button
-          className="w-full"
-          disabled={tool.parameterKind === "distance" && distance.trim().length === 0}
-          onClick={() => onRun(tool.id)}
-        >
+        <Button className="w-full" disabled={!distanceValid} onClick={() => onRun(tool.id)}>
           <IconTools data-icon="inline-start" aria-hidden="true" />
           {labels.run(tool.label)}
         </Button>

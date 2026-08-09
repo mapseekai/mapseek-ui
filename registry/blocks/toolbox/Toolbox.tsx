@@ -76,6 +76,7 @@ export function Toolbox({
   return (
     <aside
       data-slot="toolbox"
+      aria-label={labels.title}
       className={cn(
         "flex h-[560px] w-[360px] min-w-0 max-w-full flex-col overflow-hidden border border-border bg-card",
         className,

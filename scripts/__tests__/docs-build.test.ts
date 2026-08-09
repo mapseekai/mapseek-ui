@@ -3,6 +3,13 @@ import { join } from "node:path"
 import { expect, it } from "vitest"
 import { requiredRegistryDocs } from "../docs-required-registry-docs"
 
+const docsBasePath = (process.env.NEXT_PUBLIC_BASE_PATH ?? "").replace(/\/$/u, "")
+
+function stripDocsBasePath(path: string): string {
+  if (!docsBasePath || !path.startsWith(`${docsBasePath}/`)) return path
+  return path.slice(docsBasePath.length)
+}
+
 function expectOrderedCommand(command: string, steps: string[]): void {
   let cursor = -1
 
@@ -24,7 +31,7 @@ async function readBuiltCss(): Promise<string> {
 async function readBuiltPageJs(pagePath: string): Promise<string> {
   const html = await readFile(pagePath, "utf8")
   const scripts = [...html.matchAll(/<script[^>]+src="([^"]+\.js)"/gu)].map((match) =>
-    join("packages/docs/out", match[1].replace(/^\//u, "")),
+    join("packages/docs/out", stripDocsBasePath(match[1]).replace(/^\//u, "")),
   )
   const contents = await Promise.all(scripts.map((file) => readFile(file, "utf8")))
 
@@ -143,7 +150,7 @@ it("includes every public docs route in sidebar navigation", async () => {
   const blockPage = await readFile("packages/docs/out/blocks/layer-panel/index.html", "utf8")
 
   for (const [name, doc] of requiredRegistryDocs) {
-    const route = doc.category === "primitive" ? `/components/${name}/` : `/blocks/${name}/`
+    const route = `${docsBasePath}${doc.category === "primitive" ? `/components/${name}/` : `/blocks/${name}/`}`
     const page = doc.category === "primitive" ? componentPage : blockPage
     expect(page).toContain(`href="${route}"`)
   }

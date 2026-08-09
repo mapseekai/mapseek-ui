@@ -14,10 +14,10 @@ import { EditorView, lineNumbers } from "@codemirror/view"
 import { tags } from "@lezer/highlight"
 import CodeMirror from "@uiw/react-codemirror"
 import stringifyPretty from "json-stringify-pretty-compact"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 
-export type JsonEditorTheme = "app" | "light" | "dark" | "none" | Extension
+export type JsonEditorTheme = "app" | Extension
 
 export interface JsonEditorProps {
   value: unknown
@@ -40,7 +40,7 @@ const appJsonEditorTheme = EditorView.theme({
     backgroundColor: "var(--background)",
     color: "var(--foreground)",
     fontFamily: "var(--font-mono)",
-    fontSize: "12px",
+    fontSize: "13px",
   },
   ".cm-scroller": {
     fontFamily: "var(--font-mono)",
@@ -114,7 +114,7 @@ const appJsonEditorTheme = EditorView.theme({
 
 const appJsonHighlightStyle = syntaxHighlighting(
   HighlightStyle.define([
-    { tag: tags.propertyName, color: "var(--primary)" },
+    { tag: tags.propertyName, color: "var(--cat-1)" },
     { tag: tags.string, color: "var(--cat-2)" },
     { tag: tags.number, color: "var(--cat-3)" },
     { tag: tags.bool, color: "var(--cat-4)" },
@@ -149,6 +149,9 @@ export function JsonEditor({
   const isFocusedRef = useRef(false)
   const formattedValueRef = useRef(code)
   const pendingFormattedValueRef = useRef<string | null>(null)
+  const titleId = useId()
+  const labelledBy = title !== null ? titleId : undefined
+  const editorAriaLabel = title === null ? ariaLabel : undefined
 
   const formattedValue = useMemo(() => formatJsonValue(value), [value])
   const extensions = useMemo(
@@ -162,13 +165,15 @@ export function JsonEditor({
       json(),
       lintGutter(),
       linter(jsonParseLinter()),
-      theme === "app" ? [appJsonEditorTheme, appJsonHighlightStyle] : [],
+      theme === "app" ? [appJsonEditorTheme, appJsonHighlightStyle] : theme,
+      EditorView.contentAttributes.of(
+        labelledBy ? { "aria-labelledby": labelledBy } : { "aria-label": ariaLabel },
+      ),
       EditorState.tabSize.of(2),
       EditorView.lineWrapping,
     ],
-    [theme],
+    [ariaLabel, labelledBy, theme],
   )
-  const codeMirrorTheme = theme === "app" ? "none" : theme
 
   useEffect(() => {
     isFocusedRef.current = isFocused
@@ -240,12 +245,13 @@ export function JsonEditor({
   return (
     <fieldset
       className={cn(
-        "relative m-0 flex h-[360px] max-h-full min-h-0 w-full flex-col overflow-hidden border border-input bg-background p-0",
+        "relative m-0 flex h-[360px] max-h-full min-h-0 w-full flex-col overflow-hidden border border-input bg-background p-0 focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/20",
         withScroll && "h-full",
         className,
       )}
       data-wd-key="json-editor"
-      aria-label={ariaLabel}
+      aria-label={editorAriaLabel}
+      aria-labelledby={labelledBy}
     >
       {title !== null ? (
         <div
@@ -255,6 +261,7 @@ export function JsonEditor({
           )}
         >
           <span
+            id={titleId}
             className={cn(
               "font-mono text-label-sm leading-none text-muted-foreground uppercase",
               titleClassName,
@@ -275,7 +282,7 @@ export function JsonEditor({
           onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          theme={codeMirrorTheme}
+          theme="none"
           extensions={extensions}
           basicSetup={false}
           height="100%"

@@ -2135,6 +2135,16 @@ export async function assertBlockInteraction(
     await statusTrigger.click()
     await expect(popover).toBeHidden()
 
+    await statusTrigger.click()
+    await expect(popover).toBeVisible()
+    const hoveredGeographicOption = popover.getByRole("option", { name: /^EPSG:4326\b/ })
+    await hoveredGeographicOption.hover()
+    await expect(hoveredGeographicOption).toHaveAttribute("aria-selected", "true")
+    await statusTrigger.hover()
+    await expect(hoveredGeographicOption).not.toHaveAttribute("aria-selected", "true")
+    await statusTrigger.click()
+    await expect(popover).toBeHidden()
+
     await openMenuWithKeyboard(page, statusTrigger, popover)
     const picker = popover.locator('[data-slot="crs-picker"]')
     await expect(picker).toBeVisible()

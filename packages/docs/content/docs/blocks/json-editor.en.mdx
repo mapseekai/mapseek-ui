@@ -28,15 +28,15 @@ import {
 
 ## JSON Editor
 
-<ShowcaseDemo registryName="json-editor" title="JSON editor" description="Shows app/light/dark/none themes, a titled variant, focus state, and parsed controlled value output." minHeight={720} />
+<ShowcaseDemo registryName="json-editor" title="JSON editor" description="Shows untitled and titled variants in the default app theme, focus state, and parsed controlled value output." minHeight={720} />
 
 ## Usage
 
-Pass any JSON value plus `onChange`. The default `theme="app"` uses Mapseek tokens; use `light`, `dark`, or `none` for isolated previews. A string `title` renders a header, while `null` hides it.
+Pass any JSON value plus `onChange`. The default `theme="app"` uses Mapseek semantic tokens and is the only built-in theme. Specialist embeds can provide a complete CodeMirror `Extension`, but design-system conformance is guaranteed only for `app`. A string `title` renders a header, while `null` hides it.
 
 ## Public Exports and Props
 
-Exports include `JsonEditor`, `JsonEditorProps`, and `JsonEditorTheme`. Key props are `value`, `onChange`, `title`, `ariaLabel`, `theme`, `onFocus`, `onBlur`, `withScroll`, `className`, `editorClassName`, `headerClassName`, and `titleClassName`.
+Exports include `JsonEditor`, `JsonEditorProps`, and `JsonEditorTheme`; `JsonEditorTheme` is `"app" | Extension`. Key props are `value`, `onChange`, `title`, `ariaLabel`, `theme`, `onFocus`, `onBlur`, `withScroll`, `className`, `editorClassName`, `headerClassName`, and `titleClassName`.
 
 ## States and Validation
 
@@ -44,9 +44,8 @@ The component stores editor text and focus state internally. `onChange` fires on
 
 ## Accessibility
 
-Use `ariaLabel` to describe the editor purpose. Outer UI should provide save, reset, or error messaging and avoid shortcut conflicts with CodeMirror focus.
+With a visible `title`, the component uses that title to label both the outer field group and the CodeMirror textbox. Without a title, use `ariaLabel` to describe the editor purpose. Outer UI should provide save, reset, or error messaging and avoid shortcut conflicts with CodeMirror focus.
 
 ## Dependencies
 
 <RegistryDependencies registryName="json-editor" />
-

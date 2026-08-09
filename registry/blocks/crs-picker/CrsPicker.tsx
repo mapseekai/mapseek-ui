@@ -29,6 +29,7 @@ export function CrsPicker({
   const [uncontrolledValue, setUncontrolledValue] = React.useState<string | null>(
     defaultValue ?? null,
   )
+  const [activeOptionValue, setActiveOptionValue] = React.useState<string | undefined>()
   const isControlled = valueProp !== undefined
   const selectedEpsg = isControlled ? (valueProp ?? null) : uncontrolledValue
 
@@ -46,8 +47,17 @@ export function CrsPicker({
   const projected = allItems.filter((i) => i.kind === "projected")
 
   return (
-    <div data-slot="crs-picker" className={cn("w-[280px] max-w-full", className)}>
-      <Command label={labels.searchLabel} className="w-full bg-background text-body-lg">
+    <div
+      data-slot="crs-picker"
+      className={cn("w-[280px] max-w-full", className)}
+      onPointerLeave={() => setActiveOptionValue("")}
+    >
+      <Command
+        label={labels.searchLabel}
+        className="w-full bg-background text-body-lg"
+        value={activeOptionValue}
+        onValueChange={setActiveOptionValue}
+      >
         <div className="flex items-center gap-2 border-b border-border px-3 py-2">
           <IconWorld
             aria-hidden

@@ -101,11 +101,12 @@
       "name": "attr-table",
       "type": "registry:block",
       "registryDependencies": [
-        "@mapseek/badge",
         "@mapseek/copy-button",
+        "@mapseek/empty",
         "@mapseek/icon-button",
         "@mapseek/input",
         "@mapseek/skeleton",
+        "@mapseek/tag",
         "@mapseek/tooltip",
         "@mapseek/utils"
       ],
@@ -583,7 +584,12 @@
     {
       "name": "linked-ref-list",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/card-tabs", "@mapseek/icon-button", "@mapseek/tag", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/card-tabs",
+        "@mapseek/icon-button",
+        "@mapseek/tag",
+        "@mapseek/utils"
+      ],
       "files": [
         {
           "path": "linked-ref-list/LinkedRefList.tsx",

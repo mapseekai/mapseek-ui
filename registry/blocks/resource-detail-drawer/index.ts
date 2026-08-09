@@ -5,6 +5,7 @@ export type {
   IconDetail,
   ResourceDetail,
   ResourceDetailDrawerProps,
+  ResourceDetailDrawerState,
   SliceCharset,
   SpriteDetail,
 } from "./types"

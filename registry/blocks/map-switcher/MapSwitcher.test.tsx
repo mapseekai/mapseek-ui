@@ -14,13 +14,7 @@ vi.mock("@/components/ui/dropdown-menu", () => {
     DropdownMenuContent: ({ children }: { children?: ReactNode }) => (
       <div data-primitive="menu-content">{children}</div>
     ),
-    DropdownMenuRadioGroup: ({
-      value,
-      children,
-    }: {
-      value: string
-      children?: ReactNode
-    }) => (
+    DropdownMenuRadioGroup: ({ value, children }: { value: string; children?: ReactNode }) => (
       <RadioGroupContext.Provider value={{ value }}>
         <div data-primitive="radio-group">{children}</div>
       </RadioGroupContext.Provider>
@@ -36,7 +30,7 @@ vi.mock("@/components/ui/dropdown-menu", () => {
     }) => {
       const group = useContext(RadioGroupContext)
       return (
-        <div role="menuitemradio" aria-checked={group.value === value} title={title}>
+        <div role="menuitemradio" aria-checked={group.value === value} tabIndex={0} title={title}>
           {children}
         </div>
       )

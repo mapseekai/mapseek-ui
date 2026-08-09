@@ -23,6 +23,7 @@ import {
   ResourceDetailDrawer,
   type ResourceDetail,
   type ResourceDetailDrawerProps,
+  type ResourceDetailDrawerState,
 } from "@/registry/blocks/resource-detail-drawer"
 ```
 
@@ -32,21 +33,22 @@ import {
 
 ## Usage
 
-Pass the selected resource as the discriminated union `ResourceDetail`. Close, copy, download, sprite edit, and slice execution are caller callbacks.
+Pass the selected resource as the discriminated union `ResourceDetail`. For loading, empty, or error feedback, pass `state: ResourceDetailDrawerState` instead; an error retry appears only when both `retryLabel` and `onRetry` are supplied.
+
+Close, copy, download, sprite edit, and slice execution remain caller callbacks. The component does not render an enabled action when its callback is unavailable.
 
 ## Public Exports and Props
 
-Exports include `ResourceDetailDrawer`, `ResourceDetail`, `IconDetail`, `SpriteDetail`, `FontDetail`, `SliceCharset`, and props.
+Exports include `ResourceDetailDrawer`, `ResourceDetail`, `ResourceDetailDrawerState`, `IconDetail`, `SpriteDetail`, `FontDetail`, `SliceCharset`, and props.
 
 ## Loading, Empty, Error, and Status
 
-The drawer is controlled by the passed `detail` and outer open state; the demo covers all three detail kinds plus close, copy, download, and slice states.
+The demo explicitly opens loading, empty, and error feedback as well as all three resource kinds. The error-state retry action appears only when the caller provides `onRetry`.
 
 ## Accessibility
 
-The drawer inherits Sheet portal behavior, focus trapping, and Escape close. Keep action labels explicit.
+The drawer inherits Sheet portal behavior, focus trapping, and Escape close. The font-slice disclosure exposes `aria-expanded` and its controlled region, and the custom-character field has an associated label. Long titles and metadata truncate while retaining a full-value hint; narrow screens retain a 16px viewport inset and stack actions. Motion respects the system reduced-motion preference.
 
 ## Dependencies
 
 <RegistryDependencies registryName="resource-detail-drawer" />
-

@@ -18,7 +18,7 @@ function SheetBackdrop({
     <DialogPrimitive.Backdrop
       data-slot="sheet-backdrop"
       className={cn(
-        "fixed inset-0 z-[1060] bg-black/10 transition-opacity duration-150 supports-backdrop-filter:backdrop-blur-xs data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+        "fixed inset-0 z-[1060] bg-black/10 transition-opacity duration-150 motion-reduce:transition-none supports-backdrop-filter:backdrop-blur-xs data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
         className,
       )}
       {...props}
@@ -27,7 +27,7 @@ function SheetBackdrop({
 }
 
 const sheetVariants = cva(
-  "fixed z-[1060] flex flex-col border-border bg-background outline-none transition-[opacity,transform] duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
+  "fixed z-[1060] flex flex-col border-border bg-background outline-none transition-[opacity,transform] duration-150 motion-reduce:transition-none focus-visible:ring-[3px] focus-visible:ring-ring/20 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0",
   {
     variants: {
       side: {
@@ -68,10 +68,10 @@ function SheetContent({
         {children}
         {!hideClose && (
           <DialogPrimitive.Close
-            className="absolute top-3 right-3 grid size-8 cursor-pointer place-items-center text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+            className="absolute top-3 right-3 grid size-8 cursor-pointer place-items-center text-muted-foreground hover:bg-accent/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/20"
             aria-label="关闭"
           >
-            <IconX size={14} />
+            <IconX aria-hidden="true" size={14} />
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Popup>
@@ -116,7 +116,7 @@ function SheetBody({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-body"
-      className={cn("min-h-0 flex-1 overflow-auto", className)}
+      className={cn("min-h-0 flex-1 overflow-auto overscroll-contain", className)}
       {...props}
     />
   )

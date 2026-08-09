@@ -12,11 +12,6 @@ import {
 
 import { Button } from "@/components/ui/button"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
   Empty,
   EmptyContent,
   EmptyDescription,
@@ -25,7 +20,15 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty"
 import { IconButton } from "@/components/ui/icon-button"
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tag } from "@/components/ui/tag"
 import { cn } from "@/lib/utils"
 
 import type {
@@ -66,52 +69,61 @@ export function NotificationCenter({
   const total = items.length
   const counts = getCounts(items)
   const newestItems = [...items].reverse()
+  const stateText = isLoading
+    ? labels.loadingTitle
+    : isError
+      ? labels.errorTitle
+      : `${labels.total}: ${total}`
+  const showSummary = total > 0 && !isLoading && !isError
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger render={<IconButton className="relative" label={labels.trigger} />}>
-        <IconBell stroke={1.75} />
-        {total > 0 ? (
-          <span className="mono pointer-events-none absolute top-0.5 right-0.5 h-3 min-w-3 border border-primary bg-background px-px text-center text-[8px] font-semibold leading-[11px] text-primary">
+    <Popover>
+      <PopoverTrigger
+        render={<IconButton className="relative" label={`${labels.trigger}, ${stateText}`} />}
+      >
+        <IconBell aria-hidden="true" stroke={1.75} />
+        {showSummary ? (
+          <span
+            aria-hidden="true"
+            className="mono pointer-events-none absolute top-0.5 inset-e-0.5 h-3 min-w-3 border border-primary bg-background px-px text-center text-[8px] font-semibold leading-[11px] text-primary"
+          >
             {total > 9 ? "9+" : total}
           </span>
         ) : null}
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[360px] p-0">
+      </PopoverTrigger>
+      <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {stateText}
+      </span>
+      <PopoverContent
+        align="end"
+        className="w-[360px] max-w-[calc(100vw-2rem)] gap-0 overflow-hidden p-0"
+      >
         <div className="flex items-start justify-between gap-3 border-b border-border px-3 py-2.5">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="text-body-md-strong">{labels.title}</span>
-              <span
-                className={cn(
-                  "mono border px-1.5 py-0.5 text-[10px] leading-none",
-                  streamActive
-                    ? "border-primary/25 bg-primary/10 text-primary"
-                    : "border-border bg-background text-muted-foreground",
-                )}
+              <PopoverTitle className="truncate" title={labels.title}>
+                {labels.title}
+              </PopoverTitle>
+              <Tag
+                role="status"
+                aria-live="polite"
+                color={streamActive ? "green" : "gray"}
+                size="sm"
               >
                 {streamActive ? labels.streamActive : labels.streamIdle}
-              </span>
+              </Tag>
             </div>
-            <div className="mono mt-1 text-body-sm text-muted-foreground">
-              {labels.total}: {total}
-            </div>
+            <PopoverDescription className="tnum mt-1">{stateText}</PopoverDescription>
           </div>
-          {total > 0 ? (
-            <Button
-              variant="ghost"
-              size="xs"
-              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-              onClick={onClearAll}
-              disabled={!onClearAll}
-            >
-              <IconTrash data-icon="inline-start" stroke={1.75} />
+          {showSummary && onClearAll ? (
+            <Button variant="destructive" size="xs" onClick={onClearAll}>
+              <IconTrash aria-hidden="true" data-icon="inline-start" stroke={1.75} />
               {labels.clearAll}
             </Button>
           ) : null}
         </div>
 
-        {total > 0 ? (
+        {showSummary ? (
           <div className="grid grid-cols-3 border-b border-border">
             <SummaryCell label={labels.processing} value={counts.processing} />
             <SummaryCell label={labels.completed} value={counts.success} />
@@ -126,7 +138,7 @@ export function NotificationCenter({
         ) : total === 0 ? (
           <EmptyState labels={labels} />
         ) : (
-          <ul className="max-h-[420px] overflow-y-auto">
+          <ul className="max-h-[420px] overflow-y-auto overscroll-contain">
             {newestItems.map((item) => (
               <NotificationRow
                 key={item.key}
@@ -137,8 +149,8 @@ export function NotificationCenter({
             ))}
           </ul>
         )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </PopoverContent>
+    </Popover>
   )
 }
 
@@ -171,10 +183,10 @@ function LoadingState({ label }: { label: string }) {
 
 function EmptyState({ labels }: Pick<NotificationCenterProps, "labels">) {
   return (
-    <Empty className="border-0 p-5">
+    <Empty className="border-0 p-5" role="status">
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <IconBell size={14} stroke={1.75} />
+          <IconBell aria-hidden="true" size={14} stroke={1.75} />
         </EmptyMedia>
         <EmptyTitle>{labels.emptyTitle}</EmptyTitle>
         <EmptyDescription>{labels.emptyDescription}</EmptyDescription>
@@ -185,10 +197,10 @@ function EmptyState({ labels }: Pick<NotificationCenterProps, "labels">) {
 
 function ErrorState({ labels, onRetry }: Pick<NotificationCenterProps, "labels" | "onRetry">) {
   return (
-    <Empty className="border-0 p-5">
+    <Empty className="border-0 p-5" role="alert">
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <IconAlertTriangle size={14} stroke={1.75} />
+          <IconAlertTriangle aria-hidden="true" size={14} stroke={1.75} />
         </EmptyMedia>
         <EmptyTitle>
           <span className="mono">{labels.errorTitle}</span>
@@ -197,7 +209,7 @@ function ErrorState({ labels, onRetry }: Pick<NotificationCenterProps, "labels" 
       </EmptyHeader>
       <EmptyContent>
         <Button variant="outline" size="sm" onClick={onRetry} disabled={!onRetry}>
-          <IconRefresh data-icon="inline-start" stroke={1.75} />
+          <IconRefresh aria-hidden="true" data-icon="inline-start" stroke={1.75} />
           {labels.retry}
         </Button>
       </EmptyContent>
@@ -218,31 +230,41 @@ function NotificationRow({
     <li className="group grid grid-cols-[24px_minmax(0,1fr)_auto] gap-2 px-3 py-2 hover:bg-accent/50">
       <span className="mt-0.5 grid size-6 place-items-center border border-border bg-background text-muted-foreground">
         {item.sourceType === "TILESET" ? (
-          <IconMap2 size={14} stroke={1.75} />
+          <IconMap2 aria-hidden="true" size={14} stroke={1.75} />
         ) : (
-          <IconDatabase size={14} stroke={1.75} />
+          <IconDatabase aria-hidden="true" size={14} stroke={1.75} />
         )}
       </span>
       <div className="min-w-0">
         <div className="flex min-w-0 items-center gap-2">
-          <span className="truncate text-body-md-medium text-foreground">{item.title}</span>
+          <span className="truncate text-body-md-medium text-foreground" title={item.title}>
+            {item.title}
+          </span>
           <StatusPill item={item} />
         </div>
-        <div className="mt-0.5 truncate text-body-md text-muted-foreground">{item.description}</div>
+        <div
+          className="mt-0.5 truncate text-body-md text-muted-foreground"
+          title={item.description}
+        >
+          {item.description}
+        </div>
         <div className="mono mt-0.5 flex min-w-0 items-center gap-2 text-body-sm text-muted-foreground">
           <span className="shrink-0">{item.sourceLabel}</span>
-          <span className="min-w-0 truncate">{item.sourceUid}</span>
+          <span className="min-w-0 truncate" title={item.sourceUid} translate="no">
+            {item.sourceUid}
+          </span>
         </div>
       </div>
-      <Button
-        variant="ghost"
-        size="xs"
-        className="self-start text-destructive opacity-0 transition-opacity hover:bg-destructive/10 hover:text-destructive group-focus-within:opacity-100 group-hover:opacity-100"
-        onClick={() => onClearItem?.(item)}
-        disabled={!onClearItem}
-      >
-        {labels.clearOne}
-      </Button>
+      {onClearItem ? (
+        <Button
+          variant="destructive"
+          size="xs"
+          className="pointer-events-none self-start opacity-0 transition-opacity group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100 motion-reduce:transition-none [@media(hover:none)]:pointer-events-auto [@media(hover:none)]:opacity-100"
+          onClick={() => onClearItem(item)}
+        >
+          {labels.clearOne}
+        </Button>
+      ) : null}
     </li>
   )
 }
@@ -270,15 +292,22 @@ function StatusIcon({
   className: string
 }) {
   if (tone === "failed") {
-    return <IconX size={11} stroke={1.75} className={className} />
+    return <IconX aria-hidden="true" size={11} stroke={1.75} className={className} />
   }
   if (tone === "success") {
-    return <IconCheck size={11} stroke={1.75} className={className} />
+    return <IconCheck aria-hidden="true" size={11} stroke={1.75} className={className} />
   }
   if (tone === "processing") {
-    return <IconLoader2 size={11} stroke={1.75} className={cn("animate-spin", className)} />
+    return (
+      <IconLoader2
+        aria-hidden="true"
+        size={11}
+        stroke={1.75}
+        className={cn("animate-spin motion-reduce:animate-none", className)}
+      />
+    )
   }
-  return <IconBell size={11} stroke={1.75} className={className} />
+  return <IconBell aria-hidden="true" size={11} stroke={1.75} className={className} />
 }
 
 function getCounts(items: NotificationCenterItem[]) {

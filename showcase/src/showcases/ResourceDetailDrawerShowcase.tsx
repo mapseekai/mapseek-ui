@@ -1,4 +1,8 @@
-import { type ResourceDetail, ResourceDetailDrawer } from "@registry/blocks/resource-detail-drawer"
+import {
+  type ResourceDetail,
+  ResourceDetailDrawer,
+  type ResourceDetailDrawerState,
+} from "@registry/blocks/resource-detail-drawer"
 import { Button } from "@registry/ui/button"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
@@ -13,6 +17,14 @@ const labels = {
     editSprite: "已进入雪碧图编辑",
     sliced: "已执行切片",
     closed: "已关闭",
+    loading: "加载中",
+    loadingDescription: "正在读取资源元数据。",
+    empty: "暂无可查看的资源",
+    emptyDescription: "请选择一个资源以查看详情。",
+    error: "无法加载资源详情",
+    errorDescription: "请稍后重试。",
+    retry: "重试加载",
+    retried: "已重新请求详情",
     iconTitle: "搜索",
     iconSubtitle: "icon-basic-01.svg",
     rowGroup: "分组",
@@ -72,6 +84,14 @@ const labels = {
     editSprite: "Opened sprite editor",
     sliced: "Ran font slice",
     closed: "Closed",
+    loading: "Loading",
+    loadingDescription: "Reading resource metadata.",
+    empty: "No resource selected",
+    emptyDescription: "Select a resource to inspect its details.",
+    error: "Unable to load resource details",
+    errorDescription: "Try again in a moment.",
+    retry: "Retry load",
+    retried: "Requested resource details again",
     iconTitle: "Search",
     iconSubtitle: "icon-basic-01.svg",
     rowGroup: "Group",
@@ -243,7 +263,35 @@ export function ResourceDetailDrawerDemo({ locale = "zh-CN" }: LocalizedDemoProp
   const demoLabels = labels[locale]
   const details = createDetails(demoLabels)
   const [detail, setDetail] = useState<ResourceDetail | null>(null)
+  const [drawerState, setDrawerState] = useState<ResourceDetailDrawerState | null>(null)
   const [status, setStatus] = useState<string>(demoLabels.closed)
+  const stateOptions: readonly { label: string; state: ResourceDetailDrawerState }[] = [
+    {
+      label: demoLabels.loading,
+      state: {
+        description: demoLabels.loadingDescription,
+        kind: "loading",
+        title: demoLabels.loading,
+      },
+    },
+    {
+      label: demoLabels.empty,
+      state: {
+        description: demoLabels.emptyDescription,
+        kind: "empty",
+        title: demoLabels.empty,
+      },
+    },
+    {
+      label: demoLabels.error,
+      state: {
+        description: demoLabels.errorDescription,
+        kind: "error",
+        retryLabel: demoLabels.retry,
+        title: demoLabels.error,
+      },
+    },
+  ]
 
   return (
     <div className="flex flex-col gap-3">
@@ -257,6 +305,23 @@ export function ResourceDetailDrawerDemo({ locale = "zh-CN" }: LocalizedDemoProp
             data-demo-action={`resource-detail-drawer-${option.detail.kind}`}
             onClick={() => {
               setDetail(option.detail)
+              setDrawerState(null)
+              setStatus(option.label)
+            }}
+          >
+            {option.label}
+          </Button>
+        ))}
+        {stateOptions.map((option) => (
+          <Button
+            key={option.state.kind}
+            type="button"
+            variant="outline"
+            size="sm"
+            data-demo-action={`resource-detail-drawer-${option.state.kind}`}
+            onClick={() => {
+              setDetail(null)
+              setDrawerState(option.state)
               setStatus(option.label)
             }}
           >
@@ -271,13 +336,15 @@ export function ResourceDetailDrawerDemo({ locale = "zh-CN" }: LocalizedDemoProp
         </span>
       </div>
       <div className="min-h-[260px] border border-border bg-muted/20 p-4 text-xs text-muted-foreground">
-        {detail?.subtitle}
+        {detail?.subtitle ?? drawerState?.description}
       </div>
-      {detail ? (
+      {(detail || drawerState) && (
         <ResourceDetailDrawer
           detail={detail}
+          state={drawerState ?? undefined}
           onClose={() => {
             setDetail(null)
+            setDrawerState(null)
             setStatus(demoLabels.closed)
           }}
           onCopy={() => setStatus(demoLabels.copied)}
@@ -286,8 +353,9 @@ export function ResourceDetailDrawerDemo({ locale = "zh-CN" }: LocalizedDemoProp
           onRunSlice={(selected, customChars) =>
             setStatus(`${demoLabels.sliced}: ${selected.length}/${customChars.length}`)
           }
+          onRetry={() => setStatus(demoLabels.retried)}
         />
-      ) : null}
+      )}
     </div>
   )
 }

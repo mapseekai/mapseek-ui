@@ -2,11 +2,10 @@
   "name": "map-search",
   "type": "registry:block",
   "registryDependencies": [
-    "@mapseek/button",
+    "@mapseek/combobox",
     "@mapseek/field",
     "@mapseek/icon-button",
     "@mapseek/input",
-    "@mapseek/input-group",
     "@mapseek/labels",
     "@mapseek/spinner",
     "@mapseek/tabs",

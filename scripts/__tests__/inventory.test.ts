@@ -208,10 +208,11 @@ const applicationShellStatusAndResourceDependencies = {
   "placeholder-glyph": ["@mapseek/utils"],
   "notification-center": [
     "@mapseek/button",
-    "@mapseek/dropdown-menu",
     "@mapseek/empty",
     "@mapseek/icon-button",
+    "@mapseek/popover",
     "@mapseek/skeleton",
+    "@mapseek/tag",
     "@mapseek/utils",
   ],
   "processing-timeline": ["@mapseek/button", "@mapseek/empty", "@mapseek/tag", "@mapseek/utils"],
@@ -240,8 +241,10 @@ const applicationShellStatusAndResourceDependencies = {
   "resource-detail-drawer": [
     "@mapseek/button",
     "@mapseek/checkbox",
+    "@mapseek/empty",
     "@mapseek/sheet",
     "@mapseek/svg-data-uri",
+    "@mapseek/tag",
     "@mapseek/textarea",
     "@mapseek/utils",
     "@mapseek/placeholder-glyph",

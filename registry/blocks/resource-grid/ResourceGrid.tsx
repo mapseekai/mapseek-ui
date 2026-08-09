@@ -31,18 +31,35 @@ function StatusBadge({ status }: { status: ResourceStatus }) {
   if (status.variant === "published")
     return (
       <Badge>
-        <IconCircleFilled size={7} />
+        <IconCircleFilled aria-hidden="true" size={7} />
         {status.label}
       </Badge>
     )
   if (status.variant === "sliced")
     return (
       <Badge variant="outline">
-        <IconScissors size={9} stroke={1.75} />
+        <IconScissors aria-hidden="true" size={9} stroke={1.75} />
         {status.label}
       </Badge>
     )
   return <Badge variant="outline">{status.label}</Badge>
+}
+
+export function dispatchKeyboardContextMenu(event: React.KeyboardEvent<HTMLButtonElement>) {
+  const isContextMenuKey = event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")
+  if (!isContextMenuKey) return
+
+  event.preventDefault()
+  const bounds = event.currentTarget.getBoundingClientRect()
+  event.currentTarget.dispatchEvent(
+    new MouseEvent("contextmenu", {
+      bubbles: true,
+      cancelable: true,
+      button: 2,
+      clientX: bounds.left + bounds.width / 2,
+      clientY: bounds.top + bounds.height / 2,
+    }),
+  )
 }
 
 /**
@@ -89,18 +106,18 @@ export function ResourceGrid({
               data-testid="resource-icon-card"
               data-selected={selected}
               className={cn(
-                "group relative isolate aspect-square min-w-0 border-r border-b border-border bg-background ring-inset transition-colors before:pointer-events-none before:absolute before:inset-0 before:-z-10 hover:before:bg-primary/5 hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
+                "group relative isolate aspect-square min-w-0 border-r border-b border-border bg-background ring-inset transition-colors motion-reduce:transition-none before:pointer-events-none before:absolute before:inset-0 before:-z-10 hover:before:bg-primary/5 hover:ring-1 hover:ring-primary focus-within:ring-1 focus-within:ring-primary",
                 selected && "before:bg-primary/5 ring-1 ring-primary",
               )}
             >
               {selectable && (
-                <span className="absolute top-2 left-2 z-10">
+                <span className="absolute top-2 start-2 z-10">
                   <Checkbox
                     checked={selected}
                     aria-label={iconSelectionLabel?.(it) ?? it.name}
                     className={cn(
-                      "bg-background transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
-                      selected ? "opacity-100" : "opacity-0",
+                      "bg-background opacity-100 transition-opacity motion-reduce:transition-none pointer-fine:opacity-0 pointer-fine:group-hover:opacity-100 group-focus-within:opacity-100",
+                      selected && "pointer-fine:opacity-100",
                     )}
                     onClick={(e) => e.stopPropagation()}
                     onKeyDown={(e) => e.stopPropagation()}
@@ -115,6 +132,7 @@ export function ResourceGrid({
                 className="flex size-full cursor-pointer flex-col items-center justify-center gap-1.5 border-0 bg-transparent p-2.5 text-center [font:inherit] hover:bg-transparent"
                 onClick={() => onOpen("icon", it.id)}
                 onContextMenu={(e) => onContextMenu(e, "icon", it.id)}
+                onKeyDown={dispatchKeyboardContextMenu}
               >
                 {renderIconPreview?.(it) ?? <PlaceholderGlyph size={28} seed={it.seed} />}
                 <div className="w-full min-w-0 truncate text-center text-body-sm-medium text-foreground">
@@ -153,7 +171,11 @@ export function ResourceGrid({
                 </div>
               )
             }
-            title={<span className="font-mono text-body-lg-medium">{s.name}</span>}
+            title={
+              <span className="min-w-0 truncate font-mono text-body-lg-medium" title={s.name}>
+                {s.name}
+              </span>
+            }
             status={s.status}
             meta={s.metaParts}
           />
@@ -174,7 +196,11 @@ export function ResourceGrid({
             fontClass(f.family),
           )}
           thumb={<span>{resolvedLabels.fontSpecimen}</span>}
-          title={<span className="text-body-lg-medium">{f.name}</span>}
+          title={
+            <span className="min-w-0 truncate text-body-lg-medium" title={f.name}>
+              {f.name}
+            </span>
+          }
           status={f.status}
           meta={f.metaParts}
         />
@@ -205,9 +231,10 @@ function ResourceCard({
       variant="ghost"
       size="sm"
       type="button"
-      className="flex h-auto w-full cursor-pointer flex-col items-stretch overflow-hidden border border-border bg-background p-0 text-left transition-all hover:border-primary hover:bg-primary/5"
+      className="flex h-auto w-full min-w-0 cursor-pointer flex-col items-stretch overflow-hidden border border-border bg-background p-0 text-start transition-[background-color,border-color,color] motion-reduce:transition-none hover:border-primary hover:bg-primary/5"
       onClick={onOpen}
       onContextMenu={onContextMenu}
+      onKeyDown={dispatchKeyboardContextMenu}
     >
       <div
         data-testid="resource-card-thumb"
@@ -218,16 +245,22 @@ function ResourceCard({
       >
         {thumb}
       </div>
-      <div className="flex flex-col gap-1 px-3 py-2.5">
-        <div className="flex items-center gap-2 text-body-lg">
+      <div className="flex min-w-0 flex-col gap-1 px-3 py-2.5">
+        <div className="flex min-w-0 items-center gap-2 text-body-lg">
           {title}
           <StatusBadge status={status} />
         </div>
-        <div className="flex items-center gap-1.5 font-mono text-body-sm text-muted-foreground">
+        <div className="flex min-w-0 items-center gap-1.5 overflow-hidden font-mono text-body-sm text-muted-foreground">
           {meta.map((part, i) => (
-            <span key={part} className="flex items-center gap-1.5">
-              {i > 0 && <span className="opacity-50">·</span>}
-              {part}
+            <span key={part} className="flex min-w-0 items-center gap-1.5">
+              {i > 0 && (
+                <span aria-hidden="true" className="shrink-0 opacity-50">
+                  ·
+                </span>
+              )}
+              <span className="truncate" title={part}>
+                {part}
+              </span>
             </span>
           ))}
         </div>

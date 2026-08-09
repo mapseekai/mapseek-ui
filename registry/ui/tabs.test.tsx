@@ -31,4 +31,15 @@ describe("tabs primary variant", () => {
       "dark:group-data-[variant=primary]/tabs-list:data-active:hover:text-primary-foreground",
     )
   })
+
+  it("transitions only visual properties that the trigger changes", () => {
+    const trigger = TabsTrigger({ value: "schema", children: "Schema" }) as ReactElement<{
+      className: string
+    }>
+
+    expect(trigger.props.className).toContain(
+      "transition-[background-color,border-color,color,opacity]",
+    )
+    expect(trigger.props.className).not.toContain("transition-all")
+  })
 })

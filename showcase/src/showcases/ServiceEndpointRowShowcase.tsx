@@ -70,7 +70,7 @@ export function ServiceEndpointRowDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         icon={
           <span
             aria-hidden="true"
-            className="flex size-9 items-center justify-center border border-border bg-muted/50 text-foreground"
+            className="flex size-9 items-center justify-center border border-cat-1/30 bg-cat-1/10 text-cat-1"
           >
             <IconGridDots size={16} stroke={1.75} />
           </span>
@@ -91,7 +91,7 @@ export function ServiceEndpointRowDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         icon={
           <span
             aria-hidden="true"
-            className="flex size-9 items-center justify-center border border-border bg-muted/50 text-foreground"
+            className="flex size-9 items-center justify-center border border-cat-2/30 bg-cat-2/10 text-cat-2"
           >
             <IconBraces size={16} stroke={1.75} />
           </span>
@@ -113,7 +113,7 @@ export function ServiceEndpointRowDemo({ locale = "zh-CN" }: LocalizedDemoProps)
         icon={
           <span
             aria-hidden="true"
-            className="flex size-9 items-center justify-center border border-border bg-muted/50 text-foreground"
+            className="flex size-9 items-center justify-center border border-cat-5/30 bg-cat-5/10 text-cat-5"
           >
             <IconFileZip size={16} stroke={1.75} />
           </span>

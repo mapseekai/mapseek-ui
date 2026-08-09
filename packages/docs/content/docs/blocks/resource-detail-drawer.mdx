@@ -23,6 +23,7 @@ import {
   ResourceDetailDrawer,
   type ResourceDetail,
   type ResourceDetailDrawerProps,
+  type ResourceDetailDrawerState,
 } from "@/registry/blocks/resource-detail-drawer"
 ```
 
@@ -32,21 +33,22 @@ import {
 
 ## 用法
 
-根据选中资源传入 discriminated union `ResourceDetail`。关闭、复制、下载、编辑 sprite 和执行切片都由调用方回调处理。
+根据选中资源传入 discriminated union `ResourceDetail`。加载、空态或错误时，可改传 `state: ResourceDetailDrawerState`；错误态在同时传入 `retryLabel` 与 `onRetry` 时显示重试操作。
+
+复制、下载、编辑 sprite 和执行切片均由调用方回调处理。未提供对应回调时，组件不会渲染无效操作。
 
 ## 公开导出与 Props
 
-导出 `ResourceDetailDrawer`、`ResourceDetail`、`IconDetail`、`SpriteDetail`、`FontDetail`、`SliceCharset` 和 props 类型。
+导出 `ResourceDetailDrawer`、`ResourceDetail`、`ResourceDetailDrawerState`、`IconDetail`、`SpriteDetail`、`FontDetail`、`SliceCharset` 和 props 类型。
 
 ## 加载、空态、错误与状态
 
-抽屉由传入 `detail` 与外层 open 状态控制；示例覆盖三种详情、关闭、复制、下载和切片状态。
+示例可分别打开加载、空态、错误态，以及三种资源详情。错误态的“重试加载”按钮仅在调用方提供 `onRetry` 时出现。
 
 ## 无障碍
 
-抽屉继承 Sheet 的 portal、焦点陷阱和 Escape 关闭；按钮文案应保持动作明确。
+抽屉继承 Sheet 的 portal、焦点陷阱和 Escape 关闭；字体切片的展开控件提供 `aria-expanded` 和关联区域，输入框具有关联标签。长标题与元数据会截断并保留完整值提示；窄屏时抽屉保留 16px 视口边距，操作区纵向排列。动画会遵循系统的“减少动态效果”偏好。
 
 ## 依赖
 
 <RegistryDependencies registryName="resource-detail-drawer" />
-

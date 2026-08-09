@@ -779,11 +779,10 @@
       "name": "map-search",
       "type": "registry:block",
       "registryDependencies": [
-        "@mapseek/button",
+        "@mapseek/combobox",
         "@mapseek/field",
         "@mapseek/icon-button",
         "@mapseek/input",
-        "@mapseek/input-group",
         "@mapseek/labels",
         "@mapseek/spinner",
         "@mapseek/tabs",
@@ -852,10 +851,11 @@
       "type": "registry:block",
       "registryDependencies": [
         "@mapseek/button",
-        "@mapseek/dropdown-menu",
         "@mapseek/empty",
         "@mapseek/icon-button",
+        "@mapseek/popover",
         "@mapseek/skeleton",
+        "@mapseek/tag",
         "@mapseek/utils"
       ],
       "files": [
@@ -1080,8 +1080,10 @@
       "registryDependencies": [
         "@mapseek/button",
         "@mapseek/checkbox",
+        "@mapseek/empty",
         "@mapseek/sheet",
         "@mapseek/svg-data-uri",
+        "@mapseek/tag",
         "@mapseek/textarea",
         "@mapseek/utils",
         "@mapseek/placeholder-glyph",

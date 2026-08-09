@@ -19,6 +19,10 @@ import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem
 
 <ShowcaseDemo registryName="spinner" demo="overview" title="Spinner" description="用于表示正在进行中的加载状态。" />
 
+## 无障碍
+
+`<Spinner />` 默认作为装饰图标隐藏于辅助技术，适合放在已经包含可访问文本的按钮或状态旁。独立表达加载状态时请传入本地化的 `label`，例如 `<Spinner label="正在加载" />`。组件会响应“减少动态效果”偏好并停止旋转。
+
 ## 依赖
 
 <RegistryDependencies registryName="spinner" />

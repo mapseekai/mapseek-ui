@@ -103,10 +103,10 @@ export function StyleSourcePickerDialog({
     >
       <DialogContent
         title={labels.title}
-        className="flex max-h-[86vh] flex-col gap-0 overflow-hidden p-0 shadow-none [&>[data-slot=dialog-header]]:px-5 [&>[data-slot=dialog-header]]:py-4"
+        className="flex max-h-[86vh] flex-col gap-0 overflow-hidden p-0 shadow-none [&>[data-slot=dialog-close]]:top-3 [&>[data-slot=dialog-header]]:px-4 [&>[data-slot=dialog-header]]:py-4"
         width="56rem"
       >
-        <div className="flex flex-col gap-3 border-b px-5 pb-4">
+        <div className="flex flex-col gap-3 border-b px-4 py-4">
           <div className="relative">
             <IconSearch
               size={14}
@@ -182,12 +182,12 @@ export function StyleSourcePickerDialog({
         </div>
 
         {confirmErrorMessage ? (
-          <p className="border-b bg-destructive/5 px-5 py-2 text-body-md text-destructive">
+          <p className="border-b bg-destructive/5 px-4 py-2 text-body-md text-destructive">
             {confirmErrorMessage}
           </p>
         ) : null}
 
-        <div className="min-h-0 flex-1 overflow-auto bg-muted/20 p-5">
+        <div className="min-h-0 flex-1 overscroll-contain overflow-auto bg-muted/20 p-4">
           {loadErrorMessage && !loading ? (
             <div className="flex flex-col items-start gap-3 border border-destructive/25 bg-background p-4">
               <p className="text-body-lg text-destructive">{loadErrorMessage}</p>
@@ -218,12 +218,12 @@ export function StyleSourcePickerDialog({
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-3 border-t bg-background px-5 py-3">
+        <div className="flex flex-col items-stretch gap-3 border-t bg-background px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-body-md text-muted-foreground">
             {labels.selectedCount(selectedOptions.length)}
           </p>
 
-          <div className="flex gap-2">
+          <div className="flex justify-end gap-2">
             <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>
               {labels.cancel}
             </Button>
@@ -280,6 +280,10 @@ function SourceOptionCardGrid({
         const alreadyAdded = alreadyAddedKeys.has(item.key)
         const kindLabel = item.sourceKind === "DATASET" ? labels.dataset : labels.tileset
         const typeLabel = item.sourceType === "raster" ? labels.raster : labels.vector
+        const typeBadgeClass =
+          item.sourceType === "raster"
+            ? "border-cat-5/30 bg-cat-5/10 text-cat-5"
+            : "border-cat-2/30 bg-cat-2/10 text-cat-2"
 
         return (
           <Button
@@ -347,7 +351,11 @@ function SourceOptionCardGrid({
               >
                 {kindLabel}
               </Badge>
-              {item.sourceType ? <Badge variant="outline">{typeLabel}</Badge> : null}
+              {item.sourceType ? (
+                <Badge variant="outline" className={typeBadgeClass}>
+                  {typeLabel}
+                </Badge>
+              ) : null}
               {item.status ? (
                 <Badge
                   variant="outline"

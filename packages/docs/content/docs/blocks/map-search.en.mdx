@@ -47,11 +47,11 @@ import {
 
 ## State and Validation
 
-Empty keywords do not start a lookup, and the default debounce is 300ms. Loading, empty, search-error, and locate-error states provide readable feedback. Longitude is limited to `[-180, 180]` and latitude to `[-90, 90]`; parseable out-of-range values report immediately, while empty and non-number values report after blur or a locate attempt. Switching tabs or collapsing preserves current input.
+Empty keywords do not start a lookup, and the default debounce is 300ms. Loading, empty, search-error, and locate-error states provide readable feedback. Longitude is limited to `[-180, 180]` and latitude to `[-90, 90]`; parseable out-of-range values report immediately, while empty and non-number values report after blur or a locate attempt. Switching tabs or collapsing preserves current input. Place and coordinate actions use compact icon buttons and stay on the same row as their fields, preventing localized labels from squeezing the inputs.
 
 ## Localization and Accessibility
 
-The block ships with Chinese defaults and accepts `labels: Partial<MapSearchLabels>` overrides. Tabs support keyboard switching, result rows can be focused and selected with Enter, icon-only actions expose accessible names and tooltips, and validation connects `aria-invalid` fields to descriptive errors.
+The block ships with Chinese defaults and accepts `labels: Partial<MapSearchLabels>` overrides. Place results follow standard Combobox behavior: use Arrow keys or Home/End to browse, Enter to select, and Escape to close the popup. Tabs support keyboard switching, icon-only actions expose accessible names and tooltips, validation connects `aria-invalid` fields to descriptive errors, and the locate button retains its localized accessible name while loading.
 
 ## Dependencies
 

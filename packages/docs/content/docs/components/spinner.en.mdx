@@ -19,6 +19,10 @@ Indicates an in-progress loading state.
 
 <ShowcaseDemo registryName="spinner" demo="overview" title="Spinner" description="Indicates an in-progress loading state." />
 
+## Accessibility
+
+`<Spinner />` is decorative by default and hidden from assistive technology, which suits buttons or status text that already have an accessible name. When the spinner communicates loading on its own, pass a localized `label`, such as `<Spinner label="Loading data" />`. The animation stops when the user prefers reduced motion.
+
 ## Dependencies
 
 <RegistryDependencies registryName="spinner" />

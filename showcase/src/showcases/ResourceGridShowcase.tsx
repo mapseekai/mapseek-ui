@@ -144,6 +144,7 @@ export function ResourceGridDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
             type="button"
             variant={tab === value ? "default" : "outline"}
             size="sm"
+            aria-pressed={tab === value}
             data-demo-action={`resource-grid-tab-${value}`}
             onClick={() => {
               setTab(value)
@@ -158,6 +159,7 @@ export function ResourceGridDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           type="button"
           variant="outline"
           size="sm"
+          aria-pressed={showEmpty}
           data-demo-action="resource-grid-empty"
           onClick={() => {
             setShowEmpty((current) => !current)
@@ -167,6 +169,9 @@ export function ResourceGridDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {demoLabels.empty}
         </Button>
         <span
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
           data-demo-status="resource-grid"
           className="self-center font-mono text-xs text-muted-foreground"
         >

@@ -31,6 +31,9 @@ export interface SpriteDetail {
   previewSeeds: string[]
   /** Real sprite.png URL; falls back to the seed mosaic when absent. */
   previewUrl?: string
+  /** Intrinsic preview dimensions used to reserve image layout before it loads. */
+  previewWidth?: number
+  previewHeight?: number
   cols: number
   /** Absent when the backend has no icon-group provenance to show. */
   sourceTitle?: string
@@ -85,8 +88,20 @@ export interface FontDetail {
 
 export type ResourceDetail = IconDetail | SpriteDetail | FontDetail
 
+/** Caller-provided feedback when the selected resource has no detail view yet. */
+export interface ResourceDetailDrawerState {
+  kind: "loading" | "empty" | "error"
+  title: string
+  description?: string
+  /** Rendered only for an error state when the caller also provides `onRetry`. */
+  retryLabel?: string
+}
+
 export interface ResourceDetailDrawerProps {
-  detail: ResourceDetail
+  /** The selected resource detail. Omit it when rendering a caller-provided state. */
+  detail?: ResourceDetail | null
+  /** Loading, empty, or error feedback owned and localized by the caller. */
+  state?: ResourceDetailDrawerState
   onClose: () => void
   /** Sprite detail: jump to the (stubbed) sprite editor. */
   onEditSprite?: () => void
@@ -94,5 +109,6 @@ export interface ResourceDetailDrawerProps {
   onCopy?: () => void
   onDownload?: () => void
   onRunSlice?: (selected: string[], customChars: string) => void
+  onRetry?: () => void
   className?: string
 }

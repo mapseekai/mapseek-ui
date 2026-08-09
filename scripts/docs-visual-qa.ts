@@ -452,6 +452,25 @@ async function assertNoHorizontalOverflow(locator: Locator, label: string): Prom
   }
 }
 
+async function assertSameRow(locators: readonly Locator[], label: string): Promise<void> {
+  let lastCenters: number[] = []
+  try {
+    await expect
+      .poll(async () => {
+        const boxes = await Promise.all(locators.map((locator) => locator.boundingBox()))
+        if (boxes.some((box) => box === null)) return false
+
+        lastCenters = boxes.map((box) => (box?.y ?? 0) + (box?.height ?? 0) / 2)
+        return Math.max(...lastCenters) - Math.min(...lastCenters) <= 1
+      })
+      .toBe(true)
+  } catch (error) {
+    throw new Error(`${label} controls are not on one row: ${JSON.stringify(lastCenters)}`, {
+      cause: error,
+    })
+  }
+}
+
 async function assertWithinViewport(locator: Locator, label: string): Promise<void> {
   const page = locator.page()
   let lastSample: unknown
@@ -2037,21 +2056,97 @@ export async function assertBlockInteraction(
 
   if (block === "map-search") {
     const demo = page.locator('[data-demo="map-search"]')
-    const placeInput = demo.getByRole("textbox", {
+    const mapSearch = demo.locator('[data-slot="map-search"]')
+    const collapseButton = demo.getByRole("button", {
+      name: localized(path, "收起", "Collapse search"),
+      exact: true,
+    })
+    const collapseControl = demo
+      .locator('[data-slot="map-search"] [data-slot="icon-button"]')
+      .first()
+    const collapseIcon = collapseButton.locator("svg")
+
+    if (path.startsWith("/en/")) {
+      await mapSearch.evaluate((element) => {
+        const mapSearchElement = element as HTMLElement
+        mapSearchElement.style.width = "17.5rem"
+      })
+      await assertNoHorizontalOverflow(mapSearch, `${path} narrow English MapSearch`)
+    }
+
+    await mapSearch.evaluate((element) => element.setAttribute("dir", "rtl"))
+    await expect
+      .poll(() => collapseIcon.evaluate((element) => getComputedStyle(element).rotate))
+      .toBe("180deg")
+    await mapSearch.evaluate((element) => element.removeAttribute("dir"))
+
+    const placeInput = demo.getByRole("combobox", {
       name: localized(path, "地名", "Place"),
       exact: true,
     })
+    const placePanel = demo.getByRole("tabpanel", {
+      name: localized(path, "地名搜索", "Place"),
+      exact: true,
+    })
+    const clearPlaceButton = placePanel.getByRole("button", {
+      name: localized(path, "清除", "Clear place"),
+      exact: true,
+    })
+    const locatePlaceButton = placePanel.getByRole("button", {
+      name: localized(path, "定位", "Locate place"),
+      exact: true,
+    })
+    await assertSameRow(
+      [placeInput, clearPlaceButton, locatePlaceButton],
+      `${path} place search row`,
+    )
     await placeInput.fill(localized(path, "北京", "Beijing"))
-    await page.waitForTimeout(320)
+    const beijingOption = page.getByRole("option", { name: /北京 Beijing/ })
+    await placeInput.press("Escape")
+    await page.waitForTimeout(500)
+    await expect(beijingOption).not.toBeVisible()
+    await placeInput.press("ArrowDown")
+    await expect(beijingOption).toBeVisible()
+    await placeInput.press("Escape")
+    await expect(beijingOption).not.toBeVisible()
+
+    await placeInput.fill(localized(path, "杭州", "Hangzhou"))
+    await demo
+      .getByRole("tab", { name: localized(path, "经纬度搜索", "Coordinates"), exact: true })
+      .click()
+    await page.waitForTimeout(500)
+    const hangzhouOption = page.getByRole("option", { name: /杭州 Hangzhou/ })
+    await expect(hangzhouOption).not.toBeVisible()
+    await demo.getByRole("tab", { name: localized(path, "地名搜索", "Place"), exact: true }).click()
+
+    await placeInput.fill(localized(path, "广州", "Guangzhou"))
+    await collapseControl.click()
+    await page.waitForTimeout(500)
+    const guangzhouOption = page.getByRole("option", { name: /广州 Guangzhou/ })
+    await expect(guangzhouOption).not.toBeVisible()
+    await demo
+      .getByRole("button", { name: localized(path, "展开", "Expand search"), exact: true })
+      .click()
+
+    await placeInput.fill(localized(path, "北京", "Beijing"))
+    await placePanel.locator('[data-slot="icon-button"]').first().focus()
+    await page.waitForTimeout(500)
+    await expect(beijingOption).not.toBeVisible()
+
     await placeInput.fill(localized(path, "上海", "Shanghai"))
-    await demo.getByRole("option", { name: /上海 Shanghai/ }).click()
-    await expect(demo.getByRole("option", { name: /北京 Beijing/ })).toHaveCount(0)
+    await expect(page.getByRole("option", { name: /上海 Shanghai/ })).toBeVisible()
+    await placeInput.press("ArrowDown")
+    await placeInput.press("Enter")
+    await expect(page.getByRole("option", { name: /北京 Beijing/ })).toHaveCount(0)
     await expect(demo.locator('[data-demo-status="map-search"]')).toContainText(
       localized(path, "飞行至：上海 Shanghai", "Fly to: 上海 Shanghai"),
     )
-    await demo
-      .getByRole("button", { name: localized(path, "清除", "Clear place"), exact: true })
-      .click()
+    await placeInput.press("ArrowDown")
+    const selectedShanghai = page.getByRole("option", { name: /上海 Shanghai/ })
+    await expect(selectedShanghai).toBeVisible()
+    await expect(selectedShanghai).toHaveAttribute("data-selected", "")
+    await placeInput.press("Escape")
+    await clearPlaceButton.click()
     await expect(placeInput).toHaveValue("")
 
     await demo
@@ -2065,25 +2160,36 @@ export async function assertBlockInteraction(
       name: localized(path, "纬度", "Latitude"),
       exact: true,
     })
+    const coordinatePanel = demo.getByRole("tabpanel", {
+      name: localized(path, "经纬度搜索", "Coordinates"),
+      exact: true,
+    })
+    const clearCoordinatesButton = coordinatePanel.getByRole("button", {
+      name: localized(path, "清除", "Clear coordinates"),
+      exact: true,
+    })
+    const locateCoordinatesButton = coordinatePanel.getByRole("button", {
+      name: localized(path, "定位", "Locate coordinates"),
+      exact: true,
+    })
+    await assertSameRow(
+      [longitude, latitude, clearCoordinatesButton, locateCoordinatesButton],
+      `${path} coordinate search row`,
+    )
     await longitude.fill("181")
     await expect(demo.getByRole("alert")).toContainText(
       localized(path, "经度必须在 -180 至 180 之间", "Longitude must be between -180 and 180"),
     )
     await longitude.fill("116.4074")
     await latitude.fill("39.9042")
-    await demo
-      .getByRole("button", { name: localized(path, "定位", "Locate coordinates"), exact: true })
-      .click()
+    await locateCoordinatesButton.click()
     await expect(demo.locator('[data-demo-status="map-search"]')).toContainText("116.4074, 39.9042")
-    await demo
-      .getByRole("button", { name: localized(path, "清除", "Clear coordinates"), exact: true })
-      .click()
+    await clearCoordinatesButton.click()
     await expect(longitude).toHaveValue("")
     await expect(latitude).toHaveValue("")
+    await assertNoHorizontalOverflow(mapSearch, `${path} responsive MapSearch`)
 
-    await demo
-      .getByRole("button", { name: localized(path, "收起", "Collapse search"), exact: true })
-      .click()
+    await collapseButton.click()
     const expand = demo.getByRole("button", {
       name: localized(path, "展开", "Expand search"),
       exact: true,
@@ -2375,10 +2481,9 @@ export async function assertBlockInteraction(
     const emptySelectContent = page.locator('[data-slot="select-content"]:visible')
     await expect(emptySelectContent).toBeVisible()
     await expect(
-      emptySelectContent.locator('[data-slot="empty"]').getByText(
-        localized(path, "暂无选项", "No options"),
-        { exact: true },
-      ),
+      emptySelectContent
+        .locator('[data-slot="empty"]')
+        .getByText(localized(path, "暂无选项", "No options"), { exact: true }),
     ).toBeVisible()
     await page.keyboard.press("Escape")
   }
@@ -2441,35 +2546,35 @@ export async function assertBlockInteraction(
 
   if (block === "notification-center") {
     const demo = page.locator('[data-demo="notification-center"]')
-    const trigger = demo.getByRole("button", {
-      name: localized(path, "通知中心", "Notification center"),
-      exact: true,
-    })
-    await openMenuWithKeyboard(
-      page,
-      trigger,
-      page.locator('[data-slot="dropdown-menu-content"]').last(),
+    const trigger = demo.locator('[data-slot="popover-trigger"]')
+    await expect(trigger).toHaveAccessibleName(
+      localized(path, "通知中心, TOTAL: 3", "Notification center, TOTAL: 3"),
     )
-    const menu = page.locator('[data-slot="dropdown-menu-content"]').last()
-    await expect(menu).toContainText("TOTAL")
-    const notificationRows = menu.locator("li")
+    await openMenuWithKeyboard(page, trigger, page.locator('[data-slot="popover-content"]').last())
+    const popover = page.locator('[data-slot="popover-content"]').last()
+    await expect(popover).toContainText("TOTAL")
+    const notificationRows = popover.locator("li")
     await expect(notificationRows.first()).toContainText(
       localized(path, "PMTiles · 边界瓦片", "PMTiles · boundary tiles"),
     )
-    const clearAllButton = menu.getByRole("button", {
+    const clearAllButton = popover.getByRole("button", {
       name: localized(path, "全部清除", "Clear all"),
       exact: true,
     })
     await expect(clearAllButton).toHaveClass(/text-destructive/)
     const firstNotification = notificationRows.first()
+    const clearItemButton = firstNotification.getByRole("button", {
+      name: localized(path, "清除", "Clear"),
+      exact: true,
+    })
+    await expect(clearItemButton).toHaveCSS("opacity", "0")
     await firstNotification.hover()
-    await expect(firstNotification).toHaveClass(/hover:bg-destructive/)
-    await expect(
-      firstNotification.getByRole("button", {
-        name: localized(path, "清除", "Clear"),
-        exact: true,
-      }),
-    ).toHaveClass(/text-destructive/)
+    await expect(firstNotification).toHaveClass(/hover:bg-accent\/50/)
+    await expect(clearItemButton).toHaveCSS("opacity", "1")
+    await expect(clearItemButton).toHaveClass(/text-destructive/)
+    await page.mouse.move(0, 0)
+    await clearItemButton.focus()
+    await expect(clearItemButton).toHaveCSS("opacity", "1")
     await page.keyboard.press("Escape")
     await expect(trigger).toBeFocused()
 
@@ -2477,7 +2582,7 @@ export async function assertBlockInteraction(
     await trigger.click()
     await expect(
       page
-        .locator('[data-slot="dropdown-menu-content"]')
+        .locator('[data-slot="popover-content"]')
         .last()
         .getByRole("status", {
           name: localized(path, "正在加载通知", "Loading notifications"),
@@ -2485,7 +2590,7 @@ export async function assertBlockInteraction(
         }),
     ).toBeVisible()
     await trigger.click()
-    await expect(menu).toBeHidden()
+    await expect(popover).toBeHidden()
 
     await activateByKeyboard(demo.locator('[data-demo-action="notification-center-error"]'))
     await trigger.click()
@@ -2497,7 +2602,7 @@ export async function assertBlockInteraction(
 
     await activateByKeyboard(demo.locator('[data-demo-action="notification-center-empty"]'))
     await trigger.click()
-    await expect(page.locator('[data-slot="dropdown-menu-content"]').last()).toContainText(
+    await expect(page.locator('[data-slot="popover-content"]').last()).toContainText(
       localized(path, "暂无新通知", "No new notifications"),
     )
     await page.keyboard.press("Escape")
@@ -2739,9 +2844,14 @@ export async function assertBlockInteraction(
       localized(path, "云优化 GeoTIFF · HTTP Range", "Cloud Optimized GeoTIFF · HTTP Range"),
     )
     await expect(urls).toHaveCount(3)
+    await expect(demo.locator('[data-slot="tag"][data-color="green"]')).toHaveCount(3)
+    await expect(rows.nth(0).locator(".text-cat-1")).toHaveCount(1)
+    await expect(rows.nth(1).locator(".text-cat-2")).toHaveCount(1)
+    await expect(rows.nth(2).locator(".text-cat-5")).toHaveCount(1)
     await expect(firstUrl).toHaveAttribute("tabindex", "0")
     await expect(firstUrl).toHaveAttribute("dir", "ltr")
     await expect(firstUrl).toHaveAttribute("translate", "no")
+    await expect(firstUrl).toHaveCSS("border-radius", "0px")
     const [urlBox, copyBox, openBox] = await Promise.all([
       firstUrl.boundingBox(),
       firstCopy.boundingBox(),

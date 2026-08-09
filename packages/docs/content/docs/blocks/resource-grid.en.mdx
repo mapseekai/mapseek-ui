@@ -33,7 +33,7 @@ import {
 
 ## Usage
 
-Pass the current `tab`, matching `items`, and open/context-menu callbacks. Icon mode can receive `selectedIconIds` and `onIconSelect` for bulk selection.
+Pass the current `tab`, matching `items`, and open/context-menu callbacks. Cards invoke the context-menu callback from the Menu key or `Shift+F10`; icon mode can receive `selectedIconIds` and `onIconSelect` for bulk selection.
 
 ## Public Exports and Props
 
@@ -45,9 +45,8 @@ Empty state is injected through the `empty` slot; loading and errors are switche
 
 ## Accessibility
 
-Cards are buttons, and icon checkboxes should provide `iconSelectionLabel`. Card names truncate, so full names should be available in detail views.
+Cards are buttons, and icon checkboxes should provide `iconSelectionLabel`; they remain visible on touch devices. Card names and metadata truncate visually while preserving complete values through accessible names, native `title` tooltips where present, or the detail view.
 
 ## Dependencies
 
 <RegistryDependencies registryName="resource-grid" />
-

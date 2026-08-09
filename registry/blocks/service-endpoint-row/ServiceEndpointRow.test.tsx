@@ -47,13 +47,14 @@ describe("ServiceEndpointRow", () => {
     expect(html).toContain('translate="no"')
     expect(html).toContain(`aria-label="${baseProps.url}"`)
     expect(html).toContain(`title="${baseProps.url}"`)
+    expect(html).toMatch(/<code[^>]*data-slot="service-endpoint-url"[^>]*class="[^"]*rounded-none/)
     expect(html).not.toContain("<fieldset")
   })
 
-  it("uses neutral shared UI for the method and URL parameters", () => {
+  it("uses a semantic green method tag without warning or info colors", () => {
     const html = renderToStaticMarkup(<ServiceEndpointRow {...baseProps} />)
 
-    expect(html).toMatch(/<span[^>]*data-color="gray"[^>]*data-slot="tag"/)
+    expect(html).toMatch(/<span[^>]*data-color="green"[^>]*data-slot="tag"/)
     expect(html).not.toContain("text-warning")
     expect(html).not.toContain("text-info")
   })

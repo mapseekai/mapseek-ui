@@ -51,7 +51,7 @@ export function ServiceEndpointRow({
             </span>
           </div>
         </div>
-        <Tag color="gray" variant="outline" translate="no">
+        <Tag color="green" variant="outline" translate="no">
           {method}
         </Tag>
       </div>
@@ -64,7 +64,7 @@ export function ServiceEndpointRow({
           translate="no"
           aria-label={url}
           title={url}
-          className="mono scroll-fade-x flex h-8 min-w-0 items-center overflow-x-auto whitespace-nowrap border border-input bg-input-surface px-2 text-body-sm text-foreground outline-none focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/20"
+          className="mono scroll-fade-x flex h-8 min-w-0 items-center overflow-x-auto whitespace-nowrap rounded-none border border-input bg-input-surface px-2 text-body-sm text-foreground outline-none focus-visible:border-ring focus-visible:ring-(length:--focus-ring-width) focus-visible:ring-ring/20"
         >
           {urlSegments.map((segment) => (
             <span

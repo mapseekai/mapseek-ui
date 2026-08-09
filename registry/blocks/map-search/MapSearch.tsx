@@ -1,7 +1,14 @@
-import { IconChevronLeft, IconSearch } from "@tabler/icons-react"
+import { IconChevronLeft, IconMapPin, IconSearch, IconX } from "@tabler/icons-react"
 import * as React from "react"
 
-import { Button } from "@/components/ui/button"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  useComboboxAnchor,
+} from "@/components/ui/combobox"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { IconButton } from "@/components/ui/icon-button"
 import { Input } from "@/components/ui/input"
@@ -32,36 +39,28 @@ function coordinateError(
   return result.error === "required" ? labels.coordinateRequired : labels.coordinateInvalid
 }
 
-function PlaceResult({
-  place,
-  selected,
-  onSelect,
-}: {
-  place: PlaceSearchResult
-  selected: boolean
-  onSelect: () => void
-}) {
+function PlaceResult({ place }: { place: PlaceSearchResult }) {
   return (
-    <Button
-      type="button"
-      role="option"
-      aria-selected={selected}
-      variant="ghost"
-      className={cn(
-        "h-7 w-full justify-start px-3 py-1 text-start",
-        selected && "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary",
-      )}
-      onClick={onSelect}
+    <ComboboxItem
+      value={place}
+      aria-label={
+        place.description
+          ? `${place.name}, ${place.description}`
+          : `${place.name}, ${place.longitude}, ${place.latitude}`
+      }
+      className="h-7 justify-start px-3 py-1 text-start data-selected:bg-selection-bg data-selected:text-primary data-selected:hover:bg-selection-bg data-selected:hover:text-primary data-selected:data-highlighted:bg-selection-bg"
     >
       <span className="flex min-w-0 flex-1 items-baseline gap-3">
-        <span className="shrink-0 font-medium">{place.name}</span>
-        <span className="truncate text-body-sm text-muted-foreground">
+        <span className="min-w-0 truncate font-medium" title={place.name}>
+          {place.name}
+        </span>
+        <span className="min-w-0 flex-1 truncate text-body-sm text-muted-foreground">
           {place.description ?? (
             <span className="tnum">{`${place.longitude}, ${place.latitude}`}</span>
           )}
         </span>
       </span>
-    </Button>
+    </ComboboxItem>
   )
 }
 
@@ -80,8 +79,9 @@ function MapSearch({
   const [tab, setTab] = React.useState(defaultTab)
   const [collapsed, setCollapsed] = React.useState(defaultCollapsed)
   const [query, setQuery] = React.useState("")
-  const [selectedPlaceId, setSelectedPlaceId] = React.useState<string | null>(null)
+  const [selectedPlace, setSelectedPlace] = React.useState<PlaceSearchResult | null>(null)
   const [results, setResults] = React.useState<PlaceSearchResult[]>([])
+  const [resultsOpen, setResultsOpen] = React.useState(false)
   const [searchState, setSearchState] = React.useState<SearchState>("idle")
   const [locateState, setLocateState] = React.useState<LocateState>("idle")
   const [longitude, setLongitude] = React.useState("")
@@ -89,7 +89,10 @@ function MapSearch({
   const [longitudeTouched, setLongitudeTouched] = React.useState(false)
   const [latitudeTouched, setLatitudeTouched] = React.useState(false)
   const activeSearchRef = React.useRef<AbortController | null>(null)
+  const allowResultsOpenRef = React.useRef(false)
   const expandButtonRef = React.useRef<HTMLButtonElement>(null)
+  const placeInputRef = React.useRef<HTMLInputElement>(null)
+  const placeAnchorRef = useComboboxAnchor()
   const placeInputId = React.useId()
   const longitudeInputId = React.useId()
   const latitudeInputId = React.useId()
@@ -105,7 +108,17 @@ function MapSearch({
     if (!keyword) {
       activeSearchRef.current?.abort()
       activeSearchRef.current = null
+      allowResultsOpenRef.current = false
       setResults([])
+      setResultsOpen(false)
+      setSearchState("idle")
+      return
+    }
+
+    if (selectedPlace && query === selectedPlace.name) {
+      activeSearchRef.current?.abort()
+      activeSearchRef.current = null
+      setResultsOpen(false)
       setSearchState("idle")
       return
     }
@@ -119,10 +132,21 @@ function MapSearch({
         const nextResults = await onSearchPlace(keyword, controller.signal)
         if (!controller.signal.aborted) {
           setResults(nextResults)
+          setResultsOpen(
+            nextResults.length > 0 &&
+              allowResultsOpenRef.current &&
+              placeInputRef.current === document.activeElement,
+          )
+          if (nextResults.length === 0) allowResultsOpenRef.current = false
           setSearchState("success")
         }
       } catch {
-        if (!controller.signal.aborted) setSearchState("error")
+        if (!controller.signal.aborted) {
+          allowResultsOpenRef.current = false
+          setResults([])
+          setResultsOpen(false)
+          setSearchState("error")
+        }
       }
     }, searchDelay)
 
@@ -130,7 +154,7 @@ function MapSearch({
       window.clearTimeout(timer)
       controller.abort()
     }
-  }, [onSearchPlace, query, searchDelay])
+  }, [onSearchPlace, query, searchDelay, selectedPlace])
 
   const longitudeError = coordinateError(
     longitude,
@@ -152,9 +176,11 @@ function MapSearch({
   function clearPlace() {
     activeSearchRef.current?.abort()
     activeSearchRef.current = null
+    allowResultsOpenRef.current = false
     setQuery("")
-    setSelectedPlaceId(null)
+    setSelectedPlace(null)
     setResults([])
+    setResultsOpen(false)
     setSearchState("idle")
     setLocateState("idle")
   }
@@ -211,10 +237,16 @@ function MapSearch({
       data-slot="map-search"
       value={tab}
       onValueChange={(value) => {
-        if (value === "place" || value === "coordinates") setTab(value)
+        if (value === "place" || value === "coordinates") {
+          if (value !== "place") {
+            allowResultsOpenRef.current = false
+            setResultsOpen(false)
+          }
+          setTab(value)
+        }
       }}
       className={cn(
-        "relative w-full max-w-sm gap-0 border border-border bg-card text-card-foreground",
+        "@container/map-search relative w-full max-w-sm gap-0 border border-border bg-card text-card-foreground",
         className,
       )}
     >
@@ -223,8 +255,17 @@ function MapSearch({
           <TabsTrigger value="place">{labels.placeTab}</TabsTrigger>
           <TabsTrigger value="coordinates">{labels.coordinatesTab}</TabsTrigger>
         </TabsList>
-        <IconButton size="xs" label={labels.collapse} tooltip onClick={() => setCollapsed(true)}>
-          <IconChevronLeft />
+        <IconButton
+          size="xs"
+          label={labels.collapse}
+          tooltip
+          onClick={() => {
+            allowResultsOpenRef.current = false
+            setResultsOpen(false)
+            setCollapsed(true)
+          }}
+        >
+          <IconChevronLeft className="rtl:rotate-180" />
         </IconButton>
       </div>
 
@@ -233,30 +274,100 @@ function MapSearch({
           <FieldLabel htmlFor={placeInputId} className="sr-only">
             {labels.placeInputLabel}
           </FieldLabel>
-          <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-1">
-            <Input
-              id={placeInputId}
-              aria-label={labels.placeInputLabel}
-              placeholder={labels.placePlaceholder}
-              value={query}
-              onChange={(event) => {
-                setQuery(event.target.value)
-                setSelectedPlaceId(null)
+          <Combobox<PlaceSearchResult>
+            value={selectedPlace}
+            onValueChange={(place) => {
+              if (!place) return
+
+              activeSearchRef.current?.abort()
+              activeSearchRef.current = null
+              allowResultsOpenRef.current = false
+              setSelectedPlace(place)
+              setQuery(place.name)
+              setResultsOpen(false)
+              setSearchState("idle")
+              setLocateState("idle")
+              onSelectPlace(place)
+            }}
+            open={resultsOpen}
+            onOpenChange={(nextOpen) => {
+              if (nextOpen) return
+
+              allowResultsOpenRef.current = false
+              setResultsOpen(false)
+            }}
+            inputValue={query}
+            onInputValueChange={(inputValue, eventDetails) => {
+              if (eventDetails.reason === "input-change" || eventDetails.reason === "input-clear") {
+                allowResultsOpenRef.current = true
+                setQuery(inputValue)
+                setSelectedPlace(null)
+                setResults([])
+                setResultsOpen(false)
+                setSearchState("idle")
                 setLocateState("idle")
-              }}
-            />
-            <Button type="button" variant="outline" onClick={clearPlace}>
-              {labels.clearPlace}
-            </Button>
-            <Button
-              type="button"
-              aria-busy={locateState === "loading"}
-              disabled={!query.trim() || locateState === "loading"}
-              onClick={locatePlace}
-            >
-              {locateState === "loading" ? <Spinner /> : labels.locatePlace}
-            </Button>
-          </div>
+              }
+            }}
+            items={resultsOpen ? results : []}
+            filter={null}
+            itemToStringLabel={(place) => place.name}
+            itemToStringValue={(place) => place.id}
+            isItemEqualToValue={(left, right) => left.id === right.id}
+            autoHighlight
+          >
+            <div ref={placeAnchorRef} className="grid grid-cols-[minmax(0,1fr)_auto_auto] gap-1">
+              <ComboboxInput
+                ref={placeInputRef}
+                id={placeInputId}
+                aria-label={labels.placeInputLabel}
+                placeholder={labels.placePlaceholder}
+                className="w-full"
+                showTrigger={false}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    allowResultsOpenRef.current = false
+                    setResultsOpen(false)
+                    return
+                  }
+
+                  if (
+                    (event.key === "ArrowDown" || event.key === "ArrowUp") &&
+                    results.length > 0
+                  ) {
+                    allowResultsOpenRef.current = true
+                    setResultsOpen(true)
+                  }
+                }}
+              />
+              <IconButton
+                size="md"
+                label={labels.clearPlace}
+                tooltip
+                className="border-border text-foreground"
+                onClick={clearPlace}
+              >
+                <IconX />
+              </IconButton>
+              <IconButton
+                size="md"
+                label={labels.locatePlace}
+                tooltip
+                aria-busy={locateState === "loading"}
+                disabled={!query.trim() || locateState === "loading"}
+                className="bg-primary text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground"
+                onClick={locatePlace}
+              >
+                {locateState === "loading" ? <Spinner /> : <IconMapPin />}
+              </IconButton>
+            </div>
+            <ComboboxContent anchor={placeAnchorRef} className="max-h-56 min-w-0">
+              <ComboboxList aria-label={labels.resultsLabel}>
+                {resultsOpen
+                  ? results.map((place) => <PlaceResult key={place.id} place={place} />)
+                  : null}
+              </ComboboxList>
+            </ComboboxContent>
+          </Combobox>
         </Field>
 
         {searchState !== "idle" || locateState === "error" ? (
@@ -285,6 +396,7 @@ function MapSearch({
             </FieldLabel>
             <Input
               id={longitudeInputId}
+              className="tnum"
               inputMode="decimal"
               placeholder={labels.longitudePlaceholder}
               value={longitude}
@@ -301,6 +413,7 @@ function MapSearch({
             </FieldLabel>
             <Input
               id={latitudeInputId}
+              className="tnum"
               inputMode="decimal"
               placeholder={labels.latitudePlaceholder}
               value={latitude}
@@ -311,35 +424,26 @@ function MapSearch({
             />
             <FieldError id={latitudeErrorId}>{latitudeError}</FieldError>
           </Field>
-          <Button type="button" variant="outline" onClick={clearCoordinates}>
-            {labels.clearCoordinates}
-          </Button>
-          <Button type="button" onClick={locateCoordinates}>
-            {labels.locateCoordinates}
-          </Button>
+          <IconButton
+            size="md"
+            label={labels.clearCoordinates}
+            tooltip
+            className="border-border text-foreground"
+            onClick={clearCoordinates}
+          >
+            <IconX />
+          </IconButton>
+          <IconButton
+            size="md"
+            label={labels.locateCoordinates}
+            tooltip
+            className="bg-primary text-primary-foreground hover:bg-primary/80 hover:text-primary-foreground"
+            onClick={locateCoordinates}
+          >
+            <IconMapPin />
+          </IconButton>
         </FieldGroup>
       </TabsContent>
-
-      {tab === "place" && results.length > 0 ? (
-        <div
-          role="listbox"
-          aria-label={labels.resultsLabel}
-          className="absolute inset-x-0 top-full z-10 mt-1 flex max-h-56 flex-col overflow-y-auto border border-border bg-popover p-1"
-        >
-          {results.map((place) => (
-            <PlaceResult
-              key={place.id}
-              place={place}
-              selected={selectedPlaceId === place.id}
-              onSelect={() => {
-                setSelectedPlaceId(place.id)
-                setQuery(place.name)
-                onSelectPlace(place)
-              }}
-            />
-          ))}
-        </div>
-      ) : null}
     </Tabs>
   )
 }

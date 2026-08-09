@@ -19,6 +19,9 @@ describe("ServiceEndpointRowDemo", () => {
       ),
     )
     expect(html).toContain('aria-hidden="true"')
+    expect(html).toContain("border-cat-1/30 bg-cat-1/10 text-cat-1")
+    expect(html).toContain("border-cat-2/30 bg-cat-2/10 text-cat-2")
+    expect(html).toContain("border-cat-5/30 bg-cat-5/10 text-cat-5")
     expect(html).not.toMatch(/(?:border|bg|text)-(?:warning|info)/)
   })
 })

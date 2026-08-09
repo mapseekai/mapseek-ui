@@ -115,7 +115,7 @@ export function MapSearchDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   }
 
   return (
-    <div data-demo="map-search" className="flex w-full max-w-md flex-col gap-3">
+    <div data-demo-content="map-search" className="flex w-full max-w-md flex-col gap-3">
       <p className="m-0 text-xs text-muted-foreground">{copy.intro}</p>
       <MapSearch
         labels={copy.labels}

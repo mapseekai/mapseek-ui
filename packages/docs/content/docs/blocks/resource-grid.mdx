@@ -33,7 +33,7 @@ import {
 
 ## 用法
 
-传入当前 `tab`、对应 `items` 和打开/右键回调。icon 模式可传 `selectedIconIds` 与 `onIconSelect` 支持批量选择。
+传入当前 `tab`、对应 `items` 和打开/右键回调。卡片支持菜单键或 `Shift+F10` 调用右键回调；icon 模式可传 `selectedIconIds` 与 `onIconSelect` 支持批量选择。
 
 ## 公开导出与 Props
 
@@ -45,9 +45,8 @@ import {
 
 ## 无障碍
 
-卡片是按钮，icon 选择复选框应提供 `iconSelectionLabel`。卡片名称会截断，完整名称应可从详情获取。
+卡片是按钮，icon 选择复选框应提供 `iconSelectionLabel`，并会在触屏设备上保持可见。卡片名称和元数据会截断，但完整值仍可通过可访问名称、适用位置的原生 `title` 提示或详情页获取。
 
 ## 依赖
 
 <RegistryDependencies registryName="resource-grid" />
-

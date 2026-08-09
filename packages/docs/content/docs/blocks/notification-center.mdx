@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-NotificationCenter 是 header 中的通知下拉，展示处理任务、来源、流状态和清理动作。
+NotificationCenter 是 header 中的通知 Popover，展示处理任务、来源、流状态和清理动作。
 
 ## 安装
 
@@ -45,9 +45,8 @@ import {
 
 ## 无障碍
 
-触发器使用 `labels.trigger` 作为可访问名称；下拉内容继承 DropdownMenu 的键盘和焦点管理。
+触发器的可访问名称会组合 `labels.trigger` 与当前数量、加载或错误状态。通知面板使用 Popover 语义和正常的 Tab 顺序；单条清除动作在对应 item 悬停或获得键盘焦点时出现，并在触屏设备上保持可见。按 Escape 关闭后焦点返回触发器，数量及异步状态变化通过 polite live region 宣布。
 
 ## 依赖
 
 <RegistryDependencies registryName="notification-center" />
-

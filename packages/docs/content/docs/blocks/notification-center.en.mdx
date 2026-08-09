@@ -10,7 +10,7 @@ import { ShowcaseDemo } from "@/components/ShowcaseDemo"
 import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
 
 
-NotificationCenter is a header dropdown for processing jobs, source metadata, stream state, and clear actions.
+NotificationCenter is a header Popover for processing jobs, source metadata, stream state, and clear actions.
 
 ## Installation
 
@@ -45,9 +45,8 @@ The block includes loading skeletons, retryable error, empty state, and populate
 
 ## Accessibility
 
-The trigger uses `labels.trigger` as its accessible name; the dropdown inherits keyboard and focus handling from DropdownMenu.
+The trigger's accessible name combines `labels.trigger` with the current count, loading state, or error state. The notification panel uses Popover semantics and normal Tab order; an item clear action appears when its row is hovered or receives keyboard focus and remains visible on touch devices. Escape closes the panel and returns focus to the trigger, while a polite live region announces count and asynchronous state changes.
 
 ## Dependencies
 
 <RegistryDependencies registryName="notification-center" />
-

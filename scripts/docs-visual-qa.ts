@@ -1658,7 +1658,10 @@ export async function assertBlockInteraction(
 ): Promise<void> {
   if (block === "app-top-bar") {
     const demo = page.locator('[data-demo="app-top-bar"]')
-    await demo.getByRole("button", { name: localized(path, "保存", "Save"), exact: true }).click()
+    await demo
+      .getByRole("button", { name: localized(path, "保存", "Save"), exact: true })
+      .first()
+      .click()
     await expect(demo.locator('[data-demo-status="app-top-bar"]')).toContainText(
       localized(path, "状态已保存", "Status saved"),
     )
@@ -1671,7 +1674,7 @@ export async function assertBlockInteraction(
       localized(path, "快照", "Snapshot"),
     )
     await activateByKeyboard(
-      demo.getByRole("button", { name: localized(path, "返回", "Back"), exact: true }),
+      demo.getByRole("button", { name: localized(path, "返回", "Back"), exact: true }).first(),
     )
     await expect(demo.locator('[data-demo-status="app-top-bar"]')).toContainText(
       localized(path, "返回", "Back"),

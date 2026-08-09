@@ -16,6 +16,9 @@ shadcn composition while allowing consumers to opt into an outline.
   outline treatment explicitly.
 - Preserve the `attr-table` destructive error outline by adding an explicit
   `border` utility where its destructive border color is already specified.
+- Separate the three `EmptyOverviewDemo` examples with two horizontal
+  `Separator` components and remove the grid gap so the dividers sit directly
+  between the example sections.
 - Leave existing `border-0` consumer overrides in place to avoid unrelated
   cleanup.
 
@@ -25,10 +28,12 @@ shadcn composition while allowing consumers to opt into an outline.
   by default and still accepts an explicit border class.
 - Update the existing `attr-table` assertion to require its destructive state
   to include an explicit border.
+- Render `EmptyOverviewDemo` and assert that three empty states alternate with
+  exactly two separators in document order.
 - Run the focused tests and the relevant project checks.
 
 ## Scope
 
 The change is limited to the `Empty` primitive, the `attr-table` consumer that
-intentionally retains an outline, and their tests. No public API changes are
-introduced.
+intentionally retains an outline, the Empty showcase composition, and their
+tests. No public API changes are introduced.

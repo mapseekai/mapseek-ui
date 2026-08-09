@@ -30,13 +30,13 @@ function matchesCoordinateSystem(item: CoordinateSystemItem, query: string) {
 
 function CoordinateSystemOption({ item }: { item: CoordinateSystemItem }) {
   return (
-    <ComboboxItem value={item} aria-label={`${item.name}, ${item.epsg}`}>
+    <ComboboxItem value={item} aria-label={`${item.epsg}, ${item.name}`}>
       <span className="min-w-0">
-        <span className="block truncate text-body-md-strong leading-snug text-foreground">
-          {item.name}
-        </span>
-        <span className="mt-0.5 block font-mono text-body-sm leading-snug text-muted-foreground">
+        <span className="block font-mono text-body-md-strong leading-snug text-foreground">
           {item.epsg}
+        </span>
+        <span className="mt-0.5 block text-body-sm leading-snug text-muted-foreground">
+          {item.name}
         </span>
       </span>
     </ComboboxItem>
@@ -100,7 +100,7 @@ export function CoordinateSystemCombobox({
       value={selectedItem}
       onValueChange={handleValueChange}
       open={open}
-      inputValue={open ? query : (selectedItem?.name ?? "")}
+      inputValue={open ? query : (selectedItem?.epsg ?? "")}
       onInputValueChange={(inputValue, eventDetails) => {
         if (eventDetails.reason === "input-change" || eventDetails.reason === "input-clear") {
           setQuery(inputValue)
@@ -110,7 +110,7 @@ export function CoordinateSystemCombobox({
         setOpen(nextOpen)
         setQuery("")
       }}
-      itemToStringLabel={(item) => item.name}
+      itemToStringLabel={(item) => item.epsg}
       itemToStringValue={(item) => item.epsg}
       isItemEqualToValue={(left, right) => left.epsg === right.epsg}
       autoHighlight

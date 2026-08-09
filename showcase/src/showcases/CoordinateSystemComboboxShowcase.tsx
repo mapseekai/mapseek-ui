@@ -49,8 +49,8 @@ export function CoordinateSystemComboboxDemo({ locale = "zh-CN" }: LocalizedDemo
   const [value, setValue] = useState<string | null>("EPSG:4490")
 
   return (
-    <div className="grid gap-5">
-      <section className="space-y-3">
+    <div className="mx-auto grid w-full max-w-xs gap-8">
+      <section className="min-w-0 space-y-3">
         <h3 className="m-0 font-mono text-xs text-muted-foreground uppercase">
           {demoLabels.controlled}
         </h3>
@@ -60,7 +60,7 @@ export function CoordinateSystemComboboxDemo({ locale = "zh-CN" }: LocalizedDemo
           labels={demoLabels.combobox}
         />
       </section>
-      <section className="space-y-3">
+      <section className="min-w-0 space-y-3">
         <h3 className="m-0 font-mono text-xs text-muted-foreground uppercase">
           {demoLabels.extra}
         </h3>

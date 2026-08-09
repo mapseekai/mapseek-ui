@@ -1,6 +1,7 @@
-import { JsonEditor, type JsonEditorTheme } from "@registry/blocks/json-editor"
-import { Button } from "@registry/ui/button"
+import { JsonEditor } from "@registry/blocks/json-editor"
+import { ToggleGroup, ToggleGroupItem } from "@registry/ui/toggle-group"
 import { useState } from "react"
+
 import type { LocalizedDemoProps } from "./types"
 
 const sample = {
@@ -12,60 +13,62 @@ const sample = {
   },
 }
 
-const themes = ["app", "light", "dark", "none"] as const
-type ThemeId = Extract<JsonEditorTheme, (typeof themes)[number]>
+const themeOptions = ["app", "light", "dark", "none"] as const
+type DemoTheme = (typeof themeOptions)[number]
 
 const labels = {
   "zh-CN": {
-    intro: "可编辑 JSON 组件，默认 app 主题使用 Mapseek token，也可切换 UIW light / dark / none。",
-    theme: "主题",
-    current: "当前主题",
-    titled: "app 主题 · 标题栏",
+    intro: "可独立嵌入的 JSON 编辑器；切换 app、light、dark 和 none 主题进行对比。",
+    themeSelector: "JSON 编辑器主题",
+    untitled: "无标题 · 焦点状态",
+    titled: "标题栏",
+    ariaLabel: "样式 JSON 编辑器",
     focused: "已聚焦",
     blurred: "已离开",
   },
   en: {
-    intro:
-      "Editable JSON component. The app theme uses Mapseek tokens; UIW light / dark / none are available.",
-    theme: "theme",
-    current: "Current theme",
-    titled: "App theme · title bar",
+    intro: "A standalone JSON editor with app, light, dark, and none themes for comparison.",
+    themeSelector: "JSON editor theme",
+    untitled: "Untitled · focus state",
+    titled: "Title bar",
+    ariaLabel: "Styled JSON editor",
     focused: "Focused",
     blurred: "Blurred",
   },
-}
+} as const
 
 export function JsonEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const demoLabels = labels[locale]
   const [value, setValue] = useState<unknown>(sample)
-  const [theme, setTheme] = useState<ThemeId>("app")
-  const [status, setStatus] = useState(demoLabels.blurred)
+  const [theme, setTheme] = useState<DemoTheme>("app")
+  const [status, setStatus] = useState<string>(demoLabels.blurred)
 
   return (
     <div className="flex w-full max-w-[960px] flex-col gap-4">
       <p className="m-0 text-xs text-muted-foreground">{demoLabels.intro}</p>
       <div className="flex flex-wrap items-center gap-2">
-        <span className="font-mono text-[11px] text-muted-foreground">{demoLabels.theme}</span>
-        <div className="flex">
-          {themes.map((item, index) => (
-            <Button
-              key={item}
-              type="button"
-              variant="ghost"
-              data-demo-action={`theme-${item}`}
-              onClick={() => setTheme(item)}
-              className={[
-                "h-7 rounded-none border border-border px-3 font-mono text-[11px] leading-none",
-                index > 0 ? "-ml-px" : "",
-                theme === item
-                  ? "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
-                  : "bg-background text-muted-foreground hover:bg-accent/50 hover:text-foreground",
-              ].join(" ")}
+        <ToggleGroup
+          value={[theme]}
+          onValueChange={(nextThemes) => {
+            const nextTheme = nextThemes[0] as DemoTheme | undefined
+            if (nextTheme) setTheme(nextTheme)
+          }}
+          aria-label={demoLabels.themeSelector}
+          variant="outline"
+          size="sm"
+          spacing={0}
+        >
+          {themeOptions.map((option) => (
+            <ToggleGroupItem
+              key={option}
+              value={option}
+              data-demo-action={`theme-${option}`}
+              className="font-mono uppercase"
             >
-              {item}
-            </Button>
+              {option}
+            </ToggleGroupItem>
           ))}
-        </div>
+        </ToggleGroup>
         <span data-demo-status="json-editor" className="font-mono text-xs text-muted-foreground">
           {status}
         </span>
@@ -73,12 +76,13 @@ export function JsonEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="flex min-w-0 flex-col gap-2">
           <span className="font-mono text-[11px] text-muted-foreground">
-            {demoLabels.current} · {theme}
+            {demoLabels.untitled} · {theme}
           </span>
           <div className="h-[360px]">
             <JsonEditor
               value={value}
               onChange={setValue}
+              ariaLabel={demoLabels.ariaLabel}
               theme={theme}
               onFocus={() => setStatus(demoLabels.focused)}
               onBlur={() => setStatus(demoLabels.blurred)}
@@ -88,7 +92,7 @@ export function JsonEditorDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
         <div className="flex min-w-0 flex-col gap-2">
           <span className="font-mono text-[11px] text-muted-foreground">{demoLabels.titled}</span>
           <div className="h-[360px]">
-            <JsonEditor value={value} onChange={setValue} title="JSON" theme="app" />
+            <JsonEditor value={value} onChange={setValue} title="JSON" theme={theme} />
           </div>
         </div>
       </div>

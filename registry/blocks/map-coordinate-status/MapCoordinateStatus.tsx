@@ -2,6 +2,7 @@ import { IconChevronDown, IconMap2, IconWorld, type Icon as TablerIcon } from "@
 import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Tag } from "@/components/ui/tag"
 import { resolveLabels } from "@/lib/mapseek-labels"
 import { cn } from "@/lib/utils"
 import { CrsPicker } from "../crs-picker"
@@ -143,18 +144,23 @@ export function MapCoordinateStatus({
                 variant="ghost"
                 size="xs"
                 aria-label={labels.switchCrs}
-                className={cn(
-                  "border border-primary/25 font-mono text-label-md text-primary hover:text-primary",
-                  open ? "bg-primary/[0.18]" : "bg-primary/10",
-                )}
+                className="h-auto border-0 bg-transparent p-0 hover:bg-transparent aria-expanded:bg-transparent"
               >
-                <CrsIcon data-icon="inline-start" stroke={1.75} className="shrink-0" />
-                {crs}
-                <IconChevronDown data-icon="inline-end" className="opacity-70" />
+                <Tag className="font-mono">
+                  <CrsIcon aria-hidden data-icon="inline-start" />
+                  {crs}
+                  <IconChevronDown aria-hidden data-icon="inline-end" />
+                </Tag>
               </Button>
             }
           />
-          <PopoverContent side="top" align="start" sideOffset={8} className="w-auto gap-0 p-0">
+          <PopoverContent
+            side="top"
+            align="start"
+            sideOffset={8}
+            className="w-auto gap-0 p-0 ring-0"
+            positionMethod="fixed"
+          >
             <CrsPicker
               value={crs}
               allowedEpsgs={allowedEpsgs}

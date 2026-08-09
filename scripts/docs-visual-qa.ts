@@ -2130,12 +2130,20 @@ export async function assertBlockInteraction(
       exact: true,
     })
     const popover = page.locator('[data-slot="popover-content"]').last()
+    await statusTrigger.scrollIntoViewIfNeeded()
+    const scrollBeforeMouseOpen = await page.evaluate(() => window.scrollY)
+    await statusTrigger.click()
+    await expect(popover).toBeVisible()
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(scrollBeforeMouseOpen)
+    await statusTrigger.click()
+    await expect(popover).toBeHidden()
+
     await openMenuWithKeyboard(page, statusTrigger, popover)
     const picker = popover.locator('[data-slot="crs-picker"]')
     await expect(picker).toBeVisible()
     await assertNoHorizontalOverflow(picker, `${path} MapCoordinateStatus CRS picker`)
-    await picker.getByRole("option", { name: "EPSG:4326", exact: true }).focus()
-    await expect(picker.getByRole("option", { name: "EPSG:4326", exact: true })).toBeFocused()
+    const geographicOption = picker.getByRole("option", { name: /^EPSG:4326\b/ })
+    await expect(geographicOption).toHaveAttribute("aria-selected", "true")
     await page.keyboard.press("Enter")
     await expect(demo.locator('[data-demo-status="map-coordinate-status"]')).toContainText(
       "EPSG:4326",
@@ -2144,7 +2152,7 @@ export async function assertBlockInteraction(
 
     await statusTrigger.click()
     await assertPortalFits(popover, `${path} MapCoordinateStatus CRS popover`)
-    await popover.getByRole("option", { name: "EPSG:3857", exact: true }).click()
+    await popover.getByRole("option", { name: /^EPSG:3857\b/ }).click()
     await expect(demo.locator('[data-demo-status="map-coordinate-status"]')).toContainText(
       "EPSG:3857",
     )

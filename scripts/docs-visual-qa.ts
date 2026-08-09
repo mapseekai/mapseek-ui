@@ -2282,7 +2282,9 @@ export async function assertBlockInteraction(
     await expect(next).toBeDisabled()
     await next.evaluate((button) => (button as HTMLButtonElement).click())
     await expect(status).toContainText(localized(path, "像元 3", "Pixel 3"))
-    await demo.getByTitle(localized(path, "关闭", "Close")).click()
+    await demo
+      .getByRole("button", { name: localized(path, "关闭", "Close"), exact: true })
+      .click()
     await demo
       .getByRole("button", { name: localized(path, "重新打开", "Reopen"), exact: true })
       .click()

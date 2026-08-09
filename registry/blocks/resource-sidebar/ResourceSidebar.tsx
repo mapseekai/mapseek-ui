@@ -10,6 +10,7 @@ import {
   IconTypography,
 } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import type { ResourceSidebarProps, ResourceTab } from "./types"
@@ -37,7 +38,7 @@ export function ResourceSidebar({
   className,
 }: ResourceSidebarProps) {
   const leafBase =
-    "relative flex h-[34px] w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-body-md text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0"
+    "relative flex h-8 w-full cursor-pointer items-center gap-2 border-0 bg-transparent text-left text-body-md text-foreground before:absolute before:inset-y-0 before:left-0 before:w-0.5 before:bg-primary before:opacity-0"
   const activeLeaf =
     "bg-selection-bg text-primary before:opacity-100 hover:bg-selection-bg hover:text-primary"
 
@@ -95,7 +96,7 @@ export function ResourceSidebar({
         />
       </div>
 
-      <div className="mx-2 my-1.5 h-px bg-border" />
+      <Separator className="mx-2 my-1.5 w-auto" />
 
       <div className="px-3.5 pt-1 pb-2 font-mono text-label-sm text-muted-foreground uppercase">
         {labels.categoriesSection}
@@ -112,7 +113,7 @@ export function ResourceSidebar({
           count={totalCount}
           onClick={() => onSelectCat("all")}
         />
-        <div className="mx-2 my-1.5 h-px bg-border" />
+        <Separator className="mx-2 my-1.5 w-auto" />
         {categories.map((c) => (
           <CategoryRow
             key={c.id}
@@ -200,7 +201,7 @@ function TypeRow({
     <Button
       type="button"
       variant="ghost"
-      size="sm"
+      size="default"
       className={className}
       aria-pressed={active}
       onClick={onClick}
@@ -209,7 +210,7 @@ function TypeRow({
       <span>{label}</span>
       <span
         className={cn(
-          "ml-auto font-mono text-body-sm",
+          "ml-auto font-mono text-body-sm tnum",
           active ? "text-primary" : "text-muted-foreground",
         )}
       >
@@ -235,11 +236,11 @@ function CategoryRow({
   actions?: React.ReactNode
 }) {
   return (
-    <div className="group/cat relative h-[34px]">
+    <div className="group/cat relative h-8">
       <Button
         type="button"
         variant="ghost"
-        size="sm"
+        size="default"
         aria-pressed={active}
         className={cn(
           "flex h-full w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-2.5 pr-[64px] text-left text-body-md",
@@ -250,19 +251,21 @@ function CategoryRow({
         onClick={onClick}
       >
         {icon}
-        <span className="min-w-0 flex-1 truncate">{label}</span>
+        <span className="min-w-0 flex-1 truncate" title={label}>
+          {label}
+        </span>
       </Button>
       <span
         className={cn(
-          "pointer-events-none absolute inset-y-0 right-2 flex items-center font-mono text-body-sm text-muted-foreground",
+          "pointer-events-none absolute inset-y-0 right-2 flex items-center font-mono text-body-sm text-muted-foreground tnum",
           active && "text-primary",
-          actions && "group-hover/cat:hidden",
+          actions && "group-hover/cat:hidden group-focus-within/cat:hidden",
         )}
       >
         {count}
       </span>
       {actions && (
-        <div className="absolute inset-y-0 right-2 hidden items-center gap-0.5 group-hover/cat:flex">
+        <div className="absolute inset-y-0 right-2 hidden items-center gap-0.5 group-hover/cat:flex group-focus-within/cat:flex">
           {actions}
         </div>
       )}

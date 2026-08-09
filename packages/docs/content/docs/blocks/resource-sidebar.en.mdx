@@ -46,9 +46,8 @@ Tab, category selection, and category actions are caller-controlled. The demo co
 
 ## Accessibility
 
-Types and categories are buttons; rename and remove actions expose names through Tooltip/title.
+Type and category buttons expose their selected state through `aria-pressed`; truncated category names provide their full value through a native `title`. Rename and remove actions expose names through Tooltip/title and appear when the category row is hovered or receives keyboard focus.
 
 ## Dependencies
 
 <RegistryDependencies registryName="resource-sidebar" />
-

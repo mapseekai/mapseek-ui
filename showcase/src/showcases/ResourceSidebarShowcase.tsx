@@ -109,7 +109,11 @@ export function ResourceSidebarDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
 
   return (
     <div className="flex flex-col gap-3">
-      <span data-demo-status="resource-sidebar" className="font-mono text-xs text-muted-foreground">
+      <span
+        role="status"
+        data-demo-status="resource-sidebar"
+        className="text-body-sm text-muted-foreground"
+      >
         {status}
       </span>
       <div className="h-[480px] max-w-full overflow-hidden border border-border">

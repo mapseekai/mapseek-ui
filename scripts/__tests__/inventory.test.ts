@@ -214,12 +214,7 @@ const applicationShellStatusAndResourceDependencies = {
     "@mapseek/skeleton",
     "@mapseek/utils",
   ],
-  "processing-timeline": [
-    "@mapseek/button",
-    "@mapseek/empty",
-    "@mapseek/tag",
-    "@mapseek/utils",
-  ],
+  "processing-timeline": ["@mapseek/button", "@mapseek/empty", "@mapseek/tag", "@mapseek/utils"],
   "service-status": ["@mapseek/switch", "@mapseek/utils", "@mapseek/labels"],
   "service-endpoint-row": [
     "@mapseek/copy-button",
@@ -236,7 +231,12 @@ const applicationShellStatusAndResourceDependencies = {
     "@mapseek/placeholder-glyph",
     "@mapseek/labels",
   ],
-  "resource-sidebar": ["@mapseek/button", "@mapseek/tooltip", "@mapseek/utils"],
+  "resource-sidebar": [
+    "@mapseek/button",
+    "@mapseek/separator",
+    "@mapseek/tooltip",
+    "@mapseek/utils",
+  ],
   "resource-detail-drawer": [
     "@mapseek/button",
     "@mapseek/checkbox",

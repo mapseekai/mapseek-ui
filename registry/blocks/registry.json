@@ -1144,7 +1144,12 @@
     {
       "name": "resource-sidebar",
       "type": "registry:block",
-      "registryDependencies": ["@mapseek/button", "@mapseek/tooltip", "@mapseek/utils"],
+      "registryDependencies": [
+        "@mapseek/button",
+        "@mapseek/separator",
+        "@mapseek/tooltip",
+        "@mapseek/utils"
+      ],
       "files": [
         {
           "path": "resource-sidebar/ResourceSidebar.tsx",

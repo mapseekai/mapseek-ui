@@ -42,7 +42,15 @@ function renderSidebar() {
       tab="icon"
       onTabChange={() => {}}
       tabCounts={{ icon: 12, sprite: 3, font: 2 }}
-      categories={[{ id: "maps", label: "Maps", count: 4, isDefault: true }]}
+      categories={[
+        { id: "maps", label: "Maps", count: 4, isDefault: true },
+        {
+          id: "long-category",
+          label: "A category name that must truncate",
+          count: 1234,
+          isDefault: false,
+        },
+      ]}
       totalCount={12}
       activeCat="maps"
       onSelectCat={() => {}}
@@ -80,5 +88,29 @@ describe("ResourceSidebar selected rows", () => {
     )
     expect(mapsButton?.[1].split(/\s+/)).toContain("text-body-md-medium")
     expect(mapsButton?.[1]).not.toContain("before:")
+  })
+})
+
+describe("ResourceSidebar design contract", () => {
+  it("uses standard 32px rows and tabular numerals for every count", () => {
+    const html = renderSidebar()
+
+    expect(html).not.toContain("h-[34px]")
+    expect(html.match(/\bh-8\b/g)).toHaveLength(6)
+    expect(html.match(/\btnum\b/g)).toHaveLength(6)
+  })
+
+  it("keeps truncated category labels discoverable and actions keyboard-reachable", () => {
+    const html = renderSidebar()
+
+    expect(html).toContain('title="A category name that must truncate"')
+    expect(html).toContain("group-focus-within/cat:hidden")
+    expect(html).toContain("group-focus-within/cat:flex")
+  })
+
+  it("uses the shared Separator primitive for section dividers", () => {
+    const html = renderSidebar()
+
+    expect(html.match(/data-slot="separator"/g)).toHaveLength(2)
   })
 })

@@ -2310,7 +2310,7 @@ export async function assertBlockInteraction(
   if (block === "map-switcher") {
     const demo = page.locator('[data-demo="map-switcher"]')
     const imageMode = demo.locator('[data-demo-section="map-switcher-image"]')
-    const imageTrigger = imageMode.locator('[data-slot="map-switcher"] > button')
+    const imageTrigger = imageMode.locator('[data-slot="dropdown-menu-trigger"]')
     const triggerBox = await imageTrigger.boundingBox()
     expect(triggerBox?.height).toBeGreaterThanOrEqual(68)
     await expect(imageTrigger).toHaveCSS("box-shadow", "none")
@@ -2318,10 +2318,12 @@ export async function assertBlockInteraction(
       (element) => getComputedStyle(element).borderTopColor,
     )
     expect(triggerBorderColor).not.toBe("rgba(0, 0, 0, 0)")
-    await expect(imageTrigger.locator("img")).toHaveCSS("object-fit", "contain")
-    await expect(imageTrigger.locator("div").first()).toHaveCSS("border-bottom-width", "0px")
+    await expect(imageTrigger.locator("img")).toHaveCSS("object-fit", "cover")
+    await expect(imageTrigger.locator("span").first()).toHaveCSS("height", "44px")
     await imageTrigger.click()
-    const imageOptions = imageMode.locator('[role="option"]')
+    const imageOptions = page.locator(
+      '[data-slot="map-switcher-panel"][data-open] [data-slot="dropdown-menu-radio-item"]',
+    )
     await expect(imageOptions).toHaveCount(4)
     const optionBoxes = await imageOptions.evaluateAll((options) =>
       options.map((option) => {
@@ -2331,29 +2333,33 @@ export async function assertBlockInteraction(
     )
     expect(optionBoxes[0]?.height).toBeGreaterThanOrEqual(64)
     expect(optionBoxes[0]?.bottom).toBeLessThanOrEqual(optionBoxes[2]?.top ?? 0)
+    await imageTrigger.click()
 
-    const buttonMode = demo.locator('[data-demo-section="map-switcher-button"]')
-    const buttonTrigger = buttonMode.locator('[data-slot="map-switcher"] > button')
-    const buttonTriggerBox = await buttonTrigger.boundingBox()
-    expect(buttonTriggerBox?.height).toBeLessThanOrEqual(32)
-    await buttonTrigger.click()
-    const buttonOptionOffsets = await buttonMode.locator('[role="option"]').evaluateAll((options) =>
-      options.map((option) => {
-        const optionBox = option.getBoundingClientRect()
-        const firstContentBox = option.firstElementChild?.getBoundingClientRect()
-        return firstContentBox ? firstContentBox.left - optionBox.left : Number.POSITIVE_INFINITY
-      }),
-    )
-    expect(buttonOptionOffsets.every((offset) => offset <= 10)).toBe(true)
+    const iconMode = demo.locator('[data-demo-section="map-switcher-icon"]')
+    const iconTrigger = iconMode.locator('[data-slot="dropdown-menu-trigger"]')
+    const iconTriggerBox = await iconTrigger.boundingBox()
+    expect(iconTriggerBox?.height).toBeLessThanOrEqual(32)
+    await iconTrigger.click()
+    const iconOptionOffsets = await page
+      .locator('[data-slot="map-switcher-panel"][data-open] [data-slot="dropdown-menu-radio-item"]')
+      .evaluateAll((options) =>
+        options.map((option) => {
+          const optionBox = option.getBoundingClientRect()
+          const firstContentBox = option.firstElementChild?.getBoundingClientRect()
+          return firstContentBox ? firstContentBox.left - optionBox.left : Number.POSITIVE_INFINITY
+        }),
+      )
+    expect(iconOptionOffsets.every((offset) => offset <= 10)).toBe(true)
+    await iconTrigger.click()
 
     const controlled = demo.locator('[data-demo-section="map-switcher-controlled"]')
     await controlled.locator('[data-demo-action="map-switcher-toggle-open"]').click()
-    const panel = controlled.locator('[data-slot="map-switcher-panel"]')
+    const panel = page.locator('[data-slot="map-switcher-panel"][data-open]')
     await expect(panel).toBeVisible()
     await assertWithinViewport(panel, `${path} map switcher panel`)
     await assertNoHorizontalOverflow(panel, `${path} map switcher panel`)
     await panel
-      .locator("button")
+      .locator('[data-slot="dropdown-menu-radio-item"]')
       .filter({ hasText: localized(path, "地形", "Terrain") })
       .click()
     await expect(demo.locator('[data-demo-status="map-switcher"]')).toContainText("terrain")

@@ -1,8 +1,6 @@
 export type NumberRangeDraft = number | string | undefined
 
-export type ParsedNumberRangeDraft =
-  | { valid: true; value: number | undefined }
-  | { valid: false }
+export type ParsedNumberRangeDraft = { valid: true; value: number | undefined } | { valid: false }
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value))
@@ -40,9 +38,7 @@ export function updateUncontrolledNumberRangeValue(
   return controlled ? current : next
 }
 
-export function resetNumberRangeDraft(
-  committedValue: number | undefined,
-): NumberRangeDraft {
+export function resetNumberRangeDraft(committedValue: number | undefined): NumberRangeDraft {
   return committedValue
 }
 

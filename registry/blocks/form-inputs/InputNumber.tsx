@@ -55,7 +55,7 @@ export type InputNumberProps = InputNumberRangeProps | InputNumberSingleProps
  * See BLOCKS-EXTRACTION.md § form-inputs.
  */
 export const InputNumber: React.FC<InputNumberProps> = (props) => {
-  const controlled = Object.prototype.hasOwnProperty.call(props, "value")
+  const controlled = Object.hasOwn(props, "value")
   const {
     value: propsValue,
     default: defaultValue,
@@ -78,9 +78,7 @@ export const InputNumber: React.FC<InputNumberProps> = (props) => {
   } = props
   const [editing, setEditing] = useState(false)
   const [value, setValue] = useState(propsValue)
-  const [dirtyValue, setDirtyValue] = useState<number | string | undefined>(
-    propsValue,
-  )
+  const [dirtyValue, setDirtyValue] = useState<number | string | undefined>(propsValue)
 
   const [prevProps, setPrevProps] = useState(propsValue)
   const [prevEditing, setPrevEditing] = useState(editing)
@@ -109,8 +107,7 @@ export const InputNumber: React.FC<InputNumberProps> = (props) => {
 
   const changeValue = useCallback(
     (newValue: number | string | undefined) => {
-      const numValue =
-        newValue === "" || newValue === undefined ? undefined : +newValue
+      const numValue = newValue === "" || newValue === undefined ? undefined : +newValue
       const hasChanged = propsValue !== numValue
 
       if (isValid(numValue) && hasChanged) {

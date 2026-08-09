@@ -5,9 +5,7 @@ import { Slider } from "./slider"
 
 describe("Slider", () => {
   it("forwards a name to the real thumb input without changing pointer geometry", () => {
-    const html = renderToStaticMarkup(
-      <Slider value={40} getAriaLabel={() => "Opacity"} />,
-    )
+    const html = renderToStaticMarkup(<Slider value={40} getAriaLabel={() => "Opacity"} />)
 
     expect(html).toContain('aria-label="Opacity"')
     expect(html).toContain("size-3")

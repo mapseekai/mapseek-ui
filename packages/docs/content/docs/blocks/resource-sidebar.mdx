@@ -46,9 +46,8 @@ tab、分类选择和分类动作全部由调用方控制。示例覆盖类型�
 
 ## 无障碍
 
-类型和分类均为按钮；重命名和删除按钮通过 Tooltip/title 暴露动作名称。
+类型和分类按钮通过 `aria-pressed` 暴露选中状态；截断的分类名称通过原生 `title` 提供完整内容。重命名和删除按钮通过 Tooltip/title 暴露动作名称，并在分类行悬停或获得键盘焦点时显示。
 
 ## 依赖
 
 <RegistryDependencies registryName="resource-sidebar" />
-

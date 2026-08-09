@@ -3,14 +3,19 @@ import { useId } from "react"
 
 import { cn } from "@/registry/lib/utils"
 
+type SliderProps = SliderPrimitive.Root.Props & {
+  getAriaLabel?: SliderPrimitive.Thumb.Props["getAriaLabel"]
+}
+
 function Slider({
   className,
   defaultValue,
   value,
   min = 0,
   max = 100,
+  getAriaLabel,
   ...props
-}: SliderPrimitive.Root.Props) {
+}: SliderProps) {
   const _values = Array.isArray(value)
     ? value
     : Array.isArray(defaultValue)
@@ -45,6 +50,7 @@ function Slider({
         </SliderPrimitive.Track>
         {thumbs.map((thumb) => (
           <SliderPrimitive.Thumb
+            getAriaLabel={getAriaLabel}
             data-slot="slider-thumb"
             key={thumb.key}
             index={thumb.index}

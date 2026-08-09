@@ -31,11 +31,14 @@ function matchesCoordinateSystem(item: CoordinateSystemItem, query: string) {
 function CoordinateSystemOption({ item }: { item: CoordinateSystemItem }) {
   return (
     <ComboboxItem value={item} aria-label={`${item.epsg}, ${item.name}`}>
-      <span className="min-w-0">
+      <span className="min-w-0 flex-1">
         <span className="block font-mono text-body-md-strong leading-snug text-foreground">
           {item.epsg}
         </span>
-        <span className="mt-0.5 block text-body-sm leading-snug text-muted-foreground">
+        <span
+          className="mt-0.5 block truncate text-body-sm leading-snug text-muted-foreground"
+          title={item.name}
+        >
           {item.name}
         </span>
       </span>

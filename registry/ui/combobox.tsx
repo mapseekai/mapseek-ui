@@ -139,6 +139,7 @@ function ComboboxContent({
             "max-h-72 min-w-36 overflow-hidden border border-border bg-popover text-popover-foreground outline-none",
             "max-h-(--available-height) w-(--anchor-width) max-w-(--available-width) min-w-[calc(var(--anchor-width)+(--spacing(7)))]",
             "transition-opacity duration-100 data-ending-style:opacity-0 data-starting-style:opacity-0",
+            "motion-reduce:transition-none",
             className,
           )}
           {...props}

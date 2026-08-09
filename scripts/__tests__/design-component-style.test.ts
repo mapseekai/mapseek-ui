@@ -246,3 +246,19 @@ it("uses semantic surfaces for slider thumb contrast in both themes", async () =
   expect(slider).toContain("border border-ring bg-background dark:bg-foreground")
   expect(slider).not.toContain("bg-white")
 })
+
+it("disables combobox popup transitions for reduced motion", async () => {
+  const combobox = await readComponent("combobox")
+
+  expect(combobox).toContain("motion-reduce:transition-none")
+})
+
+it("keeps long coordinate-system names compact while exposing their full value", async () => {
+  const coordinateSystemCombobox = await readFile(
+    "registry/blocks/coordinate-system-combobox/CoordinateSystemCombobox.tsx",
+    "utf8",
+  )
+
+  expect(coordinateSystemCombobox).toContain("block truncate text-body-sm")
+  expect(coordinateSystemCombobox).toContain("title={item.name}")
+})

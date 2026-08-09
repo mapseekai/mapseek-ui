@@ -1187,6 +1187,7 @@
       "type": "registry:block",
       "registryDependencies": [
         "@mapseek/checkbox",
+        "@mapseek/empty",
         "@mapseek/field",
         "@mapseek/input",
         "@mapseek/select",
@@ -1202,6 +1203,11 @@
           "path": "schema-form/index.ts",
           "type": "registry:block",
           "target": "@components/blocks/schema-form/index.ts"
+        },
+        {
+          "path": "schema-form/labels.ts",
+          "type": "registry:block",
+          "target": "@components/blocks/schema-form/labels.ts"
         },
         {
           "path": "schema-form/types.ts",

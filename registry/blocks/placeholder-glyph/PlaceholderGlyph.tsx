@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { type ReactNode, useId } from "react"
 import { cn } from "@/lib/utils"
 
 export interface PlaceholderGlyphProps {
@@ -8,6 +8,8 @@ export interface PlaceholderGlyphProps {
   seed?: string
   /** Render in muted tone instead of foreground. */
   mono?: boolean
+  /** Localized accessible name for a meaningful standalone glyph. */
+  title?: string
   className?: string
 }
 
@@ -21,12 +23,13 @@ export function PlaceholderGlyph({
   size = 24,
   seed = "x",
   mono = false,
+  title,
   className,
 }: PlaceholderGlyphProps) {
+  const titleId = useId()
   let h = 0
   for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) >>> 0
   const v = h % 12
-  const sw = Math.max(1, Math.round(size / 18))
 
   const props = {
     focusable: false,
@@ -35,16 +38,24 @@ export function PlaceholderGlyph({
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: sw,
+    strokeWidth: 2,
     strokeLinecap: "round" as const,
     strokeLinejoin: "round" as const,
     className: cn("block", mono ? "text-muted-foreground" : "text-foreground", className),
   }
 
   function renderSvg(children: ReactNode) {
+    if (title) {
+      return (
+        <svg {...props} role="img" aria-labelledby={titleId}>
+          <title id={titleId}>{title}</title>
+          {children}
+        </svg>
+      )
+    }
+
     return (
-      <svg {...props}>
-        <title>Placeholder resource glyph</title>
+      <svg {...props} aria-hidden="true">
         {children}
       </svg>
     )

@@ -108,7 +108,7 @@ function IconBody({
         {detail.svg ? (
           <img src={svgDataUri(detail.svg)} alt={detail.title} className="size-14 object-contain" />
         ) : (
-          <PlaceholderGlyph size={72} seed={detail.seed} />
+          <PlaceholderGlyph size={72} seed={detail.seed} title={detail.title} />
         )}
       </div>
       <div className="border-b border-border px-4 py-3.5">

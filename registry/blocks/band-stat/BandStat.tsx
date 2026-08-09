@@ -5,6 +5,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { Tag } from "@/components/ui/tag"
+import { cn } from "@/registry/lib/utils"
 import type { BandStatLabels, BandStatProps } from "./types"
 
 /**
@@ -67,17 +69,30 @@ export function BandStat({ data, labels }: BandStatProps) {
         <span className="mono inline-flex size-7 items-center justify-center bg-primary/10 text-body-md-medium text-primary">
           {data.band}
         </span>
-        <span className="flex-1 text-headline-sm text-foreground">{data.name}</span>
-        <span className="mono border border-warning/25 bg-warning/10 px-1.5 py-0.5 text-body-sm text-warning uppercase">
-          {data.type}
+        <span
+          className="min-w-0 flex-1 truncate text-headline-sm text-foreground"
+          title={data.name}
+        >
+          {data.name}
         </span>
+        <Tag color="orange" size="sm">
+          {data.type}
+        </Tag>
       </div>
 
       {/* Metrics */}
-      <div className="mx-4 mt-3 grid grid-cols-4 divide-x divide-border border border-border">
-        <Metric label={labels.min} value={data.min} />
-        <Metric label={labels.max} value={data.max} />
-        <Metric label={labels.mean} value={data.mean} />
+      <div className="mx-4 mt-3 grid grid-cols-2 border border-border sm:grid-cols-4">
+        <Metric
+          className="border-r border-b border-border sm:border-b-0"
+          label={labels.min}
+          value={data.min}
+        />
+        <Metric
+          className="border-b border-border sm:border-r sm:border-b-0"
+          label={labels.max}
+          value={data.max}
+        />
+        <Metric className="border-r border-border" label={labels.mean} value={data.mean} />
         <Metric label={labels.stddev} value={data.stddev} />
       </div>
 
@@ -164,9 +179,17 @@ function binRangeLabel(index: number, count: number, min: number, max: number): 
   return `${compactNumber(start)} - ${compactNumber(end)}`
 }
 
-function Metric({ label, value }: { label: BandStatLabels[keyof BandStatLabels]; value: number }) {
+function Metric({
+  className,
+  label,
+  value,
+}: {
+  className?: string
+  label: BandStatLabels[keyof BandStatLabels]
+  value: number
+}) {
   return (
-    <div className="flex min-w-0 flex-col gap-0.5 px-2 py-3 sm:px-4">
+    <div className={cn("flex min-w-0 flex-col gap-0.5 px-2 py-3 sm:px-4", className)}>
       <span className="text-body-sm text-muted-foreground">{label}</span>
       <span className="mono tnum whitespace-nowrap text-lg font-medium text-foreground sm:text-2xl">
         {value.toLocaleString()}

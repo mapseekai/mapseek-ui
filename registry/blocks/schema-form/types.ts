@@ -56,7 +56,7 @@ export interface SchemaFormProps {
   onChange: (key: string, value: unknown) => void
   errors?: Readonly<Record<string, string | undefined>>
   labels?: SchemaFormLabels
-  /** Prefix for generated input ids (default "field"). */
+  /** Optional stable override for the unique per-instance generated input id prefix. */
   idPrefix?: string
   className?: string
 }

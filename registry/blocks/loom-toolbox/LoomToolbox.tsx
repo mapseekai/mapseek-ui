@@ -67,7 +67,7 @@ export function LoomToolbox({
   if (!open) {
     return (
       <Button variant="outline" onClick={() => onOpenChange(true)}>
-        <IconTools />
+        <IconTools data-icon="inline-start" aria-hidden="true" />
         {labels.open}
       </Button>
     )
@@ -77,7 +77,7 @@ export function LoomToolbox({
     <aside
       data-slot="loom-toolbox"
       className={cn(
-        "flex h-[560px] w-80 min-w-0 max-w-full flex-col overflow-hidden border border-border bg-card",
+        "flex h-[560px] w-[360px] min-w-0 max-w-full flex-col overflow-hidden border border-border bg-card",
         className,
       )}
     >

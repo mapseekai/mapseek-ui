@@ -28,7 +28,7 @@ function FavoriteButton({ tool, favored, labels, onFavoriteChange }: FavoriteBut
       className={favored ? "text-primary" : "text-muted-foreground"}
       onClick={() => onFavoriteChange(tool.id, !favored)}
     >
-      <Star className={cn(favored && "fill-current")} />
+      <Star className={cn(favored && "fill-current")} aria-hidden="true" />
     </Button>
   )
 }
@@ -61,8 +61,8 @@ export function ToolList({
   return (
     <>
       <header className="flex items-center gap-2 border-b border-border px-3 py-2.5">
-        <span className="flex size-7 items-center justify-center bg-primary text-primary-foreground">
-          <IconTools className="size-4" />
+        <span className="flex size-7 items-center justify-center bg-muted text-muted-foreground">
+          <IconTools className="size-4" aria-hidden="true" />
         </span>
         <span className="flex-1 text-headline-sm">{labels.title}</span>
         <Button
@@ -72,17 +72,19 @@ export function ToolList({
           aria-label={labels.close}
           onClick={() => onOpenChange(false)}
         >
-          <IconX className="size-4" />
+          <IconX aria-hidden="true" />
         </Button>
       </header>
 
       <div className="flex flex-col gap-2 border-b border-border px-3 py-2.5">
         <InputGroup>
           <InputGroupAddon>
-            <IconSearch />
+            <IconSearch aria-hidden="true" />
           </InputGroupAddon>
           <InputGroupInput
             aria-label={labels.search}
+            name="toolbox-search"
+            autoComplete="off"
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
             placeholder={labels.search}
@@ -113,7 +115,10 @@ export function ToolList({
               {tools.slice(0, 2).map((tool) => {
                 const ToolIcon = tool.icon
                 return (
-                  <div key={tool.id} className="border border-border p-2.5">
+                  <div
+                    key={tool.id}
+                    className="border border-border p-2.5 transition-colors hover:border-primary hover:bg-primary/5"
+                  >
                     <div className="mb-2 flex items-center gap-2">
                       <Button
                         variant="link"
@@ -122,10 +127,12 @@ export function ToolList({
                         className="h-auto min-w-0 flex-1 justify-start gap-2 rounded-none p-0 text-start text-foreground hover:no-underline"
                         onClick={() => onOpenTool(tool.id)}
                       >
-                        <span className="flex size-7 items-center justify-center bg-primary/10 text-primary">
-                          <ToolIcon className="size-3.5" />
+                        <span className="flex size-7 items-center justify-center bg-muted text-muted-foreground">
+                          <ToolIcon className="size-3.5" aria-hidden="true" />
                         </span>
-                        <span className="truncate text-body-md-strong">{tool.label}</span>
+                        <span className="truncate text-body-md-strong" title={tool.label}>
+                          {tool.label}
+                        </span>
                       </Button>
                       <FavoriteButton
                         tool={tool}
@@ -134,7 +141,10 @@ export function ToolList({
                         onFavoriteChange={onFavoriteChange}
                       />
                     </div>
-                    <p className="line-clamp-2 text-body-sm text-muted-foreground">
+                    <p
+                      className="line-clamp-2 text-body-sm text-muted-foreground"
+                      title={tool.description}
+                    >
                       {tool.description}
                     </p>
                   </div>
@@ -149,7 +159,7 @@ export function ToolList({
             <h3 className="text-body-md-strong">
               {tab === "all" ? labels.categories : labels.tabs[tab]}
             </h3>
-            <span className="text-body-sm text-muted-foreground">
+            <span className="tnum text-body-sm text-muted-foreground">
               {labels.toolCount(tools.length)}
             </span>
           </div>
@@ -169,11 +179,16 @@ export function ToolList({
                     onClick={() => onOpenTool(tool.id)}
                   >
                     <span className="flex size-6 items-center justify-center bg-muted text-muted-foreground">
-                      <ToolIcon className="size-3.5" />
+                      <ToolIcon className="size-3.5" aria-hidden="true" />
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-body-md-medium">{tool.label}</span>
-                      <span className="block truncate text-body-sm text-muted-foreground">
+                      <span className="block truncate text-body-md-medium" title={tool.label}>
+                        {tool.label}
+                      </span>
+                      <span
+                        className="block truncate text-body-sm text-muted-foreground"
+                        title={`${tool.group} · ${tool.description}`}
+                      >
                         {tool.group} · {tool.description}
                       </span>
                     </span>
@@ -191,7 +206,7 @@ export function ToolList({
               <Empty className="min-h-32 border-0 p-4">
                 <EmptyHeader>
                   <EmptyMedia variant="icon">
-                    <IconTools />
+                    <IconTools aria-hidden="true" />
                   </EmptyMedia>
                   <EmptyTitle>{labels.empty}</EmptyTitle>
                   <EmptyDescription>{labels.toolCount(0)}</EmptyDescription>

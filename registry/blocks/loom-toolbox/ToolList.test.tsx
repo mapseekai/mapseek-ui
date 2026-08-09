@@ -41,53 +41,81 @@ vi.mock("@/lib/utils", () => ({
 
 import { ToolList } from "./ToolList"
 
+const labels = {
+  title: "Tools",
+  close: "Close",
+  open: "Open",
+  search: "Search tools…",
+  tabs: { all: "All", favorites: "Favorites", recent: "Recent" },
+  quickAccess: "Quick access",
+  categories: "Categories",
+  toolCount: (count: number) => `${count} tools`,
+  empty: "No tools",
+  favorite: (tool: string) => `Favorite ${tool}`,
+  unfavorite: (tool: string) => `Unfavorite ${tool}`,
+  back: "Back",
+  parameters: "Parameters",
+  inputLayer: "Input layer",
+  distance: "Distance",
+  parametersValid: "Parameters valid",
+  completed: "Completed",
+  run: (tool: string) => `Run ${tool}`,
+}
+
+function renderToolList(tab: "all" | "favorites" = "favorites") {
+  return renderToStaticMarkup(
+    <ToolList
+      tools={[
+        {
+          id: "buffer",
+          label: "Buffer analysis",
+          description: "Create a buffer around selected features",
+          group: "Analysis",
+          icon: IconTools,
+        },
+      ]}
+      favoriteIds={new Set()}
+      tab={tab}
+      query=""
+      labels={labels}
+      onTabChange={() => {}}
+      onQueryChange={() => {}}
+      onFavoriteChange={() => {}}
+      onOpenTool={() => {}}
+      onOpenChange={() => {}}
+    />,
+  )
+}
+
 describe("ToolList", () => {
   it("uses a neutral hover treatment for ordinary tool rows", () => {
-    const html = renderToStaticMarkup(
-      <ToolList
-        tools={[
-          {
-            id: "buffer",
-            label: "Buffer",
-            description: "Create a buffer around features",
-            group: "Analysis",
-            icon: IconTools,
-          },
-        ]}
-        favoriteIds={new Set()}
-        tab="favorites"
-        query=""
-        labels={{
-          title: "Tools",
-          close: "Close",
-          open: "Open",
-          search: "Search tools",
-          tabs: { all: "All", favorites: "Favorites", recent: "Recent" },
-          quickAccess: "Quick access",
-          categories: "Categories",
-          toolCount: (count) => `${count} tools`,
-          empty: "No tools",
-          favorite: (tool) => `Favorite ${tool}`,
-          unfavorite: (tool) => `Unfavorite ${tool}`,
-          back: "Back",
-          parameters: "Parameters",
-          inputLayer: "Input layer",
-          distance: "Distance",
-          parametersValid: "Parameters valid",
-          completed: "Completed",
-          run: (tool) => `Run ${tool}`,
-        }}
-        onTabChange={() => {}}
-        onQueryChange={() => {}}
-        onFavoriteChange={() => {}}
-        onOpenTool={() => {}}
-        onOpenChange={() => {}}
-      />,
-    )
+    const html = renderToolList()
 
     expect(html).toContain(
       'class="flex items-center gap-2 border border-transparent px-2 py-1.5 transition-colors hover:bg-accent/50"',
     )
     expect(html).not.toContain("hover:border-primary")
+  })
+
+  it("keeps compact toolbox content discoverable and design-token aligned", () => {
+    const html = renderToolList("all")
+
+    expect(html).toContain('name="toolbox-search"')
+    expect(html).toContain('autoComplete="off"')
+    expect(html).toContain('title="Buffer analysis"')
+    expect(html).toContain('title="Create a buffer around selected features"')
+    expect(html).toContain('title="Analysis · Create a buffer around selected features"')
+    expect(html).toContain("hover:border-primary")
+    expect(html).toContain("hover:bg-primary/5")
+    expect(html).toContain("tnum")
+    expect(html).toContain(
+      'class="flex size-7 items-center justify-center bg-muted text-muted-foreground"',
+    )
+    expect(html).not.toContain(
+      'class="flex size-7 items-center justify-center bg-primary text-primary-foreground"',
+    )
+    expect(html).not.toContain(
+      'class="flex size-7 items-center justify-center bg-primary/10 text-primary"',
+    )
   })
 })

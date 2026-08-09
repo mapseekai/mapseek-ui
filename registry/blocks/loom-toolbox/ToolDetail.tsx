@@ -51,7 +51,7 @@ export function ToolDetail({
           className="h-auto gap-1 rounded-none p-0 text-body-md text-primary hover:no-underline"
           onClick={onBack}
         >
-          <IconArrowLeft className="size-3.5" /> {labels.back}
+          <IconArrowLeft data-icon="inline-start" aria-hidden="true" /> {labels.back}
         </Button>
         <span className="flex-1" />
         <Button
@@ -63,9 +63,9 @@ export function ToolDetail({
           onClick={() => onFavoriteChange(tool.id, !favored)}
         >
           {favored ? (
-            <IconStarFilled className="size-4 fill-current text-primary" />
+            <IconStarFilled className="fill-current text-primary" aria-hidden="true" />
           ) : (
-            <IconStar className="size-4 text-muted-foreground" />
+            <IconStar className="text-muted-foreground" aria-hidden="true" />
           )}
         </Button>
         <Button
@@ -75,13 +75,13 @@ export function ToolDetail({
           aria-label={labels.close}
           onClick={() => onOpenChange(false)}
         >
-          <IconX className="size-4" />
+          <IconX aria-hidden="true" />
         </Button>
       </header>
       <div className="min-h-0 flex-1 overflow-y-auto p-3">
         <div className="flex items-start gap-2">
-          <span className="flex size-8 items-center justify-center bg-muted text-primary">
-            <ToolIcon className="size-4" />
+          <span className="flex size-8 items-center justify-center bg-muted text-muted-foreground">
+            <ToolIcon className="size-4" aria-hidden="true" />
           </span>
           <div className="min-w-0">
             <h2 className="text-headline-sm">{tool.label}</h2>
@@ -98,7 +98,13 @@ export function ToolDetail({
             >
               {labels.inputLayer}
             </FieldLabel>
-            <Input id="loom-tool-input-layer" value={inputLayerName} readOnly />
+            <Input
+              id="loom-tool-input-layer"
+              name="toolbox-input-layer"
+              autoComplete="off"
+              value={inputLayerName}
+              readOnly
+            />
           </Field>
           {tool.parameterKind === "distance" && (
             <Field className="gap-1.5">
@@ -110,6 +116,8 @@ export function ToolDetail({
               </FieldLabel>
               <Input
                 id="loom-tool-distance"
+                name="toolbox-distance"
+                autoComplete="off"
                 inputMode="decimal"
                 value={distance}
                 onChange={(event) => onDistanceChange(event.target.value)}
@@ -118,7 +126,7 @@ export function ToolDetail({
           )}
         </FieldGroup>
         <Alert className="mt-4">
-          <IconCircleCheck />
+          <IconCircleCheck aria-hidden="true" />
           <AlertDescription>{labels.parametersValid}</AlertDescription>
         </Alert>
       </div>
@@ -134,7 +142,7 @@ export function ToolDetail({
           disabled={tool.parameterKind === "distance" && distance.trim().length === 0}
           onClick={() => onRun(tool.id)}
         >
-          <IconTools data-icon="inline-start" />
+          <IconTools data-icon="inline-start" aria-hidden="true" />
           {labels.run(tool.label)}
         </Button>
       </footer>

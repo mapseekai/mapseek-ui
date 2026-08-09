@@ -57,7 +57,7 @@ export function LoomToolboxDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const labels = locale === "en" ? LOOM_TOOLBOX_LABELS_EN : LOOM_TOOLBOX_LABELS_ZH_CN
 
   return (
-    <div style={{ width: "min(100%, 320px)" }}>
+    <div style={{ width: "min(100%, 360px)" }}>
       <LoomToolbox
         tools={tools}
         favoriteIds={favorites}

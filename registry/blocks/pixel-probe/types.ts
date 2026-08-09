@@ -38,5 +38,9 @@ export interface PixelProbeProps {
   onClose?: () => void
   onPrev?: () => void
   onNext?: () => void
+  /** Force-disable previous navigation in addition to the index boundary. */
+  prevDisabled?: boolean
+  /** Force-disable next navigation in addition to the count boundary. */
+  nextDisabled?: boolean
   className?: string
 }

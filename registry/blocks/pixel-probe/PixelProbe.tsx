@@ -61,9 +61,14 @@ export function PixelProbe({
   onClose,
   onPrev,
   onNext,
+  prevDisabled,
+  nextDisabled,
   className,
 }: PixelProbeProps) {
   const showFooter = onPrev != null || onNext != null || index != null
+  const isPrevDisabled = prevDisabled === true || (index != null && index <= 1)
+  const isNextDisabled = nextDisabled === true || (index != null && count != null && index >= count)
+
   return (
     <section
       aria-label={labels.title}
@@ -123,17 +128,33 @@ export function PixelProbe({
       {showFooter && (
         <div className="flex items-center gap-1.5 border-t border-border px-3 py-2">
           <span className="flex-1" />
-          <IconButton size="xs" label={labels.prev} tooltip onClick={onPrev}>
-            <IconChevronLeft aria-hidden="true" stroke={1.75} />
-          </IconButton>
+          {onPrev && (
+            <IconButton
+              size="xs"
+              label={labels.prev}
+              tooltip
+              disabled={isPrevDisabled}
+              onClick={onPrev}
+            >
+              <IconChevronLeft aria-hidden="true" stroke={1.75} />
+            </IconButton>
+          )}
           {index != null && (
             <span className="font-mono text-label-md tabular-nums text-muted-foreground">
               {labels.pointPrefix} {index}
             </span>
           )}
-          <IconButton size="xs" label={labels.next} tooltip onClick={onNext}>
-            <IconChevronRight aria-hidden="true" stroke={1.75} />
-          </IconButton>
+          {onNext && (
+            <IconButton
+              size="xs"
+              label={labels.next}
+              tooltip
+              disabled={isNextDisabled}
+              onClick={onNext}
+            >
+              <IconChevronRight aria-hidden="true" stroke={1.75} />
+            </IconButton>
+          )}
         </div>
       )}
     </section>

@@ -1,1 +1,0 @@
-import{o as e}from"./jsx-runtime-RY6-jGAi.js";import{t}from"./react-CRsFT4JH.js";import{t as n}from"./useRenderElement-GLZYDyMy.js";var r=e(t(),1).forwardRef(function(e,t){let{className:r,render:i,orientation:a=`horizontal`,style:o,...s}=e;return n(`div`,e,{state:{orientation:a},ref:t,props:[{role:`separator`,"aria-orientation":a},s]})});export{r as t};

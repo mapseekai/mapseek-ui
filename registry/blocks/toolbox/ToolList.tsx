@@ -4,15 +4,15 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { cn } from "@/lib/utils"
-import type { LoomTool, LoomToolboxLabels, LoomToolboxTab } from "./types"
+import type { ToolboxLabels, ToolboxTab, ToolboxTool } from "./types"
 
 const selectedToggleClass =
   "aria-pressed:border-primary aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:hover:bg-primary aria-pressed:hover:text-primary-foreground data-[state=on]:border-primary data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:hover:bg-primary data-[state=on]:hover:text-primary-foreground"
 
 type FavoriteButtonProps = {
-  readonly tool: LoomTool
+  readonly tool: ToolboxTool
   readonly favored: boolean
-  readonly labels: LoomToolboxLabels
+  readonly labels: ToolboxLabels
   readonly onFavoriteChange: (id: string, favored: boolean) => void
 }
 
@@ -34,12 +34,12 @@ function FavoriteButton({ tool, favored, labels, onFavoriteChange }: FavoriteBut
 }
 
 export type ToolListProps = {
-  readonly tools: readonly LoomTool[]
+  readonly tools: readonly ToolboxTool[]
   readonly favoriteIds: ReadonlySet<string>
-  readonly tab: LoomToolboxTab
+  readonly tab: ToolboxTab
   readonly query: string
-  readonly labels: LoomToolboxLabels
-  readonly onTabChange: (tab: LoomToolboxTab) => void
+  readonly labels: ToolboxLabels
+  readonly onTabChange: (tab: ToolboxTab) => void
   readonly onQueryChange: (query: string) => void
   readonly onFavoriteChange: (id: string, favored: boolean) => void
   readonly onOpenTool: (id: string) => void
@@ -94,7 +94,7 @@ export function ToolList({
           aria-label={labels.categories}
           value={[tab]}
           onValueChange={([id]) => {
-            if (id) onTabChange(id as LoomToolboxTab)
+            if (id) onTabChange(id as ToolboxTab)
           }}
           size="sm"
           spacing={1}

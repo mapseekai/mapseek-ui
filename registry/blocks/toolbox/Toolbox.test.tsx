@@ -25,9 +25,9 @@ vi.mock("./ToolList", () => ({
   ToolList: () => <div>Tool list</div>,
 }))
 
-import { LoomToolbox, type LoomToolboxProps } from "./LoomToolbox"
+import { Toolbox, type ToolboxProps } from "./Toolbox"
 
-const openProps: LoomToolboxProps = {
+const openProps: ToolboxProps = {
   tools: [],
   favoriteIds: new Set(),
   recentIds: [],
@@ -48,9 +48,9 @@ const openProps: LoomToolboxProps = {
 }
 
 it("uses the stable responsive toolbox panel width", () => {
-  const html = renderToStaticMarkup(<LoomToolbox {...openProps} />)
+  const html = renderToStaticMarkup(<Toolbox {...openProps} />)
 
-  expect(html).toContain('data-slot="loom-toolbox"')
+  expect(html).toContain('data-slot="toolbox"')
   expect(html).toContain("w-[360px]")
   expect(html).toContain("min-w-0")
   expect(html).toContain("max-w-full")

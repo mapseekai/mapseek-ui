@@ -1,6 +1,6 @@
-import type { LoomToolboxLabels } from "./types"
+import type { ToolboxLabels } from "./types"
 
-export const LOOM_TOOLBOX_LABELS_ZH_CN: LoomToolboxLabels = {
+export const TOOLBOX_LABELS_ZH_CN: ToolboxLabels = {
   title: "工具箱",
   close: "关闭工具箱",
   open: "打开工具箱",
@@ -21,7 +21,7 @@ export const LOOM_TOOLBOX_LABELS_ZH_CN: LoomToolboxLabels = {
   run: (tool) => `运行 ${tool}`,
 }
 
-export const LOOM_TOOLBOX_LABELS_EN: LoomToolboxLabels = {
+export const TOOLBOX_LABELS_EN: ToolboxLabels = {
   title: "Toolbox",
   close: "Close toolbox",
   open: "Open toolbox",

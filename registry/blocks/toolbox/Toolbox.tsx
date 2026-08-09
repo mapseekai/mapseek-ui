@@ -2,13 +2,13 @@ import { IconTools } from "@tabler/icons-react"
 import { useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { LOOM_TOOLBOX_LABELS_ZH_CN } from "./labels"
+import { TOOLBOX_LABELS_ZH_CN } from "./labels"
 import { ToolDetail } from "./ToolDetail"
 import { ToolList } from "./ToolList"
-import type { LoomTool, LoomToolboxLabels, LoomToolboxTab } from "./types"
+import type { ToolboxLabels, ToolboxTab, ToolboxTool } from "./types"
 
-export type LoomToolboxProps = {
-  readonly tools: readonly LoomTool[]
+export type ToolboxProps = {
+  readonly tools: readonly ToolboxTool[]
   readonly favoriteIds: ReadonlySet<string>
   readonly recentIds: readonly string[]
   readonly activeToolId: string | undefined
@@ -16,12 +16,12 @@ export type LoomToolboxProps = {
   readonly distance: string
   readonly completed: boolean
   readonly open: boolean
-  readonly tab: LoomToolboxTab
+  readonly tab: ToolboxTab
   readonly query: string
-  readonly labels?: LoomToolboxLabels
+  readonly labels?: ToolboxLabels
   readonly className?: string
   readonly onOpenChange: (open: boolean) => void
-  readonly onTabChange: (tab: LoomToolboxTab) => void
+  readonly onTabChange: (tab: ToolboxTab) => void
   readonly onQueryChange: (query: string) => void
   readonly onFavoriteChange: (id: string, favored: boolean) => void
   readonly onOpenTool: (id?: string) => void
@@ -29,7 +29,7 @@ export type LoomToolboxProps = {
   readonly onRun: (id: string) => void
 }
 
-export function LoomToolbox({
+export function Toolbox({
   tools,
   favoriteIds,
   recentIds,
@@ -40,7 +40,7 @@ export function LoomToolbox({
   open,
   tab,
   query,
-  labels = LOOM_TOOLBOX_LABELS_ZH_CN,
+  labels = TOOLBOX_LABELS_ZH_CN,
   className,
   onOpenChange,
   onTabChange,
@@ -49,7 +49,7 @@ export function LoomToolbox({
   onOpenTool,
   onDistanceChange,
   onRun,
-}: LoomToolboxProps) {
+}: ToolboxProps) {
   const visibleTools = useMemo(() => {
     const keyword = query.trim().toLocaleLowerCase()
     return tools.filter((tool) => {
@@ -75,7 +75,7 @@ export function LoomToolbox({
 
   return (
     <aside
-      data-slot="loom-toolbox"
+      data-slot="toolbox"
       className={cn(
         "flex h-[560px] w-[360px] min-w-0 max-w-full flex-col overflow-hidden border border-border bg-card",
         className,

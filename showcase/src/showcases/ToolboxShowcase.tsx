@@ -1,15 +1,15 @@
 import {
-  LOOM_TOOLBOX_LABELS_EN,
-  LOOM_TOOLBOX_LABELS_ZH_CN,
-  type LoomTool,
-  LoomToolbox,
-  type LoomToolboxTab,
-} from "@registry/blocks/loom-toolbox"
+  TOOLBOX_LABELS_EN,
+  TOOLBOX_LABELS_ZH_CN,
+  Toolbox,
+  type ToolboxTab,
+  type ToolboxTool,
+} from "@registry/blocks/toolbox"
 import { IconCircleCheck, IconCircles, IconCut, IconTopologyStar3 } from "@tabler/icons-react"
 import { useState } from "react"
 import type { LocalizedDemoProps } from "./types"
 
-function loomTools(locale: "zh-CN" | "en"): readonly LoomTool[] {
+function toolboxTools(locale: "zh-CN" | "en"): readonly ToolboxTool[] {
   const english = locale === "en"
   return [
     {
@@ -44,21 +44,21 @@ function loomTools(locale: "zh-CN" | "en"): readonly LoomTool[] {
   ]
 }
 
-export function LoomToolboxDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
+export function ToolboxDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const [open, setOpen] = useState(true)
   const [query, setQuery] = useState("")
-  const [tab, setTab] = useState<LoomToolboxTab>("all")
+  const [tab, setTab] = useState<ToolboxTab>("all")
   const [favorites, setFavorites] = useState<ReadonlySet<string>>(() => new Set(["buffer"]))
   const [recents, setRecents] = useState<readonly string[]>(["clip"])
   const [activeToolId, setActiveToolId] = useState<string | undefined>()
   const [distance, setDistance] = useState("100")
   const [completed, setCompleted] = useState(false)
-  const tools = loomTools(locale)
-  const labels = locale === "en" ? LOOM_TOOLBOX_LABELS_EN : LOOM_TOOLBOX_LABELS_ZH_CN
+  const tools = toolboxTools(locale)
+  const labels = locale === "en" ? TOOLBOX_LABELS_EN : TOOLBOX_LABELS_ZH_CN
 
   return (
     <div style={{ width: "min(100%, 360px)" }}>
-      <LoomToolbox
+      <Toolbox
         tools={tools}
         favoriteIds={favorites}
         recentIds={recents}

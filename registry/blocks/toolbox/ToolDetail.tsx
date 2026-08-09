@@ -11,15 +11,15 @@ import { Button } from "@/components/ui/button"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import type { LoomTool, LoomToolboxLabels } from "./types"
+import type { ToolboxLabels, ToolboxTool } from "./types"
 
 export type ToolDetailProps = {
-  readonly tool: LoomTool
+  readonly tool: ToolboxTool
   readonly favored: boolean
   readonly inputLayerName: string
   readonly distance: string
   readonly completed: boolean
-  readonly labels: LoomToolboxLabels
+  readonly labels: ToolboxLabels
   readonly onDistanceChange: (distance: string) => void
   readonly onFavoriteChange: (id: string, favored: boolean) => void
   readonly onBack: () => void
@@ -93,13 +93,13 @@ export function ToolDetail({
         <FieldGroup className="gap-3">
           <Field className="gap-1.5">
             <FieldLabel
-              htmlFor="loom-tool-input-layer"
+              htmlFor="toolbox-input-layer"
               className="text-body-md text-muted-foreground"
             >
               {labels.inputLayer}
             </FieldLabel>
             <Input
-              id="loom-tool-input-layer"
+              id="toolbox-input-layer"
               name="toolbox-input-layer"
               autoComplete="off"
               value={inputLayerName}
@@ -108,14 +108,11 @@ export function ToolDetail({
           </Field>
           {tool.parameterKind === "distance" && (
             <Field className="gap-1.5">
-              <FieldLabel
-                htmlFor="loom-tool-distance"
-                className="text-body-md text-muted-foreground"
-              >
+              <FieldLabel htmlFor="toolbox-distance" className="text-body-md text-muted-foreground">
                 {labels.distance}
               </FieldLabel>
               <Input
-                id="loom-tool-distance"
+                id="toolbox-distance"
                 name="toolbox-distance"
                 autoComplete="off"
                 inputMode="decimal"

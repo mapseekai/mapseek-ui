@@ -1,8 +1,8 @@
 import type { Icon } from "@tabler/icons-react"
 
-export type LoomToolboxTab = "all" | "favorites" | "recent"
+export type ToolboxTab = "all" | "favorites" | "recent"
 
-export type LoomTool = {
+export type ToolboxTool = {
   readonly id: string
   readonly label: string
   readonly description: string
@@ -11,12 +11,12 @@ export type LoomTool = {
   readonly parameterKind?: "distance"
 }
 
-export type LoomToolboxLabels = {
+export type ToolboxLabels = {
   readonly title: string
   readonly close: string
   readonly open: string
   readonly search: string
-  readonly tabs: Readonly<Record<LoomToolboxTab, string>>
+  readonly tabs: Readonly<Record<ToolboxTab, string>>
   readonly quickAccess: string
   readonly categories: string
   readonly toolCount: (count: number) => string

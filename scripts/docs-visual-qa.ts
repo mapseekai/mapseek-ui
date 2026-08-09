@@ -2050,10 +2050,15 @@ export async function assertBlockInteraction(
   if (block === "json-editor") {
     const demo = page.locator('[data-demo="json-editor"]')
     await demo.locator('[data-demo-action="theme-dark"]').click()
-    await expect(demo).toContainText(`${localized(path, "当前主题", "Current theme")} · dark`)
+    await expect(demo.locator('[data-json-editor-theme="dark"]')).toHaveCount(2)
     await demo.locator('[data-demo-action="theme-none"]').click()
-    await expect(demo).toContainText(`${localized(path, "当前主题", "Current theme")} · none`)
-    await demo.locator(".cm-content").first().click()
+    await expect(demo.locator('[data-json-editor-theme="none"]')).toHaveCount(2)
+    await demo
+      .getByRole("textbox", {
+        name: localized(path, "样式 JSON 编辑器", "Styled JSON editor"),
+        exact: true,
+      })
+      .click()
     await expect(demo.locator('[data-demo-status="json-editor"]')).toContainText(
       localized(path, "已聚焦", "Focused"),
     )

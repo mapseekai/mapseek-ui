@@ -2641,12 +2641,39 @@ export async function assertBlockInteraction(
       name: localized(path, "全部图标", "All icons"),
     })
     const categoryList = demo.locator('[data-slot="resource-sidebar-category-list"]')
+    const editableCategoryName = localized(path, "基础操作", "Basic operations")
+    const editableCategoryRow = demo.getByRole("button", {
+      name: editableCategoryName,
+      exact: true,
+    })
+    const editableCategory = editableCategoryRow.locator("xpath=..")
+    const typeCount = typeRow.locator("span").last()
+    const categoryCount = categoryRow.locator("xpath=..").locator(":scope > span")
+    const editableCategoryCount = editableCategory.locator(":scope > span")
+    const renameButton = editableCategory.getByRole("button", {
+      name: localized(path, "重命名", "Rename"),
+    })
     const [typeRowBox, categoryRowBox] = await Promise.all([
       typeRow.boundingBox(),
       categoryRow.boundingBox(),
     ])
+    expect(typeRowBox?.height).toBe(32)
+    expect(categoryRowBox?.height).toBe(32)
     expect(typeRowBox?.height).toBe(categoryRowBox?.height)
+    await expect(typeCount).toHaveCSS("font-variant-numeric", /tabular-nums/)
+    await expect(categoryCount).toHaveCSS("font-variant-numeric", /tabular-nums/)
+    await expect(editableCategoryRow.locator("span[title]")).toHaveAttribute(
+      "title",
+      editableCategoryName,
+    )
+    await expect(demo.locator('[data-slot="separator"]')).toHaveCount(2)
     await expect(categoryList).toHaveCSS("padding-bottom", "6px")
+    await editableCategoryRow.focus()
+    await expect(editableCategoryCount).toBeHidden()
+    await expect(renameButton).toBeVisible()
+    await page.keyboard.press("Tab")
+    await expect(renameButton).toBeFocused()
+    await expect(demo.getByRole("status")).toHaveCSS("font-size", "11px")
     await demo
       .getByRole("button", { name: new RegExp(`^${localized(path, "字体", "Fonts")}`) })
       .click()

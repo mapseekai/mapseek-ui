@@ -67,12 +67,43 @@ describe("JsonEditor", () => {
     expect(html).not.toContain('aria-label="Ignored fallback"')
   })
 
-  it("shows the design focus ring on the editor boundary", () => {
+  it.each([
+    ["app", false, "var(--background)"],
+    ["light", false, "#ffffff"],
+    ["dark", true, "#0d1117"],
+  ] as const)(
+    "installs the %s palette independently of the UIW wrapper theme",
+    (theme, dark, background) => {
+      const html = renderEditor({ theme })
+
+      expect(html).toContain(`data-json-editor-theme="${theme}"`)
+      expect(html).toContain(`--json-editor-background:${background}`)
+      expect(editorState().facet(EditorView.darkTheme)).toBe(dark)
+      expect(codeMirrorProps.at(-1)?.theme).toBe("none")
+    },
+  )
+
+  it("leaves colors to the consumer for the none theme", () => {
+    const html = renderEditor({ theme: "none" })
+
+    expect(html).toContain('data-json-editor-theme="none"')
+    expect(html).not.toContain("--json-editor-background")
+    expect(codeMirrorProps.at(-1)?.theme).toBe("none")
+  })
+
+  it("does not add an outer focus border or ring", () => {
     const html = renderEditor()
 
-    expect(html).toContain("focus-within:border-ring")
-    expect(html).toContain("focus-within:ring-3")
-    expect(html).toContain("focus-within:ring-ring/20")
+    expect(html).not.toContain("focus-within:border-ring")
+    expect(html).not.toContain("focus-within:ring-3")
+    expect(html).not.toContain("focus-within:ring-ring/20")
+  })
+
+  it("installs active-line feedback for editor content and the line-number gutter", async () => {
+    const source = await readFile(new URL("./JsonEditor.tsx", import.meta.url), "utf8")
+
+    expect(source).toContain("highlightActiveLine(),")
+    expect(source).toContain("highlightActiveLineGutter(),")
   })
 
   it("installs a custom theme extension without enabling a UIW palette", () => {
@@ -80,9 +111,10 @@ describe("JsonEditor", () => {
       create: () => "custom-theme",
       update: (value) => value,
     })
+    const html = renderEditor({ theme: customTheme })
 
-    renderEditor({ theme: customTheme })
-
+    expect(html).toContain('data-json-editor-theme="custom"')
+    expect(html).not.toContain("--json-editor-background")
     expect(editorState().field(customTheme)).toBe("custom-theme")
     expect(codeMirrorProps.at(-1)?.theme).toBe("none")
   })
@@ -90,9 +122,9 @@ describe("JsonEditor", () => {
   it("keeps the public theme and visual tokens on the approved design contract", async () => {
     const source = await readFile(new URL("./JsonEditor.tsx", import.meta.url), "utf8")
 
-    expectTypeOf<JsonEditorTheme>().toEqualTypeOf<"app" | Extension>()
-    expect(source).toContain('export type JsonEditorTheme = "app" | Extension')
+    expectTypeOf<JsonEditorTheme>().toEqualTypeOf<"app" | "light" | "dark" | "none" | Extension>()
+    expect(source).toContain("export type JsonEditorTheme = BuiltInJsonEditorTheme | Extension")
     expect(source).toContain('fontSize: "13px"')
-    expect(source).toContain('{ tag: tags.propertyName, color: "var(--cat-1)" }')
+    expect(source).toContain('{ tag: tags.propertyName, color: "var(--json-editor-cat-1)" }')
   })
 })

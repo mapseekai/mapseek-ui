@@ -28,15 +28,15 @@ import {
 
 ## JSON 编辑器
 
-<ShowcaseDemo registryName="json-editor" title="JSON 编辑器" description="展示默认 app 主题下的无标题与标题栏版本、焦点状态和解析后的受控 value 输出。" minHeight={720} />
+<ShowcaseDemo registryName="json-editor" title="JSON 编辑器" description="展示 app、light、dark 和 none 主题、无标题与标题栏版本、焦点回调状态，以及解析后的受控 value 输出。" minHeight={760} />
 
 ## 用法
 
-传入任意 JSON 值和 `onChange`。默认 `theme="app"` 使用 Mapseek 语义 token，也是唯一的内置主题。特殊嵌入场景可以传入一套完整的 CodeMirror `Extension`，但组件仅保证 `app` 主题符合 Mapseek 设计规范。`title` 为字符串时显示标题栏，为 `null` 时隐藏。
+传入任意 JSON 值和 `onChange`。`theme` 默认为 `"app"`，使用 Mapseek 语义 token 并跟随宿主明暗模式；`"light"` 和 `"dark"` 是不受宿主主题影响的完整独立主题；`"none"` 不注入组件配色，由调用方通过继承样式、class 覆盖、CSS 或扩展负责外观。特殊嵌入场景也可以传入完整的 CodeMirror `Extension`。`title` 为字符串时显示标题栏，为 `null` 时隐藏。
 
 ## 公开导出与 Props
 
-导出 `JsonEditor`、`JsonEditorProps` 和 `JsonEditorTheme`；`JsonEditorTheme` 为 `"app" | Extension`。关键 props 是 `value`、`onChange`、`title`、`ariaLabel`、`theme`、`onFocus`、`onBlur`、`withScroll`、`className`、`editorClassName`、`headerClassName` 和 `titleClassName`。
+导出 `JsonEditor`、`JsonEditorProps` 和 `JsonEditorTheme`；`JsonEditorTheme` 为 `"app" | "light" | "dark" | "none" | Extension`。关键 props 是 `value`、`onChange`、`title`、`ariaLabel`、`theme`、`onFocus`、`onBlur`、`withScroll`、`className`、`editorClassName`、`headerClassName` 和 `titleClassName`。
 
 ## 状态与校验
 
@@ -44,7 +44,7 @@ import {
 
 ## 无障碍
 
-有可见 `title` 时，组件会用标题同时标记外层字段组和 CodeMirror 文本框；无标题时使用 `ariaLabel` 描述编辑器目的。外层应提供保存、重置或错误说明，并确保 CodeMirror 焦点不会与页面快捷键冲突。
+有可见 `title` 时，组件会用标题同时标记外层字段组和 CodeMirror 文本框；无标题时使用 `ariaLabel` 描述编辑器目的。编辑器保留光标、选区和活动行等内部反馈，但获得焦点时不会改变外层边框或添加外层光环。外层应提供保存、重置或错误说明，并确保 CodeMirror 焦点不会与页面快捷键冲突。
 
 ## 依赖
 

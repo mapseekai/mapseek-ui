@@ -94,7 +94,7 @@ export function StatStripDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
   const items = raster ? rasterStats : datasetStats
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full min-w-0 flex-col gap-4">
       <div className="flex items-center gap-2">
         <Button
           type="button"
@@ -109,7 +109,7 @@ export function StatStripDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           {raster ? demoLabels.raster : demoLabels.dataset}
         </span>
       </div>
-      <div className="overflow-x-auto">
+      <div className="w-full min-w-0 overflow-x-auto">
         <div className="min-w-[680px]">
           <StatStrip items={items} />
         </div>

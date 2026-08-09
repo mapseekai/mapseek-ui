@@ -2702,6 +2702,57 @@ export async function assertBlockInteraction(
     await expect(demo).toContainText(localized(path, "不支持", "Unsupported"))
   }
 
+  if (block === "toolbox") {
+    const demo = page.locator('[data-demo="toolbox"]')
+    const toolboxLabel = localized(path, "工具箱", "Toolbox")
+    const bufferLabel = localized(path, "缓冲区", "Buffer")
+    const requiredLabel = localized(path, "请输入缓冲距离", "Enter a buffer distance")
+    const validLabel = localized(
+      path,
+      "参数有效，可以运行工具",
+      "Parameters are valid. The tool is ready to run.",
+    )
+    const completedLabel = localized(
+      path,
+      "已完成，结果已添加为新图层。",
+      "Completed. The result was added as a new layer.",
+    )
+    const runLabel = localized(path, "运行 缓冲区", "Run Buffer")
+    const toolbox = demo.getByRole("complementary", { name: toolboxLabel, exact: true })
+
+    await expect(toolbox).toBeVisible()
+    await expect(toolbox.getByRole("heading", { level: 2, name: toolboxLabel })).toBeVisible()
+    const quickGrid = toolbox.locator("section").first().locator(":scope > div")
+    const quickColumnCount = await quickGrid.evaluate(
+      (element) => getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length,
+    )
+    expect(quickColumnCount).toBe((page.viewportSize()?.width ?? 0) < 640 ? 1 : 2)
+
+    await toolbox.getByRole("button", { name: bufferLabel, exact: true }).first().click()
+    const headerButtons = toolbox.locator("header button")
+    await expect(headerButtons).toHaveCount(3)
+    for (const button of await headerButtons.all()) {
+      await expect(button).toHaveCSS("height", "28px")
+    }
+
+    const distance = toolbox.locator('input[name="toolbox-distance"]')
+    await distance.fill("")
+    await expect(distance).toHaveAttribute("aria-invalid", "true")
+    await expect(toolbox.getByText(requiredLabel, { exact: true })).toBeVisible()
+    await expect(toolbox.getByText(validLabel, { exact: true })).toHaveCount(0)
+    await expect(toolbox.getByRole("button", { name: runLabel, exact: true })).toBeDisabled()
+
+    await distance.fill("100")
+    await expect(distance).toHaveAttribute("aria-invalid", "false")
+    await expect(toolbox.getByText(requiredLabel, { exact: true })).toHaveCount(0)
+    await expect(toolbox.getByText(validLabel, { exact: true })).toBeVisible()
+    await toolbox.getByRole("button", { name: runLabel, exact: true }).click()
+    await expect(toolbox.getByText(completedLabel, { exact: true })).toBeVisible()
+    await distance.fill("250")
+    await expect(toolbox.getByText(completedLabel, { exact: true })).toHaveCount(0)
+    await assertNoHorizontalOverflow(demo, `${path} toolbox`)
+  }
+
   if (block === "raster-style-panel") {
     const demo = page.locator('[data-demo="raster-style-panel"]')
     await assertNoHorizontalOverflow(demo, `${path} raster style panel`)

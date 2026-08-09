@@ -87,7 +87,10 @@ export function ToolboxDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
           if (id)
             setRecents((current) => [id, ...current.filter((item) => item !== id)].slice(0, 4))
         }}
-        onDistanceChange={setDistance}
+        onDistanceChange={(nextDistance) => {
+          setDistance(nextDistance)
+          setCompleted(false)
+        }}
         onRun={() => setCompleted(true)}
       />
     </div>

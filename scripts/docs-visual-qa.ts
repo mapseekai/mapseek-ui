@@ -2233,10 +2233,22 @@ export async function assertBlockInteraction(
     await expect
       .poll(() => probe.evaluate((element) => getComputedStyle(element).boxShadow))
       .toBe("none")
-    if ((page.viewportSize()?.width ?? 0) >= 768) {
+    const viewportWidth = page.viewportSize()?.width ?? 0
+    if (viewportWidth >= 768) {
       await expect
         .poll(() => stage.evaluate((element) => element.getBoundingClientRect().width))
         .toBeGreaterThanOrEqual(600)
+    }
+    if (viewportWidth < 640) {
+      await expect
+        .poll(async () => {
+          const [stageBox, probeBox] = await Promise.all([stage.boundingBox(), probe.boundingBox()])
+          if (!stageBox || !probeBox) return false
+          const leftInset = probeBox.x - stageBox.x
+          const rightInset = stageBox.x + stageBox.width - (probeBox.x + probeBox.width)
+          return leftInset >= 15 && leftInset <= 17 && rightInset >= 15 && rightInset <= 17
+        })
+        .toBe(true)
     }
     await expect
       .poll(async () => {
@@ -2249,24 +2261,34 @@ export async function assertBlockInteraction(
       })
       .toBeLessThanOrEqual(2)
     const copyButton = probe.locator('[data-slot="copy-button"]')
+    const status = demo.locator('[data-demo-status="pixel-probe"]')
+    const previous = probe.getByRole("button", {
+      name: localized(path, "上一个像元", "Previous pixel"),
+    })
+    const next = probe.getByRole("button", {
+      name: localized(path, "下一个像元", "Next pixel"),
+    })
+    await expect(status).toHaveAttribute("aria-live", "polite")
+    await expect(previous).toBeDisabled()
     await expect(copyButton).toHaveCount(1)
     await copyButton.click()
     await expect(copyButton).toHaveAttribute("aria-label", localized(path, "已复制", "Copied"))
     await expect(copyButton.locator("svg")).toHaveClass(/tabler-icon-check/)
-    await expect(demo.locator('[data-demo-status="pixel-probe"]')).toContainText(
-      localized(path, "已复制 JSON", "Copied JSON"),
-    )
-    await demo.locator('[data-slot="icon-button"]').last().click()
-    await expect(demo.locator('[data-demo-status="pixel-probe"]')).toContainText(
-      localized(path, "像元 2", "Pixel 2"),
-    )
+    await expect(status).toContainText(localized(path, "已复制 JSON", "Copied JSON"))
+    await next.click()
+    await expect(status).toContainText(localized(path, "像元 2", "Pixel 2"))
+    await next.click()
+    await expect(status).toContainText(localized(path, "像元 3", "Pixel 3"))
+    await expect(next).toBeDisabled()
+    await next.evaluate((button) => (button as HTMLButtonElement).click())
+    await expect(status).toContainText(localized(path, "像元 3", "Pixel 3"))
     await demo.getByTitle(localized(path, "关闭", "Close")).click()
     await demo
       .getByRole("button", { name: localized(path, "重新打开", "Reopen"), exact: true })
       .click()
     await expect(demo.locator('[data-testid="pixel-probe"]')).toBeVisible()
     await demo.locator('[data-demo-action="pixel-probe-clear-selection"]').click()
-    await expect(demo.locator('[data-demo-empty="pixel-probe"]')).toContainText(
+    await expect(probe.locator('[data-slot="empty"]')).toContainText(
       localized(path, "暂无选中像元", "No selected pixel"),
     )
   }

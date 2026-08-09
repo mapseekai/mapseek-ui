@@ -2606,7 +2606,9 @@ export async function assertBlockInteraction(
       name: localized(path, "清除", "Clear"),
       exact: true,
     })
-    await expect(clearItemButton).toHaveCSS("opacity", "0")
+    // Keyboard opening places focus within the notification row, so the
+    // focus-within state intentionally reveals its destructive action.
+    await expect(clearItemButton).toHaveCSS("opacity", "1")
     await firstNotification.hover()
     await expect(firstNotification).toHaveClass(/hover:bg-accent\/50/)
     await expect(clearItemButton).toHaveCSS("opacity", "1")

@@ -3067,11 +3067,10 @@ export async function assertBlockInteraction(
   if (block === "raster-style-panel") {
     const demo = page.locator('[data-demo="raster-style-panel"]')
     await assertNoHorizontalOverflow(demo, `${path} raster style panel`)
-    await expect(demo).toContainText(localized(path, "波段数", "BANDS"))
-    await expect(demo).toContainText(localized(path, "尺寸", "SIZE"))
-    await expect(demo).toContainText(localized(path, "最小值", "MIN"))
-    await expect(demo).toContainText(localized(path, "最大值", "MAX"))
-    await demo.getByRole("button", { name: localized(path, "RGB 合成", "RGB composite") }).click()
+    await expect(demo).toContainText(localized(path, "波段", "Band"))
+    await expect(demo).toContainText(localized(path, "瓦片", "Tile"))
+    await expect(demo).toContainText(localized(path, "最小最大", "Min max"))
+    await demo.getByRole("radio", { name: localized(path, "RGB 合成", "RGB composite") }).click()
     await expect(demo.locator('[data-demo-status="raster-style-panel"]')).toContainText(
       localized(path, "RGB 合成", "RGB composite"),
     )

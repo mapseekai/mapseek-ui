@@ -1651,6 +1651,82 @@ export async function assertBlockInteraction(
     )
   }
 
+  if (block === "custom-colormap") {
+    const demo = page.locator('[data-demo="custom-colormap"]')
+    await expect(demo).toContainText(
+      localized(path, "3 个色停 · 线性 · OKLCH", "3 stops · Linear · OKLCH"),
+    )
+    await expect(demo.locator('[data-slot="custom-colormap-preview"]')).toHaveCSS(
+      "border-top-width",
+      "1px",
+    )
+
+    await demo
+      .getByRole("button", { name: localized(path, "编辑配色", "Edit colormap"), exact: true })
+      .click()
+    const dialog = page.getByRole("dialog", {
+      name: localized(path, "自定义配色方案", "Custom colormap"),
+      exact: true,
+    })
+    await expect(dialog).toBeVisible()
+    await expect(
+      dialog.getByRole("button", { name: localized(path, "关闭", "Close"), exact: true }),
+    ).toBeVisible()
+    await expect(dialog.locator('[data-slot="custom-colormap-editor-preview"]')).toHaveCSS(
+      "border-top-width",
+      "1px",
+    )
+
+    const removeButtons = dialog.getByRole("button", {
+      name: localized(path, "删除色停", "Remove stop"),
+      exact: true,
+    })
+    await expect(removeButtons).toHaveCount(3)
+    for (const removeButton of await removeButtons.all()) {
+      await expect(removeButton).toHaveCSS("opacity", "0")
+      await expect(removeButton).toHaveCSS("width", "14px")
+      await expect(removeButton).toHaveCSS("height", "14px")
+    }
+    const firstRemoveButton = removeButtons.first()
+    const restingBackground = await firstRemoveButton.evaluate(
+      (element) => getComputedStyle(element).backgroundColor,
+    )
+    await firstRemoveButton.locator("xpath=..").hover()
+    await expect(firstRemoveButton).toHaveCSS("opacity", "1")
+    await firstRemoveButton.hover()
+    expect(
+      await firstRemoveButton.evaluate((element) => getComputedStyle(element).backgroundColor),
+    ).toBe(restingBackground)
+
+    const presetGrid = dialog.locator('[data-slot="custom-colormap-presets"]')
+    const columnCount = await presetGrid.evaluate(
+      (element) => getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length,
+    )
+    expect(columnCount).toBe((page.viewportSize()?.width ?? 0) < 640 ? 2 : 4)
+    const firstPreset = dialog.getByRole("button", {
+      name: localized(path, "蓝-米-橙", "Blue–Cream–Orange"),
+      exact: true,
+    })
+    await expect(firstPreset).toBeVisible()
+    await expect(firstPreset.locator("span").last()).toHaveCSS("font-size", "13px")
+    await assertNoHorizontalOverflow(presetGrid, `${path} custom colormap preset grid`)
+
+    const sectionIcons = dialog.locator('[data-slot="custom-colormap-section-heading"] svg')
+    await expect(sectionIcons).toHaveCount(4)
+    for (const icon of await sectionIcons.all()) {
+      await expect(icon).toHaveAttribute("aria-hidden", "true")
+    }
+
+    await page.emulateMedia({ reducedMotion: "reduce" })
+    await expect(dialog).toHaveCSS("animation-name", "none")
+    await expect(page.locator('[data-slot="dialog-overlay"]')).toHaveCSS("animation-name", "none")
+    await page.emulateMedia({ reducedMotion: "no-preference" })
+
+    await dialog
+      .getByRole("button", { name: localized(path, "取消", "Cancel"), exact: true })
+      .click()
+  }
+
   if (block === "crs-picker") {
     const demo = page.locator('[data-demo="crs-picker"]')
     const controlled = demo

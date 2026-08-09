@@ -3,8 +3,10 @@ import { Dialog, DialogBody, DialogContent, DialogFooter } from "@/components/ui
 import { cn } from "@/lib/utils"
 import {
   buildColormapGradient,
+  type ColormapPreset,
   CustomColormapEditor,
   type CustomColormap as CustomColormapValue,
+  DEFAULT_COLORMAP_PRESETS,
 } from "../raster-style-panel"
 import { CUSTOM_COLORMAP_LABELS_ZH_CN, type CustomColormapDialogLabels } from "./labels"
 
@@ -13,6 +15,7 @@ export type CustomColormapProps = {
   readonly draft: CustomColormapValue
   readonly open: boolean
   readonly labels?: CustomColormapDialogLabels
+  readonly presets?: ColormapPreset[]
   readonly className?: string
   readonly showTrigger?: boolean
   readonly onOpenChange: (open: boolean) => void
@@ -25,18 +28,28 @@ export function CustomColormap({
   draft,
   open,
   labels = CUSTOM_COLORMAP_LABELS_ZH_CN,
+  presets,
   className,
   showTrigger = true,
   onOpenChange,
   onDraftChange,
   onApply,
 }: CustomColormapProps) {
+  const editorPresets =
+    presets ??
+    DEFAULT_COLORMAP_PRESETS.map((preset) => ({
+      ...preset,
+      name: labels.presetNames?.[preset.id] ?? preset.name,
+    }))
+
   return (
     <div data-slot="custom-colormap" className={cn("flex flex-col gap-4", className)}>
       {showTrigger ? (
         <div className="flex flex-wrap items-center gap-3">
           <span
-            className="h-6 min-w-40 flex-1 sm:max-w-64"
+            data-slot="custom-colormap-preview"
+            aria-hidden="true"
+            className="h-6 min-w-40 flex-1 border border-border sm:max-w-64"
             style={{ background: buildColormapGradient(value) }}
           />
           <span className="font-mono text-body-sm text-muted-foreground">
@@ -49,9 +62,19 @@ export function CustomColormap({
       ) : null}
 
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent width={460} title={labels.title} description={labels.description}>
+        <DialogContent
+          width={460}
+          title={labels.title}
+          description={labels.description}
+          closeLabel={labels.close}
+        >
           <DialogBody>
-            <CustomColormapEditor value={draft} onChange={onDraftChange} labels={labels.editor} />
+            <CustomColormapEditor
+              value={draft}
+              presets={editorPresets}
+              onChange={onDraftChange}
+              labels={labels.editor}
+            />
           </DialogBody>
           <DialogFooter>
             <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>

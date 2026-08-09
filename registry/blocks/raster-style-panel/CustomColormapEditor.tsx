@@ -29,8 +29,11 @@ function SectionHead({
   trailing?: React.ReactNode
 }) {
   return (
-    <div className="flex items-center gap-1.5 font-mono text-label-md uppercase text-muted-foreground">
-      <Icon size={11} stroke={1.75} />
+    <div
+      data-slot="custom-colormap-section-heading"
+      className="flex items-center gap-1.5 font-mono text-label-md uppercase text-muted-foreground"
+    >
+      <Icon aria-hidden="true" size={11} stroke={1.75} />
       <span>{title}</span>
       {trailing != null && (
         <span className="ml-auto text-[10px] tracking-normal normal-case">{trailing}</span>
@@ -97,7 +100,12 @@ export function CustomColormapEditor({
   return (
     <div className={cn("flex flex-col gap-3.5", className)}>
       {/* Preview */}
-      <div className="h-6" style={{ background: buildColormapGradient(value) }} />
+      <div
+        data-slot="custom-colormap-editor-preview"
+        aria-hidden="true"
+        className="h-6 border border-border"
+        style={{ background: buildColormapGradient(value) }}
+      />
 
       {/* Stops */}
       <section className="flex flex-col gap-1.5 border border-border p-2">
@@ -126,9 +134,12 @@ export function CustomColormapEditor({
                   aria-label={labels.removeStop}
                   title={labels.removeStop}
                   onClick={() => removeStop(i)}
-                  className="group/delete absolute -top-1.5 left-1/2 z-10 grid size-3.5 -translate-x-1/2 place-items-center rounded-full border border-border bg-background p-0 opacity-0 transition-opacity group-hover/stop:opacity-100 hover:border-destructive"
+                  className="group/delete absolute -top-1.5 left-1/2 z-10 grid size-3.5 -translate-x-1/2 place-items-center rounded-full border border-border bg-background p-0 opacity-0 transition-opacity group-hover/stop:opacity-100 hover:border-destructive hover:bg-background"
                 >
-                  <IconX className="text-muted-foreground group-hover/delete:text-destructive" />
+                  <IconX
+                    aria-hidden="true"
+                    className="text-muted-foreground group-hover/delete:text-destructive"
+                  />
                 </Button>
               )}
             </span>
@@ -142,7 +153,7 @@ export function CustomColormapEditor({
             onClick={addStop}
             className="grid size-7 shrink-0 place-items-center border border-dashed border-border-strong text-muted-foreground hover:border-primary hover:text-primary"
           >
-            <IconPlus stroke={1.75} />
+            <IconPlus aria-hidden="true" stroke={1.75} />
           </Button>
         </div>
       </section>
@@ -196,15 +207,18 @@ export function CustomColormapEditor({
           title={labels.importPreset}
           trailing={<span className="font-sans normal-case">{labels.importHint}</span>}
         />
-        <div className="grid grid-cols-4 gap-1.5">
+        <div
+          data-slot="custom-colormap-presets"
+          className="grid grid-cols-2 gap-1.5 sm:grid-cols-4"
+        >
           {presets.map((p) => (
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
               key={p.id}
               type="button"
               onClick={() => importPreset(p.stops)}
-              className="flex h-auto min-h-12 cursor-pointer flex-col gap-1 border border-border bg-background p-1 hover:bg-accent/50"
+              className="flex h-auto min-h-12 flex-col gap-1 p-1"
             >
               <span
                 aria-hidden="true"
@@ -213,7 +227,7 @@ export function CustomColormapEditor({
                   background: `linear-gradient(to right, ${p.stops.join(", ")})`,
                 }}
               />
-              <span className="text-center font-mono text-[10px] text-muted-foreground">
+              <span className="min-w-0 whitespace-normal break-words text-center leading-tight">
                 {p.name}
               </span>
             </Button>

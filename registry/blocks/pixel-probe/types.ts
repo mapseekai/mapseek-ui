@@ -21,6 +21,10 @@ export interface PixelProbeLabels {
   next: string
   /** Prefix before the point index in the footer, e.g. "PT". */
   pointPrefix: string
+  /** Empty-state copy rendered when no fields are available. */
+  empty: string
+  /** Assistive label announced for lock-marked fields. */
+  locked: string
 }
 
 export interface PixelProbeProps {

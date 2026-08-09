@@ -6,38 +6,44 @@ import {
   IconX,
 } from "@tabler/icons-react"
 import { CopyButton } from "@/components/ui/copy-button"
+import { Empty, EmptyHeader, EmptyTitle } from "@/components/ui/empty"
 import { IconButton } from "@/components/ui/icon-button"
+import { Tag } from "@/components/ui/tag"
 import { cn } from "@/lib/utils"
 import type { PixelField, PixelProbeProps } from "./types"
 
-function FieldRow({ field }: { field: PixelField }) {
-  const isBadge = field.type === "ENUM"
+function FieldRow({ field, lockedLabel }: { field: PixelField; lockedLabel: string }) {
+  const isEnum = field.type === "ENUM"
+
   return (
-    <div className="flex flex-col gap-[3px]">
-      <div className="flex items-center gap-1.5">
+    <div className="flex min-w-0 flex-col gap-1">
+      <dt className="flex min-w-0 items-center gap-1.5">
         <span className="font-mono text-label-md uppercase text-muted-foreground">{field.key}</span>
-        <span className="border border-border bg-muted px-1 py-px font-mono text-label-md uppercase text-muted-foreground">
+        <Tag color="gray" size="sm">
           {field.type}
-        </span>
-        {field.locked && <IconLock size={11} className="ml-auto text-muted-foreground" />}
-      </div>
-      <div
-        className={cn(
-          "flex h-7 items-center border border-border bg-muted px-2 text-body-md text-foreground select-text",
-          !isBadge && "font-mono tabular-nums",
-        )}
-      >
-        {isBadge ? (
-          <span className="inline-flex h-5 items-center border border-border bg-card px-1.5 font-mono text-[10px] tracking-[0.04em] text-muted-foreground">
-            {field.value}
+        </Tag>
+        {field.locked && (
+          <span className="ml-auto inline-flex text-muted-foreground">
+            <IconLock aria-hidden="true" size={14} stroke={1.75} />
+            <span className="sr-only">{lockedLabel}</span>
           </span>
-        ) : (
-          field.value
         )}
+      </dt>
+      <dd className="flex h-7 min-w-0 items-center gap-2 border border-border bg-muted px-2 text-body-md text-foreground select-text">
+        <div
+          className={cn(
+            "min-w-0 flex-1 overflow-x-auto whitespace-nowrap",
+            !isEnum && "font-mono tabular-nums",
+          )}
+        >
+          {isEnum ? <Tag color="gray">{field.value}</Tag> : field.value}
+        </div>
         {field.unit && (
-          <span className="ml-auto font-mono text-[10px] text-muted-foreground">{field.unit}</span>
+          <span className="shrink-0 font-mono text-label-md text-muted-foreground">
+            {field.unit}
+          </span>
         )}
-      </div>
+      </dd>
     </div>
   )
 }
@@ -59,20 +65,27 @@ export function PixelProbe({
 }: PixelProbeProps) {
   const showFooter = onPrev != null || onNext != null || index != null
   return (
-    <div
+    <section
+      aria-label={labels.title}
       data-testid="pixel-probe"
-      className={cn("flex flex-col overflow-hidden border border-border bg-card", className)}
+      className={cn(
+        "flex min-w-0 flex-col overflow-hidden border border-border bg-card",
+        className,
+      )}
     >
       {/* Header */}
       <div className="flex h-9 shrink-0 items-center gap-2 border-b border-border px-3">
-        <IconColorPicker size={13} className="text-muted-foreground" />
-        <span className="font-sans text-label-sm uppercase text-muted-foreground">
-          {labels.title}
-        </span>
+        <IconColorPicker
+          aria-hidden="true"
+          size={14}
+          stroke={1.75}
+          className="text-muted-foreground"
+        />
+        <span className="text-label-sm uppercase text-muted-foreground">{labels.title}</span>
         {count != null && (
-          <span className="inline-flex h-5 items-center border border-primary/25 bg-primary/10 px-1.5 font-mono text-[10px] tracking-[0.04em] text-primary">
-            {count}
-          </span>
+          <Tag color="gray">
+            <span className="tabular-nums">{count}</span>
+          </Tag>
         )}
         <span className="flex-1" />
         {onCopy && (
@@ -86,35 +99,43 @@ export function PixelProbe({
         )}
         {onClose && (
           <IconButton size="xs" label={labels.close} tooltip onClick={onClose}>
-            <IconX stroke={1.75} />
+            <IconX aria-hidden="true" stroke={1.75} />
           </IconButton>
         )}
       </div>
 
       {/* Body */}
-      <div className="flex flex-col gap-2.5 overflow-x-hidden overflow-y-auto px-3 py-2.5">
-        {fields.map((f) => (
-          <FieldRow key={f.key} field={f} />
-        ))}
-      </div>
+      {fields.length === 0 ? (
+        <Empty className="min-h-24 p-4">
+          <EmptyHeader>
+            <EmptyTitle>{labels.empty}</EmptyTitle>
+          </EmptyHeader>
+        </Empty>
+      ) : (
+        <dl className="flex min-h-0 min-w-0 flex-col gap-2.5 overflow-y-auto px-3 py-2.5">
+          {fields.map((field) => (
+            <FieldRow key={field.key} field={field} lockedLabel={labels.locked} />
+          ))}
+        </dl>
+      )}
 
       {/* Footer — pixel navigation */}
       {showFooter && (
         <div className="flex items-center gap-1.5 border-t border-border px-3 py-2">
           <span className="flex-1" />
           <IconButton size="xs" label={labels.prev} tooltip onClick={onPrev}>
-            <IconChevronLeft stroke={1.75} />
+            <IconChevronLeft aria-hidden="true" stroke={1.75} />
           </IconButton>
           {index != null && (
-            <span className="font-mono text-[10px] tracking-[0.04em] text-muted-foreground">
+            <span className="font-mono text-label-md tabular-nums text-muted-foreground">
               {labels.pointPrefix} {index}
             </span>
           )}
           <IconButton size="xs" label={labels.next} tooltip onClick={onNext}>
-            <IconChevronRight stroke={1.75} />
+            <IconChevronRight aria-hidden="true" stroke={1.75} />
           </IconButton>
         </div>
       )}
-    </div>
+    </section>
   )
 }

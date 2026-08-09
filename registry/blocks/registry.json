@@ -899,7 +899,9 @@
       "type": "registry:block",
       "registryDependencies": [
         "@mapseek/copy-button",
+        "@mapseek/empty",
         "@mapseek/icon-button",
+        "@mapseek/tag",
         "@mapseek/tooltip",
         "@mapseek/utils"
       ],

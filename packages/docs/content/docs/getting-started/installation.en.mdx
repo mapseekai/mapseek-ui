@@ -11,32 +11,44 @@ Mapseek UI installs source through the shadcn registry. Components, blocks, util
 
 ## components.json
 
-Add the Mapseek UI registry to the application's `components.json`. The `@mapseek` namespace points to same-domain registry JSON:
+First make sure shadcn is initialized and the application has a root `components.json`. If it is not initialized yet, run:
+
+```bash
+pnpm dlx shadcn@latest init
+```
+
+Then register the public Mapseek UI registry with the CLI:
+
+```bash
+pnpm dlx shadcn@latest registry add '@mapseek=https://mapseekai.github.io/mapseek-ui/r/{name}.json'
+```
+
+You can also add the same configuration to the application's `components.json` manually:
 
 ```json
 {
   "registries": {
-    "@mapseek": "https://mapseek-ui.local/r/{name}.json"
+    "@mapseek": "https://mapseekai.github.io/mapseek-ui/r/{name}.json"
   }
 }
 ```
 
-For local previews or internal deployments, replace only the host. Keep the registry path as `/r/{name}.json`.
+The public registry is hosted on GitHub Pages. Open the [Button registry JSON](https://mapseekai.github.io/mapseek-ui/r/button.json) directly to check that the service is available.
 
 ## Install Commands
 
 Install one component or block at a time with shadcn:
 
 ```bash
-bunx shadcn@4.16.1 add @mapseek/button
-bunx shadcn@4.16.1 add @mapseek/layer-panel
+pnpm dlx shadcn@latest add @mapseek/button
+pnpm dlx shadcn@latest add @mapseek/layer-panel
 ```
 
 Install theme and utility dependencies the same way:
 
 ```bash
-bunx shadcn@4.16.1 add @mapseek/theme
-bunx shadcn@4.16.1 add @mapseek/utils
+pnpm dlx shadcn@latest add @mapseek/theme
+pnpm dlx shadcn@latest add @mapseek/utils
 ```
 
 ## Destinations
@@ -54,7 +66,7 @@ If your project uses different aliases, keep the installed file destinations and
 
 ## Source Ownership
 
-Mapseek UI is not a runtime component package. shadcn copies source into the application, and the application team owns review, commits, edits, and upgrades for those files. To upgrade later, rerun `bunx shadcn@4.16.1 add @mapseek/<name>` and review the resulting patch against local changes.
+Mapseek UI is not a runtime component package. shadcn copies source into the application, and the application team owns review, commits, edits, and upgrades for those files. To upgrade later, rerun `pnpm dlx shadcn@latest add @mapseek/<name>` and review the resulting patch against local changes.
 
 ## Next
 

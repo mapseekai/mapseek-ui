@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "mapseek",
-  "homepage": "http://127.0.0.1:4174",
+  "homepage": "https://mapseekai.github.io/mapseek-ui/",
   "include": [
     "registry/theme/registry.json",
     "registry/lib/registry.json",

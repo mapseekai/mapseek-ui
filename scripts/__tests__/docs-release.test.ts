@@ -1,4 +1,4 @@
-import { access } from "node:fs/promises"
+import { access, readFile } from "node:fs/promises"
 import { expect, it } from "vitest"
 
 const releaseArtifacts = [
@@ -29,4 +29,12 @@ it("emits the static docs and installable registry release artifacts", async () 
       )
       .toBe(true)
   }
+})
+
+it("publishes registry metadata with the public documentation homepage", async () => {
+  const registry = JSON.parse(await readFile("public/r/registry.json", "utf8")) as {
+    homepage?: string
+  }
+
+  expect(registry.homepage).toBe("https://mapseekai.github.io/mapseek-ui/")
 })

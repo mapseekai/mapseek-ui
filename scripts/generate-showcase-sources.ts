@@ -1,5 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises"
-import { join, resolve } from "node:path"
+import { dirname, join, resolve } from "node:path"
+import ts from "typescript"
 
 const repoRoot = resolve(import.meta.dirname, "..")
 const showcaseDir = join(repoRoot, "showcase/src/showcases")
@@ -18,6 +19,60 @@ async function catalogSources(): Promise<readonly [string, string][]> {
   return pairs
 }
 
+// Copyable examples use the standard shadcn installation aliases. Local
+// Showcase helpers are included so consumers do not need our demo directory.
+async function exampleSource(entryPath: string): Promise<string> {
+  const visited = new Set<string>()
+  const imports = new Set<string>()
+  const declarations: string[] = []
+
+  async function visit(filePath: string): Promise<void> {
+    if (visited.has(filePath)) return
+    visited.add(filePath)
+    const source = await readFile(filePath, "utf8")
+    const file = ts.createSourceFile(filePath, source, ts.ScriptTarget.Latest, true)
+
+    // These are the two public locale types used by examples. Other exports
+    // in types.ts belong to the Showcase catalog, not a consumer's component.
+    if (filePath === join(showcaseDir, "types.ts")) {
+      for (const statement of file.statements) {
+        if (
+          ts.isTypeAliasDeclaration(statement) &&
+          ["DemoLocale", "LocalizedDemoProps"].includes(statement.name.text)
+        ) {
+          declarations.push(statement.getText(file))
+        }
+      }
+      return
+    }
+
+    const body: string[] = []
+    for (const statement of file.statements) {
+      if (!ts.isImportDeclaration(statement) || !ts.isStringLiteral(statement.moduleSpecifier)) {
+        body.push(statement.getFullText(file).trim())
+        continue
+      }
+
+      const moduleName = statement.moduleSpecifier.text
+      if (moduleName.startsWith(".")) {
+        const dependency = resolve(dirname(filePath), moduleName)
+        await visit(`${dependency}${moduleName === "./types" ? ".ts" : ".tsx"}`)
+        continue
+      }
+
+      const installedName = moduleName
+        .replace(/^@(?:registry|\/registry)\/ui\//, "@/components/ui/")
+        .replace(/^@(?:registry|\/registry)\/blocks\//, "@/components/blocks/")
+        .replace(/^@(?:registry|\/registry)\/lib\//, "@/lib/")
+      imports.add(statement.getText(file).replace(moduleName, installedName))
+    }
+    declarations.push(body.join("\n\n"))
+  }
+
+  await visit(entryPath)
+  return `"use client"\n\n${[...imports].join("\n")}\n\n${declarations.join("\n\n")}\n`
+}
+
 const pairs = await catalogSources()
 const entries: [string, string][] = []
 const missing: string[] = []
@@ -26,7 +81,7 @@ for (const [name, moduleName] of pairs) {
   const file = `${moduleName}.tsx`
   let raw: string
   try {
-    raw = await readFile(join(showcaseDir, file), "utf8")
+    raw = await exampleSource(join(showcaseDir, file))
   } catch {
     missing.push(name)
     continue

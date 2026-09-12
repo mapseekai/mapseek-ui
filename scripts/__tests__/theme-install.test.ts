@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process"
-import { cp, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises"
+import { access, cp, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises"
 import type { Server } from "node:http"
 import { tmpdir } from "node:os"
 import { join, resolve } from "node:path"
@@ -65,7 +65,9 @@ it("installs the Mapseek theme with its tokens and dependencies", async () => {
     ),
   )
 
-  await run(repoRoot, pnpmCommand("run", "registry:build"))
+  // The build contract tests share these artifacts. Rebuilding here deletes
+  // them while parallel tests are reading them; docs:build prepares them.
+  await access(join(repoRoot, "public/r/theme.json"))
   await startServer()
   await installTheme(fixture)
   await run(fixture, npmCommand("run", "build"))

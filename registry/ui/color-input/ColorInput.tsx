@@ -1,5 +1,6 @@
 "use client"
 
+import Color from "color"
 import { useCallback, useEffect, useId, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -42,7 +43,14 @@ export function ColorInput({
   const swatchRef = useRef<HTMLButtonElement>(null)
   const inputPointerStartedOpenRef = useRef(false)
   const [uncontrolledOpen, setUncontrolledOpen] = useState(false)
-  const displayValue = value || defaultValue
+  const displayValue = value ?? defaultValue
+  let pickerValue = "#000000"
+  try {
+    Color(displayValue)
+    pickerValue = displayValue
+  } catch {
+    // Empty and incomplete text drafts must not reach the picker parser.
+  }
   const isControlled = open !== undefined
   const isOpen = open ?? uncontrolledOpen
   const effectiveOpen = disabled ? false : isOpen
@@ -99,7 +107,7 @@ export function ColorInput({
     value: displayValue,
     close: () => setOpen(false),
   }) ?? (
-    <ColorPicker value={displayValue} onChange={handlePickerChange} className="w-64">
+    <ColorPicker value={pickerValue} onChange={handlePickerChange} className="w-64">
       <ColorPickerSelection className="h-48 w-full" />
       <div className="flex flex-col gap-2">
         <ColorPickerHue />

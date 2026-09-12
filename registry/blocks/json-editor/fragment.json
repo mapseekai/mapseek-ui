@@ -16,6 +16,7 @@
   ],
   "dependencies": [
     "@codemirror/autocomplete",
+    "@codemirror/commands",
     "@codemirror/lang-json",
     "@codemirror/language",
     "@codemirror/lint",

@@ -3,6 +3,7 @@
   "files": {
     "includes": [
       "**",
+      "!!**/.worktrees",
       "!public",
       "!dist",
       "!packages/docs/.docusaurus",

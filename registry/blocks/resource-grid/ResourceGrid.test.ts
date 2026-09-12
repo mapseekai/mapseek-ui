@@ -26,8 +26,8 @@ describe("ResourceGrid layout", () => {
       { kind: "icon", id: "search", name: "Search", seed: "search" },
     ])
 
-    expect(html).toContain("grid-cols-[repeat(auto-fill,minmax(96px,1fr))]")
-    expect(html).not.toContain("grid-cols-[repeat(auto-fit,minmax(96px,1fr))]")
+    expect(html).toContain("grid-cols-[repeat(auto-fill,")
+    expect(html).not.toContain("grid-cols-[repeat(auto-fit,")
   })
 
   it("keeps icon selection visible on touch layouts and mirrors its position in RTL", () => {

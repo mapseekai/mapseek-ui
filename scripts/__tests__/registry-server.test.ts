@@ -29,7 +29,31 @@ it("rejects public symlinks that resolve outside the public root", async () => {
     await rm(link, { force: true })
     await rm(outside, { recursive: true, force: true })
   }
-  server = await startRegistryServer()
-  const response = await fetch("http://127.0.0.1:4174/outside.json")
+  server = await startRegistryServer(0)
+  const address = server.address()
+  if (!address || typeof address === "string") throw new Error("Expected a TCP listener")
+  const response = await fetch(`http://127.0.0.1:${address.port}/outside.json`)
   expect(response.status).toBe(403)
+})
+
+it("allows independent test listeners without claiming a fixed port", async () => {
+  server = await startRegistryServer(0)
+  const second = await startRegistryServer(0)
+  try {
+    const firstAddress = server.address()
+    const secondAddress = second.address()
+    if (
+      !firstAddress ||
+      typeof firstAddress === "string" ||
+      !secondAddress ||
+      typeof secondAddress === "string"
+    ) {
+      throw new Error("Expected TCP listeners")
+    }
+    expect(firstAddress.port).not.toBe(secondAddress.port)
+  } finally {
+    await new Promise<void>((resolve, reject) =>
+      second.close((error) => (error ? reject(error) : resolve())),
+    )
+  }
 })

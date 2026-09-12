@@ -19,10 +19,10 @@ Button is the foundational Mapseek UI action trigger for submitting forms, runni
 ## Import
 
 ```tsx
-import { Button } from "@/registry/ui/button"
+import { Button } from "@/components/ui/button"
 ```
 
-If your project uses a shadcn target path, import from the alias that points to the installed `@ui/button.tsx` file.
+Examples use the default shadcn installation alias. If you customize `aliases.ui` in `components.json`, adjust the import path accordingly.
 
 ## Basic Usage
 
@@ -41,7 +41,7 @@ If your project uses a shadcn target path, import from the alias that points to 
 `Button` exports the `Button` component and the `buttonVariants` style helper. The component inherits Base UI `Button` props and adds `variant` and `size` variant props.
 
 ```tsx
-import { Button, buttonVariants } from "@/registry/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 ```
 
 `Button` is built on `@base-ui/react/button`, so it keeps native button semantics, keyboard activation, focus behavior, and common button attributes. `disabled` is passed through to Base UI, while the style layer applies `pointer-events-none` and `opacity-50`.

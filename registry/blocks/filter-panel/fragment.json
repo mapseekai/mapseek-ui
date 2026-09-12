@@ -3,6 +3,7 @@
   "type": "registry:block",
   "registryDependencies": [
     "@mapseek/button",
+    "@mapseek/button-radio-group",
     "@mapseek/input",
     "@mapseek/select",
     "@mapseek/tabs",

@@ -8,11 +8,32 @@ const labels = {
     intro: "受控过滤面板。模式、条件行和 SQL 文本都由调用方保存。",
     clearExternal: "外部清空",
     statusPrefix: "当前模式",
+    panel: {
+      field: "字段",
+      operator: "运算符",
+      connection: "连接方式",
+      value: "值",
+    },
   },
   en: {
     intro: "Controlled filter panel. The caller stores mode, builder rows, and SQL text.",
     clearExternal: "External clear",
     statusPrefix: "Current mode",
+    panel: {
+      builder: "Builder",
+      noConditions: "No conditions",
+      field: "Field",
+      operator: "Operator",
+      connection: "Connection",
+      value: "Value",
+      valuePlaceholder: "Enter value",
+      removeCondition: "Remove condition",
+      addCondition: "Add condition",
+      estimate: "Estimated",
+      rows: "rows",
+      clear: "Clear",
+      apply: "Apply",
+    },
   },
 }
 
@@ -28,7 +49,12 @@ export function FilterPanelDemo({ locale = "zh-CN" }: LocalizedDemoProps) {
     <div className="flex w-full max-w-md flex-col gap-3">
       <p className="m-0 text-xs text-muted-foreground">{demoLabels.intro}</p>
       <div className="border border-border bg-card p-4">
-        <FilterPanel fields={["type", "name", "area_m2"]} value={value} onChange={setValue}>
+        <FilterPanel
+          fields={["type", "name", "area_m2"]}
+          value={value}
+          onChange={setValue}
+          labels={demoLabels.panel}
+        >
           <FilterPanel.ModeToggle />
           <FilterPanel.Builder ops={["=", "!=", ">", "<", "contains"]} />
           <FilterPanel.Sql keywords={["AND", "OR", "LIKE", "IN"]} />

@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process"
 import { access, cp, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
+import { tmpdir } from "node:os"
 import { join } from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import { SHADCN_PACKAGE } from "../shared/shadcn"
@@ -70,7 +71,7 @@ export async function assertInstalledItemDestination(fixture: string, name: stri
 export async function verifyItems(names: readonly string[]): Promise<void> {
   await withRegistryServer(async () => {
     for (const name of names) {
-      const fixture = await mkdtemp(join(repoRoot, ".verify-item-"))
+      const fixture = await mkdtemp(join(tmpdir(), "mapseek-verify-item-"))
       try {
         await cp(join(repoRoot, "fixtures/vite-react-template"), fixture, { recursive: true })
         const componentsPath = join(fixture, "components.json")

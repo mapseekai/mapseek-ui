@@ -290,6 +290,7 @@
       "type": "registry:block",
       "registryDependencies": [
         "@mapseek/button",
+        "@mapseek/button-radio-group",
         "@mapseek/input",
         "@mapseek/select",
         "@mapseek/tabs",
@@ -436,6 +437,7 @@
       ],
       "dependencies": [
         "@codemirror/autocomplete",
+        "@codemirror/commands",
         "@codemirror/lang-json",
         "@codemirror/language",
         "@codemirror/lint",

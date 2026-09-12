@@ -25,7 +25,7 @@ import {
   type FilterCondition,
   type FilterPanelLabels,
   type FilterValue,
-} from "@/registry/blocks/filter-panel"
+} from "@/components/blocks/filter-panel"
 ```
 
 ## Builder 与 SQL 模式
@@ -46,7 +46,7 @@ import {
 
 ## 无障碍
 
-模式切换使用基础 Tabs，支持方向键移动焦点并用空格激活；清空和应用使用按钮，字段、操作符和值控件有可读文本。调用方应把过滤结果数量和应用状态放入可感知文本，避免只用颜色表达有效或无效。
+模式切换使用基础 Tabs，支持方向键移动焦点并用空格激活；AND/OR 使用支持键盘选择的单选按钮组，并暴露当前选中状态。通过 `labels.field`、`labels.operator`、`labels.connection` 和 `labels.value` 本地化控件名称；名称会附加条件当前的行号，从 1 开始。删除按钮也包含行号。`labels` 接受部分覆盖，未传入的名称保留默认中文。调用方应把过滤结果数量和应用状态放入可感知文本，避免只用颜色表达有效或无效。
 
 ## 依赖
 

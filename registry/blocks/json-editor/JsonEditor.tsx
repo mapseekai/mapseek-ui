@@ -1,4 +1,5 @@
 import { autocompletion } from "@codemirror/autocomplete"
+import { defaultKeymap, history, historyKeymap } from "@codemirror/commands"
 import { json, jsonParseLinter } from "@codemirror/lang-json"
 import {
   bracketMatching,
@@ -14,6 +15,7 @@ import {
   EditorView,
   highlightActiveLine,
   highlightActiveLineGutter,
+  keymap,
   lineNumbers,
 } from "@codemirror/view"
 import { tags } from "@lezer/highlight"
@@ -261,6 +263,8 @@ export function JsonEditor({
   const extensions = useMemo(
     () => [
       jsonEditorStructureTheme,
+      history(),
+      keymap.of([...defaultKeymap, ...historyKeymap]),
       lineNumbers(),
       highlightActiveLineGutter(),
       foldGutter(),

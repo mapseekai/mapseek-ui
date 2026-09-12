@@ -92,7 +92,7 @@ export function ResourceGrid({
       <div
         data-testid="resource-icon-grid"
         className={cn(
-          "grid w-full min-w-0 grid-cols-[repeat(auto-fill,minmax(96px,1fr))] border-t border-l border-border",
+          "grid w-full min-w-0 grid-cols-[repeat(auto-fill,minmax(min(96px,100%),1fr))] border-t border-l border-border",
           className,
         )}
       >
@@ -153,7 +153,12 @@ export function ResourceGrid({
 
   if (tab === "sprite") {
     return (
-      <div className={cn("grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-3", className)}>
+      <div
+        className={cn(
+          "grid grid-cols-[repeat(auto-fill,minmax(min(220px,100%),1fr))] gap-3",
+          className,
+        )}
+      >
         {(items as ResourceSpriteItem[]).map((s) => (
           <ResourceCard
             key={s.id}
@@ -185,7 +190,12 @@ export function ResourceGrid({
   }
 
   return (
-    <div className={cn("grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-3", className)}>
+    <div
+      className={cn(
+        "grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),1fr))] gap-3",
+        className,
+      )}
+    >
       {(items as ResourceFontItem[]).map((f) => (
         <ResourceCard
           key={f.id}

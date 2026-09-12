@@ -1,6 +1,7 @@
 import { IconAdjustmentsAlt, IconCode, IconEye, IconPlus, IconX } from "@tabler/icons-react"
 import * as React from "react"
 import { Button } from "@/components/ui/button"
+import { ButtonRadioGroup, ButtonRadioGroupItem } from "@/components/ui/button-radio-group"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -139,35 +140,34 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
         {value.rows.map((f, idx) => (
           <div key={f.id} className="flex flex-col gap-1">
             {idx > 0 && (
-              <div className="flex">
-                {(["AND", "OR"] as const).map((c, ci) => {
-                  const isCur = f.conn === c
-                  return (
-                    <Button
-                      key={c}
-                      variant="ghost"
-                      size="xs"
-                      onClick={() => updateRow(f.id, { conn: c })}
-                      className={cn(
-                        "border border-border font-mono text-label-md",
-                        ci > 0 && "-ml-px",
-                        isCur
-                          ? "bg-selection-bg text-primary hover:bg-selection-bg hover:text-primary"
-                          : "bg-background text-muted-foreground",
-                      )}
-                    >
-                      {c}
-                    </Button>
-                  )
-                })}
-              </div>
+              <ButtonRadioGroup
+                size="xs"
+                variant="soft"
+                className="w-fit"
+                aria-label={`${labels.connection} ${idx + 1}`}
+                value={f.conn}
+                onValueChange={(conn) => {
+                  if (conn === "AND" || conn === "OR") updateRow(f.id, { conn })
+                }}
+              >
+                {(["AND", "OR"] as const).map((conn) => (
+                  <ButtonRadioGroupItem key={conn} value={conn} className="font-mono text-label-md">
+                    {conn}
+                  </ButtonRadioGroupItem>
+                ))}
+              </ButtonRadioGroup>
             )}
             <div className="grid grid-cols-[max-content_auto_minmax(0,1fr)_24px] items-center gap-x-1">
               <Select
                 value={f.field}
                 onValueChange={(val) => val != null && updateRow(f.id, { field: val })}
               >
-                <SelectTrigger size="xs" width="content" className={miniSelect}>
+                <SelectTrigger
+                  size="xs"
+                  width="content"
+                  className={miniSelect}
+                  aria-label={`${labels.field} ${idx + 1}`}
+                >
                   <SelectValue title={f.field} />
                 </SelectTrigger>
                 <SelectContent>
@@ -186,6 +186,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
               >
                 <SelectTrigger
                   size="xs"
+                  aria-label={`${labels.operator} ${idx + 1}`}
                   className={cn(miniSelect, "w-max min-w-12 whitespace-nowrap")}
                 >
                   <SelectValue />
@@ -201,6 +202,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 </SelectContent>
               </Select>
               <Input
+                aria-label={`${labels.value} ${idx + 1}`}
                 className="h-6 rounded-none border-input bg-input-surface px-2 font-mono text-body-sm"
                 placeholder={labels.valuePlaceholder}
                 value={f.value}
@@ -210,7 +212,7 @@ function FilterPanelBuilder({ ops, className }: { ops: string[]; className?: str
                 variant="ghost"
                 size="icon-xs"
                 onClick={() => removeRow(f.id)}
-                aria-label={labels.removeCondition}
+                aria-label={`${labels.removeCondition} ${idx + 1}`}
                 className="text-muted-foreground"
               >
                 <IconX />

@@ -1,5 +1,5 @@
 import { IconArrowsMaximize, IconArrowsMinimize, IconX } from "@tabler/icons-react"
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { IconButton } from "@/components/ui/icon-button"
 import { cn } from "@/lib/utils"
@@ -59,6 +59,14 @@ export function AttrTableSheet({
   const internal = useTableSheetState()
   const s = state ?? internal
   const [isDragging, setIsDragging] = useState(false)
+  const stateRef = useRef(s)
+  const dragCleanupRef = useRef<(() => void) | null>(null)
+
+  useLayoutEffect(() => {
+    stateRef.current = s
+  }, [s])
+
+  useEffect(() => () => dragCleanupRef.current?.(), [])
 
   // Drag handle. Two performance details:
   // - Coalesce pointermove updates to one per animation frame so we
@@ -66,46 +74,51 @@ export function AttrTableSheet({
   // - Suppress the height CSS transition while dragging — otherwise
   //   each setHeight starts a 180ms ease and the visible top edge
   //   visibly lags the cursor.
-  const handlePointerDown = useCallback(
-    (e: React.PointerEvent<HTMLButtonElement>) => {
-      e.preventDefault()
-      ;(e.target as Element).setPointerCapture(e.pointerId)
-      s.beginDrag()
-      setIsDragging(true)
+  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    dragCleanupRef.current?.()
+    e.currentTarget.setPointerCapture(e.pointerId)
+    stateRef.current.beginDrag()
+    setIsDragging(true)
 
-      let frameId: number | null = null
-      let pending: number | null = null
+    let frameId: number | null = null
+    let pending: number | null = null
 
-      const flush = () => {
-        frameId = null
-        if (pending !== null) {
-          s.setHeight(pending)
-          pending = null
-        }
+    const flush = () => {
+      frameId = null
+      if (pending !== null) {
+        stateRef.current.setHeight(pending)
+        pending = null
       }
+    }
 
-      const onMove = (ev: PointerEvent) => {
-        pending = window.innerHeight - ev.clientY
-        if (frameId === null) frameId = requestAnimationFrame(flush)
-      }
-      const onUp = () => {
-        if (frameId !== null) {
-          cancelAnimationFrame(frameId)
-          flush()
-        }
-        s.endDrag()
-        setIsDragging(false)
-        window.removeEventListener("pointermove", onMove)
-        window.removeEventListener("pointerup", onUp)
-        window.removeEventListener("pointercancel", onUp)
-      }
+    const onMove = (ev: PointerEvent) => {
+      if (ev.pointerId !== e.pointerId) return
+      pending = window.innerHeight - ev.clientY
+      if (frameId === null) frameId = requestAnimationFrame(flush)
+    }
+    const cleanup = () => {
+      if (frameId !== null) cancelAnimationFrame(frameId)
+      pending = null
+      stateRef.current.endDrag()
+      window.removeEventListener("pointermove", onMove)
+      window.removeEventListener("pointerup", onUp)
+      window.removeEventListener("pointercancel", onUp)
+      dragCleanupRef.current = null
+    }
+    const onUp = (ev: PointerEvent) => {
+      if (ev.pointerId !== e.pointerId) return
+      if (frameId !== null) cancelAnimationFrame(frameId)
+      flush()
+      cleanup()
+      setIsDragging(false)
+    }
 
-      window.addEventListener("pointermove", onMove)
-      window.addEventListener("pointerup", onUp)
-      window.addEventListener("pointercancel", onUp)
-    },
-    [s],
-  )
+    dragCleanupRef.current = cleanup
+    window.addEventListener("pointermove", onMove)
+    window.addEventListener("pointerup", onUp)
+    window.addEventListener("pointercancel", onUp)
+  }, [])
 
   const handleResizeKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLButtonElement>) => {

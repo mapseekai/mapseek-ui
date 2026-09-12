@@ -51,6 +51,14 @@ async function filesUnder(directory: string, extension: string): Promise<string[
   return nested.flat()
 }
 
+it("does not deliver unrelated example source with a component page", async () => {
+  const page = "packages/docs/out/components/button/index.html"
+  const delivered = `${await readFile(page, "utf8")}\n${await readBuiltPageJs(page)}`
+
+  expect(delivered.includes("export function AttrTableDemo")).toBe(false)
+  expect(delivered.includes("export function JsonEditorDemo")).toBe(false)
+})
+
 it("declares the Fumadocs docs workspace contract", async () => {
   const root = JSON.parse(await readFile("package.json", "utf8"))
   const docs = JSON.parse(await readFile("packages/docs/package.json", "utf8"))
@@ -356,13 +364,17 @@ it("uses the theme primary color for active Tabs states", async () => {
   expect(source).not.toContain("after:bg-foreground")
 })
 
-it("keeps displayed example source as exact TSX source", async () => {
-  const js = await readBuiltPageJs("packages/docs/out/components/button/index.html")
+it("delivers readable, portable TSX source in the component page payload", async () => {
+  const html = await readFile("packages/docs/out/components/button/index.html", "utf8")
+  const payload = [...html.matchAll(/<script>(self\.__next_f\.push\([\s\S]*?\))<\/script>/gu)]
+    .map(([, script]) => JSON.parse(script.slice("self.__next_f.push(".length, -1))[1])
+    .filter((chunk): chunk is string => typeof chunk === "string")
+    .join("")
 
-  expect(js).toContain('import { Button } from "@registry/ui/button"')
-  expect(js).toContain("export function ButtonBasicDemo")
-  expect(js).not.toContain('import{Button}from"@registry/ui/button"')
-  expect(js).not.toContain('from"react/jsx-runtime"')
+  expect(payload.includes('import { Button } from "@/components/ui/button"')).toBe(true)
+  expect(payload.includes("export function ButtonBasicDemo")).toBe(true)
+  expect(payload.includes('import{Button}from"@/components/ui/button"')).toBe(false)
+  expect(payload.includes('from"react/jsx-runtime"')).toBe(false)
 }, 30_000)
 
 it("renders documentation examples from the original Showcase source", async () => {

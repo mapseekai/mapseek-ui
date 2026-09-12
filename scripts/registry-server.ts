@@ -58,13 +58,13 @@ function contentType(path: string): string {
   return "application/octet-stream"
 }
 
-export async function startRegistryServer(): Promise<Server> {
+export async function startRegistryServer(port = 4174): Promise<Server> {
   const server = createServer((request, response) => {
     void respond(new URL(request.url ?? "/", "http://127.0.0.1").pathname, response)
   })
   await new Promise<void>((resolve, reject) => {
     server.once("error", reject)
-    server.listen(4174, "127.0.0.1", resolve)
+    server.listen(port, "127.0.0.1", resolve)
   })
   return server
 }

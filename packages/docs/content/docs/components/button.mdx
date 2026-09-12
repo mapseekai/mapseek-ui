@@ -19,10 +19,10 @@ Button 是 Mapseek UI 的基础操作触发器，用于提交表单、执行地�
 ## 导入
 
 ```tsx
-import { Button } from "@/registry/ui/button"
+import { Button } from "@/components/ui/button"
 ```
 
-如果你的项目使用 shadcn 目标路径，也可以从安装后的 `@ui/button.tsx` 所在别名导入。
+示例使用默认的 shadcn 安装别名。如果你在 `components.json` 中自定义了 `aliases.ui`，请相应调整导入路径。
 
 ## 基础用法
 
@@ -41,7 +41,7 @@ import { Button } from "@/registry/ui/button"
 `Button` 导出 `Button` 组件和 `buttonVariants` 样式函数。组件继承 Base UI `Button` 的 props，并额外接受 `variant` 与 `size` 变体参数。
 
 ```tsx
-import { Button, buttonVariants } from "@/registry/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 ```
 
 `Button` 基于 `@base-ui/react/button`，所以会保留原生按钮语义、键盘激活、焦点行为和常用按钮属性。`disabled` 会传递到 Base UI，并由样式层应用 `pointer-events-none` 与 `opacity-50`。

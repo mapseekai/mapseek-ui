@@ -295,7 +295,7 @@ async function assertButtonPilot(page: Page, path: string): Promise<void> {
   await basicDemo.locator('[data-demo-action="source"]').click()
   await expect(basicDemo.locator("pre code")).toContainText("export function ButtonBasicDemo")
   await expect(basicDemo.locator("pre code")).toContainText(
-    'import { Button } from "@registry/ui/button"',
+    'import { Button } from "@/components/ui/button"',
   )
 
   await basicDemo.locator('[data-demo-action="reset"]').click()
@@ -768,289 +768,289 @@ const blockPages = [
     name: "custom-colormap",
     demo: "custom-colormap",
     sourceFunction: "CustomColormapDemo",
-    importPath: "@registry/blocks/custom-colormap",
+    importPath: "@/components/blocks/custom-colormap",
   },
   {
     name: "toolbox",
     demo: "toolbox",
     sourceFunction: "ToolboxDemo",
-    importPath: "@registry/blocks/toolbox",
+    importPath: "@/components/blocks/toolbox",
   },
   {
     name: "toolbar",
     demo: "toolbar",
     sourceFunction: "ToolbarDemo",
-    importPath: "@registry/blocks/toolbar",
+    importPath: "@/components/blocks/toolbar",
   },
   {
     name: "app-top-bar",
     demo: "app-top-bar",
     sourceFunction: "AppTopBarDemo",
-    importPath: "@registry/blocks/app-top-bar",
+    importPath: "@/components/blocks/app-top-bar",
   },
   {
     name: "crs-picker",
     demo: "crs-picker",
     sourceFunction: "CrsPickerDemo",
-    importPath: "@registry/blocks/crs-picker",
+    importPath: "@/components/blocks/crs-picker",
   },
   {
     name: "layer-editor-group",
     demo: "layer-editor-group",
     sourceFunction: "LayerEditorGroupDemo",
-    importPath: "@registry/blocks/layer-editor-group",
+    importPath: "@/components/blocks/layer-editor-group",
   },
   {
     name: "layer-panel",
     demo: "layer-panel",
     sourceFunction: "LayerPanelDemo",
-    importPath: "@registry/blocks/layer-panel",
+    importPath: "@/components/blocks/layer-panel",
   },
   {
     name: "layer-style-editor",
     demo: "layer-style-editor",
     sourceFunction: "LayerStyleEditorDemo",
-    importPath: "@registry/blocks/layer-style-editor",
+    importPath: "@/components/blocks/layer-style-editor",
   },
   {
     name: "layout",
     demo: "layout",
     sourceFunction: "LayoutDemo",
-    importPath: "@registry/blocks/layout",
+    importPath: "@/components/blocks/layout",
   },
   {
     name: "add-field-form",
     demo: "add-field-form",
     sourceFunction: "AddFieldFormDemo",
-    importPath: "@registry/blocks/add-field-form",
+    importPath: "@/components/blocks/add-field-form",
   },
   {
     name: "attr-inspector",
     demo: "attr-inspector",
     sourceFunction: "AttrInspectorDemo",
-    importPath: "@registry/blocks/attr-inspector",
+    importPath: "@/components/blocks/attr-inspector",
   },
   {
     name: "attr-table",
     demo: "attr-table",
     sourceFunction: "AttrTableDemo",
-    importPath: "@registry/blocks/attr-table",
+    importPath: "@/components/blocks/attr-table",
   },
   {
     name: "filter-panel",
     demo: "filter-panel",
     sourceFunction: "FilterPanelDemo",
-    importPath: "@registry/blocks/filter-panel",
+    importPath: "@/components/blocks/filter-panel",
   },
   {
     name: "form-inputs",
     demo: "form-inputs",
     sourceFunction: "FormInputsDemo",
-    importPath: "@registry/blocks/form-inputs",
+    importPath: "@/components/blocks/form-inputs",
   },
   {
     name: "geojson-view",
     demo: "geojson-view",
     sourceFunction: "GeoJSONViewDemo",
-    importPath: "@registry/blocks/geojson-view",
+    importPath: "@/components/blocks/geojson-view",
   },
   {
     name: "json-editor",
     demo: "json-editor",
     sourceFunction: "JsonEditorDemo",
-    importPath: "@registry/blocks/json-editor",
+    importPath: "@/components/blocks/json-editor",
   },
   {
     name: "map-controls",
     demo: "map-controls",
     sourceFunction: "MapControlsDemo",
-    importPath: "@registry/blocks/map-controls",
+    importPath: "@/components/blocks/map-controls",
   },
   {
     name: "map-search",
     demo: "map-search",
     sourceFunction: "MapSearchDemo",
-    importPath: "@registry/blocks/map-search",
+    importPath: "@/components/blocks/map-search",
   },
   {
     name: "map-coordinate-status",
     demo: "map-coordinate-status",
     sourceFunction: "MapCoordinateStatusDemo",
-    importPath: "@registry/blocks/map-coordinate-status",
+    importPath: "@/components/blocks/map-coordinate-status",
   },
   {
     name: "map-switcher",
     demo: "map-switcher",
     sourceFunction: "MapSwitcherDemo",
-    importPath: "@registry/blocks/map-switcher",
+    importPath: "@/components/blocks/map-switcher",
   },
   {
     name: "number-range-input",
     demo: "number-range-input",
     sourceFunction: "NumberRangeInputDemo",
-    importPath: "@registry/blocks/number-range-input",
+    importPath: "@/components/blocks/number-range-input",
   },
   {
     name: "schema-form",
     demo: "schema-form",
     sourceFunction: "SchemaFormDemo",
-    importPath: "@registry/blocks/schema-form",
+    importPath: "@/components/blocks/schema-form",
   },
   {
     name: "pixel-probe",
     demo: "pixel-probe",
     sourceFunction: "PixelProbeDemo",
-    importPath: "@registry/blocks/pixel-probe",
+    importPath: "@/components/blocks/pixel-probe",
   },
   {
     name: "split-tool-picker",
     demo: "split-tool-picker",
     sourceFunction: "SplitToolPickerDemo",
-    importPath: "@registry/blocks/split-tool-picker",
+    importPath: "@/components/blocks/split-tool-picker",
   },
   {
     name: "band-stat",
     demo: "band-stat",
     sourceFunction: "BandStatDemo",
-    importPath: "@registry/blocks/band-stat",
+    importPath: "@/components/blocks/band-stat",
   },
   {
     name: "linked-ref-list",
     demo: "linked-ref-list",
     sourceFunction: "LinkedRefListDemo",
-    importPath: "@registry/blocks/linked-ref-list",
+    importPath: "@/components/blocks/linked-ref-list",
   },
   {
     name: "loading-screen",
     demo: "loading-screen",
     sourceFunction: "LoadingScreenDemo",
-    importPath: "@registry/blocks/loading-screen",
+    importPath: "@/components/blocks/loading-screen",
   },
   {
     name: "notification-center",
     demo: "notification-center",
     sourceFunction: "NotificationCenterDemo",
-    importPath: "@registry/blocks/notification-center",
+    importPath: "@/components/blocks/notification-center",
   },
   {
     name: "placeholder-glyph",
     demo: "placeholder-glyph",
     sourceFunction: "PlaceholderGlyphDemo",
-    importPath: "@registry/blocks/placeholder-glyph",
+    importPath: "@/components/blocks/placeholder-glyph",
   },
   {
     name: "processing-timeline",
     demo: "processing-timeline",
     sourceFunction: "ProcessingTimelineDemo",
-    importPath: "@registry/blocks/processing-timeline",
+    importPath: "@/components/blocks/processing-timeline",
   },
   {
     name: "product-logo",
     demo: "product-logo",
     sourceFunction: "ProductLogoDemo",
-    importPath: "@registry/blocks/product-logo",
+    importPath: "@/components/blocks/product-logo",
   },
   {
     name: "resource-detail-drawer",
     demo: "resource-detail-drawer",
     sourceFunction: "ResourceDetailDrawerDemo",
-    importPath: "@registry/blocks/resource-detail-drawer",
+    importPath: "@/components/blocks/resource-detail-drawer",
   },
   {
     name: "resource-grid",
     demo: "resource-grid",
     sourceFunction: "ResourceGridDemo",
-    importPath: "@registry/blocks/resource-grid",
+    importPath: "@/components/blocks/resource-grid",
   },
   {
     name: "resource-sidebar",
     demo: "resource-sidebar",
     sourceFunction: "ResourceSidebarDemo",
-    importPath: "@registry/blocks/resource-sidebar",
+    importPath: "@/components/blocks/resource-sidebar",
   },
   {
     name: "resource-status",
     demo: "resource-status",
     sourceFunction: "ResourceStatusDemo",
-    importPath: "@registry/blocks/resource-status",
+    importPath: "@/components/blocks/resource-status",
   },
   {
     name: "service-endpoint-row",
     demo: "service-endpoint-row",
     sourceFunction: "ServiceEndpointRowDemo",
-    importPath: "@registry/blocks/service-endpoint-row",
+    importPath: "@/components/blocks/service-endpoint-row",
   },
   {
     name: "service-status",
     demo: "service-status",
     sourceFunction: "ServiceStatusDemo",
-    importPath: "@registry/blocks/service-status",
+    importPath: "@/components/blocks/service-status",
   },
   {
     name: "stat-strip",
     demo: "stat-strip",
     sourceFunction: "StatStripDemo",
-    importPath: "@registry/blocks/stat-strip",
+    importPath: "@/components/blocks/stat-strip",
   },
   {
     name: "storage-meter",
     demo: "storage-meter",
     sourceFunction: "StorageMeterDemo",
-    importPath: "@registry/blocks/storage-meter",
+    importPath: "@/components/blocks/storage-meter",
   },
   {
     name: "raster-style-panel",
     demo: "raster-style-panel",
     sourceFunction: "RasterStylePanelDemo",
-    importPath: "@registry/blocks/raster-style-panel",
+    importPath: "@/components/blocks/raster-style-panel",
   },
   {
     name: "style-color-input",
     demo: "style-color-input",
     sourceFunction: "StyleColorInputDemo",
-    importPath: "@registry/blocks/style-color-input",
+    importPath: "@/components/blocks/style-color-input",
   },
   {
     name: "style-editor-modal",
     demo: "style-editor-modal",
     sourceFunction: "StyleEditorModalDemo",
-    importPath: "@registry/blocks/style-editor-modal",
+    importPath: "@/components/blocks/style-editor-modal",
   },
   {
     name: "style-editor-panel",
     demo: "style-editor-panel",
     sourceFunction: "StyleEditorPanelDemo",
-    importPath: "@registry/blocks/style-editor-panel",
+    importPath: "@/components/blocks/style-editor-panel",
   },
   {
     name: "style-filter-editor",
     demo: "style-filter-editor",
     sourceFunction: "StyleFilterEditorDemo",
-    importPath: "@registry/blocks/style-filter-editor",
+    importPath: "@/components/blocks/style-filter-editor",
   },
   {
     name: "style-function-editor",
     demo: "style-function-editor",
     sourceFunction: "StyleFunctionEditorDemo",
-    importPath: "@registry/blocks/style-function-editor",
+    importPath: "@/components/blocks/style-function-editor",
   },
   {
     name: "style-panel",
     demo: "style-panel",
     sourceFunction: "StylePanelDemo",
-    importPath: "@registry/blocks/style-panel",
+    importPath: "@/components/blocks/style-panel",
   },
   {
     name: "style-source-picker-dialog",
     demo: "style-source-picker-dialog",
     sourceFunction: "StyleSourcePickerDialogDemo",
-    importPath: "@registry/blocks/style-source-picker-dialog",
+    importPath: "@/components/blocks/style-source-picker-dialog",
   },
   {
     name: "toggle-config-popover",
     demo: "toggle-config-popover",
     sourceFunction: "ToggleConfigPopoverDemo",
-    importPath: "@registry/blocks/toggle-config-popover",
+    importPath: "@/components/blocks/toggle-config-popover",
   },
 ] as const satisfies readonly BlockPage[]
 
@@ -1070,7 +1070,7 @@ async function assertDemoPreviewAndSource(page: Page, primitive: string): Promis
   await section.locator('[data-demo-action="source"]').click()
   const source = section.locator("css=figure pre code")
   await expect(source).toContainText(`export function ${titleFromName(primitive)}OverviewDemo`)
-  await expect(source).toContainText(`@registry/ui/${primitive}`)
+  await expect(source).toContainText(`@/components/ui/${primitive}`)
 }
 
 async function assertBlockDemoPreviewAndSource(page: Page, block: BlockPage): Promise<void> {
@@ -1962,7 +1962,7 @@ export async function assertBlockInteraction(
     }
 
     const removeCondition = demo.getByRole("button", {
-      name: /^(删除条件|Remove condition)$/,
+      name: /^(删除条件|Remove condition) 1$/,
     })
     const removeConditionSize = await removeCondition.evaluate((element) => {
       const rect = element.getBoundingClientRect()

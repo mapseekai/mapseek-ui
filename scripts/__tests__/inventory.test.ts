@@ -68,6 +68,11 @@ const overlayDataAndFeedbackPrimitives = [
   "navigation-menu",
   "scroll-area",
   "spinner",
+  "toast",
+  "form",
+  "input-otp",
+  "resizable",
+  "sidebar",
 ] as const
 
 const overlayDataAndFeedbackDependencies = {
@@ -97,6 +102,20 @@ const overlayDataAndFeedbackDependencies = {
   "navigation-menu": ["@mapseek/utils"],
   "scroll-area": ["@mapseek/utils"],
   spinner: ["@mapseek/utils"],
+  toast: ["@mapseek/button", "@mapseek/utils"],
+  form: ["@mapseek/field", "@mapseek/label", "@mapseek/utils"],
+  "input-otp": ["@mapseek/utils"],
+  resizable: ["@mapseek/utils"],
+  sidebar: [
+    "@mapseek/button",
+    "@mapseek/input",
+    "@mapseek/separator",
+    "@mapseek/sheet",
+    "@mapseek/skeleton",
+    "@mapseek/tooltip",
+    "@mapseek/use-mobile",
+    "@mapseek/utils",
+  ],
 } as const
 
 const overlayDataAndFeedbackNpmDependencies = {
@@ -121,6 +140,11 @@ const overlayDataAndFeedbackNpmDependencies = {
   "navigation-menu": ["@base-ui/react", "@tabler/icons-react"],
   "scroll-area": ["@base-ui/react"],
   spinner: ["@tabler/icons-react"],
+  toast: ["@base-ui/react", "@tabler/icons-react"],
+  form: ["react-hook-form"],
+  "input-otp": ["@tabler/icons-react", "input-otp"],
+  resizable: ["react-resizable-panels"],
+  sidebar: ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
 } as const
 
 const basePrimitives = [

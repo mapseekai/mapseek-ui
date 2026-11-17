@@ -1,0 +1,46 @@
+---
+title: "Sidebar"
+registryName: sidebar
+category: primitive
+stability: stable
+showcase: sidebar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+A collapsible sidebar for organizing navigation, workspaces, and supporting actions in an application.
+
+## Installation
+
+<RegistryInstall registryName="sidebar" />
+
+## Example
+
+<ShowcaseDemo registryName="sidebar" demo="overview" title="Sidebar" description="A collapsible sidebar for organizing navigation, workspaces, and supporting actions in an application." />
+
+## Composition
+
+```tsx
+<SidebarProvider>
+  <Sidebar>
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton isActive>Map</SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+    </SidebarContent>
+  </Sidebar>
+  <SidebarInset>
+    <SidebarTrigger />
+  </SidebarInset>
+</SidebarProvider>
+```
+
+## Dependencies
+
+<RegistryDependencies registryName="sidebar" />

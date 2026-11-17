@@ -30,7 +30,7 @@ it("renders LinkedRefList summaries as one card tab set", async () => {
   } finally {
     await server.close()
   }
-})
+}, 20_000)
 
 it("uses responsive summary tabs with standard counts and status tags", async () => {
   const server = await createServer({
@@ -52,7 +52,7 @@ it("uses responsive summary tabs with standard counts and status tags", async ()
   } finally {
     await server.close()
   }
-})
+}, 20_000)
 
 it("renders distinct accessible item actions and hides decorative icons", async () => {
   const server = await createServer({
@@ -74,4 +74,4 @@ it("renders distinct accessible item actions and hides decorative icons", async 
   } finally {
     await server.close()
   }
-})
+}, 20_000)

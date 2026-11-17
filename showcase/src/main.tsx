@@ -1,5 +1,6 @@
 import { ConfirmProvider } from "@registry/ui/confirm-dialog"
 import { Toaster } from "@registry/ui/sonner"
+import { Toaster as ToastToaster } from "@registry/ui/toast"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { App } from "./App"
@@ -15,6 +16,7 @@ createRoot(rootElement).render(
     <ConfirmProvider>
       <App />
       <Toaster />
+      <ToastToaster />
     </ConfirmProvider>
   </StrictMode>,
 )

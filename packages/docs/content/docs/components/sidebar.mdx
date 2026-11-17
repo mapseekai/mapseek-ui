@@ -1,0 +1,46 @@
+---
+title: "Sidebar"
+registryName: sidebar
+category: primitive
+stability: stable
+showcase: sidebar
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+用于在应用中组织导航、工作区和辅助操作的可折叠侧边栏。
+
+## 安装
+
+<RegistryInstall registryName="sidebar" />
+
+## 示例
+
+<ShowcaseDemo registryName="sidebar" demo="overview" title="Sidebar" description="用于在应用中组织导航、工作区和辅助操作的可折叠侧边栏。" />
+
+## 组合
+
+```tsx
+<SidebarProvider>
+  <Sidebar>
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>工作区</SidebarGroupLabel>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton isActive>地图</SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+    </SidebarContent>
+  </Sidebar>
+  <SidebarInset>
+    <SidebarTrigger />
+  </SidebarInset>
+</SidebarProvider>
+```
+
+## 依赖
+
+<RegistryDependencies registryName="sidebar" />

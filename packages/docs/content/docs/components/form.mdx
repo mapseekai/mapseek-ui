@@ -1,0 +1,59 @@
+---
+title: "Form 表单"
+registryName: form
+category: primitive
+stability: stable
+showcase: form
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+基于 React Hook Form 的可访问表单字段组合。
+
+## 安装
+
+<RegistryInstall registryName="form" />
+
+## 示例
+
+<ShowcaseDemo registryName="form" demo="overview" title="Form 表单" description="组合字段、说明和校验错误来构建表单。" />
+
+```tsx
+import { useForm } from "react-hook-form"
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+const form = useForm({ defaultValues: { datasetName: "" } })
+
+<Form {...form}>
+  <form onSubmit={form.handleSubmit(console.log)}>
+    <FormField
+      control={form.control}
+      name="datasetName"
+      rules={{ required: "请输入数据集名称。" }}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>数据集名称</FormLabel>
+          <FormControl>
+            <Input {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  </form>
+</Form>
+```
+
+## 依赖
+
+<RegistryDependencies registryName="form" />

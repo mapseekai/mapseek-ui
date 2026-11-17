@@ -65,4 +65,9 @@ export const primitiveShowcases = [
   primitive("navigation-menu", "Navigation Menu 导航菜单", () => import("./NewPrimitivesShowcase")),
   primitive("scroll-area", "Scroll Area 滚动区域", () => import("./NewPrimitivesShowcase")),
   primitive("spinner", "Spinner 加载器", () => import("./NewPrimitivesShowcase")),
+  primitive("toast", "Toast 消息通知", () => import("./ToastShowcase")),
+  primitive("form", "Form 表单", () => import("./FormShowcase")),
+  primitive("input-otp", "Input OTP 验证码输入", () => import("./InputOtpShowcase")),
+  primitive("resizable", "Resizable 可调整布局", () => import("./ResizableShowcase")),
+  primitive("sidebar", "Sidebar 侧边栏", () => import("./SidebarShowcase")),
 ] satisfies readonly ShowcaseEntry[]

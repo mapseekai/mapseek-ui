@@ -1,0 +1,26 @@
+---
+title: "Toast"
+registryName: toast
+category: primitive
+stability: stable
+showcase: toast
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+基于 Base UI 的短暂消息通知，支持状态类型、描述和操作。
+
+## 安装
+
+<RegistryInstall registryName="toast" />
+
+## 示例
+
+<ShowcaseDemo registryName="toast" demo="overview" title="Toast" description="基于 Base UI 的短暂消息通知。" />
+
+在应用根部挂载 `<Toaster />` 后，从 `@/registry/ui/toast` 导入 `toast` manager，并通过 `toast.add({ title, description, type })` 创建通知。
+
+## 依赖
+
+<RegistryDependencies registryName="toast" />

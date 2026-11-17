@@ -1,0 +1,26 @@
+---
+title: "Toast"
+registryName: toast
+category: primitive
+stability: stable
+showcase: toast
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+A transient notification built on Base UI, with semantic types, descriptions, and actions.
+
+## Installation
+
+<RegistryInstall registryName="toast" />
+
+## Example
+
+<ShowcaseDemo registryName="toast" demo="overview" title="Toast" description="A transient notification built on Base UI." />
+
+Mount `<Toaster />` at the application root, then import the `toast` manager from `@/registry/ui/toast` and create notifications with `toast.add({ title, description, type })`.
+
+## Dependencies
+
+<RegistryDependencies registryName="toast" />

@@ -913,6 +913,71 @@
       "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
       "dependencies": ["@tabler/icons-react"],
       "files": [{ "path": "spinner.tsx", "type": "registry:ui", "target": "@ui/spinner.tsx" }]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "Base UI transient notifications with semantic types, descriptions, and actions.",
+      "categories": ["feedback"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/button", "@mapseek/utils"],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react"],
+      "files": [{ "path": "toast.tsx", "type": "registry:ui", "target": "@ui/toast.tsx" }]
+    },
+    {
+      "name": "form",
+      "type": "registry:ui",
+      "title": "Form",
+      "description": "Accessible form fields composed with React Hook Form.",
+      "categories": ["input"],
+      "registryDependencies": [
+        "@mapseek/theme",
+        "@mapseek/field",
+        "@mapseek/label",
+        "@mapseek/utils"
+      ],
+      "dependencies": ["react-hook-form"],
+      "files": [{ "path": "form.tsx", "type": "registry:ui", "target": "@ui/form.tsx" }]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input OTP",
+      "description": "One-time password input.",
+      "categories": ["input"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["@tabler/icons-react", "input-otp"],
+      "files": [{ "path": "input-otp.tsx", "type": "registry:ui", "target": "@ui/input-otp.tsx" }]
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "Resizable panel layouts.",
+      "categories": ["layout"],
+      "registryDependencies": ["@mapseek/theme", "@mapseek/utils"],
+      "dependencies": ["react-resizable-panels"],
+      "files": [{ "path": "resizable.tsx", "type": "registry:ui", "target": "@ui/resizable.tsx" }]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "A collapsible sidebar for organizing navigation, workspaces, and supporting actions.",
+      "categories": ["layout"],
+      "registryDependencies": [
+        "@mapseek/theme",
+        "@mapseek/button",
+        "@mapseek/input",
+        "@mapseek/separator",
+        "@mapseek/sheet",
+        "@mapseek/skeleton",
+        "@mapseek/tooltip",
+        "@mapseek/use-mobile",
+        "@mapseek/utils"
+      ],
+      "dependencies": ["@base-ui/react", "@tabler/icons-react", "class-variance-authority"],
+      "files": [{ "path": "sidebar.tsx", "type": "registry:ui", "target": "@ui/sidebar.tsx" }]
     }
   ]
 }

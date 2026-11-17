@@ -78,6 +78,11 @@ export const BASE_COMPONENTS = [
   "navigation-menu",
   "scroll-area",
   "spinner",
+  "toast",
+  "form",
+  "input-otp",
+  "resizable",
+  "sidebar",
 ] as const
 export const BLOCKS = [
   "add-field-form",

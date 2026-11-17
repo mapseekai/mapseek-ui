@@ -23,6 +23,11 @@
       "files": [
         { "path": "svg-data-uri.ts", "type": "registry:lib", "target": "@lib/svg-data-uri.ts" }
       ]
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:lib",
+      "files": [{ "path": "use-mobile.ts", "type": "registry:lib", "target": "@lib/use-mobile.ts" }]
     }
   ]
 }

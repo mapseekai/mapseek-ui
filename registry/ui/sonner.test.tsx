@@ -43,6 +43,14 @@ describe("Toaster", () => {
     expect(classNames?.description).toContain("!text-muted-foreground")
   })
 
+  it("defaults toasts to a 2500ms duration while allowing caller overrides", () => {
+    const element = Toaster({}) as ReactElement<ToasterProps>
+    expect(element.props.duration).toBe(2500)
+
+    const overridden = Toaster({ duration: 5000 }) as ReactElement<ToasterProps>
+    expect(overridden.props.duration).toBe(5000)
+  })
+
   it("gives typed toasts restrained semantic surfaces while leaving default toasts neutral", () => {
     const element = Toaster({}) as ReactElement<ToasterProps>
     const styles = element.props.style as Record<string, string>

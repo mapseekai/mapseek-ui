@@ -1,7 +1,14 @@
 import { fileURLToPath, pathToFileURL } from "node:url"
 import { assertValidCatalog, BASE_COMPONENTS, BLOCKS, type RegistryItem } from "./registry-model"
 
-const SUPPLEMENTAL_ITEMS = new Set(["theme", "utils", "labels", "basemaps", "svg-data-uri"])
+const SUPPLEMENTAL_ITEMS: Record<string, true> = {
+  theme: true,
+  utils: true,
+  labels: true,
+  basemaps: true,
+  "svg-data-uri": true,
+  "use-mobile": true,
+}
 
 export function assertCompleteInventory(items: readonly RegistryItem[]): void {
   const expectedTypeByName = new Map<string, RegistryItem["type"]>([
@@ -13,7 +20,7 @@ export function assertCompleteInventory(items: readonly RegistryItem[]): void {
     .filter(([name]) => !actualByName.has(name))
     .map(([name]) => name)
   const unexpected = [...actualByName]
-    .filter(([name]) => !expectedTypeByName.has(name) && !SUPPLEMENTAL_ITEMS.has(name))
+    .filter(([name]) => !expectedTypeByName.has(name) && !Object.hasOwn(SUPPLEMENTAL_ITEMS, name))
     .map(([name]) => name)
   const wrongType = [...expectedTypeByName]
     .filter(([name, type]) => actualByName.get(name)?.type !== type)

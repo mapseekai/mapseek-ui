@@ -639,4 +639,34 @@ export const requiredRegistryDocs: ReadonlyMap<string, RequiredRegistryDoc> = ne
       category: "block",
     },
   ],
+  [
+    "toast",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "form",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "input-otp",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "resizable",
+    {
+      category: "primitive",
+    },
+  ],
+  [
+    "sidebar",
+    {
+      category: "primitive",
+    },
+  ],
 ] as const)

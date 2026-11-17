@@ -1,0 +1,59 @@
+---
+title: "Form"
+registryName: form
+category: primitive
+stability: stable
+showcase: form
+---
+
+import { ShowcaseDemo } from "@/components/ShowcaseDemo"
+import { RegistryDependencies, RegistryInstall } from "@/components/RegistryItem"
+
+Accessible form field composition built on React Hook Form.
+
+## Installation
+
+<RegistryInstall registryName="form" />
+
+## Example
+
+<ShowcaseDemo registryName="form" demo="overview" title="Form" description="Compose fields, descriptions, and validation errors into a form." />
+
+```tsx
+import { useForm } from "react-hook-form"
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+
+const form = useForm({ defaultValues: { datasetName: "" } })
+
+<Form {...form}>
+  <form onSubmit={form.handleSubmit(console.log)}>
+    <FormField
+      control={form.control}
+      name="datasetName"
+      rules={{ required: "Enter a dataset name." }}
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel>Dataset name</FormLabel>
+          <FormControl>
+            <Input {...field} />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  </form>
+</Form>
+```
+
+## Dependencies
+
+<RegistryDependencies registryName="form" />

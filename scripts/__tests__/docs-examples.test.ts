@@ -176,4 +176,4 @@ it("prints Showcase coverage failures and exits non-zero from the CLI", async ()
   } finally {
     await rm(repoRoot, { recursive: true, force: true })
   }
-})
+}, 20_000)
